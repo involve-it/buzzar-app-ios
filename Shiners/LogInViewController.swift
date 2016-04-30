@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LogInViewController: UITableViewController{
+class LogInViewController: UITableViewController, UITextFieldDelegate{
     @IBOutlet weak var txtUsername: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     
@@ -32,6 +32,8 @@ class LogInViewController: UITableViewController{
         //register button
         setLoading(false);
         self.txtUsername.becomeFirstResponder();
+        self.txtPassword.delegate = self;
+        self.txtUsername.delegate = self;
     }
     
     private func setLoading(loading: Bool){
@@ -50,26 +52,47 @@ class LogInViewController: UITableViewController{
         }
     }
     
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        if indexPath.section == 2 && indexPath.row == 0{
+            return indexPath;
+        } else {
+            return nil;
+        }
+    }
+    
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 2 && indexPath.row == 0{
             tableView.deselectRowAtIndexPath(indexPath, animated: false)
             
-            if let userName = txtUsername.text where userName != "", let password = txtPassword.text where password != "" {
-                setLoading(true)
-                
-                ConnectionHandler.Instance.login(userName, password: password, callback: { (success, reason) in
-                    dispatch_async(dispatch_get_main_queue(), { 
-                        self.setLoading(false)
-                        if success {
-                            self.dismissSelf();
-                        } else {
-                            let alertController = UIAlertController(title: "Log in failed", message: reason, preferredStyle: .Alert);
-                            alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil));
-                            self.presentViewController(alertController, animated: true, completion: nil)
-                        }
-                    })
-                })
-            }
+            self.login();
         }
+    }
+    
+    func login(){
+        if let userName = txtUsername.text where userName != "", let password = txtPassword.text where password != "" {
+            setLoading(true)
+            
+            ConnectionHandler.Instance.login(userName, password: password, callback: { (success, reason) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.setLoading(false)
+                    if success {
+                        self.dismissSelf();
+                    } else {
+                        let alertController = UIAlertController(title: "Log in failed", message: reason, preferredStyle: .Alert);
+                        alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil));
+                        self.presentViewController(alertController, animated: true, completion: nil)
+                    }
+                })
+            })
+        }
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if (textField === self.txtPassword){
+            self.login()
+        } else if (textField === self.txtUsername){
+            self.txtPassword.becomeFirstResponder()
+        }
+        return false;
     }
 }
