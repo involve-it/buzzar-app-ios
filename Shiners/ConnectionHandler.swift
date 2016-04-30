@@ -13,6 +13,7 @@ import SwiftDDP
 
 public class ConnectionHandler{
     private let url:String = "ws://msg.webhop.org/websocket";
+    //private let url:String = "ws://192.168.1.61:3000/websocket";
     private var status: ConnectionStatus = .NotInitialized;
     private var handlers = [EventHandler]()
     
@@ -25,8 +26,8 @@ public class ConnectionHandler{
     public func connect() {
         if self.status != .Connected && self.status != .Connecting{
             self.status = ConnectionStatus.Connecting;
-            //Meteor.client.logLevel = .Debug;
-            Meteor.client.connect(url) { (session) in
+            Meteor.client.logLevel = .Debug;
+            Meteor.connect(url) { (session) in
                 var dependenciesResolved = 0;
                 NSLog("Meteor connected");
                 
@@ -57,13 +58,18 @@ public class ConnectionHandler{
         }
     }
     
+    public func disconnect(){
+        //todo: disconnect
+    }
+    
     private func retrieveCurrentUser(userId: String, callback: (success: Bool) -> Void){
         Meteor.call("getUser", params: [Meteor.client.userId()!]){ result, error in
             if (error == nil){
-                if let user = result as? NSDictionary{
+                if let user = result as? NSDictionary {
                     self.currentUser = User(fields: user)
                     
                     callback(success: true)
+                    return
                 }
             }
             callback(success: false)
@@ -92,8 +98,9 @@ public class ConnectionHandler{
         Meteor.logout(){ result, error in
             if (error == nil){
                 self.currentUser = nil;
+                callback(success: true)
             } else {
-                callback(success: false);
+                callback(success: false)
             }
         }
     }
@@ -111,6 +118,11 @@ public class ConnectionHandler{
     
     private init(){
         //singleton
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didLogin), name: DDP_USER_DID_LOGIN, object: nil);
+    }
+    
+    @objc private func didLogin(){
+        NSLog("LOGGED IN");
     }
     
     private static let instance: ConnectionHandler = ConnectionHandler();

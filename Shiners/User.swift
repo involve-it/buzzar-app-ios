@@ -68,7 +68,7 @@ public class User{
         var value: String?;
         if let profileDetails = self.profileDetails{
             for profileDetail in profileDetails {
-                if (ProfileDetail.Key(rawValue: profileDetail.key!) == key){
+                if (profileDetail.key == key.rawValue){
                     value = profileDetail.value;
                     break;
                 }
