@@ -18,61 +18,69 @@ public class ConnectionHandler{
     
     public var postsCollection = PostsCollection();
     public var imagesCollection = MeteorCollection<Image>(name: "images");
-    public var usersCollection = UsersCollection();
-    public var profileDetailsCollection = ProfileDetailsCollection();
+    public var currentUser: User?;
     
-    private var totalSubscriptions = 2;
-    
-    private var usersId: String?;
-    private var profileDetailsId: String?;
+    private var totalDependencies = 2;
     
     public func connect() {
         if self.status != .Connected && self.status != .Connecting{
             self.status = ConnectionStatus.Connecting;
             //Meteor.client.logLevel = .Debug;
             Meteor.client.connect(url) { (session) in
-                var subscriptionCount = 0;
+                var dependenciesResolved = 0;
                 NSLog("Meteor connected");
                 
                 if let userId = Meteor.client.userId(){
-                    self.totalSubscriptions += 2;
+                    self.totalDependencies += 1;
                     
-                    self.usersId = Meteor.subscribe("users-one", params: [userId]){
-                        NSLog("Current user subscribed");
-                        subscriptionCount+=1;
-                        self.executeHandlers(subscriptionCount);
-                    }
-                    
-                    self.profileDetailsId = Meteor.subscribe("profileDetails-my"){
-                        NSLog("Current user profile details subscribed");
-                        subscriptionCount+=1;
-                        self.executeHandlers(subscriptionCount);
-                    }
+                    self.retrieveCurrentUser(userId) { success in
+                        dependenciesResolved += 1;
+                        self.executeHandlers(dependenciesResolved);
+                        if !success {
+                            NSLog("Error getting current user")
+                        }
+                    };
                 }
                 
                 Meteor.subscribe("posts-all"){
                     NSLog("posts-all subscribed");
-                    subscriptionCount+=1;
-                    self.executeHandlers(subscriptionCount);
+                    dependenciesResolved += 1;
+                    self.executeHandlers(dependenciesResolved);
                 }
                 
                 Meteor.subscribe("posts-images"){
                     NSLog("images subscribed");
-                    subscriptionCount+=1;
-                    self.executeHandlers(subscriptionCount);
+                    dependenciesResolved += 1;
+                    self.executeHandlers(dependenciesResolved);
                 }
             }
         }
     }
     
+    private func retrieveCurrentUser(userId: String, callback: (success: Bool) -> Void){
+        Meteor.call("getUser", params: [Meteor.client.userId()!]){ result, error in
+            if (error == nil){
+                if let user = result as? NSDictionary{
+                    self.currentUser = User(fields: user)
+                    
+                    callback(success: true)
+                }
+            }
+            callback(success: false)
+        };
+    }
+    
     public func login(userName: String, password: String, callback: (success: Bool, reason: String?) -> Void){
         Meteor.loginWithUsername(userName, password: password){ result, error in
             if (error == nil){
-                self.usersId = Meteor.subscribe("users-one", params: [Meteor.client.userId()!]){
-                    self.profileDetailsId = Meteor.subscribe("profileDetails-my"){
+                self.retrieveCurrentUser(Meteor.client.userId()!, callback: { (success) in
+                    if (success){
                         callback(success: true, reason: nil)
+                    } else {
+                        callback(success: false, reason: "Error retrieveing user")
                     }
-                }
+                })
+                
             } else {
                 let reason = error?.reason;
                 callback(success: false, reason: reason);
@@ -83,12 +91,7 @@ public class ConnectionHandler{
     public func logoff(callback: (success: Bool)-> Void){
         Meteor.logout(){ result, error in
             if (error == nil){
-                Meteor.unsubscribe(withId: self.profileDetailsId!);
-                self.profileDetailsId = nil;
-                Meteor.unsubscribe(withId: self.usersId!){
-                    self.usersId = nil;
-                    callback(success: true);
-                }
+                self.currentUser = nil;
             } else {
                 callback(success: false);
             }
@@ -96,7 +99,7 @@ public class ConnectionHandler{
     }
     
     private func executeHandlers(count: Int){
-        if (count == self.totalSubscriptions && self.handlers.count > 0){
+        if (count == self.totalDependencies && self.handlers.count > 0){
             for eventHandler in self.handlers{
                 eventHandler.handler();
             }

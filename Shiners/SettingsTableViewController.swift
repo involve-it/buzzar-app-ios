@@ -25,8 +25,7 @@ class SettingsTableViewController: UITableViewController{
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated);
-        if (ConnectionHandler.Instance.usersCollection.count() > 0){
-            let currentUser = ConnectionHandler.Instance.usersCollection.itemAtIndex(0)
+        if let currentUser = ConnectionHandler.Instance.currentUser{
             if (currentUser.username != self.userName){
                 self.refreshUser();
             }
@@ -38,11 +37,10 @@ class SettingsTableViewController: UITableViewController{
     }
     
     func refreshUser(){
-        if (ConnectionHandler.Instance.usersCollection.count() > 0){
-            let currentUser = ConnectionHandler.Instance.usersCollection.itemAtIndex(0);
+        if let currentUser = ConnectionHandler.Instance.currentUser{
             self.userName = currentUser.username;
-            if let firstName = ConnectionHandler.Instance.profileDetailsCollection.getProfileDetail(currentUser.id!, key: ProfileDetailsCollection.FIRST_NAME),
-                lastName = ConnectionHandler.Instance.profileDetailsCollection.getProfileDetail(currentUser.id!, key: ProfileDetailsCollection.LAST_NAME) {
+            if let firstName = ConnectionHandler.Instance.currentUser?.getProfileDetail(.FirstName),
+                lastName = ConnectionHandler.Instance.currentUser?.getProfileDetail(.LastName) {
                 lblName.text = "\(firstName) \(lastName)"
             } else {
                 lblName.text = currentUser.username;
