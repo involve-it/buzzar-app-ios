@@ -1,0 +1,3 @@
+platform :ios, '9.0'
+pod "SwiftDDP", "~>0.3.0"
+use_frameworks!

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>CryptoSwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SwiftDDP.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SwiftWebSocket.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>XCGLogger.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>5F00E806FFE5D8ABD8634D455E8558C8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9008EF77713250E448D9A01719C79196</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E53A0EDE10B8ECF7496B295E2673EF86</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F5B785F078B89906B0D88495383E60C1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F67A500E7E60B786DBB41B0433C61A2A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
