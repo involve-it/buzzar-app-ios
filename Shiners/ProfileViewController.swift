@@ -18,6 +18,11 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     
     private let imagePickerController = UIImagePickerController();
     
+    override public func scrollViewDidScroll(scrollView: UIScrollView) {
+        super.scrollViewDidScroll(scrollView)
+        //self.tableView.reloadRowsAtIndexPaths([NSIndex], withRowAnimation: <#T##UITableViewRowAnimation#>)
+    }
+    
     @IBAction func btnChangeImage_Click(sender: AnyObject) {
         var alertViewController = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .ActionSheet)
         var index = 0;

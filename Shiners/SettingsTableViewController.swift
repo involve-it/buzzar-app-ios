@@ -102,7 +102,7 @@ class SettingsTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if (indexPath.section > 1){
+        if (indexPath.section == 1){
             return nil;
         } else {
             return indexPath;
@@ -121,7 +121,7 @@ class SettingsTableViewController: UITableViewController{
                 self.navigationController?.pushViewController(vc, animated: true);
             }
         }
-        else if (indexPath.section == 1){
+        else if (indexPath.section == 2){
             ConnectionHandler.Instance.logoff(){ success in
                 if (success){
                     self.userName = nil;
