@@ -38,10 +38,6 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
     
     private func setLoading(loading: Bool){
         if (loading){
-            //let spinnerContainer = UIView(frame: CGRectMake(0, 0, 60, 85))
-            //let spinner = UIActivityIndicatorView(frame: CGRectMake(20, 0, 20, 20));
-            //spinnerContainer.addSubview(spinner);
-            //spinner.startAnimating();
             let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray);
             activityIndicator.startAnimating();
             activityIndicator.hidden = false;

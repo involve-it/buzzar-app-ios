@@ -10,6 +10,7 @@
 		7B26B08E1CD564E1000495EE /* MyPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B08D1CD564E1000495EE /* MyPostsViewController.swift */; };
 		7B26B0921CD567D9000495EE /* list_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B26B0911CD567D9000495EE /* list_32.png */; };
 		7B26B0951CD568CB000495EE /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B0941CD568CB000495EE /* MessagesViewController.swift */; };
+		7B26B0971CD5BF1C000495EE /* ConstantValuesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B0961CD5BF1C000495EE /* ConstantValuesHandler.swift */; };
 		7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */; };
 		7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DB1CCC19DE00AD636D /* Post.swift */; };
 		7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */; };
@@ -58,6 +59,7 @@
 		7B26B08D1CD564E1000495EE /* MyPostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPostsViewController.swift; sourceTree = "<group>"; };
 		7B26B0911CD567D9000495EE /* list_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_32.png; sourceTree = "<group>"; };
 		7B26B0941CD568CB000495EE /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		7B26B0961CD5BF1C000495EE /* ConstantValuesHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstantValuesHandler.swift; sourceTree = "<group>"; };
 		7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewCell.swift; sourceTree = "<group>"; };
 		7BB2A7DB1CCC19DE00AD636D /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionHandler.swift; sourceTree = "<group>"; };
@@ -175,6 +177,7 @@
 				7BB2A7EB1CCC58D600AD636D /* ImageCachingHandler.swift */,
 				7BB2A7F71CCD8EC500AD636D /* Extensions.swift */,
 				7BB2A8061CCF0EBC00AD636D /* Helper.swift */,
+				7B26B0961CD5BF1C000495EE /* ConstantValuesHandler.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -401,6 +404,7 @@
 				7BC0A21E1CCC15E700DA2824 /* ViewController.swift in Sources */,
 				7BB2A81D1CD53FED00AD636D /* LaunchViewController.swift in Sources */,
 				7BB2A80F1CCF199D00AD636D /* ProfileDetail.swift in Sources */,
+				7B26B0971CD5BF1C000495EE /* ConstantValuesHandler.swift in Sources */,
 				7BC0A21C1CCC15E700DA2824 /* AppDelegate.swift in Sources */,
 				7BB2A8071CCF0EBC00AD636D /* Helper.swift in Sources */,
 				7BC0A2311CCC160C00DA2824 /* SearchViewController.swift in Sources */,
