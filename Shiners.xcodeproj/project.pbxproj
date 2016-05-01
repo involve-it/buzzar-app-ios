@@ -11,6 +11,11 @@
 		7B26B0921CD567D9000495EE /* list_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B26B0911CD567D9000495EE /* list_32.png */; };
 		7B26B0951CD568CB000495EE /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B0941CD568CB000495EE /* MessagesViewController.swift */; };
 		7B26B0971CD5BF1C000495EE /* ConstantValuesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B0961CD5BF1C000495EE /* ConstantValuesHandler.swift */; };
+		7B26B0BB1CD655C2000495EE /* DescriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B0BA1CD655C2000495EE /* DescriptionViewController.swift */; };
+		7B26B0BD1CD65652000495EE /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B0BC1CD65652000495EE /* KeyboardManager.swift */; };
+		7B26B19F1CD688B7000495EE /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B19E1CD688B7000495EE /* LocationHandler.swift */; };
+		7B26B1A11CD693D5000495EE /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B26B1A01CD693D5000495EE /* MapKit.framework */; };
+		7B26B1A31CD694A0000495EE /* StaticLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B1A21CD694A0000495EE /* StaticLocationViewController.swift */; };
 		7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */; };
 		7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DB1CCC19DE00AD636D /* Post.swift */; };
 		7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */; };
@@ -60,6 +65,11 @@
 		7B26B0911CD567D9000495EE /* list_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_32.png; sourceTree = "<group>"; };
 		7B26B0941CD568CB000495EE /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		7B26B0961CD5BF1C000495EE /* ConstantValuesHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstantValuesHandler.swift; sourceTree = "<group>"; };
+		7B26B0BA1CD655C2000495EE /* DescriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionViewController.swift; sourceTree = "<group>"; };
+		7B26B0BC1CD65652000495EE /* KeyboardManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
+		7B26B19E1CD688B7000495EE /* LocationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
+		7B26B1A01CD693D5000495EE /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		7B26B1A21CD694A0000495EE /* StaticLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticLocationViewController.swift; sourceTree = "<group>"; };
 		7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewCell.swift; sourceTree = "<group>"; };
 		7BB2A7DB1CCC19DE00AD636D /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionHandler.swift; sourceTree = "<group>"; };
@@ -111,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B26B1A11CD693D5000495EE /* MapKit.framework in Frameworks */,
 				AA85C936CF87FF6C6E7E8600 /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -145,6 +156,8 @@
 				7BB2A7F31CCD17A000AD636D /* ImagesScrollViewDelegate.swift */,
 				7BB2A8041CCDA58C00AD636D /* NewPostViewController.swift */,
 				7B26B08D1CD564E1000495EE /* MyPostsViewController.swift */,
+				7B26B0BA1CD655C2000495EE /* DescriptionViewController.swift */,
+				7B26B1A21CD694A0000495EE /* StaticLocationViewController.swift */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -178,6 +191,8 @@
 				7BB2A7F71CCD8EC500AD636D /* Extensions.swift */,
 				7BB2A8061CCF0EBC00AD636D /* Helper.swift */,
 				7B26B0961CD5BF1C000495EE /* ConstantValuesHandler.swift */,
+				7B26B0BC1CD65652000495EE /* KeyboardManager.swift */,
+				7B26B19E1CD688B7000495EE /* LocationHandler.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -256,6 +271,7 @@
 		FDC5E51674789C2348BFABE5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7B26B1A01CD693D5000495EE /* MapKit.framework */,
 				FB11C1D7A4B55954320FBCF1 /* Pods.framework */,
 			);
 			name = Frameworks;
@@ -296,6 +312,11 @@
 				TargetAttributes = {
 					7BC0A2171CCC15E700DA2824 = {
 						CreatedOnToolsVersion = 7.3;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -410,20 +431,24 @@
 				7BC0A2311CCC160C00DA2824 /* SearchViewController.swift in Sources */,
 				7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */,
 				7BB2A8151CD5245500AD636D /* Location.swift in Sources */,
+				7B26B0BD1CD65652000495EE /* KeyboardManager.swift in Sources */,
 				7BB2A7EC1CCC58D600AD636D /* ImageCachingHandler.swift in Sources */,
 				7BB2A8011CCD96C000AD636D /* LogInViewController.swift in Sources */,
 				7BC0A2301CCC160C00DA2824 /* SettingsTableViewController.swift in Sources */,
+				7B26B0BB1CD655C2000495EE /* DescriptionViewController.swift in Sources */,
 				7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */,
 				7B26B0951CD568CB000495EE /* MessagesViewController.swift in Sources */,
 				7BB2A8031CCDA15500AD636D /* RegisterViewController.swift in Sources */,
 				7BB2A8131CD30AD700AD636D /* ProfileViewController.swift in Sources */,
 				7BB2A7EE1CCC73B700AD636D /* PostDetailsViewController.swift in Sources */,
 				7BC0A2321CCC160C00DA2824 /* PostsViewController.swift in Sources */,
+				7B26B19F1CD688B7000495EE /* LocationHandler.swift in Sources */,
 				7BB2A7E51CCC431700AD636D /* Image.swift in Sources */,
 				7B26B08E1CD564E1000495EE /* MyPostsViewController.swift in Sources */,
 				7BB2A7F81CCD8EC500AD636D /* Extensions.swift in Sources */,
 				7BB2A8051CCDA58C00AD636D /* NewPostViewController.swift in Sources */,
 				7BB2A80B1CCF15D000AD636D /* User.swift in Sources */,
+				7B26B1A31CD694A0000495EE /* StaticLocationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -536,6 +561,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.buzzar.app.Shiners;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -549,6 +575,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.buzzar.app.Shiners;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

@@ -1,3 +1,4 @@
 platform :ios, '9.0'
 pod "SwiftDDP", "~>0.3.1"
+pod "RichEditorView"
 use_frameworks!

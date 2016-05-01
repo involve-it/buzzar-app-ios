@@ -1,5 +1,6 @@
 PODS:
   - CryptoSwift (0.4)
+  - RichEditorView (3.2.0)
   - SwiftDDP (0.3.1):
     - CryptoSwift (~> 0.3)
     - SwiftWebSocket (~> 2.6.0)
@@ -8,10 +9,12 @@ PODS:
   - XCGLogger (3.3)
 
 DEPENDENCIES:
+  - RichEditorView
   - SwiftDDP (~> 0.3.1)
 
 SPEC CHECKSUMS:
   CryptoSwift: 584eac7d00b2f497fe7b20de271b8c0c52fff844
+  RichEditorView: b4ee60a4f5301cbe8f3fcb1f065cdd7de74ddd10
   SwiftDDP: d99fb617559e19ebb3651fa2b95ee7e35d8451f1
   SwiftWebSocket: c24c0dde0b33852f478ffb54226408bfe703b26b
   XCGLogger: d6e196e78940ff6daab17d6917107876f973fa31

@@ -21,7 +21,7 @@ public class ImageCachingHandler{
     }
     
     private static var instance: ImageCachingHandler = ImageCachingHandler();
-    public static var Instance: ImageCachingHandler {
+    public class var Instance: ImageCachingHandler {
         return instance;
     }
     

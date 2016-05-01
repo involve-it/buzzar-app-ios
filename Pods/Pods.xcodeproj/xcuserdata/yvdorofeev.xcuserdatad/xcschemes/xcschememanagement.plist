@@ -14,6 +14,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>RichEditorView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SwiftDDP.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -32,27 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>1796B91325D07AF5AF4875648B345D8C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2157C51CD986A4F25F57748D854C4BE8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>34C073D448A23CA3A97EA55CC489BD6F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5F00E806FFE5D8ABD8634D455E8558C8</key>
+		<key>3DF6987BA5ED069BB9F7D36046407A76</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9008EF77713250E448D9A01719C79196</key>
+		<key>4C9D5EAD0856AEA57466CCA11AEC3823</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F5B785F078B89906B0D88495383E60C1</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F67A500E7E60B786DBB41B0433C61A2A</key>
+		<key>A78DDBB1F612ACAA330CA2302D0BF963</key>
 		<dict>
 			<key>primary</key>
 			<true/>
