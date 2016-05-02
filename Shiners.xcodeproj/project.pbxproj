@@ -16,6 +16,9 @@
 		7B26B19F1CD688B7000495EE /* LocationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B19E1CD688B7000495EE /* LocationHandler.swift */; };
 		7B26B1A11CD693D5000495EE /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B26B1A01CD693D5000495EE /* MapKit.framework */; };
 		7B26B1A31CD694A0000495EE /* StaticLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B1A21CD694A0000495EE /* StaticLocationViewController.swift */; };
+		7B26B1A71CD6D72E000495EE /* ImagePickerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B1A61CD6D72E000495EE /* ImagePickerHandler.swift */; };
+		7B26B1A91CD6DDA8000495EE /* SmallImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B1A81CD6DDA8000495EE /* SmallImageView.swift */; };
+		7B26B1AB1CD6DE52000495EE /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B26B1AA1CD6DE52000495EE /* cancel.png */; };
 		7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */; };
 		7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DB1CCC19DE00AD636D /* Post.swift */; };
 		7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */; };
@@ -70,6 +73,9 @@
 		7B26B19E1CD688B7000495EE /* LocationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationHandler.swift; sourceTree = "<group>"; };
 		7B26B1A01CD693D5000495EE /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		7B26B1A21CD694A0000495EE /* StaticLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticLocationViewController.swift; sourceTree = "<group>"; };
+		7B26B1A61CD6D72E000495EE /* ImagePickerHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerHandler.swift; sourceTree = "<group>"; };
+		7B26B1A81CD6DDA8000495EE /* SmallImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmallImageView.swift; sourceTree = "<group>"; };
+		7B26B1AA1CD6DE52000495EE /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel.png; sourceTree = "<group>"; };
 		7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewCell.swift; sourceTree = "<group>"; };
 		7BB2A7DB1CCC19DE00AD636D /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionHandler.swift; sourceTree = "<group>"; };
@@ -158,6 +164,7 @@
 				7B26B08D1CD564E1000495EE /* MyPostsViewController.swift */,
 				7B26B0BA1CD655C2000495EE /* DescriptionViewController.swift */,
 				7B26B1A21CD694A0000495EE /* StaticLocationViewController.swift */,
+				7B26B1A81CD6DDA8000495EE /* SmallImageView.swift */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -193,6 +200,7 @@
 				7B26B0961CD5BF1C000495EE /* ConstantValuesHandler.swift */,
 				7B26B0BC1CD65652000495EE /* KeyboardManager.swift */,
 				7B26B19E1CD688B7000495EE /* LocationHandler.swift */,
+				7B26B1A61CD6D72E000495EE /* ImagePickerHandler.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -249,6 +257,7 @@
 		7BC0A2351CCC163600DA2824 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7B26B1AA1CD6DE52000495EE /* cancel.png */,
 				7B26B0911CD567D9000495EE /* list_32.png */,
 				7BB2A81A1CD53BF500AD636D /* vk.png */,
 				7BB2A8181CD53BC200AD636D /* twitter.png */,
@@ -350,6 +359,7 @@
 				7BC0A23D1CCC164100DA2824 /* lock_open.png in Resources */,
 				7BC0A23E1CCC164100DA2824 /* lock_closed.png in Resources */,
 				7BC0A2341CCC161A00DA2824 /* Main.storyboard in Resources */,
+				7B26B1AB1CD6DE52000495EE /* cancel.png in Resources */,
 				7BC0A2431CCC164100DA2824 /* id-card.png in Resources */,
 				7BC0A2401CCC164100DA2824 /* 4e8d07ec-1f6d-a5d6-31d0-cc32f7305464.png in Resources */,
 				7BB2A8171CD53B9600AD636D /* facebook.png in Resources */,
@@ -425,6 +435,8 @@
 				7BC0A21E1CCC15E700DA2824 /* ViewController.swift in Sources */,
 				7BB2A81D1CD53FED00AD636D /* LaunchViewController.swift in Sources */,
 				7BB2A80F1CCF199D00AD636D /* ProfileDetail.swift in Sources */,
+				7B26B1A91CD6DDA8000495EE /* SmallImageView.swift in Sources */,
+				7B26B1A71CD6D72E000495EE /* ImagePickerHandler.swift in Sources */,
 				7B26B0971CD5BF1C000495EE /* ConstantValuesHandler.swift in Sources */,
 				7BC0A21C1CCC15E700DA2824 /* AppDelegate.swift in Sources */,
 				7BB2A8071CCF0EBC00AD636D /* Helper.swift in Sources */,

@@ -9,9 +9,12 @@
 import UIKit
 import CoreLocation
 
-class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, DescriptionViewControllerDelegate, LocationHandlerDelegate, StaticLocationViewControllerDelegate{
+class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, DescriptionViewControllerDelegate, LocationHandlerDelegate, StaticLocationViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SmallImageViewDelegate{
     var descriptionHtml: String = ""
     
+    @IBOutlet weak var svImages: UIScrollView!
+    @IBOutlet weak var lblNoImages: UILabel!
+    @IBOutlet weak var cellImages: UITableViewCell!
     @IBOutlet weak var txtTitle: UITextField!
     @IBOutlet weak var txtAdType: UITextField!
     
@@ -29,6 +32,8 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     var locationHandler = LocationHandler()
     
     private var currentStaticLocation: CLLocationCoordinate2D?
+    private var imagePickerHandler: ImagePickerHandler?
+    private var images = [UIImage]()
     
     @IBOutlet weak var lblWhen: UILabel!
     @IBOutlet weak var lblAdType: UILabel!
@@ -48,6 +53,11 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         self.locationHandler.delegate = self;
         
         self.txtTitle.becomeFirstResponder()
+        
+        self.svImages.hidden = true;
+        self.lblNoImages.hidden = false;
+        
+        self.imagePickerHandler = ImagePickerHandler(viewController: self, delegate: self)
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -89,6 +99,8 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        //prevents crash on unwind from staticLocationSegue
+        self.view.endEditing(true)
         if segue.identifier == "descriptionSegue"{
             let vc = segue.destinationViewController as! DescriptionViewController;
             vc.delegate = self;
@@ -119,7 +131,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     }
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if (indexPath.section == 1 || indexPath.section == 3 || indexPath.section == 4){
+        if (indexPath.section == 1 || indexPath.section == 3 || indexPath.section == 4 || (indexPath.section == 2)){
             return indexPath
         }
         
@@ -158,6 +170,9 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
                     cell?.detailTextLabel?.text = "Moving with your ad"
                 }
             }
+        } else if indexPath.section == 2 && indexPath.row == 1 {
+            //images
+            self.imagePickerHandler?.displayImagePicker()
         }
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
@@ -195,5 +210,56 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
             cell?.detailTextLabel?.text = "Pinned to static location"
         }
         self.currentStaticLocation = location
+    }
+    
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        self.images.append(image)
+        self.addImageToScrollView(image, index: self.images.count - 1)
+        
+        picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func addImageToScrollView(image: UIImage, index: Int){
+        if (self.svImages.hidden){
+            self.svImages.hidden = false
+            self.lblNoImages.hidden = true
+        }
+        
+        var x = self.calculateImagesWidth(index)
+        let view = SmallImageView(x: x, y: 8, id: index, delegate: self, image: image)
+        
+        self.svImages.addSubview(view)
+        
+        x = self.calculateImagesWidth(index + 1)
+        
+        self.svImages.contentSize = CGSizeMake(CGFloat(x), self.svImages.frame.size.height);
+        self.svImages.layoutSubviews()
+    
+    }
+    
+    func redrawImagesScrollView(){
+        self.svImages.subviews.forEach({ (view) in
+            view.removeFromSuperview()
+        })
+        
+        var index = 0
+        self.images.forEach { (image) in
+            self.addImageToScrollView(image, index: index)
+            index += 1
+        }
+    }
+    
+    func calculateImagesWidth(count: Int) -> Float {
+        return (8 + Float(count) * Float(SmallImageView.width + 8))
+        //return Float(self.svImages.frame.width) * Float(self.images.count)
+    }
+    
+    func deleteClicked(view: SmallImageView) {
+        self.images.removeAtIndex(view.id!)
+        self.redrawImagesScrollView()
+        if self.images.count == 0{
+            self.svImages.hidden = true
+            self.lblNoImages.hidden = false
+        }
     }
 }

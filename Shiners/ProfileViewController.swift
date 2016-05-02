@@ -16,44 +16,28 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     @IBOutlet weak var txtSkype: UITextField!
     @IBOutlet weak var imgPhoto: UIImageView!
     
-    private let imagePickerController = UIImagePickerController();
+    private var imagePickerHandler: ImagePickerHandler?
     
-    override public func scrollViewDidScroll(scrollView: UIScrollView) {
-        super.scrollViewDidScroll(scrollView)
-        //self.tableView.reloadRowsAtIndexPaths([NSIndex], withRowAnimation: <#T##UITableViewRowAnimation#>)
+    //refreshing profile image
+    @objc public override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        NSLog("scrolled1")
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+    }
+    
+    @objc public override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        NSLog("scrolled2")
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
     }
     
     @IBAction func btnChangeImage_Click(sender: AnyObject) {
-        var alertViewController = UIAlertController(title: "Choose Image", message: nil, preferredStyle: .ActionSheet)
-        var index = 0;
-        if UIImagePickerController.isSourceTypeAvailable(.Camera){
-            alertViewController.addAction(UIAlertAction(title: "Camera", style: .Default, handler: { (_) in
-                self.imagePickerController.sourceType = .Camera
-                self.presentViewController(self.imagePickerController, animated: true, completion: nil);
-            }));
-            index += 1;
-        }
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary){
-            alertViewController.addAction(UIAlertAction(title: "Photo Library", style: .Default, handler: { (_) in
-                self.imagePickerController.sourceType = .PhotoLibrary
-                self.presentViewController(self.imagePickerController, animated: true, completion: nil);
-            }));
-            index += 1;
-        }
-        alertViewController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil));
-        if (index == 0){
-            alertViewController = UIAlertController(title: "Permissions", message: "Please allow access to Camera or Photo Library in Privacy Settings", preferredStyle: .Alert);
-            alertViewController.addAction(UIAlertAction(title: "Ok", style: .Default, handler: nil));
-            
-        }
-        self.presentViewController(alertViewController, animated: true, completion: nil)
+        self.imagePickerHandler?.displayImagePicker()
     }
     @IBAction func btnSave_Click(sender: AnyObject) {
-        
+        //todo: save
     }
     var currentUser: User?;
     override public func viewDidLoad() {
-        self.imagePickerController.delegate = self;
+        self.imagePickerHandler = ImagePickerHandler(viewController: self, delegate: self)
         self.txtFirstName.delegate = self;
         self.txtLastName.delegate = self;
         self.txtLocation.delegate = self;
