@@ -160,6 +160,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
                 self.txtWhen.becomeFirstResponder()
             }
         } else if indexPath.section == 3 {
+            self.view.endEditing(true)
             if indexPath.row == 0 {
                 let cell = self.tableView.cellForRowAtIndexPath(indexPath)
                 if cell?.accessoryType == UITableViewCellAccessoryType.None {
@@ -172,6 +173,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
             }
         } else if indexPath.section == 2 && indexPath.row == 1 {
             //images
+            self.view.endEditing(true)
             self.imagePickerHandler?.displayImagePicker()
         }
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
