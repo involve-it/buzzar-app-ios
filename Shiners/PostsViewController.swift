@@ -8,10 +8,15 @@
 
 import UIKit
 
-class PostsViewController: UITableViewController{
+class PostsViewController: UITableViewController, SearchViewControllerDelegate{
     //private var posts:[Post] = [];
     //private var imageCache: Dictionary<String, UIImage> = [:]
     
+    @IBOutlet weak var lcTxtSearchBoxLeft: NSLayoutConstraint!
+    @IBOutlet var segmFilter: UISegmentedControl!
+    @IBOutlet weak var txtSearchBox: UITextField!
+    @IBOutlet var searchView: UIView!
+    var searchViewController: NewSearchViewController?
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
             let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
@@ -19,11 +24,17 @@ class PostsViewController: UITableViewController{
             let post = ConnectionHandler.Instance.postsCollection.itemAtIndex(index);
             vc.post = post;
             vc.navigationItem.title = "Post Details";
+        } else if (segue.identifier == "searchSegue"){
+            self.searchViewController = segue.destinationViewController as? NewSearchViewController
+            self.searchViewController?.delegate = self
         }
     }
     
     override func viewDidLoad() {
-        ConnectionHandler.Instance.onConnected { 
+        self.searchView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
+//        self.txtSearchBox.bounds = CGRectMake(0, 0, 1, self.txtSearchBox.bounds.height)
+//        self.lcTxtSearchBoxLeft.constant = self.view.frame.width;
+        ConnectionHandler.Instance.onConnected {
             self.tableView.reloadData();
         }
     }
@@ -56,5 +67,48 @@ class PostsViewController: UITableViewController{
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return ConnectionHandler.Instance.postsCollection.count();
+    }
+    
+    func didApplyFilter() {
+        self.closeSearchView()
+    }
+    
+    func closeSearchView(){
+        self.txtSearchBox.resignFirstResponder()
+        UIView.animateWithDuration(0.4, animations: {
+            self.segmFilter.alpha = 1
+            self.txtSearchBox.alpha = 0
+            self.searchView.alpha = 0
+        }) { (_) in
+            self.searchView.removeFromSuperview()
+            self.tableView.scrollEnabled = true
+        }
+    }
+    
+    func openSearchView(){
+        self.searchView.frame = self.view.bounds;
+        self.tableView.scrollEnabled = false
+        
+        self.searchViewController?.setContentInset(self.navigationController!, tabBarController: self.tabBarController!)
+        self.searchView.alpha = 0
+        self.view.addSubview(self.searchView)
+        
+        self.txtSearchBox.becomeFirstResponder()
+        UIView.animateWithDuration(0.4, animations: {
+            self.segmFilter.alpha = 0
+            self.txtSearchBox.alpha = 1
+            self.searchView.alpha = 1
+            
+        }) { (_) in
+            
+        }
+    }
+    
+    @IBAction func btnSearchClick(sender: AnyObject) {
+        if (self.segmFilter.alpha == 0){
+            self.closeSearchView()
+        } else {
+            self.openSearchView()
+        }
     }
 }

@@ -60,6 +60,7 @@ public class ConnectionHandler{
     
     public func disconnect(){
         //todo: disconnect
+        Meteor.connect("")
     }
     
     private func retrieveCurrentUser(userId: String, callback: (success: Bool) -> Void){
