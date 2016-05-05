@@ -19,7 +19,8 @@ public class ConnectionHandler{
     
     public var postsCollection = PostsCollection();
     public var imagesCollection = MeteorCollection<Image>(name: "images");
-    public var currentUser: User?;
+    
+    public var users = UsersProxy.Instance
     
     private var totalDependencies = 2;
     
@@ -31,10 +32,10 @@ public class ConnectionHandler{
                 var dependenciesResolved = 0;
                 NSLog("Meteor connected");
                 
-                if let userId = Meteor.client.userId(){
+                if self.users.isLoggedIn(){
                     self.totalDependencies += 1;
                     
-                    self.retrieveCurrentUser(userId) { success in
+                    self.users.getCurrentUser() { success in
                         dependenciesResolved += 1;
                         self.executeHandlers(dependenciesResolved);
                         if !success {
@@ -63,49 +64,6 @@ public class ConnectionHandler{
         Meteor.connect("")
     }
     
-    private func retrieveCurrentUser(userId: String, callback: (success: Bool) -> Void){
-        Meteor.call("getUser", params: [Meteor.client.userId()!]){ result, error in
-            if (error == nil){
-                if let user = result as? NSDictionary {
-                    self.currentUser = User(fields: user)
-                    
-                    callback(success: true)
-                    return
-                }
-            }
-            callback(success: false)
-        };
-    }
-    
-    public func login(userName: String, password: String, callback: (success: Bool, reason: String?) -> Void){
-        Meteor.loginWithUsername(userName, password: password){ result, error in
-            if (error == nil){
-                self.retrieveCurrentUser(Meteor.client.userId()!, callback: { (success) in
-                    if (success){
-                        callback(success: true, reason: nil)
-                    } else {
-                        callback(success: false, reason: "Error retrieveing user")
-                    }
-                })
-                
-            } else {
-                let reason = error?.reason;
-                callback(success: false, reason: reason);
-            }
-        }
-    }
-    
-    public func logoff(callback: (success: Bool)-> Void){
-        Meteor.logout(){ result, error in
-            if (error == nil){
-                self.currentUser = nil;
-                callback(success: true)
-            } else {
-                callback(success: false)
-            }
-        }
-    }
-    
     private func executeHandlers(count: Int){
         if (count == self.totalDependencies && self.handlers.count > 0){
             for eventHandler in self.handlers{
@@ -119,11 +77,6 @@ public class ConnectionHandler{
     
     private init(){
         //singleton
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didLogin), name: DDP_USER_DID_LOGIN, object: nil);
-    }
-    
-    @objc private func didLogin(){
-        NSLog("LOGGED IN");
     }
     
     private static let instance: ConnectionHandler = ConnectionHandler();
@@ -151,12 +104,5 @@ public class ConnectionHandler{
             self.handler = target;
         }
     }
-    
-    /*public class func downloadUrl(urlString: String, done: (data: NSData?, response: NSURLResponse?, error: NSError?)){
-        let url:NSURL = NSURL(string: urlString)!;
-        NSURLSession.sharedSession().dataTaskWithURL(url){data,response,error in
-            
-        }
-    }*/
 }
 

@@ -43,8 +43,8 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
         self.txtLocation.delegate = self;
         self.txtPhoneNumber.delegate = self;
         self.txtSkype.delegate = self;
-        if self.currentUser == nil || self.currentUser! !== ConnectionHandler.Instance.currentUser{
-            self.currentUser = ConnectionHandler.Instance.currentUser
+        if self.currentUser == nil || self.currentUser! !== ConnectionHandler.Instance.users.currentUser{
+            self.currentUser = ConnectionHandler.Instance.users.currentUser
             self.refreshUserData()
         }
     }

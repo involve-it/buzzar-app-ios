@@ -68,7 +68,7 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
         if let userName = txtUsername.text where userName != "", let password = txtPassword.text where password != "" {
             setLoading(true)
             
-            ConnectionHandler.Instance.login(userName, password: password, callback: { (success, reason) in
+            ConnectionHandler.Instance.users.login(userName, password: password, callback: { (success, reason) in
                 dispatch_async(dispatch_get_main_queue(), {
                     self.setLoading(false)
                     if success {

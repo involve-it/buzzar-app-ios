@@ -25,7 +25,7 @@ class SettingsTableViewController: UITableViewController{
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated);
-        if let currentUser = ConnectionHandler.Instance.currentUser{
+        if let currentUser = ConnectionHandler.Instance.users.currentUser{
             if (currentUser.username != self.userName){
                 self.refreshUser();
             }
@@ -37,10 +37,10 @@ class SettingsTableViewController: UITableViewController{
     }
     
     func refreshUser(){
-        if let currentUser = ConnectionHandler.Instance.currentUser{
+        if let currentUser = ConnectionHandler.Instance.users.currentUser{
             self.userName = currentUser.username;
-            if let firstName = ConnectionHandler.Instance.currentUser?.getProfileDetail(.FirstName),
-                lastName = ConnectionHandler.Instance.currentUser?.getProfileDetail(.LastName) {
+            if let firstName = ConnectionHandler.Instance.users.currentUser?.getProfileDetail(.FirstName),
+                lastName = ConnectionHandler.Instance.users.currentUser?.getProfileDetail(.LastName) {
                 lblName.text = "\(firstName) \(lastName)"
             } else {
                 lblName.text = currentUser.username;
@@ -122,7 +122,7 @@ class SettingsTableViewController: UITableViewController{
             }
         }
         else if (indexPath.section == 2){
-            ConnectionHandler.Instance.logoff(){ success in
+            ConnectionHandler.Instance.users.logoff(){ success in
                 if (success){
                     self.userName = nil;
                     self.refreshUser();
