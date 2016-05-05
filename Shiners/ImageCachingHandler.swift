@@ -11,6 +11,7 @@ import UIKit
 
 public class ImageCachingHandler{
     private var images: Dictionary<String, ImageEntity> = [:]
+    private var failedUrls: [String] = []
     private let lockQueue = dispatch_queue_create("org.buzzar.app.Shiners.imageCachingHandler", nil);
     private static let MAX_COUNT = 30;
     public static let defaultImage = UIImage(named: "clipping_picture.png");
@@ -25,20 +26,18 @@ public class ImageCachingHandler{
         return instance;
     }
     
-    public func add(id: String, image: UIImage?){
-        if (image != nil){
-            dispatch_sync(lockQueue){
-                if (self.images.count == ImageCachingHandler.MAX_COUNT){
-                    if let id = self.findOldestId() {
-                        self.images.removeValueForKey(id);
-                    }
+    internal func add(id: String, image: UIImage){
+        dispatch_sync(lockQueue){
+            if (self.images.count == ImageCachingHandler.MAX_COUNT){
+                if let id = self.findOldestId() {
+                    self.images.removeValueForKey(id);
                 }
-                self.images[id] = ImageEntity(id: id, image: image!);
             }
+            self.images[id] = ImageEntity(id: id, image: image);
         }
     }
     
-    public func get(id: String) -> UIImage?{
+    private func get(id: String) -> UIImage?{
         var image: UIImage?;
         dispatch_sync(lockQueue){
             image = self.images[id]?.image;
@@ -46,6 +45,7 @@ public class ImageCachingHandler{
         return image;
     }
     
+    //will be deprecated after server refactoring
     public func getImage(imageId: String?, callback: (image: UIImage?) -> Void) -> Bool{
         var res = false;
         if let id = imageId {
@@ -58,9 +58,12 @@ public class ImageCachingHandler{
                 NSLog("Downloading by id: \(id)")
                 NSURLSession.sharedSession().dataTaskWithURL(nsUrl){data, response, error in
                     if (error == nil && data != nil){
-                        let image = UIImage(data: data!);
-                        self.add(id, image: image);
-                        callback(image: image);
+                        if let image = UIImage(data: data!){
+                            self.add(id, image: image);
+                            callback(image: image);
+                        } else {
+                            callback(image: ImageCachingHandler.defaultImage);
+                        }
                     } else {
                         NSLog("Error: \(error)");
                         callback(image: ImageCachingHandler.defaultImage);
@@ -80,17 +83,25 @@ public class ImageCachingHandler{
         if let image = self.get(url){
             NSLog("From cache: \(url)")
             callback(image: image);
+        } else if self.failedUrls.contains(url) {
+            NSLog("Failed URL: \(url)")
+            callback(image: ImageCachingHandler.defaultImage)
         } else {
             let nsUrl = NSURL(string: url);
             res = true;
             NSLog("Downloading from url: \(url)")
             NSURLSession.sharedSession().dataTaskWithURL(nsUrl!){data, response, error in
                 if (error == nil && data != nil){
-                    let image = UIImage(data: data!);
-                    self.add(url, image: image);
-                    callback(image: image);
+                    if let image = UIImage(data: data!){
+                        self.add(url, image: image);
+                        callback(image: image);
+                    } else {
+                        self.failedUrls.append(url)
+                        callback(image: ImageCachingHandler.defaultImage);
+                    }
                 } else {
                     NSLog("Error: \(error)");
+                    self.failedUrls.append(url)
                     callback(image: ImageCachingHandler.defaultImage);
                 }
             }.resume()
