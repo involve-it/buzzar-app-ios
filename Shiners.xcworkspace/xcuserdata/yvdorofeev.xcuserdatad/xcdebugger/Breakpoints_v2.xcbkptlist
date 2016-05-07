@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shiners/ImagesScrollViewDelegate.swift"
-            timestampString = "483243709.811736"
+            timestampString = "484287301.774745"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
             landmarkName = "setupScrollView(_:)"
             landmarkType = "5">
          </BreakpointContent>

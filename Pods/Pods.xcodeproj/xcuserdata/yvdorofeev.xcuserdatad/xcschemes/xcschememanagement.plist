@@ -9,6 +9,21 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>FLAnimatedImage.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>NYTPhotoViewer-NYTPhotoViewer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>NYTPhotoViewer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -37,12 +52,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1796B91325D07AF5AF4875648B345D8C</key>
+		<key>0154006F3D3759CFD7B743FEE7103751</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2157C51CD986A4F25F57748D854C4BE8</key>
+		<key>0481F19E1296373CB3E8D78FD008253B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1966D1D93475A8B1DDD5A3B153568842</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -52,17 +72,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3DF6987BA5ED069BB9F7D36046407A76</key>
+		<key>885B5472D8DF7F560A7AFF236E74F1DF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4C9D5EAD0856AEA57466CCA11AEC3823</key>
+		<key>937F72E95EB5556623A42D9BD839687D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A78DDBB1F612ACAA330CA2302D0BF963</key>
+		<key>CC3DD07C2266F4573CD563452FF90BF6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>D9D03260519BF8E798A3F5D444481A1F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FE113CEF81C16AA59EC049ACE130BCB2</key>
 		<dict>
 			<key>primary</key>
 			<true/>

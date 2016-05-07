@@ -7,14 +7,21 @@
 //
 
 import UIKit
+import NYTPhotoViewer
 
-public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate{
-    private let mainView: UIView;
-    private let scrollView: UIScrollView;
+public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotosViewControllerDelegate{
+    private let mainView: UIView
+    private let scrollView: UIScrollView
+    private let viewController: UIViewController
     
-    public init(mainView: UIView, scrollView: UIScrollView){
+    private var photosViewController: NYTPhotosViewController?
+    
+    private var photos: [CustomPhoto] = []
+    
+    public init(mainView: UIView, scrollView: UIScrollView, viewController: UIViewController){
         self.mainView = mainView;
         self.scrollView = scrollView;
+        self.viewController = viewController
         super.init();
         self.scrollView.delegate = self;
         self.scrollView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -40,9 +47,15 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate{
         }
         
         scrollView.contentSize = CGSizeMake(mainView.frame.size.width * CGFloat(index), scrollView.frame.size.height);
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(scrollViewTapped))
+        self.scrollView.addGestureRecognizer(gestureRecognizer)
     }
     
     private func addImageToScrollView(id: String?, index: Int){
+        //add default - it will be updated later
+        self.addPhoto(ImageCachingHandler.defaultImage!, index: index)
+        
         let imageView = UIImageView(frame: CGRectMake( CGFloat(index) * mainView.frame.size.width, 0, mainView.frame.size.width, scrollView.frame.size.height));
         imageView.contentMode = .ScaleAspectFit;
         imageView.clipsToBounds = true;
@@ -50,18 +63,29 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate{
             let loading = ImageCachingHandler.Instance.getImage(imageId, callback: { (image) in
                 dispatch_async(dispatch_get_main_queue(), {
                     imageView.image = image;
+                    self.updatePhoto(image!, index: index)
                 })
             })
-            if loading{
+            if loading {
                 imageView.image = ImageCachingHandler.defaultImage;
             }
-            
         } else {
             imageView.image = ImageCachingHandler.defaultImage;
         }
         scrollView.addSubview(imageView);
     }
-
+    
+    private func addPhoto(image: UIImage, index: Int){
+        let title = NSAttributedString(string: "Photo \(index + 1)", attributes: [NSForegroundColorAttributeName: UIColor.whiteColor()])
+        self.photos.append(CustomPhoto(image: image, attributedCaptionTitle: title))
+    }
+    
+    private func updatePhoto(image: UIImage, index: Int){
+        let photo = self.photos[index]
+        photo.image = image
+        
+        self.photosViewController?.updateImageForPhoto(photo)
+    }
     
     public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let x = scrollView.contentOffset.x;
@@ -84,5 +108,26 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate{
         }
         
         targetContentOffset.memory = CGPointMake(CGFloat(position) * mainView.frame.size.width, 0);
+    }
+    
+    public func photosViewController(photosViewController: NYTPhotosViewController, loadingViewForPhoto photo: NYTPhoto) -> UIView? {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+        activityIndicator.startAnimating()
+        return activityIndicator
+    }
+    
+    func scrollViewTapped(gestureRecognizer: UIGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Recognized {
+            let point = gestureRecognizer.locationInView(self.scrollView)
+            let imageIndex = Int(floor(point.x / self.mainView.frame.width))
+            
+            self.showPhotoViewer(imageIndex)
+        }
+    }
+    
+    func showPhotoViewer(currentIndex: Int){
+        self.photosViewController = NYTPhotosViewController(photos: self.photos, initialPhoto: self.photos[currentIndex], delegate: self)
+        self.photosViewController?.rightBarButtonItem = nil
+        self.viewController.presentViewController(self.photosViewController!, animated: true, completion: nil)
     }
 }

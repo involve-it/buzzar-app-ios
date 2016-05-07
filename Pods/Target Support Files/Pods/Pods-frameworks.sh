@@ -85,6 +85,8 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods/CryptoSwift.framework"
+  install_framework "Pods/FLAnimatedImage.framework"
+  install_framework "Pods/NYTPhotoViewer.framework"
   install_framework "Pods/RichEditorView.framework"
   install_framework "Pods/SwiftDDP.framework"
   install_framework "Pods/SwiftWebSocket.framework"
@@ -92,6 +94,8 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods/CryptoSwift.framework"
+  install_framework "Pods/FLAnimatedImage.framework"
+  install_framework "Pods/NYTPhotoViewer.framework"
   install_framework "Pods/RichEditorView.framework"
   install_framework "Pods/SwiftDDP.framework"
   install_framework "Pods/SwiftWebSocket.framework"

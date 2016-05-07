@@ -37,7 +37,7 @@ public class PostDetailsViewController: UITableViewController{
         self.txtViews.text = views;
         
         if (self.imagesScrollViewDelegate == nil){
-            self.imagesScrollViewDelegate = ImagesScrollViewDelegate(mainView: self.view, scrollView: self.svImages);
+            self.imagesScrollViewDelegate = ImagesScrollViewDelegate(mainView: self.view, scrollView: self.svImages, viewController: self);
         }
         self.imagesScrollViewDelegate.setupScrollView(post?.imageIds);
     }
