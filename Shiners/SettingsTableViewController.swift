@@ -122,15 +122,22 @@ class SettingsTableViewController: UITableViewController{
             }
         }
         else if (indexPath.section == 2){
-            ConnectionHandler.Instance.users.logoff(){ success in
-                if (success){
-                    self.userName = nil;
-                    self.refreshUser();
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.tableView.reloadData();
-                    })
-                }
-            };
+            let alertViewController = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: .ActionSheet)
+            alertViewController.addAction(UIAlertAction(title: "Log out", style: .Destructive, handler: { (_) in
+                ConnectionHandler.Instance.users.logoff(){ success in
+                    if (success){
+                        self.userName = nil;
+                        self.refreshUser();
+                        dispatch_async(dispatch_get_main_queue(), {
+                            self.tableView.reloadData();
+                        })
+                    }
+                };
+            }))
+            
+            alertViewController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            
+            self.presentViewController(alertViewController, animated: true, completion: nil)
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }

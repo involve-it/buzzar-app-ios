@@ -19,7 +19,7 @@ class CustomPhoto: NSObject, NYTPhoto{
     let attributedCaptionCredit: NSAttributedString? = nil
         //NSAttributedString(string: "credit", attributes: [NSForegroundColorAttributeName: UIColor.darkGrayColor()])
     
-    init(image: UIImage? = nil, imageData: NSData? = nil, attributedCaptionTitle: NSAttributedString) {
+    init(image: UIImage? = nil, imageData: NSData? = nil, attributedCaptionTitle: NSAttributedString? = nil) {
         self.image = image
         self.imageData = imageData
         self.attributedCaptionTitle = attributedCaptionTitle
