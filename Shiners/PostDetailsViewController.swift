@@ -39,6 +39,12 @@ public class PostDetailsViewController: UITableViewController{
         if (self.imagesScrollViewDelegate == nil){
             self.imagesScrollViewDelegate = ImagesScrollViewDelegate(mainView: self.view, scrollView: self.svImages, viewController: self);
         }
+        self.updateScrollView()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateScrollView), name: UIDeviceOrientationDidChangeNotification, object: nil)
+    }
+    
+    func updateScrollView(){
         self.imagesScrollViewDelegate.setupScrollView(post?.imageIds);
     }
     

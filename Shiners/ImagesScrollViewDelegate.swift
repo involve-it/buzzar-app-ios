@@ -29,6 +29,9 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     
     
     public func setupScrollView(ids: [String]?) {
+        self.scrollView.subviews.forEach { (view) in
+            view.removeFromSuperview()
+        }
         //svImages.frame = CGRectMake(0, 0, self.view.frame.size.width, 260)
         var index = 0;
         if let imageIds = ids{
