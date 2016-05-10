@@ -31,6 +31,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     
     
     public func setupScrollView(ids: [String]?) {
+        self.photos = []
         self.scrollView.subviews.forEach { (view) in
             view.removeFromSuperview()
         }

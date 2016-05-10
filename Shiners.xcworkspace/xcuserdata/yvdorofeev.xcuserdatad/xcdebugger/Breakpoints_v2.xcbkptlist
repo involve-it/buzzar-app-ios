@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shiners/ImagesScrollViewDelegate.swift"
-            timestampString = "484547575.792377"
+            timestampString = "484548759.926813"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
+            startingLineNumber = "35"
+            endingLineNumber = "35"
             landmarkName = "setupScrollView(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1224,11 +1224,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shiners/ImagesScrollViewDelegate.swift"
-            timestampString = "484547575.792377"
+            timestampString = "484548759.926813"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
             landmarkName = "setupScrollView(_:)"
             landmarkType = "5">
          </BreakpointContent>
