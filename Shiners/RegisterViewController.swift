@@ -57,7 +57,39 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
     }
     
     private func register(){
-        self.setLoading(true)
+        if self.txtPassword.text == self.txtConfirmPassword.text {
+            let user = RegisterUser(username: self.txtUsername.text, email: self.txtEmail.text, password: self.txtPassword.text);
+            if (user.isValid()){
+                self.setLoading(true)
+                
+                ConnectionHandler.Instance.users.register(user, callback: { (success, errorId) in
+                    if (success){
+                        ConnectionHandler.Instance.users.login(user.username!, password: user.password!, callback: { (success, reason) in
+                            if (success){
+                                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                            } else {
+                                //todo: add error message
+                                self.showErrorMessage()
+                            }
+                        })
+                    } else {
+                        //todo: add error message
+                        self.showErrorMessage()
+                    }
+                })
+                
+                return
+            }
+        }
+        
+        //todo: add validation messages
+        self.showErrorMessage("Validation failed")
+    }
+    
+    func showErrorMessage(message: String? = "Internal error occurred"){
+        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {

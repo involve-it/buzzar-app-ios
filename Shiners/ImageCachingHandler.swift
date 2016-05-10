@@ -78,14 +78,14 @@ public class ImageCachingHandler{
         return res;
     }
     
-    public func getImageFromUrl (url: String, callback: (image: UIImage?) ->Void) -> Bool{
+    public func getImageFromUrl (url: String, defaultImage: UIImage? = ImageCachingHandler.defaultImage, callback: (image: UIImage?) ->Void) -> Bool{
         var res = false;
         if let image = self.get(url){
             NSLog("From cache: \(url)")
             callback(image: image);
         } else if self.failedUrls.contains(url) {
             NSLog("Failed URL: \(url)")
-            callback(image: ImageCachingHandler.defaultImage)
+            callback(image: defaultImage)
         } else {
             let nsUrl = NSURL(string: url);
             res = true;
@@ -97,12 +97,12 @@ public class ImageCachingHandler{
                         callback(image: image);
                     } else {
                         self.failedUrls.append(url)
-                        callback(image: ImageCachingHandler.defaultImage);
+                        callback(image: defaultImage);
                     }
                 } else {
                     NSLog("Error: \(error)");
                     self.failedUrls.append(url)
-                    callback(image: ImageCachingHandler.defaultImage);
+                    callback(image: defaultImage);
                 }
             }.resume()
         }

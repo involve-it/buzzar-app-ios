@@ -22,6 +22,8 @@
 		7B26B1AF1CD99D25000495EE /* NewSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B1AE1CD99D25000495EE /* NewSearchViewController.swift */; };
 		7B3564911CDAFDCE00012CA9 /* UsersProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3564901CDAFDCE00012CA9 /* UsersProxy.swift */; };
 		7B3565301CDD95F900012CA9 /* CustomPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35652F1CDD95F900012CA9 /* CustomPhoto.swift */; };
+		7B3565321CE1747500012CA9 /* ResponseErrorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565311CE1747500012CA9 /* ResponseErrorHelper.swift */; };
+		7B3565341CE18A5E00012CA9 /* RegisterUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565331CE18A5E00012CA9 /* RegisterUser.swift */; };
 		7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */; };
 		7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DB1CCC19DE00AD636D /* Post.swift */; };
 		7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */; };
@@ -82,6 +84,8 @@
 		7B26B1AE1CD99D25000495EE /* NewSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSearchViewController.swift; sourceTree = "<group>"; };
 		7B3564901CDAFDCE00012CA9 /* UsersProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersProxy.swift; sourceTree = "<group>"; };
 		7B35652F1CDD95F900012CA9 /* CustomPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPhoto.swift; sourceTree = "<group>"; };
+		7B3565311CE1747500012CA9 /* ResponseErrorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseErrorHelper.swift; sourceTree = "<group>"; };
+		7B3565331CE18A5E00012CA9 /* RegisterUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterUser.swift; sourceTree = "<group>"; };
 		7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewCell.swift; sourceTree = "<group>"; };
 		7BB2A7DB1CCC19DE00AD636D /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionHandler.swift; sourceTree = "<group>"; };
@@ -203,6 +207,7 @@
 				7BB2A80A1CCF15D000AD636D /* User.swift */,
 				7BB2A80E1CCF199D00AD636D /* ProfileDetail.swift */,
 				7BB2A8141CD5245500AD636D /* Location.swift */,
+				7B3565331CE18A5E00012CA9 /* RegisterUser.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -218,6 +223,7 @@
 				7B26B19E1CD688B7000495EE /* LocationHandler.swift */,
 				7B26B1A61CD6D72E000495EE /* ImagePickerHandler.swift */,
 				7B35652F1CDD95F900012CA9 /* CustomPhoto.swift */,
+				7B3565311CE1747500012CA9 /* ResponseErrorHelper.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -464,9 +470,11 @@
 				7BB2A8151CD5245500AD636D /* Location.swift in Sources */,
 				7B26B0BD1CD65652000495EE /* KeyboardManager.swift in Sources */,
 				7BB2A7EC1CCC58D600AD636D /* ImageCachingHandler.swift in Sources */,
+				7B3565341CE18A5E00012CA9 /* RegisterUser.swift in Sources */,
 				7BB2A8011CCD96C000AD636D /* LogInViewController.swift in Sources */,
 				7BC0A2301CCC160C00DA2824 /* SettingsTableViewController.swift in Sources */,
 				7B3564911CDAFDCE00012CA9 /* UsersProxy.swift in Sources */,
+				7B3565321CE1747500012CA9 /* ResponseErrorHelper.swift in Sources */,
 				7B26B0BB1CD655C2000495EE /* DescriptionViewController.swift in Sources */,
 				7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */,
 				7B26B0951CD568CB000495EE /* MessagesViewController.swift in Sources */,

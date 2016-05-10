@@ -56,13 +56,13 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
         self.txtPhoneNumber.text = self.currentUser?.getProfileDetail(.Phone)
         self.txtSkype.text = self.currentUser?.getProfileDetail(.Skype)
         if let imageUrl = self.currentUser?.imageUrl{
-            ImageCachingHandler.Instance.getImageFromUrl(imageUrl, callback: { (image) in
+            ImageCachingHandler.Instance.getImageFromUrl(imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
                 dispatch_async(dispatch_get_main_queue(), {
                     self.imgPhoto.image = image;
                 })
             })
         } else {
-            self.imgPhoto.image = ImageCachingHandler.defaultImage
+            self.imgPhoto.image = ImageCachingHandler.defaultAccountImage
         }
     }
     

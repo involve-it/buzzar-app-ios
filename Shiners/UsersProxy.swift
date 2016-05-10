@@ -50,6 +50,28 @@ public class UsersProxy{
         };
     }
     
+    public func saveUser(user: User, callback: (success: Bool, errorId: Int?) -> Void){
+        Meteor.call("editUser", params: [user]){ result, error in
+            if (error == nil){
+                let errorId = ResponseErrorHelper.getError(result)
+                callback(success: errorId == nil, errorId: errorId)
+            } else {
+                callback(success: false, errorId: nil)
+            }
+        }
+    }
+    
+    public func register(user: RegisterUser, callback: (success: Bool, errorId: Int?) -> Void){
+        Meteor.call("addUser", params: [user.toDictionary()]){ result, error in
+            if (error == nil){
+                let errorId = ResponseErrorHelper.getError(result)
+                callback(success: errorId == nil, errorId: errorId)
+            } else {
+                callback(success: false, errorId: nil)
+            }
+        }
+    }
+    
     public func login(userName: String, password: String, callback: (success: Bool, reason: String?) -> Void){
         Meteor.loginWithUsername(userName, password: password){ result, error in
             if (error == nil){
