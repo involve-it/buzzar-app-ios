@@ -18,6 +18,8 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     
     private var photos: [CustomPhoto] = []
     
+    private var position = 0
+    
     public init(mainView: UIView, scrollView: UIScrollView, viewController: UIViewController){
         self.mainView = mainView;
         self.scrollView = scrollView;
@@ -32,6 +34,8 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
         self.scrollView.subviews.forEach { (view) in
             view.removeFromSuperview()
         }
+        //let currentPosition = self.scrollView.contentOffset.x / scrollView.frame.size.width;
+        
         //svImages.frame = CGRectMake(0, 0, self.view.frame.size.width, 260)
         var index = 0;
         if let imageIds = ids{
@@ -50,6 +54,8 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
         }
         
         scrollView.contentSize = CGSizeMake(mainView.frame.size.width * CGFloat(index), scrollView.frame.size.height);
+        
+        self.scrollToPosition(self.position)
         
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(scrollViewTapped))
         self.scrollView.addGestureRecognizer(gestureRecognizer)
@@ -93,7 +99,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let x = scrollView.contentOffset.x;
         let currentPosition = x / mainView.frame.size.width;
-        var position: Int;
+        //var position: Int;
         if (velocity.x == 0){
             position = Int(round(currentPosition));
         } else if (abs(velocity.x) < 0.4){
@@ -111,6 +117,10 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
         }
         
         targetContentOffset.memory = CGPointMake(CGFloat(position) * mainView.frame.size.width, 0);
+    }
+    
+    func scrollToPosition(position: Int){
+        self.scrollView.contentOffset = CGPoint(x: CGFloat(position) * mainView.frame.size.width, y: 0)
     }
     
     public func photosViewController(photosViewController: NYTPhotosViewController, loadingViewForPhoto photo: NYTPhoto) -> UIView? {
