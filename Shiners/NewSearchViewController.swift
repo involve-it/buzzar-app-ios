@@ -20,6 +20,11 @@ public class NewSearchViewController: UIViewController, UITableViewDelegate, UIT
         
     }
     
+    func forceLayout(){
+        
+        
+    }
+    
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         return tableView.dequeueReusableCellWithIdentifier("testCell")!
     }

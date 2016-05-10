@@ -37,6 +37,15 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
         ConnectionHandler.Instance.onConnected {
             self.tableView.reloadData();
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(forceLayout), name: UIDeviceOrientationDidChangeNotification, object: nil)
+    }
+    
+    func forceLayout(){
+        self.searchView.frame = self.view.bounds;
+        self.searchViewController?.setContentInset(self.navigationController!, tabBarController: self.tabBarController!)
+        //self.view.layoutIfNeeded()
+        self.view.layoutSubviews()
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
