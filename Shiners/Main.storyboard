@@ -508,7 +508,7 @@
         <!--Navigation Controller-->
         <scene sceneID="pfa-Ez-zJj">
             <objects>
-                <navigationController id="pxY-TO-wJC" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="addPost" id="pxY-TO-wJC" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="BFc-4v-Gzi">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1651,10 +1651,10 @@
             </objects>
             <point key="canvasLocation" x="-1557" y="2099"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Main View Controller-->
         <scene sceneID="Vcp-2m-IIR">
             <objects>
-                <tabBarController storyboardIdentifier="mainViewController" id="VYZ-AR-MXX" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="mainViewController" id="VYZ-AR-MXX" customClass="MainViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="IeK-uQ-FeJ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1663,6 +1663,7 @@
                     <connections>
                         <segue destination="BaB-5i-kws" kind="relationship" relationship="viewControllers" id="xyj-at-CPx"/>
                         <segue destination="ew7-Q2-eca" kind="relationship" relationship="viewControllers" id="po3-kz-K73"/>
+                        <segue destination="C4g-CZ-eOj" kind="relationship" relationship="viewControllers" id="BOE-Vs-xts"/>
                         <segue destination="xfT-hV-GHx" kind="relationship" relationship="viewControllers" id="yNT-qX-Y1L"/>
                         <segue destination="uZU-js-mAI" kind="relationship" relationship="viewControllers" id="T7h-q3-RFw"/>
                     </connections>
@@ -1670,6 +1671,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TXr-Fc-NQa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-836" y="2099"/>
+        </scene>
+        <!--addPostPlaceholder-->
+        <scene sceneID="tgu-Lw-May">
+            <objects>
+                <viewController title="addPostPlaceholder" id="C4g-CZ-eOj" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RGQ-Ux-yPd"/>
+                        <viewControllerLayoutGuide type="bottom" id="LGW-ge-mD6"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rdo-l8-U6A">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Create Post" image="add-30.png" id="qDE-a8-S47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2hJ-CI-Dag" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-836" y="3063"/>
         </scene>
         <!--New Search View Controller-->
         <scene sceneID="Hb3-CN-1rJ">
@@ -1730,6 +1750,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="add-30.png" width="30" height="30"/>
         <image name="clipping_picture.png" width="128" height="128"/>
         <image name="eye.png" width="16" height="16"/>
         <image name="facebook.png" width="128" height="128"/>

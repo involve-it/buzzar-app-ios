@@ -24,6 +24,7 @@
 		7B3565301CDD95F900012CA9 /* CustomPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35652F1CDD95F900012CA9 /* CustomPhoto.swift */; };
 		7B3565321CE1747500012CA9 /* ResponseErrorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565311CE1747500012CA9 /* ResponseErrorHelper.swift */; };
 		7B3565341CE18A5E00012CA9 /* RegisterUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565331CE18A5E00012CA9 /* RegisterUser.swift */; };
+		7B35653E1CE42F8700012CA9 /* add-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B35653D1CE42F8700012CA9 /* add-30.png */; };
 		7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */; };
 		7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DB1CCC19DE00AD636D /* Post.swift */; };
 		7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */; };
@@ -50,7 +51,7 @@
 		7BB2A81B1CD53BF500AD636D /* vk.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BB2A81A1CD53BF500AD636D /* vk.png */; };
 		7BB2A81D1CD53FED00AD636D /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A81C1CD53FED00AD636D /* LaunchViewController.swift */; };
 		7BC0A21C1CCC15E700DA2824 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC0A21B1CCC15E700DA2824 /* AppDelegate.swift */; };
-		7BC0A21E1CCC15E700DA2824 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC0A21D1CCC15E700DA2824 /* ViewController.swift */; };
+		7BC0A21E1CCC15E700DA2824 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC0A21D1CCC15E700DA2824 /* MainViewController.swift */; };
 		7BC0A2231CCC15E700DA2824 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BC0A2221CCC15E700DA2824 /* Assets.xcassets */; };
 		7BC0A2261CCC15E700DA2824 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7BC0A2241CCC15E700DA2824 /* LaunchScreen.storyboard */; };
 		7BC0A2301CCC160C00DA2824 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC0A22D1CCC160C00DA2824 /* SettingsTableViewController.swift */; };
@@ -86,6 +87,7 @@
 		7B35652F1CDD95F900012CA9 /* CustomPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPhoto.swift; sourceTree = "<group>"; };
 		7B3565311CE1747500012CA9 /* ResponseErrorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseErrorHelper.swift; sourceTree = "<group>"; };
 		7B3565331CE18A5E00012CA9 /* RegisterUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterUser.swift; sourceTree = "<group>"; };
+		7B35653D1CE42F8700012CA9 /* add-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-30.png"; sourceTree = "<group>"; };
 		7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewCell.swift; sourceTree = "<group>"; };
 		7BB2A7DB1CCC19DE00AD636D /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionHandler.swift; sourceTree = "<group>"; };
@@ -113,7 +115,7 @@
 		7BB2A81C1CD53FED00AD636D /* LaunchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		7BC0A2181CCC15E700DA2824 /* Shiners.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shiners.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BC0A21B1CCC15E700DA2824 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7BC0A21D1CCC15E700DA2824 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		7BC0A21D1CCC15E700DA2824 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		7BC0A2221CCC15E700DA2824 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		7BC0A2251CCC15E700DA2824 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7BC0A2271CCC15E700DA2824 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -268,7 +270,7 @@
 				7BB2A7D71CCC18B000AD636D /* Posts */,
 				7BC0A2331CCC161A00DA2824 /* Main.storyboard */,
 				7BC0A21B1CCC15E700DA2824 /* AppDelegate.swift */,
-				7BC0A21D1CCC15E700DA2824 /* ViewController.swift */,
+				7BC0A21D1CCC15E700DA2824 /* MainViewController.swift */,
 				7BC0A2221CCC15E700DA2824 /* Assets.xcassets */,
 				7BC0A2241CCC15E700DA2824 /* LaunchScreen.storyboard */,
 				7BC0A2271CCC15E700DA2824 /* Info.plist */,
@@ -280,6 +282,7 @@
 		7BC0A2351CCC163600DA2824 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7B35653D1CE42F8700012CA9 /* add-30.png */,
 				7B26B1AA1CD6DE52000495EE /* cancel.png */,
 				7B26B0911CD567D9000495EE /* list_32.png */,
 				7BB2A81A1CD53BF500AD636D /* vk.png */,
@@ -375,6 +378,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B35653E1CE42F8700012CA9 /* add-30.png in Resources */,
 				7BC0A2261CCC15E700DA2824 /* LaunchScreen.storyboard in Resources */,
 				7BC0A2231CCC15E700DA2824 /* Assets.xcassets in Resources */,
 				7BC0A2421CCC164100DA2824 /* home.png in Resources */,
@@ -455,7 +459,7 @@
 				7BB2A7E11CCC217C00AD636D /* PostsCollection.swift in Sources */,
 				7BB2A7F41CCD17A000AD636D /* ImagesScrollViewDelegate.swift in Sources */,
 				7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */,
-				7BC0A21E1CCC15E700DA2824 /* ViewController.swift in Sources */,
+				7BC0A21E1CCC15E700DA2824 /* MainViewController.swift in Sources */,
 				7B3565301CDD95F900012CA9 /* CustomPhoto.swift in Sources */,
 				7BB2A81D1CD53FED00AD636D /* LaunchViewController.swift in Sources */,
 				7B26B1AF1CD99D25000495EE /* NewSearchViewController.swift in Sources */,
