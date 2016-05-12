@@ -53,12 +53,14 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         
         self.locationHandler.delegate = self;
         
-        self.txtTitle.becomeFirstResponder()
-        
         self.svImages.hidden = true;
         self.lblNoImages.hidden = false;
         
         self.imagePickerHandler = ImagePickerHandler(viewController: self, delegate: self)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.txtTitle.becomeFirstResponder()
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
