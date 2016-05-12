@@ -23,6 +23,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     
     @IBOutlet weak var txtWhen: UITextField!
     @IBAction func btnCancel_Click(sender: AnyObject) {
+        self.view.endEditing(true)
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
