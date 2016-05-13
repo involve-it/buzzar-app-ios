@@ -644,6 +644,67 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="post" rowHeight="87" id="1TY-LM-FDu" customClass="PostsTableViewCell" customModule="Shiners" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="136" width="600" height="87"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1TY-LM-FDu" id="kMv-vQ-Hfe">
+                                    <rect key="frame" x="0.0" y="0.0" width="567" height="86"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clipping_picture.png" translatesAutoresizingMaskIntoConstraints="NO" id="Kl4-mq-w86">
+                                            <rect key="frame" x="8" y="8" width="70" height="70"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="70" id="Ey7-Zi-6Co"/>
+                                                <constraint firstAttribute="width" constant="70" id="hRC-EM-RYQ"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Lamps for sale" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IYE-7X-TXa">
+                                            <rect key="frame" x="86" y="8" width="426" height="28"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="28" id="2Hl-hj-Acf"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" ambiguous="YES" text="$150" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bX5-eN-EMu">
+                                            <rect key="frame" x="520" y="8" width="39" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" id="Rzv-rp-NDM"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" red="0.068855456539999998" green="0.66666666669999997" blue="0.12620612849999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcq-PG-6tO">
+                                            <rect key="frame" x="86" y="44" width="481" height="34"/>
+                                            <string key="text">This is some very long text to explain what could possibly be inside a post. This text should wrap itself when there's no more space to show it. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra, purus vel accumsan luctus, magna nunc ornare justo, ut egestas ipsum diam ac ligula. Aenean laoreet libero efficitur justo finibus tincidunt. Vivamus facilisis ex nec dolor molestie hendrerit. Curabitur sed nulla vel augue porta interdum a non erat. Sed mauris lorem, tempor vitae nisi vel, ultrices ullamcorper enim. Donec condimentum magna in feugiat auctor. Aenean in justo eget diam auctor tincidunt quis vestibulum nunc. In congue suscipit malesuada. Pellentesque quis mollis ante, accumsan faucibus dolor.</string>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                            <color key="textColor" red="0.22650114530000001" green="0.22650114530000001" blue="0.22650114530000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="bcq-PG-6tO" secondAttribute="trailing" constant="-8" id="2sX-Xv-Rf4"/>
+                                        <constraint firstItem="bX5-eN-EMu" firstAttribute="leading" secondItem="IYE-7X-TXa" secondAttribute="trailing" constant="8" id="9vh-iW-DTt"/>
+                                        <constraint firstItem="Kl4-mq-w86" firstAttribute="leading" secondItem="kMv-vQ-Hfe" secondAttribute="leadingMargin" id="D2Q-tO-HXF"/>
+                                        <constraint firstItem="bcq-PG-6tO" firstAttribute="bottom" secondItem="kMv-vQ-Hfe" secondAttribute="bottomMargin" id="NBl-4w-6DS"/>
+                                        <constraint firstItem="bX5-eN-EMu" firstAttribute="top" secondItem="kMv-vQ-Hfe" secondAttribute="topMargin" id="Sh2-uL-pet"/>
+                                        <constraint firstItem="Kl4-mq-w86" firstAttribute="top" secondItem="kMv-vQ-Hfe" secondAttribute="topMargin" id="VOl-zv-ldi"/>
+                                        <constraint firstItem="bcq-PG-6tO" firstAttribute="top" secondItem="IYE-7X-TXa" secondAttribute="bottom" constant="8" id="Z1q-fq-OXD"/>
+                                        <constraint firstItem="IYE-7X-TXa" firstAttribute="leading" secondItem="Kl4-mq-w86" secondAttribute="trailing" constant="8" id="alU-Rv-8nH"/>
+                                        <constraint firstItem="bcq-PG-6tO" firstAttribute="leading" secondItem="Kl4-mq-w86" secondAttribute="trailing" constant="8" id="orC-sU-jnk"/>
+                                        <constraint firstItem="IYE-7X-TXa" firstAttribute="top" secondItem="kMv-vQ-Hfe" secondAttribute="topMargin" id="vku-KC-Ax3"/>
+                                        <constraint firstItem="bX5-eN-EMu" firstAttribute="trailing" secondItem="kMv-vQ-Hfe" secondAttribute="trailingMargin" id="yEt-M1-2Fp"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="imgPhoto" destination="Kl4-mq-w86" id="637-tf-jw0"/>
+                                    <outlet property="txtDetails" destination="bcq-PG-6tO" id="Wdx-HN-kSc"/>
+                                    <outlet property="txtPrice" destination="bX5-eN-EMu" id="dA3-6R-8kp"/>
+                                    <outlet property="txtTitle" destination="IYE-7X-TXa" id="IjQ-tw-iil"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="aTM-NK-Z2c" id="lvc-vu-poH"/>
@@ -1539,6 +1600,55 @@
                                         <constraint firstItem="MtH-Cp-a6x" firstAttribute="centerY" secondItem="WYJ-I5-4Cf" secondAttribute="centerY" id="iLt-Qi-Gw0"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="dialog" rowHeight="87" id="DeC-ol-DaC" customClass="PostsTableViewCell" customModule="Shiners" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="136" width="600" height="87"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DeC-ol-DaC" id="K2y-1i-F4x">
+                                    <rect key="frame" x="0.0" y="0.0" width="567" height="86"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clipping_picture.png" translatesAutoresizingMaskIntoConstraints="NO" id="pqe-Gj-i9S">
+                                            <rect key="frame" x="8" y="8" width="70" height="70"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="70" id="Gil-jH-xR0"/>
+                                                <constraint firstAttribute="height" constant="70" id="ZZy-wR-aeK"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ashot Arutyunyan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kRs-ZG-5Kd">
+                                            <rect key="frame" x="86" y="8" width="473" height="28"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="28" id="JSk-Hx-n2u"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dBt-Nc-d6t">
+                                            <rect key="frame" x="86" y="44" width="481" height="34"/>
+                                            <string key="text">This is some very long text to explain what could possibly be inside a post. This text should wrap itself when there's no more space to show it. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra, purus vel accumsan luctus, magna nunc ornare justo, ut egestas ipsum diam ac ligula. Aenean laoreet libero efficitur justo finibus tincidunt. Vivamus facilisis ex nec dolor molestie hendrerit. Curabitur sed nulla vel augue porta interdum a non erat. Sed mauris lorem, tempor vitae nisi vel, ultrices ullamcorper enim. Donec condimentum magna in feugiat auctor. Aenean in justo eget diam auctor tincidunt quis vestibulum nunc. In congue suscipit malesuada. Pellentesque quis mollis ante, accumsan faucibus dolor.</string>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                            <color key="textColor" red="0.22650114530000001" green="0.22650114530000001" blue="0.22650114530000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="pqe-Gj-i9S" firstAttribute="leading" secondItem="K2y-1i-F4x" secondAttribute="leadingMargin" id="2JJ-J2-KD2"/>
+                                        <constraint firstItem="dBt-Nc-d6t" firstAttribute="bottom" secondItem="K2y-1i-F4x" secondAttribute="bottomMargin" id="6pI-05-eFD"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="kRs-ZG-5Kd" secondAttribute="trailing" id="7lc-PK-dG2"/>
+                                        <constraint firstItem="kRs-ZG-5Kd" firstAttribute="leading" secondItem="pqe-Gj-i9S" secondAttribute="trailing" constant="8" id="9RV-Yh-Zb3"/>
+                                        <constraint firstItem="pqe-Gj-i9S" firstAttribute="top" secondItem="K2y-1i-F4x" secondAttribute="topMargin" id="Cjr-QW-89x"/>
+                                        <constraint firstItem="dBt-Nc-d6t" firstAttribute="top" secondItem="kRs-ZG-5Kd" secondAttribute="bottom" constant="8" id="TdR-ki-jUM"/>
+                                        <constraint firstItem="dBt-Nc-d6t" firstAttribute="leading" secondItem="pqe-Gj-i9S" secondAttribute="trailing" constant="8" id="XqW-Oe-nIX"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="dBt-Nc-d6t" secondAttribute="trailing" constant="-8" id="YBW-TJ-B6d"/>
+                                        <constraint firstItem="kRs-ZG-5Kd" firstAttribute="top" secondItem="K2y-1i-F4x" secondAttribute="topMargin" id="g0R-f5-DOT"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="imgPhoto" destination="pqe-Gj-i9S" id="EXm-Op-fTL"/>
+                                    <outlet property="txtDetails" destination="dBt-Nc-d6t" id="idu-BZ-Jhf"/>
+                                    <outlet property="txtTitle" destination="kRs-ZG-5Kd" id="mhI-qa-mo3"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
