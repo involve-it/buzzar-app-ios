@@ -28,6 +28,8 @@
 		7B3565451CE7B99C00012CA9 /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565441CE7B99C00012CA9 /* MessagesTableViewCell.swift */; };
 		7B3565481CE7BB7C00012CA9 /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565471CE7BB7C00012CA9 /* Dialog.swift */; };
 		7B35654A1CE7BE0100012CA9 /* DialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565491CE7BE0100012CA9 /* DialogViewController.swift */; };
+		7B35654E1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35654D1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift */; };
+		7B3565501CE7D74400012CA9 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35654F1CE7D74400012CA9 /* NotificationManager.swift */; };
 		7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */; };
 		7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DB1CCC19DE00AD636D /* Post.swift */; };
 		7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */; };
@@ -95,6 +97,8 @@
 		7B3565441CE7B99C00012CA9 /* MessagesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesTableViewCell.swift; sourceTree = "<group>"; };
 		7B3565471CE7BB7C00012CA9 /* Dialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
 		7B3565491CE7BE0100012CA9 /* DialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogViewController.swift; sourceTree = "<group>"; };
+		7B35654D1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
+		7B35654F1CE7D74400012CA9 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewCell.swift; sourceTree = "<group>"; };
 		7BB2A7DB1CCC19DE00AD636D /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionHandler.swift; sourceTree = "<group>"; };
@@ -246,6 +250,8 @@
 				7B26B1A61CD6D72E000495EE /* ImagePickerHandler.swift */,
 				7B35652F1CDD95F900012CA9 /* CustomPhoto.swift */,
 				7B3565311CE1747500012CA9 /* ResponseErrorHelper.swift */,
+				7B35654D1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift */,
+				7B35654F1CE7D74400012CA9 /* NotificationManager.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -493,6 +499,7 @@
 				7BC0A2311CCC160C00DA2824 /* SearchViewController.swift in Sources */,
 				7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */,
 				7BB2A8151CD5245500AD636D /* Location.swift in Sources */,
+				7B3565501CE7D74400012CA9 /* NotificationManager.swift in Sources */,
 				7B26B0BD1CD65652000495EE /* KeyboardManager.swift in Sources */,
 				7BB2A7EC1CCC58D600AD636D /* ImageCachingHandler.swift in Sources */,
 				7B3565341CE18A5E00012CA9 /* RegisterUser.swift in Sources */,
@@ -504,6 +511,7 @@
 				7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */,
 				7B26B0951CD568CB000495EE /* MessagesViewController.swift in Sources */,
 				7BB2A8031CCDA15500AD636D /* RegisterViewController.swift in Sources */,
+				7B35654E1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift in Sources */,
 				7BB2A8131CD30AD700AD636D /* ProfileViewController.swift in Sources */,
 				7BB2A7EE1CCC73B700AD636D /* PostDetailsViewController.swift in Sources */,
 				7BC0A2321CCC160C00DA2824 /* PostsViewController.swift in Sources */,

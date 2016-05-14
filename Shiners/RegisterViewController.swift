@@ -44,18 +44,6 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
         }
     }
     
-    private func setLoading(loading: Bool){
-        if (loading){
-            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray);
-            activityIndicator.startAnimating();
-            activityIndicator.hidden = false;
-            let rightItem = UIBarButtonItem(customView: activityIndicator);
-            self.navigationItem.rightBarButtonItem = rightItem;
-        } else {
-            self.navigationItem.rightBarButtonItem = nil;
-        }
-    }
-    
     private func register(){
         if self.txtPassword.text == self.txtConfirmPassword.text {
             let user = RegisterUser(username: self.txtUsername.text, email: self.txtEmail.text, password: self.txtPassword.text);
@@ -69,12 +57,12 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
                                 self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                             } else {
                                 //todo: add error message
-                                self.showErrorMessage()
+                                self.showAlert("Registration error", message: "Internal error occurred")
                             }
                         })
                     } else {
                         //todo: add error message
-                        self.showErrorMessage()
+                        self.showAlert("Registration error", message: "Internal error occurred")
                     }
                 })
                 
@@ -83,13 +71,7 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
         }
         
         //todo: add validation messages
-        self.showErrorMessage("Validation failed")
-    }
-    
-    func showErrorMessage(message: String? = "Internal error occurred"){
-        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .Alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-        self.presentViewController(alertController, animated: true, completion: nil)
+        self.showAlert("Validation failed", message: "Form validation valied")
     }
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {

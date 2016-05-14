@@ -21,6 +21,12 @@ class SettingsTableViewController: UITableViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad();
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userUpdated), name: NotificationManager.Name.UserUpdated.rawValue, object: nil)
+    }
+    
+    func userUpdated(object: AnyObject?){
+        self.refreshUser()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -39,8 +45,8 @@ class SettingsTableViewController: UITableViewController{
     func refreshUser(){
         if let currentUser = ConnectionHandler.Instance.users.currentUser{
             self.userName = currentUser.username;
-            if let firstName = ConnectionHandler.Instance.users.currentUser?.getProfileDetail(.FirstName),
-                lastName = ConnectionHandler.Instance.users.currentUser?.getProfileDetail(.LastName) {
+            if let firstName = ConnectionHandler.Instance.users.currentUser?.getProfileDetailValue(.FirstName),
+                lastName = ConnectionHandler.Instance.users.currentUser?.getProfileDetailValue(.LastName) {
                 lblName.text = "\(firstName) \(lastName)"
             } else {
                 lblName.text = currentUser.username;

@@ -51,9 +51,13 @@ public class UsersProxy{
     }
     
     public func saveUser(user: User, callback: (success: Bool, errorId: Int?) -> Void){
-        Meteor.call("editUser", params: [user]){ result, error in
+        Meteor.call("editUser", params: [user.toDictionary()]){ result, error in
             if (error == nil){
                 let errorId = ResponseErrorHelper.getError(result)
+                if errorId == nil {
+                    self.currentUser = user
+                    NotificationManager.sendNotification(.UserUpdated, object: nil)
+                }
                 callback(success: errorId == nil, errorId: errorId)
             } else {
                 callback(success: false, errorId: nil)

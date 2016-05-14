@@ -18,6 +18,11 @@ public class ProfileDetail{
     public var value: String?
     public var policy: String?
     
+    public init (key: String, value: String?){
+        self.key = key
+        self.value = value
+    }
+    
     public init (fields: NSDictionary){
         self.id = fields.valueForKey("_id") as? String
         self.userId = fields.valueForKey("userId") as? String
@@ -37,9 +42,15 @@ public class ProfileDetail{
         case Facebook = "facebook"
     }
     
-    
-    
-    
+    public func toDictionary() -> Dictionary<String, AnyObject>{
+        var dict = Dictionary<String, AnyObject>()
+        
+        dict["key"] = self.key
+        dict["value"] = self.value
+        dict["policy"] = self.policy
+        
+        return dict;
+    }
 }
 
 extension ProfileDetail.Key: Equatable{}

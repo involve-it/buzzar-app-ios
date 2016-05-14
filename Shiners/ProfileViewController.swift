@@ -18,25 +18,61 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     
     private var imagePickerHandler: ImagePickerHandler?
     
+    var currentUser: User?;
+    
+    private var cancelButton: UIBarButtonItem?
+    
+    @IBAction func btnCancel_Click(sender: AnyObject) {
+        self.dismissSelf();
+    }
+    
     //refreshing profile image
     @objc public override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        NSLog("scrolled1")
         self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
     }
     
     @objc public override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        NSLog("scrolled2")
         self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+    }
+    
+    private func dismissSelf(){
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
+    @IBAction func btnSave_Click(sender: AnyObject) {
+        self.setLoading(true)
+        let user = self.getUser();
+        ConnectionHandler.Instance.users.saveUser(user) { (success, errorId) in
+            self.setLoading(false, rightBarButtonItem: self.cancelButton)
+            if (success){
+                self.dismissSelf()
+            } else {
+                self.showAlert("Error", message: "An error occurred while saving.")
+            }
+        }
+    }
+    
+    private func getUser() -> User{
+        let user = ConnectionHandler.Instance.users.currentUser!;
+        user.setProfileDetail(.FirstName, value: self.txtFirstName.text)
+        user.setProfileDetail(.LastName, value: self.txtLastName.text)
+        user.setProfileDetail(.City, value: self.txtLocation.text)
+        user.setProfileDetail(.Phone, value: self.txtPhoneNumber.text)
+        user.setProfileDetail(.Skype, value: self.txtSkype.text)
+        return user;
     }
     
     @IBAction func btnChangeImage_Click(sender: AnyObject) {
         self.imagePickerHandler?.displayImagePicker()
     }
-    @IBAction func btnSave_Click(sender: AnyObject) {
-        //todo: save
-    }
-    var currentUser: User?;
+    
     override public func viewDidLoad() {
+        super.viewDidLoad()
+        self.cancelButton = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: #selector(btnCancel_Click));
+        
+        self.setLoading(false, rightBarButtonItem: self.cancelButton)
+        
+        //self.navigationItem.backBarButtonItem?.title = "Save"
         self.imagePickerHandler = ImagePickerHandler(viewController: self, delegate: self)
         self.txtFirstName.delegate = self;
         self.txtLastName.delegate = self;
@@ -50,11 +86,11 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     }
     
     private func refreshUserData(){
-        self.txtFirstName.text = self.currentUser?.getProfileDetail(.FirstName)
-        self.txtLastName.text = self.currentUser?.getProfileDetail(.LastName)
-        self.txtLocation.text = self.currentUser?.getProfileDetail(.City)
-        self.txtPhoneNumber.text = self.currentUser?.getProfileDetail(.Phone)
-        self.txtSkype.text = self.currentUser?.getProfileDetail(.Skype)
+        self.txtFirstName.text = self.currentUser?.getProfileDetailValue(.FirstName)
+        self.txtLastName.text = self.currentUser?.getProfileDetailValue(.LastName)
+        self.txtLocation.text = self.currentUser?.getProfileDetailValue(.City)
+        self.txtPhoneNumber.text = self.currentUser?.getProfileDetailValue(.Phone)
+        self.txtSkype.text = self.currentUser?.getProfileDetailValue(.Skype)
         if let imageUrl = self.currentUser?.imageUrl{
             ImageCachingHandler.Instance.getImageFromUrl(imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
                 dispatch_async(dispatch_get_main_queue(), {

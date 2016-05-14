@@ -19,6 +19,8 @@ public class User{
     public var profileDetails: [ProfileDetail]?
     public var language: String?
     
+    init(){}
+    
     init(id: String, fields: NSDictionary?){
         self.id = id;
         
@@ -64,16 +66,48 @@ public class User{
         self.language = fields?.valueForKey("language") as? String
     }
     
-    public func getProfileDetail(key: ProfileDetail.Key) -> String? {
-        var value: String?;
+    public func getProfileDetailValue(key: ProfileDetail.Key) -> String? {
+        return self.getProfileDetail(key)?.value;
+    }
+    
+    public func getProfileDetail(key: ProfileDetail.Key) -> ProfileDetail?{
+        var value: ProfileDetail?;
         if let profileDetails = self.profileDetails{
             for profileDetail in profileDetails {
                 if (profileDetail.key == key.rawValue){
-                    value = profileDetail.value;
+                    value = profileDetail;
                     break;
                 }
             }
         }
         return value;
+    }
+    
+    public func setProfileDetail(key: ProfileDetail.Key, value: String?) -> Void{
+        if self.profileDetails == nil{
+            self.profileDetails = [ProfileDetail]()
+        }
+        if let profileDetail = self.getProfileDetail(key){
+            profileDetail.value = value
+        } else {
+            let profileDetail = ProfileDetail(key: key.rawValue, value: value)
+            self.profileDetails?.append(profileDetail)
+        }
+    }
+    
+    public func toDictionary() -> Dictionary<String, AnyObject>{
+        var dict = Dictionary<String, AnyObject>()
+        
+        dict["email"] = self.email
+        dict["imageUrl"] = self.imageUrl
+        if let profileDetails = self.profileDetails{
+            var profileDetailsDict = Array<Dictionary<String, AnyObject>>()
+            for profileDetail in profileDetails{
+                profileDetailsDict.append(profileDetail.toDictionary())
+            }
+            dict["profileDetails"] = profileDetailsDict
+        }
+        
+        return dict
     }
 }

@@ -868,6 +868,7 @@
         <!--Profile-->
         <scene sceneID="Isz-Bn-QR4">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hm6-64-Ddc" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController storyboardIdentifier="profileController" hidesBottomBarWhenPushed="YES" id="Q2n-kU-9Sm" customClass="ProfileViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="Uuo-8X-GpO">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
@@ -1085,9 +1086,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Profile" id="uAC-Vy-9zC">
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="9iw-GC-mPI">
+                        <barButtonItem key="leftBarButtonItem" systemItem="save" id="t0Q-Ri-jJX">
                             <connections>
-                                <action selector="btnSave_Click:" destination="Q2n-kU-9Sm" id="1FJ-yr-zME"/>
+                                <action selector="btnSave_Click:" destination="Q2n-kU-9Sm" id="Flz-j6-1fM"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1100,7 +1101,6 @@
                         <outlet property="txtSkype" destination="Var-pC-bmK" id="20K-eD-kmB"/>
                     </connections>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hm6-64-Ddc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1609" y="1898"/>
         </scene>
@@ -1484,13 +1484,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Another setting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="93Z-9f-PSa">
-                                                    <rect key="frame" x="8" y="11" width="119" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Online" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="93Z-9f-PSa">
+                                                    <rect key="frame" x="8" y="11" width="49" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cqs-cJ-Icd">
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cqs-cJ-Icd">
                                                     <rect key="frame" x="543" y="6" width="51" height="31"/>
                                                 </switch>
                                             </subviews>
@@ -1509,8 +1509,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="One more setting" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xJz-ss-KoC">
-                                                    <rect key="frame" x="8" y="11" width="133" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reminders" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xJz-ss-KoC">
+                                                    <rect key="frame" x="8" y="11" width="82" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1658,7 +1658,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Messages" id="uX0-i6-PlM">
-                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="DDW-Kb-uEK"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="edit" id="NaF-vZ-vIz"/>
                     </navigationItem>
                 </tableViewController>
