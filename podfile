@@ -1,5 +1,8 @@
 platform :ios, '9.0'
-pod "SwiftDDP", "~>0.3.1"
-pod "RichEditorView"
-pod 'NYTPhotoViewer', '~> 1.1.0'
+target "Shiners" do
+	pod "SwiftDDP", "~>0.3.1"
+	pod "RichEditorView"
+	pod 'NYTPhotoViewer', '~> 1.1.0'
+	pod 'JSQMessagesViewController'
+end
 use_frameworks!

@@ -1576,19 +1576,19 @@
         <scene sceneID="oa4-Uk-vg9">
             <objects>
                 <tableViewController id="dsW-Ec-uRF" customClass="MessagesViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="1Qt-Ls-xmQ">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="87" sectionHeaderHeight="28" sectionFooterHeight="28" id="1Qt-Ls-xmQ">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="noMessages" id="qQi-3i-tcg">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="87"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qQi-3i-tcg" id="WYJ-I5-4Cf">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="86"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have no messages" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MtH-Cp-a6x">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="You have no messages" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MtH-Cp-a6x">
                                             <rect key="frame" x="236" y="14" width="129" height="15"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -1601,8 +1601,8 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="dialog" rowHeight="87" id="DeC-ol-DaC" customClass="PostsTableViewCell" customModule="Shiners" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="136" width="600" height="87"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="dialog" rowHeight="87" id="DeC-ol-DaC" customClass="MessagesTableViewCell" customModule="Shiners" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="179" width="600" height="87"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="DeC-ol-DaC" id="K2y-1i-F4x">
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="86"/>
@@ -1645,9 +1645,10 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="imgPhoto" destination="pqe-Gj-i9S" id="EXm-Op-fTL"/>
-                                    <outlet property="txtDetails" destination="dBt-Nc-d6t" id="idu-BZ-Jhf"/>
-                                    <outlet property="txtTitle" destination="kRs-ZG-5Kd" id="mhI-qa-mo3"/>
+                                    <outlet property="imgPhoto" destination="pqe-Gj-i9S" id="aJR-tq-2EB"/>
+                                    <outlet property="lblLastMessage" destination="dBt-Nc-d6t" id="tnG-cg-TW8"/>
+                                    <outlet property="lblTitle" destination="kRs-ZG-5Kd" id="eGd-8v-OtM"/>
+                                    <segue destination="1O3-Va-j30" kind="show" identifier="dialog" id="iWZ-ck-nPQ"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1665,6 +1666,25 @@
             </objects>
             <point key="canvasLocation" x="1579" y="2644"/>
         </scene>
+        <!--Title-->
+        <scene sceneID="MbZ-26-15e">
+            <objects>
+                <viewController hidesBottomBarWhenPushed="YES" id="1O3-Va-j30" customClass="DialogViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gU9-10-nuL"/>
+                        <viewControllerLayoutGuide type="bottom" id="7DL-kW-9EO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Io4-mn-WUl">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Title" id="AUt-pL-0KY"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iMs-Ip-d7v" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2402" y="2644"/>
+        </scene>
         <!--Messages-->
         <scene sceneID="dyP-FE-CMm">
             <objects>
@@ -1674,6 +1694,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="view.backgroundColor">
+                            <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <segue destination="dsW-Ec-uRF" kind="relationship" relationship="rootViewController" id="d0M-aO-NRZ"/>
                     </connections>

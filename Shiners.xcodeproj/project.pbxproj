@@ -25,6 +25,9 @@
 		7B3565321CE1747500012CA9 /* ResponseErrorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565311CE1747500012CA9 /* ResponseErrorHelper.swift */; };
 		7B3565341CE18A5E00012CA9 /* RegisterUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565331CE18A5E00012CA9 /* RegisterUser.swift */; };
 		7B35653E1CE42F8700012CA9 /* add-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B35653D1CE42F8700012CA9 /* add-30.png */; };
+		7B3565451CE7B99C00012CA9 /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565441CE7B99C00012CA9 /* MessagesTableViewCell.swift */; };
+		7B3565481CE7BB7C00012CA9 /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565471CE7BB7C00012CA9 /* Dialog.swift */; };
+		7B35654A1CE7BE0100012CA9 /* DialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565491CE7BE0100012CA9 /* DialogViewController.swift */; };
 		7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */; };
 		7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DB1CCC19DE00AD636D /* Post.swift */; };
 		7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */; };
@@ -65,11 +68,12 @@
 		7BC0A2411CCC164100DA2824 /* fdd6dfea-3666-5d7f-10ca-9dcac031634f.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BC0A23A1CCC164100DA2824 /* fdd6dfea-3666-5d7f-10ca-9dcac031634f.png */; };
 		7BC0A2421CCC164100DA2824 /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BC0A23B1CCC164100DA2824 /* home.png */; };
 		7BC0A2431CCC164100DA2824 /* id-card.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BC0A23C1CCC164100DA2824 /* id-card.png */; };
-		AA85C936CF87FF6C6E7E8600 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB11C1D7A4B55954320FBCF1 /* Pods.framework */; };
+		DA74BAEA2B14C252B3F9A418 /* Pods_Shiners.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 643ABEB340B81A6AB08AFEC7 /* Pods_Shiners.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5ABB6D3DEE74AFF59398A967 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		1F147896ADC1A887A2D48487 /* Pods-Shiners.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shiners.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Shiners/Pods-Shiners.debug.xcconfig"; sourceTree = "<group>"; };
+		643ABEB340B81A6AB08AFEC7 /* Pods_Shiners.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shiners.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B26B08D1CD564E1000495EE /* MyPostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPostsViewController.swift; sourceTree = "<group>"; };
 		7B26B0911CD567D9000495EE /* list_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_32.png; sourceTree = "<group>"; };
 		7B26B0941CD568CB000495EE /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +92,9 @@
 		7B3565311CE1747500012CA9 /* ResponseErrorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseErrorHelper.swift; sourceTree = "<group>"; };
 		7B3565331CE18A5E00012CA9 /* RegisterUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterUser.swift; sourceTree = "<group>"; };
 		7B35653D1CE42F8700012CA9 /* add-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-30.png"; sourceTree = "<group>"; };
+		7B3565441CE7B99C00012CA9 /* MessagesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesTableViewCell.swift; sourceTree = "<group>"; };
+		7B3565471CE7BB7C00012CA9 /* Dialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
+		7B3565491CE7BE0100012CA9 /* DialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogViewController.swift; sourceTree = "<group>"; };
 		7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewCell.swift; sourceTree = "<group>"; };
 		7BB2A7DB1CCC19DE00AD636D /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionHandler.swift; sourceTree = "<group>"; };
@@ -130,7 +137,7 @@
 		7BC0A23A1CCC164100DA2824 /* fdd6dfea-3666-5d7f-10ca-9dcac031634f.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fdd6dfea-3666-5d7f-10ca-9dcac031634f.png"; sourceTree = "<group>"; };
 		7BC0A23B1CCC164100DA2824 /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home.png; sourceTree = "<group>"; };
 		7BC0A23C1CCC164100DA2824 /* id-card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "id-card.png"; sourceTree = "<group>"; };
-		D31B9F22D7E48174C4143520 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		D9E569692E2B1B62B7F114B8 /* Pods-Shiners.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shiners.release.xcconfig"; path = "Pods/Target Support Files/Pods-Shiners/Pods-Shiners.release.xcconfig"; sourceTree = "<group>"; };
 		FB11C1D7A4B55954320FBCF1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -140,18 +147,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B26B1A11CD693D5000495EE /* MapKit.framework in Frameworks */,
-				AA85C936CF87FF6C6E7E8600 /* Pods.framework in Frameworks */,
+				DA74BAEA2B14C252B3F9A418 /* Pods_Shiners.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		22FBD02FD62CD8F4F05FE517 /* Pods */ = {
+		518B03E116AE384297350BB0 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5ABB6D3DEE74AFF59398A967 /* Pods.debug.xcconfig */,
-				D31B9F22D7E48174C4143520 /* Pods.release.xcconfig */,
+				1F147896ADC1A887A2D48487 /* Pods-Shiners.debug.xcconfig */,
+				D9E569692E2B1B62B7F114B8 /* Pods-Shiners.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -160,6 +167,8 @@
 			isa = PBXGroup;
 			children = (
 				7B26B0941CD568CB000495EE /* MessagesViewController.swift */,
+				7B3565441CE7B99C00012CA9 /* MessagesTableViewCell.swift */,
+				7B3565491CE7BE0100012CA9 /* DialogViewController.swift */,
 			);
 			name = Messages;
 			sourceTree = "<group>";
@@ -170,6 +179,16 @@
 				7B3564901CDAFDCE00012CA9 /* UsersProxy.swift */,
 			);
 			name = Proxies;
+			sourceTree = "<group>";
+		};
+		7B3565461CE7B9A100012CA9 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				7BB2A7D71CCC18B000AD636D /* Posts */,
+				7BB2A7FF1CCD967300AD636D /* Settings */,
+				7B26B0931CD568B5000495EE /* Messages */,
+			);
+			name = UI;
 			sourceTree = "<group>";
 		};
 		7BB2A7D71CCC18B000AD636D /* Posts */ = {
@@ -210,6 +229,7 @@
 				7BB2A80E1CCF199D00AD636D /* ProfileDetail.swift */,
 				7BB2A8141CD5245500AD636D /* Location.swift */,
 				7B3565331CE18A5E00012CA9 /* RegisterUser.swift */,
+				7B3565471CE7BB7C00012CA9 /* Dialog.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -247,8 +267,8 @@
 				7BC0A2351CCC163600DA2824 /* Resources */,
 				7BC0A21A1CCC15E700DA2824 /* Shiners */,
 				7BC0A2191CCC15E700DA2824 /* Products */,
-				22FBD02FD62CD8F4F05FE517 /* Pods */,
 				FDC5E51674789C2348BFABE5 /* Frameworks */,
+				518B03E116AE384297350BB0 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -263,11 +283,9 @@
 		7BC0A21A1CCC15E700DA2824 /* Shiners */ = {
 			isa = PBXGroup;
 			children = (
-				7B26B0931CD568B5000495EE /* Messages */,
-				7BB2A7FF1CCD967300AD636D /* Settings */,
+				7B3565461CE7B9A100012CA9 /* UI */,
 				7BB2A7E31CCC2B3800AD636D /* Core */,
 				7BB2A7DD1CCC1BDD00AD636D /* Data */,
-				7BB2A7D71CCC18B000AD636D /* Posts */,
 				7BC0A2331CCC161A00DA2824 /* Main.storyboard */,
 				7BC0A21B1CCC15E700DA2824 /* AppDelegate.swift */,
 				7BC0A21D1CCC15E700DA2824 /* MainViewController.swift */,
@@ -308,6 +326,7 @@
 			children = (
 				7B26B1A01CD693D5000495EE /* MapKit.framework */,
 				FB11C1D7A4B55954320FBCF1 /* Pods.framework */,
+				643ABEB340B81A6AB08AFEC7 /* Pods_Shiners.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -319,12 +338,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7BC0A22A1CCC15E700DA2824 /* Build configuration list for PBXNativeTarget "Shiners" */;
 			buildPhases = (
-				A4E44E7EE403D4E7BAACDCCA /* Check Pods Manifest.lock */,
+				A0996CEAFF48ECB154BA4099 /* 📦 Check Pods Manifest.lock */,
 				7BC0A2141CCC15E700DA2824 /* Sources */,
 				7BC0A2151CCC15E700DA2824 /* Frameworks */,
 				7BC0A2161CCC15E700DA2824 /* Resources */,
-				A2EAB05FE9ED35C72F355BA4 /* Embed Pods Frameworks */,
-				250427DC8A707826AE51847B /* Copy Pods Resources */,
+				09482BD296F09D7D4CA53805 /* 📦 Embed Pods Frameworks */,
+				8185FFD61FD13A31C2A35F16 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -404,44 +423,44 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		250427DC8A707826AE51847B /* Copy Pods Resources */ = {
+		09482BD296F09D7D4CA53805 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Shiners/Pods-Shiners-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A2EAB05FE9ED35C72F355BA4 /* Embed Pods Frameworks */ = {
+		8185FFD61FD13A31C2A35F16 /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Shiners/Pods-Shiners-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A4E44E7EE403D4E7BAACDCCA /* Check Pods Manifest.lock */ = {
+		A0996CEAFF48ECB154BA4099 /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -459,6 +478,7 @@
 				7BB2A7E11CCC217C00AD636D /* PostsCollection.swift in Sources */,
 				7BB2A7F41CCD17A000AD636D /* ImagesScrollViewDelegate.swift in Sources */,
 				7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */,
+				7B3565451CE7B99C00012CA9 /* MessagesTableViewCell.swift in Sources */,
 				7BC0A21E1CCC15E700DA2824 /* MainViewController.swift in Sources */,
 				7B3565301CDD95F900012CA9 /* CustomPhoto.swift in Sources */,
 				7BB2A81D1CD53FED00AD636D /* LaunchViewController.swift in Sources */,
@@ -467,6 +487,7 @@
 				7B26B1A91CD6DDA8000495EE /* SmallImageView.swift in Sources */,
 				7B26B1A71CD6D72E000495EE /* ImagePickerHandler.swift in Sources */,
 				7B26B0971CD5BF1C000495EE /* ConstantValuesHandler.swift in Sources */,
+				7B35654A1CE7BE0100012CA9 /* DialogViewController.swift in Sources */,
 				7BC0A21C1CCC15E700DA2824 /* AppDelegate.swift in Sources */,
 				7BB2A8071CCF0EBC00AD636D /* Helper.swift in Sources */,
 				7BC0A2311CCC160C00DA2824 /* SearchViewController.swift in Sources */,
@@ -491,6 +512,7 @@
 				7B26B08E1CD564E1000495EE /* MyPostsViewController.swift in Sources */,
 				7BB2A7F81CCD8EC500AD636D /* Extensions.swift in Sources */,
 				7BB2A8051CCDA58C00AD636D /* NewPostViewController.swift in Sources */,
+				7B3565481CE7BB7C00012CA9 /* Dialog.swift in Sources */,
 				7BB2A80B1CCF15D000AD636D /* User.swift in Sources */,
 				7B26B1A31CD694A0000495EE /* StaticLocationViewController.swift in Sources */,
 			);
@@ -597,7 +619,7 @@
 		};
 		7BC0A22B1CCC15E700DA2824 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5ABB6D3DEE74AFF59398A967 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 1F147896ADC1A887A2D48487 /* Pods-Shiners.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Shiners/Info.plist;
@@ -611,7 +633,7 @@
 		};
 		7BC0A22C1CCC15E700DA2824 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D31B9F22D7E48174C4143520 /* Pods.release.xcconfig */;
+			baseConfigurationReference = D9E569692E2B1B62B7F114B8 /* Pods-Shiners.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Shiners/Info.plist;
