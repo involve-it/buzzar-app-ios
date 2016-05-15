@@ -48,7 +48,7 @@ public class PostsProxy{
                         NotificationManager.sendNotification(.MyPostsUpdated, object: nil)
                     }
                 }
-                ResponseHelper.callHandler(result, handler: callback)
+                ResponseHelper.callHandlerArray(result, handler: callback) as [Post]?
             } else {
                 callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
             }

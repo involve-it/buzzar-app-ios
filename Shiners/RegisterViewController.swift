@@ -20,7 +20,6 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
     }
     
     public override func viewDidLoad() {
-        self.txtUsername.becomeFirstResponder();
         self.setLoading(false);
         
         self.txtUsername.delegate = self;
@@ -44,6 +43,16 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
         }
     }
     
+    override public func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.view.endEditing(true)
+    }
+    
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.txtUsername.becomeFirstResponder();
+    }
+    
     private func register(){
         if self.txtPassword.text == self.txtConfirmPassword.text {
             let user = RegisterUser(username: self.txtUsername.text, email: self.txtEmail.text, password: self.txtPassword.text);
@@ -53,6 +62,7 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
                 ConnectionHandler.Instance.users.register(user, callback: { (success, errorId, errorMessage, result) in
                     if (success){
                         ConnectionHandler.Instance.users.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
+                            self.setLoading(false)
                             if (success){
                                 self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                             } else {
@@ -61,6 +71,7 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
                             }
                         })
                     } else {
+                        self.setLoading(false)
                         //todo: add error message
                         self.showAlert("Registration error", message: errorMessage)
                     }

@@ -27,7 +27,7 @@ public class UsersProxy{
         if let userId = Meteor.client.userId() {
             self.getUser(userId) { (success, errorId, errorMessage, result) in
                 if (success){
-                    self.currentUser = User(fields: result as? NSDictionary)
+                    self.currentUser = result as? User
                 }
                 callback(success: success)
             }
@@ -39,7 +39,7 @@ public class UsersProxy{
     public func getUser(userId: String, callback: MeteorMethodCallback){
         Meteor.call("getUser", params: [Meteor.client.userId()!]){ result, error in
             if (error == nil){
-                ResponseHelper.callHandler(result, handler: callback)
+                ResponseHelper.callHandler(result, handler: callback) as User?
             } else {
                 callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
             }
@@ -49,12 +49,12 @@ public class UsersProxy{
     public func saveUser(user: User, callback: MeteorMethodCallback){
         Meteor.call("editUser", params: [user.toDictionary()]){ result, error in
             if (error == nil){
-                let errorId = ResponseHelper.getError(result)
+                let errorId = ResponseHelper.getErrorId(result)
                 if errorId == nil {
                     self.currentUser = user
                     NotificationManager.sendNotification(.UserUpdated, object: nil)
                 }
-                ResponseHelper.callHandler(result, handler: callback)
+                callback(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: user)
             } else {
                 callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
             }
@@ -64,7 +64,8 @@ public class UsersProxy{
     public func register(user: RegisterUser, callback: MeteorMethodCallback){
         Meteor.call("addUser", params: [user.toDictionary()]){ result, error in
             if (error == nil){
-                ResponseHelper.callHandler(result, handler: callback)
+                let errorId = ResponseHelper.getErrorId(result);
+                callback(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
             } else {
                 callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
             }

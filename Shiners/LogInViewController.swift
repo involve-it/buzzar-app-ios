@@ -30,10 +30,19 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil);
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.view.endEditing(true)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.txtUsername.becomeFirstResponder();
+    }
+    
     override func viewDidLoad() {
         //register button
         self.setLoading(false, rightBarButtonItem: self.registerButton);
-        self.txtUsername.becomeFirstResponder();
         self.txtPassword.delegate = self;
         self.txtUsername.delegate = self;
     }
