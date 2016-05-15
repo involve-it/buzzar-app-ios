@@ -25,28 +25,24 @@ public class UsersProxy{
     
     public func getCurrentUser(callback: (success: Bool) -> Void){
         if let userId = Meteor.client.userId() {
-            self.getUser(userId) { (user) in
-                if let currentUser = user {
-                    self.currentUser = currentUser
-                    callback(success: true)
-                } else {
-                    callback(success: false)
+            self.getUser(userId) { (success, errorId, errorMessage, result) in
+                if (success){
+                    self.currentUser = User(fields: result as? NSDictionary)
                 }
+                callback(success: success)
             }
         } else {
             callback(success: false)
         }
     }
     
-    public func getUser(userId: String, callback: (user: User?) -> Void){
+    public func getUser(userId: String, callback: MeteorMethodCallback){
         Meteor.call("getUser", params: [Meteor.client.userId()!]){ result, error in
-            var user: User?
             if (error == nil){
-                if let userFields = result as? NSDictionary {
-                    user = User(fields: userFields)
-                }
+                ResponseHelper.callHandler(result, handler: callback)
+            } else {
+                callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
             }
-            callback(user: user)
         };
     }
     

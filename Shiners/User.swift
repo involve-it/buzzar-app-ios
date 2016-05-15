@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class User{
+public class User: DictionaryInitializable{
     public var id: String?
     public var createdAt: NSDate?
     public var username: String?
@@ -27,7 +27,7 @@ public class User{
         self.update(fields);
     }
     
-    init(fields: NSDictionary?){
+    required public init(fields: NSDictionary?){
         self.update(fields)
     }
     
@@ -43,7 +43,9 @@ public class User{
         }
         
         self.online = fields?.valueForKey("online") as? Bool
-        self.imageUrl = fields?.valueForKey("imageUrl") as? String
+        if let image = fields?.valueForKey("image") as? NSDictionary{
+            self.imageUrl = image.valueForKey("imageUrl") as? String
+        }
         
         if let locations = fields?.valueForKey("locations") as? NSArray {
             self.locations = [Location]()

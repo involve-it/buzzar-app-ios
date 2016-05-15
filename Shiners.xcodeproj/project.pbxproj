@@ -31,6 +31,7 @@
 		7B35654E1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35654D1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift */; };
 		7B3565501CE7D74400012CA9 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35654F1CE7D74400012CA9 /* NotificationManager.swift */; };
 		7B3565521CE7DF5A00012CA9 /* PostsProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565511CE7DF5A00012CA9 /* PostsProxy.swift */; };
+		7B3565541CE8311100012CA9 /* DictionaryInitilizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565531CE8311100012CA9 /* DictionaryInitilizable.swift */; };
 		7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */; };
 		7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DB1CCC19DE00AD636D /* Post.swift */; };
 		7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */; };
@@ -101,6 +102,7 @@
 		7B35654D1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		7B35654F1CE7D74400012CA9 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		7B3565511CE7DF5A00012CA9 /* PostsProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsProxy.swift; sourceTree = "<group>"; };
+		7B3565531CE8311100012CA9 /* DictionaryInitilizable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryInitilizable.swift; sourceTree = "<group>"; };
 		7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewCell.swift; sourceTree = "<group>"; };
 		7BB2A7DB1CCC19DE00AD636D /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionHandler.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 		7BB2A7E31CCC2B3800AD636D /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				7B3565531CE8311100012CA9 /* DictionaryInitilizable.swift */,
 				7BB2A7EB1CCC58D600AD636D /* ImageCachingHandler.swift */,
 				7BB2A7F71CCD8EC500AD636D /* Extensions.swift */,
 				7BB2A8061CCF0EBC00AD636D /* Helper.swift */,
@@ -497,6 +500,7 @@
 				7B26B1A71CD6D72E000495EE /* ImagePickerHandler.swift in Sources */,
 				7B26B0971CD5BF1C000495EE /* ConstantValuesHandler.swift in Sources */,
 				7B35654A1CE7BE0100012CA9 /* DialogViewController.swift in Sources */,
+				7B3565541CE8311100012CA9 /* DictionaryInitilizable.swift in Sources */,
 				7BC0A21C1CCC15E700DA2824 /* AppDelegate.swift in Sources */,
 				7BB2A8071CCF0EBC00AD636D /* Helper.swift in Sources */,
 				7BC0A2311CCC160C00DA2824 /* SearchViewController.swift in Sources */,

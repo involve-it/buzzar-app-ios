@@ -7,7 +7,7 @@
 //
 
 import Foundation
-public class Post{
+public class Post: DictionaryInitializable{
     public var id: String?;
     public var title: String?;
     public var imageIds: [String]?;
@@ -22,7 +22,7 @@ public class Post{
         self.update(fields);
     }
     
-    init(fields: NSDictionary?){
+    public required init(fields: NSDictionary?){
         self.update(fields);
     }
     
