@@ -26,4 +26,8 @@ public extension UIViewController{
         alertController.addAction(UIAlertAction(title: "Dismiss", style: .Default, handler: nil));
         self.presentViewController(alertController, animated: true, completion: nil)
     }
+    
+    public func showConnecting(connecting: Bool){
+        
+    }
 }

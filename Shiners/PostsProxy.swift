@@ -27,7 +27,7 @@ public class PostsProxy{
         self.getMyPosts(true, callback: nil)
     }
     
-    public func getMyPosts(triggerNotification: Bool, callback: MeteorMethodCallback?){
+    public func getMyPosts(triggerNotification: Bool, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
         dict["type"] = "all"
         //todo: fix paging
@@ -35,20 +35,13 @@ public class PostsProxy{
         dict["skip"] = 0
         Meteor.call("getMyPosts", params: [dict]) { (result, error) in
             if error == nil {
-                if ResponseHelper.isSuccessful(result){
-                    self.myPosts.removeAll()
+                if let posts = ResponseHelper.callHandlerArray(result, handler: callback) as [Post]? {
+                    self.myPosts = posts
                     
-                    let res = ResponseHelper.getResult(result) as! NSArray
-                    for postFields in res {
-                        if let postFieldsDic = postFields as? NSDictionary{
-                            self.myPosts.append(Post(fields: postFieldsDic))
-                        }
-                    }
                     if triggerNotification{
                         NotificationManager.sendNotification(.MyPostsUpdated, object: nil)
                     }
                 }
-                ResponseHelper.callHandlerArray(result, handler: callback) as [Post]?
             } else {
                 callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
             }
