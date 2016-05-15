@@ -15,7 +15,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="postListItem" rowHeight="87" id="oTG-C3-Yrh" customClass="PostsTableViewCell" customModule="Shiners" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="post" rowHeight="87" id="oTG-C3-Yrh" customClass="PostsTableViewCell" customModule="Shiners" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="600" height="87"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oTG-C3-Yrh" id="C2G-r7-gRP">
@@ -619,19 +619,19 @@
         <scene sceneID="M19-Uq-xoM">
             <objects>
                 <tableViewController id="aTM-NK-Z2c" customClass="MyPostsViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bOL-eo-rwW">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="87" sectionHeaderHeight="28" sectionFooterHeight="28" id="bOL-eo-rwW">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="noPosts" id="oDk-Wt-HVg">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="600" height="87"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oDk-Wt-HVg" id="qMO-c5-Vkc">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="86"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have no posts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZh-j2-ptF">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="You have no posts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZh-j2-ptF">
                                             <rect key="frame" x="248" y="14" width="104" height="15"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -645,7 +645,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="post" rowHeight="87" id="1TY-LM-FDu" customClass="PostsTableViewCell" customModule="Shiners" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="136" width="600" height="87"/>
+                                <rect key="frame" x="0.0" y="179" width="600" height="87"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1TY-LM-FDu" id="kMv-vQ-Hfe">
                                     <rect key="frame" x="0.0" y="0.0" width="567" height="86"/>
@@ -703,6 +703,7 @@
                                     <outlet property="txtDetails" destination="bcq-PG-6tO" id="Wdx-HN-kSc"/>
                                     <outlet property="txtPrice" destination="bX5-eN-EMu" id="dA3-6R-8kp"/>
                                     <outlet property="txtTitle" destination="IYE-7X-TXa" id="IjQ-tw-iil"/>
+                                    <segue destination="sbg-z1-jzp" kind="show" identifier="myPostDetails" id="AIb-zx-iKR"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -863,7 +864,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RzK-g6-BRp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2448" y="104"/>
+            <point key="canvasLocation" x="1438" y="-717"/>
         </scene>
         <!--Profile-->
         <scene sceneID="Isz-Bn-QR4">
@@ -1880,7 +1881,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mjr-UZ-y5z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1472" y="-717"/>
+            <point key="canvasLocation" x="2277" y="104"/>
         </scene>
     </scenes>
     <resources>
@@ -1896,4 +1897,7 @@
         <image name="twitter.png" width="128" height="128"/>
         <image name="vk.png" width="128" height="128"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="AIb-zx-iKR"/>
+    </inferredMetricsTieBreakers>
 </document>

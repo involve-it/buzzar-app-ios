@@ -22,7 +22,15 @@ public class Post{
         self.update(fields);
     }
     
+    init(fields: NSDictionary?){
+        self.update(fields);
+    }
+    
     public func update(fields: NSDictionary?){
+        if let id = fields?.valueForKey("_id") as? String{
+            self.id = id
+        }
+        
         if let details = fields?.valueForKey("details") as? NSDictionary {
             if let title = details.valueForKey("title") as? String{
                 self.title = title;

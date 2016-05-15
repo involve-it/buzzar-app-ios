@@ -50,19 +50,19 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
             if (user.isValid()){
                 self.setLoading(true)
                 
-                ConnectionHandler.Instance.users.register(user, callback: { (success, errorId) in
+                ConnectionHandler.Instance.users.register(user, callback: { (success, errorId, errorMessage, result) in
                     if (success){
-                        ConnectionHandler.Instance.users.login(user.username!, password: user.password!, callback: { (success, reason) in
+                        ConnectionHandler.Instance.users.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
                             if (success){
                                 self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                             } else {
                                 //todo: add error message
-                                self.showAlert("Registration error", message: "Internal error occurred")
+                                self.showAlert("Registration error", message: errorMessage)
                             }
                         })
                     } else {
                         //todo: add error message
-                        self.showAlert("Registration error", message: "Internal error occurred")
+                        self.showAlert("Registration error", message: errorMessage)
                     }
                 })
                 

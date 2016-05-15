@@ -22,7 +22,7 @@
 		7B26B1AF1CD99D25000495EE /* NewSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B1AE1CD99D25000495EE /* NewSearchViewController.swift */; };
 		7B3564911CDAFDCE00012CA9 /* UsersProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3564901CDAFDCE00012CA9 /* UsersProxy.swift */; };
 		7B3565301CDD95F900012CA9 /* CustomPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35652F1CDD95F900012CA9 /* CustomPhoto.swift */; };
-		7B3565321CE1747500012CA9 /* ResponseErrorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565311CE1747500012CA9 /* ResponseErrorHelper.swift */; };
+		7B3565321CE1747500012CA9 /* ResponseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565311CE1747500012CA9 /* ResponseHelper.swift */; };
 		7B3565341CE18A5E00012CA9 /* RegisterUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565331CE18A5E00012CA9 /* RegisterUser.swift */; };
 		7B35653E1CE42F8700012CA9 /* add-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B35653D1CE42F8700012CA9 /* add-30.png */; };
 		7B3565451CE7B99C00012CA9 /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565441CE7B99C00012CA9 /* MessagesTableViewCell.swift */; };
@@ -30,6 +30,7 @@
 		7B35654A1CE7BE0100012CA9 /* DialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565491CE7BE0100012CA9 /* DialogViewController.swift */; };
 		7B35654E1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35654D1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift */; };
 		7B3565501CE7D74400012CA9 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35654F1CE7D74400012CA9 /* NotificationManager.swift */; };
+		7B3565521CE7DF5A00012CA9 /* PostsProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565511CE7DF5A00012CA9 /* PostsProxy.swift */; };
 		7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */; };
 		7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DB1CCC19DE00AD636D /* Post.swift */; };
 		7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */; };
@@ -91,7 +92,7 @@
 		7B26B1AE1CD99D25000495EE /* NewSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSearchViewController.swift; sourceTree = "<group>"; };
 		7B3564901CDAFDCE00012CA9 /* UsersProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersProxy.swift; sourceTree = "<group>"; };
 		7B35652F1CDD95F900012CA9 /* CustomPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPhoto.swift; sourceTree = "<group>"; };
-		7B3565311CE1747500012CA9 /* ResponseErrorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseErrorHelper.swift; sourceTree = "<group>"; };
+		7B3565311CE1747500012CA9 /* ResponseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseHelper.swift; sourceTree = "<group>"; };
 		7B3565331CE18A5E00012CA9 /* RegisterUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterUser.swift; sourceTree = "<group>"; };
 		7B35653D1CE42F8700012CA9 /* add-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-30.png"; sourceTree = "<group>"; };
 		7B3565441CE7B99C00012CA9 /* MessagesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesTableViewCell.swift; sourceTree = "<group>"; };
@@ -99,6 +100,7 @@
 		7B3565491CE7BE0100012CA9 /* DialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogViewController.swift; sourceTree = "<group>"; };
 		7B35654D1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		7B35654F1CE7D74400012CA9 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		7B3565511CE7DF5A00012CA9 /* PostsProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsProxy.swift; sourceTree = "<group>"; };
 		7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewCell.swift; sourceTree = "<group>"; };
 		7BB2A7DB1CCC19DE00AD636D /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionHandler.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				7B3564901CDAFDCE00012CA9 /* UsersProxy.swift */,
+				7B3565511CE7DF5A00012CA9 /* PostsProxy.swift */,
 			);
 			name = Proxies;
 			sourceTree = "<group>";
@@ -249,7 +252,7 @@
 				7B26B19E1CD688B7000495EE /* LocationHandler.swift */,
 				7B26B1A61CD6D72E000495EE /* ImagePickerHandler.swift */,
 				7B35652F1CDD95F900012CA9 /* CustomPhoto.swift */,
-				7B3565311CE1747500012CA9 /* ResponseErrorHelper.swift */,
+				7B3565311CE1747500012CA9 /* ResponseHelper.swift */,
 				7B35654D1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift */,
 				7B35654F1CE7D74400012CA9 /* NotificationManager.swift */,
 			);
@@ -503,10 +506,11 @@
 				7B26B0BD1CD65652000495EE /* KeyboardManager.swift in Sources */,
 				7BB2A7EC1CCC58D600AD636D /* ImageCachingHandler.swift in Sources */,
 				7B3565341CE18A5E00012CA9 /* RegisterUser.swift in Sources */,
+				7B3565521CE7DF5A00012CA9 /* PostsProxy.swift in Sources */,
 				7BB2A8011CCD96C000AD636D /* LogInViewController.swift in Sources */,
 				7BC0A2301CCC160C00DA2824 /* SettingsTableViewController.swift in Sources */,
 				7B3564911CDAFDCE00012CA9 /* UsersProxy.swift in Sources */,
-				7B3565321CE1747500012CA9 /* ResponseErrorHelper.swift in Sources */,
+				7B3565321CE1747500012CA9 /* ResponseHelper.swift in Sources */,
 				7B26B0BB1CD655C2000495EE /* DescriptionViewController.swift in Sources */,
 				7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */,
 				7B26B0951CD568CB000495EE /* MessagesViewController.swift in Sources */,

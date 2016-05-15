@@ -15,5 +15,6 @@ public class NotificationManager{
     
     public enum Name: String{
         case UserUpdated = "shiners:userUpdated"
+        case MyPostsUpdated = "shiners:myPostsUpdated"
     }
 }

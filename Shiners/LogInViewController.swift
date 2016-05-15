@@ -58,13 +58,13 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
         if let userName = txtUsername.text where userName != "", let password = txtPassword.text where password != "" {
             setLoading(true, rightBarButtonItem: self.registerButton)
             
-            ConnectionHandler.Instance.users.login(userName, password: password, callback: { (success, reason) in
+            ConnectionHandler.Instance.users.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in
                 dispatch_async(dispatch_get_main_queue(), {
                     self.setLoading(false, rightBarButtonItem: self.registerButton)
                     if success {
                         self.dismissSelf();
                     } else {
-                        self.showAlert("Log in failed", message: reason)
+                        self.showAlert("Log in failed", message: errorMessage)
                     }
                 })
             })

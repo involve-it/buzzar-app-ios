@@ -50,45 +50,44 @@ public class UsersProxy{
         };
     }
     
-    public func saveUser(user: User, callback: (success: Bool, errorId: Int?) -> Void){
+    public func saveUser(user: User, callback: MeteorMethodCallback){
         Meteor.call("editUser", params: [user.toDictionary()]){ result, error in
             if (error == nil){
-                let errorId = ResponseErrorHelper.getError(result)
+                let errorId = ResponseHelper.getError(result)
                 if errorId == nil {
                     self.currentUser = user
                     NotificationManager.sendNotification(.UserUpdated, object: nil)
                 }
-                callback(success: errorId == nil, errorId: errorId)
+                ResponseHelper.callHandler(result, handler: callback)
             } else {
-                callback(success: false, errorId: nil)
+                callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
             }
         }
     }
     
-    public func register(user: RegisterUser, callback: (success: Bool, errorId: Int?) -> Void){
+    public func register(user: RegisterUser, callback: MeteorMethodCallback){
         Meteor.call("addUser", params: [user.toDictionary()]){ result, error in
             if (error == nil){
-                let errorId = ResponseErrorHelper.getError(result)
-                callback(success: errorId == nil, errorId: errorId)
+                ResponseHelper.callHandler(result, handler: callback)
             } else {
-                callback(success: false, errorId: nil)
+                callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
             }
         }
     }
     
-    public func login(userName: String, password: String, callback: (success: Bool, reason: String?) -> Void){
+    public func login(userName: String, password: String, callback: MeteorMethodCallback){
         Meteor.loginWithUsername(userName, password: password){ result, error in
             if (error == nil){
                 self.getCurrentUser(){ (success) in
                     if (success){
-                        callback(success: true, reason: nil)
+                        callback(success: true, errorId: nil, errorMessage: nil, result: nil)
                     } else {
-                        callback(success: false, reason: "Error retrieveing user")
+                        callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
                     }
                 }
             } else {
                 let reason = error?.reason;
-                callback(success: false, reason: reason);
+                callback(success: false, errorId: nil, errorMessage: reason, result: nil);
             }
         }
     }

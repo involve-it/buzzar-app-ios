@@ -21,6 +21,7 @@ public class ConnectionHandler{
     public var imagesCollection = MeteorCollection<Image>(name: "images");
     
     public var users = UsersProxy.Instance
+    public var posts = PostsProxy.Instance
     
     private var totalDependencies = 2;
     

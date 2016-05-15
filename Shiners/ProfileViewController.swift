@@ -42,7 +42,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     @IBAction func btnSave_Click(sender: AnyObject) {
         self.setLoading(true)
         let user = self.getUser();
-        ConnectionHandler.Instance.users.saveUser(user) { (success, errorId) in
+        ConnectionHandler.Instance.users.saveUser(user) { (success, errorId, errorMessage, result) in
             self.setLoading(false, rightBarButtonItem: self.cancelButton)
             if (success){
                 self.dismissSelf()

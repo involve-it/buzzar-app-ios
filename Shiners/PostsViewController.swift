@@ -23,7 +23,6 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
             let index = self.tableView.indexPathForSelectedRow!.row;
             let post = ConnectionHandler.Instance.postsCollection.itemAtIndex(index);
             vc.post = post;
-            vc.navigationItem.title = "Post Details";
         } else if (segue.identifier == "searchSegue"){
             self.searchViewController = segue.destinationViewController as? NewSearchViewController
             self.searchViewController?.delegate = self
@@ -49,7 +48,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell: PostsTableViewCell = tableView.dequeueReusableCellWithIdentifier("postListItem") as! PostsTableViewCell;
+        let cell: PostsTableViewCell = tableView.dequeueReusableCellWithIdentifier("post") as! PostsTableViewCell;
         let post: Post = ConnectionHandler.Instance.postsCollection.itemAtIndex(indexPath.row);
         
         cell.txtTitle.text = post.title;
