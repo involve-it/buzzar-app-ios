@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="J2u-iD-VGz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VYZ-AR-MXX">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -76,6 +76,46 @@
                                     <outlet property="txtTitle" destination="iPt-wo-fRh" id="kjM-Vr-xfK"/>
                                     <segue destination="sbg-z1-jzp" kind="show" identifier="postDetails" id="KB5-f0-gGA"/>
                                 </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="waitingPosts" id="9HX-aA-e4M">
+                                <rect key="frame" x="0.0" y="179" width="600" height="87"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9HX-aA-e4M" id="88B-oR-zyd">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="86"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aquiring nearby posts..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lh6-Ie-nqt">
+                                            <rect key="frame" x="233" y="36" width="135" height="15"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Lh6-Ie-nqt" firstAttribute="centerX" secondItem="88B-oR-zyd" secondAttribute="centerX" id="MmT-Sj-rmR"/>
+                                        <constraint firstItem="Lh6-Ie-nqt" firstAttribute="centerY" secondItem="88B-oR-zyd" secondAttribute="centerY" id="OUF-qX-jbl"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="noPosts" id="N5a-Lm-xTH">
+                                <rect key="frame" x="0.0" y="266" width="600" height="87"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="N5a-Lm-xTH" id="ORH-km-HDf">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="86"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="There are no posts around you" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z1L-bL-eDJ">
+                                            <rect key="frame" x="214" y="36" width="173" height="15"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Z1L-bL-eDJ" firstAttribute="centerY" secondItem="ORH-km-HDf" secondAttribute="centerY" id="8Se-xE-hMA"/>
+                                        <constraint firstItem="Z1L-bL-eDJ" firstAttribute="centerX" secondItem="ORH-km-HDf" secondAttribute="centerX" id="nVI-zM-3rB"/>
+                                    </constraints>
+                                </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
                         <sections/>
@@ -728,7 +768,7 @@
         <!--My Posts-->
         <scene sceneID="JXK-as-b6o">
             <objects>
-                <navigationController id="xfT-hV-GHx" sceneMemberID="viewController">
+                <navigationController id="xfT-hV-GHx" customClass="NavigationControllerBase" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="My Posts" image="home.png" id="MVK-B5-gI4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="EV9-r6-ZiQ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1693,7 +1733,7 @@
         <!--Messages-->
         <scene sceneID="dyP-FE-CMm">
             <objects>
-                <navigationController id="ew7-Q2-eca" sceneMemberID="viewController">
+                <navigationController id="ew7-Q2-eca" customClass="NavigationControllerBase" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Messages" image="message.png" id="lGM-Kz-ouS"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pEu-bp-eAY">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1715,7 +1755,7 @@
         <!--Settings-->
         <scene sceneID="laq-wS-yL9">
             <objects>
-                <navigationController id="uZU-js-mAI" sceneMemberID="viewController">
+                <navigationController id="uZU-js-mAI" customClass="NavigationControllerBase" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Settings" image="id-card.png" selectedImage="id-card.png" id="vCI-Of-c03"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="hcT-Gt-5v2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1737,7 +1777,7 @@
         <!--Posts-->
         <scene sceneID="b5A-8I-g0e">
             <objects>
-                <navigationController id="BaB-5i-kws" sceneMemberID="viewController">
+                <navigationController id="BaB-5i-kws" customClass="NavigationControllerBase" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Posts" image="list_32.png" id="nYa-Fa-arV"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="mqT-d6-Ybf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1755,41 +1795,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pph-Zz-Hdg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="710" y="104"/>
-        </scene>
-        <!--Launch View Controller-->
-        <scene sceneID="RU2-Q9-2uF">
-            <objects>
-                <viewController id="J2u-iD-VGz" customClass="LaunchViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="QhF-5r-HYZ"/>
-                        <viewControllerLayoutGuide type="bottom" id="JdP-61-bzO"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="pwq-cz-yan">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="iAz-Ig-8aC">
-                                <rect key="frame" x="290" y="290" width="20" height="20"/>
-                            </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading Shiners..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cNS-in-QCW">
-                                <rect key="frame" x="232" y="261" width="137" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="iAz-Ig-8aC" firstAttribute="centerX" secondItem="pwq-cz-yan" secondAttribute="centerX" id="O1A-UG-KDG"/>
-                            <constraint firstItem="iAz-Ig-8aC" firstAttribute="centerY" secondItem="pwq-cz-yan" secondAttribute="centerY" id="U2X-PT-gs7"/>
-                            <constraint firstItem="cNS-in-QCW" firstAttribute="centerX" secondItem="pwq-cz-yan" secondAttribute="centerX" id="UWz-dG-LvB"/>
-                            <constraint firstItem="iAz-Ig-8aC" firstAttribute="top" secondItem="cNS-in-QCW" secondAttribute="bottom" constant="8" id="xkK-iV-BmX"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bXN-Sy-Zeo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1557" y="2099"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="Vcp-2m-IIR">
@@ -1903,6 +1908,6 @@
         <image name="vk.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="AIb-zx-iKR"/>
+        <segue reference="KB5-f0-gGA"/>
     </inferredMetricsTieBreakers>
 </document>

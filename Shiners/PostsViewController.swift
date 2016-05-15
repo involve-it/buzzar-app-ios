@@ -17,6 +17,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
     @IBOutlet weak var txtSearchBox: UITextField!
     @IBOutlet var searchView: UIView!
     var searchViewController: NewSearchViewController?
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
             let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
@@ -31,13 +32,14 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
     
     override func viewDidLoad() {
         self.searchView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
-//        self.txtSearchBox.bounds = CGRectMake(0, 0, 1, self.txtSearchBox.bounds.height)
-//        self.lcTxtSearchBoxLeft.constant = self.view.frame.width;
-        ConnectionHandler.Instance.onConnected {
-            self.tableView.reloadData();
-        }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorConnected), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(forceLayout), name: UIDeviceOrientationDidChangeNotification, object: nil)
+    }
+    
+    @objc private func meteorConnected(notification: NSNotification){
+        self.tableView.reloadData()
     }
     
     func forceLayout(){
@@ -48,33 +50,43 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell: PostsTableViewCell = tableView.dequeueReusableCellWithIdentifier("post") as! PostsTableViewCell;
-        let post: Post = ConnectionHandler.Instance.postsCollection.itemAtIndex(indexPath.row);
-        
-        cell.txtTitle.text = post.title;
-        cell.txtDetails.text = post.description;
-        if let price = post.price where post.price != "" {
-            cell.txtPrice.text = "$\(price)";
+        var cell: UITableViewCell!
+        if ConnectionHandler.Instance.postsCollection.count() == 0 {
+            if ConnectionHandler.Instance.status == .Connected{
+                cell = tableView.dequeueReusableCellWithIdentifier("noPosts")
+            } else {
+                cell = tableView.dequeueReusableCellWithIdentifier("waitingPosts")
+            }
         } else {
-            cell.txtPrice.text = "";
-        }
-        
-        let loading = ImageCachingHandler.Instance.getImage(post.imageIds?[0]) { (image) in
-            dispatch_async(dispatch_get_main_queue(), {
-                if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
-                    cellToUpdate.imgPhoto?.image = image;
-                }
-            })
-        }
-        if loading {
-            cell.imgPhoto?.image = ImageCachingHandler.defaultImage;
+            let postCell: PostsTableViewCell = tableView.dequeueReusableCellWithIdentifier("post") as! PostsTableViewCell;
+            let post: Post = ConnectionHandler.Instance.postsCollection.itemAtIndex(indexPath.row);
+            
+            postCell.txtTitle.text = post.title;
+            postCell.txtDetails.text = post.description;
+            if let price = post.price where post.price != "" {
+                postCell.txtPrice.text = "$\(price)";
+            } else {
+                postCell.txtPrice.text = "";
+            }
+            
+            let loading = ImageCachingHandler.Instance.getImage(post.imageIds?[0]) { (image) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
+                        cellToUpdate.imgPhoto?.image = image;
+                    }
+                })
+            }
+            if loading {
+                postCell.imgPhoto?.image = ImageCachingHandler.defaultImage;
+            }
+            cell = postCell
         }
         
         return cell;
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ConnectionHandler.Instance.postsCollection.count();
+        return max(1, ConnectionHandler.Instance.postsCollection.count());
     }
     
     func didApplyFilter() {

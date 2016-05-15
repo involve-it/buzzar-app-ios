@@ -14,8 +14,7 @@ import SwiftDDP
 public class ConnectionHandler{
     private let url:String = "ws://msg.webhop.org/websocket";
     //private let url:String = "ws://192.168.1.61:3000/websocket";
-    private var status: ConnectionStatus = .NotInitialized;
-    private var handlers = [EventHandler]()
+    public var status: ConnectionStatus = .NotInitialized;
     
     public var postsCollection = PostsCollection();
     public var imagesCollection = MeteorCollection<Image>(name: "images");
@@ -29,6 +28,7 @@ public class ConnectionHandler{
         if self.status != .Connected && self.status != .Connecting{
             self.status = ConnectionStatus.Connecting;
             Meteor.client.logLevel = .Debug;
+            
             Meteor.connect(url) { (session) in
                 var dependenciesResolved = 0;
                 NSLog("Meteor connected");
@@ -66,13 +66,9 @@ public class ConnectionHandler{
     }
     
     private func executeHandlers(count: Int){
-        if (count == self.totalDependencies && self.handlers.count > 0){
-            for eventHandler in self.handlers{
-                eventHandler.handler();
-            }
-            self.handlers.removeAll();
-            
+        if (count == self.totalDependencies){
             self.status = ConnectionStatus.Connected;
+            NotificationManager.sendNotification(NotificationManager.Name.MeteorConnected, object: nil)
         }
     }
     
@@ -86,24 +82,8 @@ public class ConnectionHandler{
     }
     
     
-    private enum ConnectionStatus{
+    public enum ConnectionStatus{
         case NotInitialized, Connecting, Failed, Connected
-    }
-    
-    public func onConnected(handler: ()->Void){
-        if (self.status == .Connected){
-            handler();
-        } else {
-            self.handlers.append(EventHandler(target: handler));
-        }
-    }
-    
-    private class EventHandler{
-        let handler: () ->Void;
-        
-        init(target: () ->Void){
-            self.handler = target;
-        }
     }
 }
 

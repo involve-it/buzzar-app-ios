@@ -7,25 +7,49 @@
 //
 
 import UIKit
+import SystemConfiguration
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    private var reachability: Reachability?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        do {
+            reachability = try Reachability.reachabilityForInternetConnection()
+        } catch{
+            NSLog("Can't create reachability")
+        }
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
+        
+        do {
+            try reachability?.startNotifier()
+        } catch {
+            NSLog("Can't start reachability notifier")
+        }
+        
+        //meteor client handles network mishaps by itself
         ConnectionHandler.Instance.connect()
         
         return true
+    }
+    
+    func reachabilityChanged(notification: NSNotification){
+        guard let reachability = self.reachability else {return}
+        if reachability.isReachable(){
+            NotificationManager.sendNotification(NotificationManager.Name.NetworkReachable, object: nil)
+        } else {
+            NotificationManager.sendNotification(NotificationManager.Name.NetworkUnreachable, object: nil)
+        }
     }
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-        ConnectionHandler.Instance.disconnect()
+        
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
