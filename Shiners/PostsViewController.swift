@@ -9,14 +9,15 @@
 import UIKit
 
 class PostsViewController: UITableViewController, SearchViewControllerDelegate{
-    //private var posts:[Post] = [];
-    //private var imageCache: Dictionary<String, UIImage> = [:]
+    private var posts = [Post]();
     
     @IBOutlet weak var lcTxtSearchBoxLeft: NSLayoutConstraint!
     @IBOutlet var segmFilter: UISegmentedControl!
     @IBOutlet weak var txtSearchBox: UITextField!
     @IBOutlet var searchView: UIView!
     var searchViewController: NewSearchViewController?
+    
+    private var meteorLoaded = false;
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
@@ -33,7 +34,18 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
     override func viewDidLoad() {
         self.searchView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
         
-        if (ConnectionHandler.Instance.postsCollection.count() == 0){
+        if ConnectionHandler.Instance.status == .Connected {
+            self.meteorLoaded = true
+            self.posts = ConnectionHandler.Instance.postsCollection.posts;
+        } else {
+            if CachingHandler.Instance.status != .Complete {
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
+            } else if let posts = CachingHandler.Instance.postsAll {
+                self.posts = posts
+            }
+        }
+        
+        if (self.posts.count == 0){
             //self.tableView.scrollEnabled = false;
             self.tableView.separatorStyle = .None;
         } else {
@@ -47,8 +59,24 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
     }
     
     @objc private func meteorConnected(notification: NSNotification){
+        self.meteorLoaded = true
+        self.posts = ConnectionHandler.Instance.postsCollection.posts
         self.tableView.separatorStyle = .SingleLine;
-        self.tableView.reloadData()
+        ThreadHelper.runOnMainThread { 
+            self.tableView.reloadData()
+        }
+    }
+    
+    func showOfflineData(){
+        if !self.meteorLoaded {
+            if let posts = CachingHandler.Instance.postsAll {
+                self.posts = posts
+                ThreadHelper.runOnMainThread {
+                    self.tableView.separatorStyle = .SingleLine;
+                    self.tableView.reloadData()
+                }
+            }
+        }
     }
     
     func forceLayout(){
@@ -60,7 +88,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell!
-        if ConnectionHandler.Instance.postsCollection.count() == 0 {
+        if posts.count == 0 {
             if ConnectionHandler.Instance.status == .Connected{
                 cell = tableView.dequeueReusableCellWithIdentifier("noPosts")
             } else {
@@ -68,7 +96,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
             }
         } else {
             let postCell: PostsTableViewCell = tableView.dequeueReusableCellWithIdentifier("post") as! PostsTableViewCell;
-            let post: Post = ConnectionHandler.Instance.postsCollection.itemAtIndex(indexPath.row);
+            let post: Post = posts[indexPath.row];
             
             postCell.txtTitle.text = post.title;
             postCell.txtDetails.text = post.descr;
@@ -95,7 +123,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return max(1, ConnectionHandler.Instance.postsCollection.count());
+        return max(1, posts.count);
     }
     
     func didApplyFilter() {

@@ -9,9 +9,7 @@
 import Foundation
 import SwiftDDP
 
-
-
-public class ProfileDetail{
+public class ProfileDetail: NSObject, NSCoding {
     public var id: String?
     public var userId: String?
     public var key: String?
@@ -50,6 +48,30 @@ public class ProfileDetail{
         dict["policy"] = self.policy
         
         return dict;
+    }
+    
+    public required init(coder aDecoder: NSCoder) {
+        self.id = aDecoder.decodeObjectForKey(PropertyKeys.id) as? String
+        self.userId = aDecoder.decodeObjectForKey(PropertyKeys.userId) as? String
+        self.key = aDecoder.decodeObjectForKey(PropertyKeys.key) as? String
+        self.value = aDecoder.decodeObjectForKey(PropertyKeys.value) as? String
+        self.policy = aDecoder.decodeObjectForKey(PropertyKeys.policy) as? String
+    }
+    
+    public func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.id, forKey: PropertyKeys.id)
+        aCoder.encodeObject(self.userId, forKey: PropertyKeys.userId)
+        aCoder.encodeObject(self.key, forKey: PropertyKeys.key)
+        aCoder.encodeObject(self.value, forKey: PropertyKeys.value)
+        aCoder.encodeObject(self.policy, forKey: PropertyKeys.policy)
+    }
+    
+    private struct PropertyKeys{
+        static let id = "id"
+        static let userId = "userId"
+        static let key = "key"
+        static let value = "value"
+        static let policy = "policy"
     }
 }
 

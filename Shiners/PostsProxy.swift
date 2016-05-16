@@ -38,6 +38,8 @@ public class PostsProxy{
                 if let posts = ResponseHelper.callHandlerArray(result, handler: callback) as [Post]? {
                     self.myPosts = posts
                     
+                    CachingHandler.saveObject(posts, path: CachingHandler.postsMy)
+                    
                     if triggerNotification{
                         NotificationManager.sendNotification(.MyPostsUpdated, object: nil)
                     }

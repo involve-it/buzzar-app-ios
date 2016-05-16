@@ -31,6 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             NSLog("Can't start reachability notifier")
         }
         
+        CachingHandler.Instance.restoreAllOfflineData()
+        
         //meteor client handles network mishaps by itself
         ConnectionHandler.Instance.connect()
         

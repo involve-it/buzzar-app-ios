@@ -52,7 +52,7 @@
 		7BB2A8011CCD96C000AD636D /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A8001CCD96C000AD636D /* LogInViewController.swift */; };
 		7BB2A8031CCDA15500AD636D /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A8021CCDA15500AD636D /* RegisterViewController.swift */; };
 		7BB2A8051CCDA58C00AD636D /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A8041CCDA58C00AD636D /* NewPostViewController.swift */; };
-		7BB2A8071CCF0EBC00AD636D /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A8061CCF0EBC00AD636D /* Helper.swift */; };
+		7BB2A8071CCF0EBC00AD636D /* ThreadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A8061CCF0EBC00AD636D /* ThreadHelper.swift */; };
 		7BB2A80B1CCF15D000AD636D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A80A1CCF15D000AD636D /* User.swift */; };
 		7BB2A80F1CCF199D00AD636D /* ProfileDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A80E1CCF199D00AD636D /* ProfileDetail.swift */; };
 		7BB2A8131CD30AD700AD636D /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A8121CD30AD700AD636D /* ProfileViewController.swift */; };
@@ -126,7 +126,7 @@
 		7BB2A8001CCD96C000AD636D /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		7BB2A8021CCDA15500AD636D /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		7BB2A8041CCDA58C00AD636D /* NewPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
-		7BB2A8061CCF0EBC00AD636D /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		7BB2A8061CCF0EBC00AD636D /* ThreadHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadHelper.swift; sourceTree = "<group>"; };
 		7BB2A80A1CCF15D000AD636D /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		7BB2A80E1CCF199D00AD636D /* ProfileDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDetail.swift; sourceTree = "<group>"; };
 		7BB2A8121CD30AD700AD636D /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -264,7 +264,7 @@
 				7B3565531CE8311100012CA9 /* DictionaryInitilizable.swift */,
 				7BB2A7EB1CCC58D600AD636D /* ImageCachingHandler.swift */,
 				7BB2A7F71CCD8EC500AD636D /* Extensions.swift */,
-				7BB2A8061CCF0EBC00AD636D /* Helper.swift */,
+				7BB2A8061CCF0EBC00AD636D /* ThreadHelper.swift */,
 				7B26B0961CD5BF1C000495EE /* ConstantValuesHandler.swift */,
 				7B26B0BC1CD65652000495EE /* KeyboardManager.swift */,
 				7B26B19E1CD688B7000495EE /* LocationHandler.swift */,
@@ -520,7 +520,7 @@
 				7B35654A1CE7BE0100012CA9 /* DialogViewController.swift in Sources */,
 				7B3565541CE8311100012CA9 /* DictionaryInitilizable.swift in Sources */,
 				7BC0A21C1CCC15E700DA2824 /* AppDelegate.swift in Sources */,
-				7BB2A8071CCF0EBC00AD636D /* Helper.swift in Sources */,
+				7BB2A8071CCF0EBC00AD636D /* ThreadHelper.swift in Sources */,
 				7BC0A2311CCC160C00DA2824 /* SearchViewController.swift in Sources */,
 				7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */,
 				7BB2A8151CD5245500AD636D /* Location.swift in Sources */,

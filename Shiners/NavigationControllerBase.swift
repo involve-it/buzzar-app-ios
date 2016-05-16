@@ -13,6 +13,8 @@ public class NavigationControllerBase: UINavigationController{
     private var notificationLabel: UILabel?
     private var notificationToolbarVisible = false
     private var operationsCounter = 0
+    private var connected = true
+    private var dateDisconnected: NSDate?
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,12 +25,19 @@ public class NavigationControllerBase: UINavigationController{
     }
     
     @objc private func networkConnected(notification: NSNotification){
-        if ConnectionHandler.Instance.status == .Connected {
+        var timeInterval: NSTimeInterval = 100
+        if let date = dateDisconnected{
+            timeInterval = NSDate().timeIntervalSinceDate(date)
+        }
+        if ConnectionHandler.Instance.status == .Connected && !self.connected && timeInterval > 1 {
+            self.connected = true
             self.connectionAquired()
         }
     }
     
     @objc private func networkDisconnected(notification: NSNotification){
+        self.dateDisconnected = NSDate()
+        self.connected = false
         self.connectionLost()
     }
     

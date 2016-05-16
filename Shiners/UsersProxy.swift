@@ -28,6 +28,8 @@ public class UsersProxy{
             self.getUser(userId) { (success, errorId, errorMessage, result) in
                 if (success){
                     self.currentUser = result as? User
+                    CachingHandler.saveObject(self.currentUser!, path: CachingHandler.currentUser)
+                    NotificationManager.sendNotification(NotificationManager.Name.UserUpdated, object: nil)
                 }
                 callback(success: success)
             }
@@ -52,6 +54,8 @@ public class UsersProxy{
                 let errorId = ResponseHelper.getErrorId(result)
                 if errorId == nil {
                     self.currentUser = user
+                    CachingHandler.saveObject(self.currentUser!, path: CachingHandler.currentUser)
+                    
                     NotificationManager.sendNotification(.UserUpdated, object: nil)
                 }
                 callback(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: user)
@@ -92,6 +96,7 @@ public class UsersProxy{
     public func logoff(callback: (success: Bool)-> Void){
         Meteor.logout(){ result, error in
             if (error == nil){
+                CachingHandler.deleteAllFiles()
                 self.currentUser = nil;
                 callback(success: true)
             } else {

@@ -17,36 +17,52 @@ class SettingsTableViewController: UITableViewController{
     @IBOutlet weak var imgPhoto: UIImageView!
     @IBOutlet weak var lblLoginOrRegister: UILabel!
     
-    private var userName: String?;
+    private var currentUser: User?
+    private var meteorLoaded = false
     
     override func viewDidLoad() {
         super.viewDidLoad();
         
+        if ConnectionHandler.Instance.status == .Connected {
+            self.userUpdated(nil)
+        } else {
+            if CachingHandler.Instance.status != .Complete {
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
+            } else if let currentUser = CachingHandler.Instance.currentUser {
+                self.currentUser = currentUser
+            }
+        }
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userUpdated), name: NotificationManager.Name.UserUpdated.rawValue, object: nil)
-    }
-    
-    func userUpdated(object: AnyObject?){
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userUpdated), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+        
         self.refreshUser()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated);
-        if let currentUser = ConnectionHandler.Instance.users.currentUser{
-            if (currentUser.username != self.userName){
-                self.refreshUser();
+    func showOfflineData(){
+        if !self.meteorLoaded {
+            self.currentUser = CachingHandler.Instance.currentUser
+            self.refreshUser()
+            ThreadHelper.runOnMainThread {
+                self.tableView.reloadData()
             }
-            self.tableView.reloadData();
-        } else if self.userName != nil{
-            self.refreshUser();
-            self.tableView.reloadData();
+        }
+    }
+    
+    func userUpdated(object: AnyObject?){
+        self.meteorLoaded = true
+        self.currentUser = ConnectionHandler.Instance.users.currentUser
+        self.refreshUser()
+        ThreadHelper.runOnMainThread { 
+            self.tableView.reloadData()
         }
     }
     
     func refreshUser(){
-        if let currentUser = ConnectionHandler.Instance.users.currentUser{
-            self.userName = currentUser.username;
-            if let firstName = ConnectionHandler.Instance.users.currentUser?.getProfileDetailValue(.FirstName),
-                lastName = ConnectionHandler.Instance.users.currentUser?.getProfileDetailValue(.LastName) {
+        if let currentUser = self.currentUser {
+            if let firstName = self.currentUser?.getProfileDetailValue(.FirstName),
+                lastName = self.currentUser?.getProfileDetailValue(.LastName) {
                 lblName.text = "\(firstName) \(lastName)"
             } else {
                 lblName.text = currentUser.username;
@@ -76,7 +92,7 @@ class SettingsTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if (section > 0 && self.userName == nil){
+        if (section > 0 && self.currentUser == nil){
             return 0.1;
         } else {
             return super.tableView(tableView, heightForFooterInSection: section);
@@ -84,7 +100,7 @@ class SettingsTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if (section > 0 && self.userName == nil){
+        if (section > 0 && self.currentUser == nil){
             return 0.1;
         } else {
             return super.tableView(tableView, heightForFooterInSection: section);
@@ -92,7 +108,7 @@ class SettingsTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (section > 0 && self.userName == nil){
+        if (section > 0 && self.currentUser == nil){
             return 0;
         } else {
             return super.tableView(tableView, numberOfRowsInSection: section)
@@ -100,7 +116,7 @@ class SettingsTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if (section > 0 && self.userName == nil){
+        if (section > 0 && self.currentUser == nil){
             return nil;
         } else {
             return super.tableView(tableView, viewForHeaderInSection: section)
@@ -119,7 +135,7 @@ class SettingsTableViewController: UITableViewController{
         if (indexPath.section == 0){
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
-            if (self.userName == nil){
+            if (self.currentUser == nil){
                 let vc = storyboard.instantiateViewControllerWithIdentifier("loginNavigationController")
                 self.presentViewController(vc, animated: true, completion: nil);
             } else {
@@ -132,7 +148,7 @@ class SettingsTableViewController: UITableViewController{
             alertViewController.addAction(UIAlertAction(title: "Log out", style: .Destructive, handler: { (_) in
                 ConnectionHandler.Instance.users.logoff(){ success in
                     if (success){
-                        self.userName = nil;
+                        self.currentUser = nil;
                         self.refreshUser();
                         dispatch_async(dispatch_get_main_queue(), {
                             self.tableView.reloadData();

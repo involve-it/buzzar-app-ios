@@ -11,9 +11,22 @@ import UIKit
 public class MyPostsViewController: UITableViewController{
     var myPosts = [Post]()
     
+    var meteorLoaded = false
+    
     public override func viewDidLoad() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(myPostsUpdated), name: NotificationManager.Name.MyPostsUpdated.rawValue, object: nil)
-        myPosts = ConnectionHandler.Instance.posts.myPosts;
+        
+        if ConnectionHandler.Instance.status == .Connected {
+            self.meteorLoaded = true
+            self.myPosts = ConnectionHandler.Instance.posts.myPosts
+        } else {
+            if CachingHandler.Instance.status != .Complete {
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
+            } else if let posts = CachingHandler.Instance.postsMy {
+                self.myPosts = posts
+            }
+        }
+        
         if (myPosts.count == 0){
             //self.tableView.scrollEnabled = false;
             self.tableView.separatorStyle = .None;
@@ -26,6 +39,18 @@ public class MyPostsViewController: UITableViewController{
         self.refreshControl?.addTarget(self, action: #selector(updateMyPosts), forControlEvents: .ValueChanged)
     }
     
+    func showOfflineData(){
+        if !self.meteorLoaded{
+            if let posts = CachingHandler.Instance.postsMy{
+                self.myPosts = posts
+                ThreadHelper.runOnMainThread {
+                    self.tableView.separatorStyle = .SingleLine;
+                    self.tableView.reloadData()
+                }
+            }
+        }
+    }
+    
     func updateMyPosts(){
         ConnectionHandler.Instance.posts.getMyPosts(false) { (success, errorId, errorMessage, result) in
             self.myPostsUpdated();
@@ -33,10 +58,13 @@ public class MyPostsViewController: UITableViewController{
     }
     
     func myPostsUpdated(){
-        self.refreshControl?.endRefreshing()
+        self.meteorLoaded = true
         self.myPosts = ConnectionHandler.Instance.posts.myPosts;
-        self.tableView.separatorStyle = .SingleLine;
-        self.tableView.reloadData()
+        ThreadHelper.runOnMainThread { 
+            self.refreshControl?.endRefreshing()
+            self.tableView.separatorStyle = .SingleLine;
+            self.tableView.reloadData()
+        }
     }
     
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -51,7 +79,7 @@ public class MyPostsViewController: UITableViewController{
         }
         
         let cell = self.tableView.dequeueReusableCellWithIdentifier("post") as! PostsTableViewCell
-        let post: Post = ConnectionHandler.Instance.postsCollection.itemAtIndex(indexPath.row);
+        let post: Post = self.myPosts[indexPath.row];
         
         cell.txtTitle.text = post.title;
         cell.txtDetails.text = post.descr;

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class User: DictionaryInitializable{
+public class User: NSObject, DictionaryInitializable, NSCoding{
     public var id: String?
     public var createdAt: NSDate?
     public var username: String?
@@ -19,15 +19,20 @@ public class User: DictionaryInitializable{
     public var profileDetails: [ProfileDetail]?
     public var language: String?
     
-    init(){}
+    override init(){
+        super.init()
+    }
     
     init(id: String, fields: NSDictionary?){
-        self.id = id;
+        self.id = id
+        
+        super.init()
         
         self.update(fields);
     }
     
     required public init(fields: NSDictionary?){
+        super.init()
         self.update(fields)
     }
     
@@ -111,5 +116,48 @@ public class User: DictionaryInitializable{
         }
         
         return dict
+    }
+    
+    public required init(coder aDecoder: NSCoder) {
+        super.init()
+        
+        self.id = aDecoder.decodeObjectForKey(PropertyKeys.id) as? String
+        self.createdAt = aDecoder.decodeObjectForKey(PropertyKeys.createdAt) as? NSDate
+        self.username = aDecoder.decodeObjectForKey(PropertyKeys.username) as? String
+        self.email = aDecoder.decodeObjectForKey(PropertyKeys.email) as? String
+        self.imageUrl = aDecoder.decodeObjectForKey(PropertyKeys.imageUrl) as? String
+        if aDecoder.containsValueForKey(PropertyKeys.online){
+            self.online = aDecoder.decodeBoolForKey(PropertyKeys.online)
+        }
+        self.locations = aDecoder.decodeObjectForKey(PropertyKeys.locations) as? [Location]
+        self.profileDetails = aDecoder.decodeObjectForKey(PropertyKeys.profileDetails) as? [ProfileDetail]
+        self.language = aDecoder.decodeObjectForKey(PropertyKeys.language) as? String
+    }
+    
+    public func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(self.id, forKey: PropertyKeys.id)
+        aCoder.encodeObject(self.createdAt, forKey: PropertyKeys.createdAt)
+        aCoder.encodeObject(self.username, forKey: PropertyKeys.username)
+        aCoder.encodeObject(self.email, forKey: PropertyKeys.email)
+        aCoder.encodeObject(self.imageUrl, forKey: PropertyKeys.imageUrl)
+        if let online = self.online{
+            aCoder.encodeBool(online, forKey: PropertyKeys.online)
+        }
+        aCoder.encodeObject(self.locations, forKey: PropertyKeys.locations)
+        aCoder.encodeObject(self.profileDetails, forKey: PropertyKeys.profileDetails)
+        aCoder.encodeObject(self.language, forKey: PropertyKeys.language)
+        
+    }
+    
+    private struct PropertyKeys{
+        static let id = "id"
+        static let createdAt = "createdAt"
+        static let username = "username"
+        static let email = "email"
+        static let imageUrl = "imageUrl"
+        static let online = "online"
+        static let locations = "locations"
+        static let profileDetails = "profileDetails"
+        static let language = "language"
     }
 }

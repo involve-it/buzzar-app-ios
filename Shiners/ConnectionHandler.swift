@@ -27,7 +27,7 @@ public class ConnectionHandler{
     public func connect() {
         if self.status != .Connected && self.status != .Connecting{
             self.status = ConnectionStatus.Connecting;
-            Meteor.client.logLevel = .Debug;
+            //Meteor.client.logLevel = .Debug;
             
             Meteor.connect(url) { (session) in
                 var dependenciesResolved = 0;
@@ -46,8 +46,13 @@ public class ConnectionHandler{
                 }
                 
                 Meteor.subscribe("posts-all"){
-                    //let array = NSArray(array: self.postsCollection.posts)
-                    //CachingHandler.saveObjects(array, path: "postsall")
+                    //saving posts for offline use
+                    ThreadHelper.runOnBackgroundThread(){
+                        if !CachingHandler.saveObject(self.postsCollection.posts, path: CachingHandler.postsAll){
+                            NSLog("Unable to archive posts")
+                        }
+                    }
+                    
                     NSLog("posts-all subscribed");
                     dependenciesResolved += 1;
                     self.executeHandlers(dependenciesResolved);

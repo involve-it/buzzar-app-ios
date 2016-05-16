@@ -7,7 +7,7 @@
 //
 
 import Foundation
-public class Post: DictionaryInitializable, NSCoding{
+public class Post: NSObject, DictionaryInitializable, NSCoding{
     public var id: String?;
     public var title: String?;
     public var imageIds: [String]?;
@@ -17,14 +17,14 @@ public class Post: DictionaryInitializable, NSCoding{
     public var seenToday: String?;
     
     init(id: String, fields: NSDictionary?){
-        //super.init()
+        super.init()
         self.id = id;
         
         self.update(fields);
     }
     
     public required init(fields: NSDictionary?){
-        //super.init()
+        super.init()
         self.update(fields);
     }
     
@@ -72,7 +72,7 @@ public class Post: DictionaryInitializable, NSCoding{
         self.seenTotal = aDecoder.decodeObjectForKey(PropertyKey.seenTotal) as? String
         self.seenToday = aDecoder.decodeObjectForKey(PropertyKey.seenToday) as? String
         
-        //super.init()
+        super.init()
         //self.imageIds = aDecoder.decodeObjectForKey(PropertyKey.imageIds) as? [String]
     }
     
