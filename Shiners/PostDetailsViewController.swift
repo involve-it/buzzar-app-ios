@@ -25,7 +25,7 @@ public class PostDetailsViewController: UITableViewController{
     }
     public override func viewDidLoad() {
         self.navigationItem.title = post?.title;
-        self.txtDetails.text = post?.description;
+        self.txtDetails.text = post?.descr;
         self.txtDetails.sizeToFit();
         var views = "";
         if let seenTotal = post?.seenTotal{
@@ -58,7 +58,7 @@ public class PostDetailsViewController: UITableViewController{
                 return 0;
             }
         } else if (indexPath.row == 2){
-            if let height = post?.description?.heightWithConstrainedWidth(self.view.frame.width - 16, font: self.txtDetails.font){
+            if let height = post?.descr?.heightWithConstrainedWidth(self.view.frame.width - 16, font: self.txtDetails.font){
                 return max(height, 44);
             } else {
                 return 0

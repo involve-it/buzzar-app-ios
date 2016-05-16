@@ -46,6 +46,8 @@ public class ConnectionHandler{
                 }
                 
                 Meteor.subscribe("posts-all"){
+                    //let array = NSArray(array: self.postsCollection.posts)
+                    //CachingHandler.saveObjects(array, path: "postsall")
                     NSLog("posts-all subscribed");
                     dependenciesResolved += 1;
                     self.executeHandlers(dependenciesResolved);

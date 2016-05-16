@@ -35,6 +35,7 @@ public class MyPostsViewController: UITableViewController{
     func myPostsUpdated(){
         self.refreshControl?.endRefreshing()
         self.myPosts = ConnectionHandler.Instance.posts.myPosts;
+        self.tableView.separatorStyle = .SingleLine;
         self.tableView.reloadData()
     }
     
@@ -53,7 +54,7 @@ public class MyPostsViewController: UITableViewController{
         let post: Post = ConnectionHandler.Instance.postsCollection.itemAtIndex(indexPath.row);
         
         cell.txtTitle.text = post.title;
-        cell.txtDetails.text = post.description;
+        cell.txtDetails.text = post.descr;
         if let price = post.price where post.price != "" {
             cell.txtPrice.text = "$\(price)";
         } else {

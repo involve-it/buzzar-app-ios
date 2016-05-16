@@ -35,6 +35,7 @@
 		7B3565591CE922DE00012CA9 /* NavigationControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565581CE922DE00012CA9 /* NavigationControllerBase.swift */; };
 		7B35655B1CE9259E00012CA9 /* MessagesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35655A1CE9259E00012CA9 /* MessagesProvider.swift */; };
 		7B35655F1CE92C1F00012CA9 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35655E1CE92C1F00012CA9 /* Reachability.swift */; };
+		7B3565611CE93E0800012CA9 /* CachingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565601CE93E0800012CA9 /* CachingHandler.swift */; };
 		7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */; };
 		7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DB1CCC19DE00AD636D /* Post.swift */; };
 		7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */; };
@@ -108,6 +109,7 @@
 		7B3565581CE922DE00012CA9 /* NavigationControllerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationControllerBase.swift; sourceTree = "<group>"; };
 		7B35655A1CE9259E00012CA9 /* MessagesProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesProvider.swift; sourceTree = "<group>"; };
 		7B35655E1CE92C1F00012CA9 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		7B3565601CE93E0800012CA9 /* CachingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachingHandler.swift; sourceTree = "<group>"; };
 		7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewCell.swift; sourceTree = "<group>"; };
 		7BB2A7DB1CCC19DE00AD636D /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionHandler.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 				7B35654F1CE7D74400012CA9 /* NotificationManager.swift */,
 				7B35655A1CE9259E00012CA9 /* MessagesProvider.swift */,
 				7B35655E1CE92C1F00012CA9 /* Reachability.swift */,
+				7B3565601CE93E0800012CA9 /* CachingHandler.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -503,6 +506,7 @@
 			files = (
 				7BB2A7E11CCC217C00AD636D /* PostsCollection.swift in Sources */,
 				7BB2A7F41CCD17A000AD636D /* ImagesScrollViewDelegate.swift in Sources */,
+				7B3565611CE93E0800012CA9 /* CachingHandler.swift in Sources */,
 				7B35655B1CE9259E00012CA9 /* MessagesProvider.swift in Sources */,
 				7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */,
 				7B3565451CE7B99C00012CA9 /* MessagesTableViewCell.swift in Sources */,

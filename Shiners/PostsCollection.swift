@@ -10,7 +10,7 @@ import Foundation
 import SwiftDDP
 
 public class PostsCollection:AbstractCollection{
-    var posts = [Post]()
+    public var posts = [Post]()
     
     init() {
         super.init(name: "posts");

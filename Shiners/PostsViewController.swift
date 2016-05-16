@@ -33,12 +33,21 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
     override func viewDidLoad() {
         self.searchView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
         
+        if (ConnectionHandler.Instance.postsCollection.count() == 0){
+            //self.tableView.scrollEnabled = false;
+            self.tableView.separatorStyle = .None;
+        } else {
+            //self.tableView.scrollEnabled = true;
+            self.tableView.separatorStyle = .SingleLine;
+        }
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorConnected), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(forceLayout), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
     @objc private func meteorConnected(notification: NSNotification){
+        self.tableView.separatorStyle = .SingleLine;
         self.tableView.reloadData()
     }
     
@@ -62,7 +71,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
             let post: Post = ConnectionHandler.Instance.postsCollection.itemAtIndex(indexPath.row);
             
             postCell.txtTitle.text = post.title;
-            postCell.txtDetails.text = post.description;
+            postCell.txtDetails.text = post.descr;
             if let price = post.price where post.price != "" {
                 postCell.txtPrice.text = "$\(price)";
             } else {

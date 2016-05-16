@@ -7,22 +7,24 @@
 //
 
 import Foundation
-public class Post: DictionaryInitializable{
+public class Post: DictionaryInitializable, NSCoding{
     public var id: String?;
     public var title: String?;
     public var imageIds: [String]?;
-    public var description: String?;
+    public var descr: String?;
     public var price: String?;
     public var seenTotal: String?;
     public var seenToday: String?;
     
     init(id: String, fields: NSDictionary?){
+        //super.init()
         self.id = id;
         
         self.update(fields);
     }
     
     public required init(fields: NSDictionary?){
+        //super.init()
         self.update(fields);
     }
     
@@ -36,7 +38,7 @@ public class Post: DictionaryInitializable{
                 self.title = title;
             }
             if let description = details.valueForKey("description") as? String{
-                self.description = description;
+                self.descr = description;
             }
             if let photos = details.valueForKey("photos") as? NSArray{
                 self.imageIds = photos as? [String];
@@ -59,5 +61,40 @@ public class Post: DictionaryInitializable{
                 self.seenToday = "0"
             }
         }
+    }
+    
+    @objc public required init(coder aDecoder: NSCoder) {
+        
+        self.id = aDecoder.decodeObjectForKey(PropertyKey.id) as? String
+        self.title = aDecoder.decodeObjectForKey(PropertyKey.title) as? String
+        self.descr = aDecoder.decodeObjectForKey(PropertyKey.description) as? String
+        self.price = aDecoder.decodeObjectForKey(PropertyKey.price) as? String
+        self.seenTotal = aDecoder.decodeObjectForKey(PropertyKey.seenTotal) as? String
+        self.seenToday = aDecoder.decodeObjectForKey(PropertyKey.seenToday) as? String
+        
+        //super.init()
+        //self.imageIds = aDecoder.decodeObjectForKey(PropertyKey.imageIds) as? [String]
+    }
+    
+    @objc public func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(id, forKey: PropertyKey.id)
+        aCoder.encodeObject(title, forKey: PropertyKey.title)
+        /*if imageIds != nil{
+            aCoder.encodeObject(imageIds! as NSArray, forKey: PropertyKey.imageIds)
+        }*/
+        aCoder.encodeObject(descr, forKey: PropertyKey.description)
+        aCoder.encodeObject(price, forKey: PropertyKey.price)
+        aCoder.encodeObject(seenTotal, forKey: PropertyKey.seenTotal)
+        aCoder.encodeObject(seenToday, forKey: PropertyKey.seenToday)
+    }
+    
+    private struct PropertyKey{
+        static let id = "id"
+        static let title = "title"
+        static let imageIds = "imageIds"
+        static let description = "description"
+        static let price = "price"
+        static let seenTotal = "seenTotal"
+        static let seenToday = "seenToday"
     }
 }
