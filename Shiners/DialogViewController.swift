@@ -28,6 +28,11 @@ public class DialogViewController : JSQMessagesViewController{
         self.populateDumbMessages()
     }
     
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        self.keyboardController.textView.becomeFirstResponder()
+    }
+    
     public override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
         return messages[indexPath.item]
     }
