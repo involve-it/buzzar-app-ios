@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         CachingHandler.Instance.restoreAllOfflineData()
+        ImageCachingHandler.Instance.initLocalCache()
         
         //meteor client handles network mishaps by itself
         ConnectionHandler.Instance.connect()
