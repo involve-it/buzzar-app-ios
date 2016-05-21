@@ -30,6 +30,7 @@ class SettingsTableViewController: UITableViewController{
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
             } else if let currentUser = CachingHandler.Instance.currentUser {
                 self.currentUser = currentUser
+                self.refreshUser()
             }
         }
         
