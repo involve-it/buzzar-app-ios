@@ -14,6 +14,7 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
     
     private let registerButton = UIBarButtonItem(title: "Register", style: .Plain, target: nil, action: #selector(btnRegister_Click));
     
+    
     @IBAction func btnRegister_Click(sender: AnyObject) {
         let presentingViewController = self.presentingViewController;
         self.navigationController?.dismissViewControllerAnimated(true, completion: { 
@@ -63,19 +64,30 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
         }
     }
     
+    func processLogin(){
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        dispatch_async(dispatch_get_main_queue(), {
+            self.setLoading(false, rightBarButtonItem: self.registerButton)
+            if AccountHandler.Instance.currentUser != nil {
+                self.dismissSelf();
+            } else {
+                self.showAlert("Log in failed", message: ResponseHelper.getDefaultErrorMessage())
+            }
+        })
+    }
+    
     func login(){
         if let userName = txtUsername.text where userName != "", let password = txtPassword.text where password != "" {
             setLoading(true, rightBarButtonItem: self.registerButton)
             
-            ConnectionHandler.Instance.users.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.setLoading(false, rightBarButtonItem: self.registerButton)
-                    if success {
-                        self.dismissSelf();
-                    } else {
+            AccountHandler.Instance.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in
+                if success {
+                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+                } else {
+                    ThreadHelper.runOnMainThread({ 
                         self.showAlert("Log in failed", message: errorMessage)
-                    }
-                })
+                    })
+                }
             })
         }
     }

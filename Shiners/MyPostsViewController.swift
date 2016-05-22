@@ -14,11 +14,15 @@ public class MyPostsViewController: UITableViewController{
     var meteorLoaded = false
     
     public override func viewDidLoad() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(myPostsUpdated), name: NotificationManager.Name.MyPostsUpdated.rawValue, object: nil)
-        
-        if ConnectionHandler.Instance.status == .Connected {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(myPostsUpdated), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        self.myPosts = [Post]()
+        if AccountHandler.Instance.status == .Completed {
             self.meteorLoaded = true
-            self.myPosts = ConnectionHandler.Instance.posts.myPosts
+            if let myPosts = AccountHandler.Instance.myPosts{
+                self.myPosts = myPosts
+            } else {
+                self.myPosts = [Post]()
+            }
         } else {
             if CachingHandler.Instance.status != .Complete {
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
@@ -52,15 +56,19 @@ public class MyPostsViewController: UITableViewController{
     }
     
     func updateMyPosts(){
-        ConnectionHandler.Instance.posts.getMyPosts(false) { (success, errorId, errorMessage, result) in
+        AccountHandler.Instance.updateMyPosts { (success, errorId, errorMessage, result) in
             self.myPostsUpdated();
         }
     }
     
     func myPostsUpdated(){
         self.meteorLoaded = true
-        self.myPosts = ConnectionHandler.Instance.posts.myPosts;
-        ThreadHelper.runOnMainThread { 
+        if let myPosts = AccountHandler.Instance.myPosts{
+            self.myPosts = myPosts
+        } else {
+            self.myPosts = [Post]()
+        }
+        ThreadHelper.runOnMainThread {
             self.refreshControl?.endRefreshing()
             self.tableView.separatorStyle = .SingleLine;
             self.tableView.reloadData()
@@ -73,8 +81,10 @@ public class MyPostsViewController: UITableViewController{
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (myPosts.count == 0){
-            if (indexPath.row == 0){
-                return self.tableView.dequeueReusableCellWithIdentifier("noPosts")!
+            if ConnectionHandler.Instance.status == .Connected{
+                return tableView.dequeueReusableCellWithIdentifier("noPosts")!
+            } else {
+                return tableView.dequeueReusableCellWithIdentifier("waitingPosts")!
             }
         }
         
@@ -89,7 +99,7 @@ public class MyPostsViewController: UITableViewController{
             cell.txtPrice.text = "";
         }
         
-        let loading = ImageCachingHandler.Instance.getImage(post.imageIds?[0]) { (image) in
+        let loading = ImageCachingHandler.Instance.getImageFromUrl(post.getMainPhoto()?.original) { (image) in
             dispatch_async(dispatch_get_main_queue(), {
                 if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
                     cellToUpdate.imgPhoto?.image = image;

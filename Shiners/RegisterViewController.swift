@@ -53,26 +53,36 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
         self.txtUsername.becomeFirstResponder();
     }
     
+    @objc private func processLogin(){
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        dispatch_async(dispatch_get_main_queue(), {
+            self.setLoading(false)
+            if AccountHandler.Instance.currentUser != nil {
+                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+            } else {
+                self.showAlert("Registration error", message: ResponseHelper.getDefaultErrorMessage())
+            }
+        })
+
+    }
+    
     private func register(){
         if self.txtPassword.text == self.txtConfirmPassword.text {
             let user = RegisterUser(username: self.txtUsername.text, email: self.txtEmail.text, password: self.txtPassword.text);
             if (user.isValid()){
                 self.setLoading(true)
                 
-                ConnectionHandler.Instance.users.register(user, callback: { (success, errorId, errorMessage, result) in
+                AccountHandler.Instance.register(user, callback: { (success, errorId, errorMessage, result) in
                     if (success){
-                        ConnectionHandler.Instance.users.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
-                            self.setLoading(false)
+                        AccountHandler.Instance.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
                             if (success){
-                                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
                             } else {
-                                //todo: add error message
                                 self.showAlert("Registration error", message: errorMessage)
                             }
                         })
                     } else {
                         self.setLoading(false)
-                        //todo: add error message
                         self.showAlert("Registration error", message: errorMessage)
                     }
                 })

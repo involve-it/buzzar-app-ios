@@ -22,6 +22,8 @@ public class NavigationControllerBase: UINavigationController{
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(networkConnected), name: NotificationManager.Name.NetworkReachable.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(networkDisconnected), name: NotificationManager.Name.NetworkUnreachable.rawValue, object: nil)
+        
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(forceLayout), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
     @objc private func networkConnected(notification: NSNotification){
@@ -39,6 +41,16 @@ public class NavigationControllerBase: UINavigationController{
         self.dateDisconnected = NSDate()
         self.connected = false
         self.connectionLost()
+    }
+    
+    @objc private func forceLayout(notification: NSNotification){
+        var heightOffset: CGFloat = -15
+        if self.notificationToolbarVisible {
+            heightOffset = 1
+        }
+        let frame = CGRectMake(0, self.navigationBar.frame.height - heightOffset, self.view.frame.width, 15)
+        notificationToolbar!.frame = frame
+        self.navigationBar.layoutSubviews()
     }
     
     private func setupNotificationToolbar(){

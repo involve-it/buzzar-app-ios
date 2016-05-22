@@ -30,7 +30,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     }
     
     
-    public func setupScrollView(ids: [String]?) {
+    public func setupScrollView(imageUrls: [String]?) {
         self.photos = []
         self.scrollView.subviews.forEach { (view) in
             view.removeFromSuperview()
@@ -39,10 +39,10 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
         
         //svImages.frame = CGRectMake(0, 0, self.view.frame.size.width, 260)
         var index = 0;
-        if let imageIds = ids{
-            if (imageIds.count > 0){
-                for imageId in imageIds{
-                    self.addImageToScrollView(imageId, index: index)
+        if let urls = imageUrls{
+            if (urls.count > 0){
+                for url in urls{
+                    self.addImageToScrollView(url, index: index)
                     index+=1;
                 }
             } else {
@@ -62,26 +62,24 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
         self.scrollView.addGestureRecognizer(gestureRecognizer)
     }
     
-    private func addImageToScrollView(id: String?, index: Int){
+    private func addImageToScrollView(imageUrl: String?, index: Int){
         //add default - it will be updated later
         self.addPhoto(ImageCachingHandler.defaultImage!, index: index)
         
         let imageView = UIImageView(frame: CGRectMake( CGFloat(index) * mainView.frame.size.width, 0, mainView.frame.size.width, scrollView.frame.size.height));
         imageView.contentMode = .ScaleAspectFit;
         imageView.clipsToBounds = true;
-        if let imageId = id{
-            let loading = ImageCachingHandler.Instance.getImage(imageId, callback: { (image) in
-                dispatch_async(dispatch_get_main_queue(), {
-                    imageView.image = image;
-                    self.updatePhoto(image!, index: index)
-                })
+        
+        let loading = ImageCachingHandler.Instance.getImageFromUrl(imageUrl, callback: { (image) in
+            dispatch_async(dispatch_get_main_queue(), {
+                imageView.image = image;
+                self.updatePhoto(image!, index: index)
             })
-            if loading {
-                imageView.image = ImageCachingHandler.defaultImage;
-            }
-        } else {
+        })
+        if loading {
             imageView.image = ImageCachingHandler.defaultImage;
         }
+        
         scrollView.addSubview(imageView);
     }
     

@@ -48,6 +48,10 @@ class CachingHandler{
         return deleteFile(postsAll) && deleteFile(postsMy) && deleteFile(currentUser)
     }
     
+    class func deleteAllPrivateFiles() -> Bool {
+        return deleteFile(postsMy) && deleteFile(currentUser)
+    }
+    
     func restoreAllOfflineData(){
         ThreadHelper.runOnBackgroundThread { 
             self.postsAll = CachingHandler.loadObjects(CachingHandler.postsAll)

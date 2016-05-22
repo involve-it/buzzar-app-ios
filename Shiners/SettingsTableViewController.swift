@@ -19,12 +19,13 @@ class SettingsTableViewController: UITableViewController{
     
     private var currentUser: User?
     private var meteorLoaded = false
+    private var accountDetailsPending = false
     
     override func viewDidLoad() {
         super.viewDidLoad();
         
         if ConnectionHandler.Instance.status == .Connected {
-            self.userUpdated(nil)
+            self.accountUpdated(nil)
         } else {
             if CachingHandler.Instance.status != .Complete {
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
@@ -34,9 +35,9 @@ class SettingsTableViewController: UITableViewController{
             }
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userUpdated), name: NotificationManager.Name.UserUpdated.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(accountUpdated), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userUpdated), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userUpdated), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
     }
     
     func showOfflineData(){
@@ -49,12 +50,19 @@ class SettingsTableViewController: UITableViewController{
         }
     }
     
-    func userUpdated(object: AnyObject?){
+    func accountUpdated(object: AnyObject?){
         self.meteorLoaded = true
-        self.currentUser = ConnectionHandler.Instance.users.currentUser
+        self.currentUser = AccountHandler.Instance.currentUser
         self.refreshUser()
         ThreadHelper.runOnMainThread { 
             self.tableView.reloadData()
+            
+            if self.accountDetailsPending {
+                self.setLoading(false)
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewControllerWithIdentifier("profileController")
+                self.navigationController?.pushViewController(vc, animated: true);
+            }
         }
     }
     
@@ -138,14 +146,19 @@ class SettingsTableViewController: UITableViewController{
                 let vc = storyboard.instantiateViewControllerWithIdentifier("loginNavigationController")
                 self.presentViewController(vc, animated: true, completion: nil);
             } else {
-                let vc = storyboard.instantiateViewControllerWithIdentifier("profileController")
-                self.navigationController?.pushViewController(vc, animated: true);
+                if AccountHandler.Instance.status != .Completed {
+                    self.setLoading(true)
+                    self.accountDetailsPending = true
+                } else {
+                    let vc = storyboard.instantiateViewControllerWithIdentifier("profileController")
+                    self.navigationController?.pushViewController(vc, animated: true);
+                }
             }
         }
         else if (indexPath.section == 2){
             let alertViewController = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: .ActionSheet)
             alertViewController.addAction(UIAlertAction(title: "Log out", style: .Destructive, handler: { (_) in
-                ConnectionHandler.Instance.users.logoff(){ success in
+                AccountHandler.Instance.logoff(){ success in
                     if (success){
                         self.currentUser = nil;
                         self.refreshUser();

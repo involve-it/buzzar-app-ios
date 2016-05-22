@@ -42,7 +42,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     @IBAction func btnSave_Click(sender: AnyObject) {
         self.setLoading(true)
         let user = self.getUser();
-        ConnectionHandler.Instance.users.saveUser(user) { (success, errorId, errorMessage, result) in
+        AccountHandler.Instance.saveUser(user) { (success, errorMessage) in
             self.setLoading(false, rightBarButtonItem: self.cancelButton)
             if (success){
                 self.dismissSelf()
@@ -53,7 +53,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     }
     
     private func getUser() -> User{
-        let user = ConnectionHandler.Instance.users.currentUser!;
+        let user = AccountHandler.Instance.currentUser!;
         user.setProfileDetail(.FirstName, value: self.txtFirstName.text)
         user.setProfileDetail(.LastName, value: self.txtLastName.text)
         user.setProfileDetail(.City, value: self.txtLocation.text)
@@ -79,8 +79,8 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
         self.txtLocation.delegate = self;
         self.txtPhoneNumber.delegate = self;
         self.txtSkype.delegate = self;
-        if self.currentUser == nil || self.currentUser! !== ConnectionHandler.Instance.users.currentUser{
-            self.currentUser = ConnectionHandler.Instance.users.currentUser
+        if self.currentUser == nil || self.currentUser! !== AccountHandler.Instance.currentUser{
+            self.currentUser = AccountHandler.Instance.currentUser
             self.refreshUserData()
         }
     }

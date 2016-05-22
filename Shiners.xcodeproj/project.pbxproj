@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B0B316D1CF10A8200029458 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0B316C1CF10A8200029458 /* Photo.swift */; };
+		7B0B31711CF127A800029458 /* AccountHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0B31701CF127A700029458 /* AccountHandler.swift */; };
 		7B26B08E1CD564E1000495EE /* MyPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B08D1CD564E1000495EE /* MyPostsViewController.swift */; };
 		7B26B0921CD567D9000495EE /* list_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B26B0911CD567D9000495EE /* list_32.png */; };
 		7B26B0951CD568CB000495EE /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B0941CD568CB000495EE /* MessagesViewController.swift */; };
@@ -81,6 +83,8 @@
 /* Begin PBXFileReference section */
 		1F147896ADC1A887A2D48487 /* Pods-Shiners.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shiners.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Shiners/Pods-Shiners.debug.xcconfig"; sourceTree = "<group>"; };
 		643ABEB340B81A6AB08AFEC7 /* Pods_Shiners.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shiners.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B0B316C1CF10A8200029458 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		7B0B31701CF127A700029458 /* AccountHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountHandler.swift; sourceTree = "<group>"; };
 		7B26B08D1CD564E1000495EE /* MyPostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPostsViewController.swift; sourceTree = "<group>"; };
 		7B26B0911CD567D9000495EE /* list_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_32.png; sourceTree = "<group>"; };
 		7B26B0941CD568CB000495EE /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
@@ -240,6 +244,7 @@
 				7BB2A7E21CCC21A200AD636D /* Objects */,
 				7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */,
 				7BB2A7E01CCC217C00AD636D /* PostsCollection.swift */,
+				7B0B31701CF127A700029458 /* AccountHandler.swift */,
 			);
 			name = Data;
 			sourceTree = "<group>";
@@ -254,6 +259,7 @@
 				7BB2A8141CD5245500AD636D /* Location.swift */,
 				7B3565331CE18A5E00012CA9 /* RegisterUser.swift */,
 				7B3565471CE7BB7C00012CA9 /* Dialog.swift */,
+				7B0B316C1CF10A8200029458 /* Photo.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -504,6 +510,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B0B316D1CF10A8200029458 /* Photo.swift in Sources */,
 				7BB2A7E11CCC217C00AD636D /* PostsCollection.swift in Sources */,
 				7BB2A7F41CCD17A000AD636D /* ImagesScrollViewDelegate.swift in Sources */,
 				7B3565611CE93E0800012CA9 /* CachingHandler.swift in Sources */,
@@ -549,6 +556,7 @@
 				7BB2A7F81CCD8EC500AD636D /* Extensions.swift in Sources */,
 				7BB2A8051CCDA58C00AD636D /* NewPostViewController.swift in Sources */,
 				7B3565481CE7BB7C00012CA9 /* Dialog.swift in Sources */,
+				7B0B31711CF127A800029458 /* AccountHandler.swift in Sources */,
 				7BB2A80B1CCF15D000AD636D /* User.swift in Sources */,
 				7B26B1A31CD694A0000495EE /* StaticLocationViewController.swift in Sources */,
 			);

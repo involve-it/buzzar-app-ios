@@ -23,7 +23,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
         if (segue.identifier == "postDetails"){
             let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
             let index = self.tableView.indexPathForSelectedRow!.row;
-            let post = ConnectionHandler.Instance.postsCollection.itemAtIndex(index);
+            let post = posts[index];
             vc.post = post;
         } else if (segue.identifier == "searchSegue"){
             self.searchViewController = segue.destinationViewController as? NewSearchViewController
@@ -106,7 +106,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
                 postCell.txtPrice.text = "";
             }
             
-            let loading = ImageCachingHandler.Instance.getImage(post.imageIds?[0]) { (image) in
+            let loading = ImageCachingHandler.Instance.getImageFromUrl(post.getMainPhoto()?.original) { (image) in
                 dispatch_async(dispatch_get_main_queue(), {
                     if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
                         cellToUpdate.imgPhoto?.image = image;

@@ -49,7 +49,7 @@ public class ImageCachingHandler{
     }
     
     //will be deprecated after server refactoring
-    public func getImage(imageId: String?, callback: (image: UIImage?) -> Void) -> Bool{
+    /*public func getImage(imageId: String?, callback: (image: UIImage?) -> Void) -> Bool{
         var res = false;
         if let id = imageId {
             if let image = self.get(id){
@@ -79,44 +79,48 @@ public class ImageCachingHandler{
             callback(image: ImageCachingHandler.defaultImage);
         }
         return res;
-    }
+    }*/
     
-    public func getImageFromUrl (url: String, defaultImage: UIImage? = ImageCachingHandler.defaultImage, callback: (image: UIImage?) ->Void) -> Bool{
-        var res = false;
-        if let image = self.get(url){
-            NSLog("From memory cache: \(url)")
-            callback(image: image);
-        } else if self.failedUrls.contains(url) {
-            NSLog("Failed URL: \(url)")
-            callback(image: defaultImage)
-        } else if self.savedImages.keys.contains(url) {
-            ThreadHelper.runOnBackgroundThread({
-                callback(image: self.loadImageFromLocalCache(url))
-            })
-        } else {
-            let nsUrl = NSURL(string: url);
-            res = true;
-            NSLog("Downloading from url: \(url)")
-            NSURLSession.sharedSession().dataTaskWithURL(nsUrl!){data, response, error in
-                if (error == nil && data != nil){
-                    if let image = UIImage(data: data!){
-                        self.add(url, image: image);
-                        self.saveImageToLocalCache(url, image: image)
-                        
-                        callback(image: image);
+    public func getImageFromUrl (imageUrl: String?, defaultImage: UIImage? = ImageCachingHandler.defaultImage, callback: (image: UIImage?) ->Void) -> Bool{
+        var loading = false;
+        if let url = imageUrl?.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) {
+            if let image = self.get(url){
+                NSLog("From memory cache: \(url)")
+                callback(image: image);
+            } else if self.failedUrls.contains(url) {
+                NSLog("Failed URL: \(url)")
+                callback(image: defaultImage)
+            } else if self.savedImages.keys.contains(url) {
+                ThreadHelper.runOnBackgroundThread({
+                    callback(image: self.loadImageFromLocalCache(url))
+                })
+            } else {
+                let nsUrl = NSURL(string: url);
+                loading = true;
+                NSLog("Downloading from url: \(url)")
+                NSURLSession.sharedSession().dataTaskWithURL(nsUrl!){data, response, error in
+                    if (error == nil && data != nil){
+                        if let image = UIImage(data: data!){
+                            self.add(url, image: image);
+                            self.saveImageToLocalCache(url, image: image)
+                            
+                            callback(image: image);
+                        } else {
+                            self.failedUrls.append(url)
+                            callback(image: defaultImage);
+                        }
                     } else {
+                        NSLog("Error: \(error)");
                         self.failedUrls.append(url)
                         callback(image: defaultImage);
                     }
-                } else {
-                    NSLog("Error: \(error)");
-                    self.failedUrls.append(url)
-                    callback(image: defaultImage);
-                }
-            }.resume()
+                }.resume()
+            }
+        } else {
+            callback(image: defaultImage)
         }
-            
-        return res;
+        
+        return loading;
     }
     
     private func findOldestId() -> String?{

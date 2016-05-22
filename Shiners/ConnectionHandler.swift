@@ -12,37 +12,37 @@ import SwiftDDP
 
 
 public class ConnectionHandler{
-    private let url:String = "ws://msg.webhop.org/websocket";
-    //private let url:String = "ws://192.168.1.61:3000/websocket";
-    public var status: ConnectionStatus = .NotInitialized;
+    private let url:String = "ws://msg.webhop.org/websocket"
+    //private let url:String = "ws://192.168.1.61:3000/websocket"
+    public private(set) var status: ConnectionStatus = .NotInitialized
     
-    public var postsCollection = PostsCollection();
-    public var imagesCollection = MeteorCollection<Image>(name: "images");
+    public var postsCollection = PostsCollection()
+    public var imagesCollection = MeteorCollection<Image>(name: "images")
     
     public var users = UsersProxy.Instance
     public var posts = PostsProxy.Instance
     
-    private var totalDependencies = 2;
+    private var totalDependencies = 2
+    private var dependenciesResolved = 0
+    
+    @objc private func accountLoaded(){
+        self.dependenciesResolved += 1
+        self.executeHandlers(self.dependenciesResolved)
+    }
     
     public func connect() {
         if self.status != .Connected && self.status != .Connecting{
-            self.status = ConnectionStatus.Connecting;
+            self.status = ConnectionStatus.Connecting
             //Meteor.client.logLevel = .Debug;
             
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.accountLoaded), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+            
             Meteor.connect(url) { (session) in
-                var dependenciesResolved = 0;
-                NSLog("Meteor connected");
+                NSLog("Meteor connected")
                 
                 if self.users.isLoggedIn(){
-                    self.totalDependencies += 1;
-                    
-                    self.users.getCurrentUser() { success in
-                        dependenciesResolved += 1;
-                        self.executeHandlers(dependenciesResolved);
-                        if !success {
-                            NSLog("Error getting current user")
-                        }
-                    };
+                    self.totalDependencies += 1
+                    AccountHandler.Instance.loadAccount()
                 }
                 
                 Meteor.subscribe("posts-all"){
@@ -54,14 +54,14 @@ public class ConnectionHandler{
                     }
                     
                     NSLog("posts-all subscribed");
-                    dependenciesResolved += 1;
-                    self.executeHandlers(dependenciesResolved);
+                    self.dependenciesResolved += 1;
+                    self.executeHandlers(self.dependenciesResolved);
                 }
                 
                 Meteor.subscribe("posts-images"){
                     NSLog("images subscribed");
-                    dependenciesResolved += 1;
-                    self.executeHandlers(dependenciesResolved);
+                    self.dependenciesResolved += 1;
+                    self.executeHandlers(self.dependenciesResolved);
                 }
             }
         }
@@ -73,7 +73,7 @@ public class ConnectionHandler{
     }
     
     private func executeHandlers(count: Int){
-        if (count == self.totalDependencies){
+        if (count == self.totalDependencies && self.status != .Connected){
             self.status = ConnectionStatus.Connected;
             NotificationManager.sendNotification(NotificationManager.Name.MeteorConnected, object: nil)
         }

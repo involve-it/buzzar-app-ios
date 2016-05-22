@@ -21,20 +21,21 @@ public class UsersProxy{
         }
     }
     
-    public var currentUser: User?
+    //public var currentUser: User?
     
-    public func getCurrentUser(callback: (success: Bool) -> Void){
+    public func getCurrentUser(callback: MeteorMethodCallback){
         if let userId = Meteor.client.userId() {
-            self.getUser(userId) { (success, errorId, errorMessage, result) in
+            self.getUser(userId, callback: callback) /*{ (success, errorId, errorMessage, result) in
+                
                 if (success){
-                    self.currentUser = result as? User
+                    var user = result as? User
                     CachingHandler.saveObject(self.currentUser!, path: CachingHandler.currentUser)
                     NotificationManager.sendNotification(NotificationManager.Name.UserUpdated, object: nil)
                 }
                 callback(success: success)
-            }
+            }*/
         } else {
-            callback(success: false)
+            callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
         }
     }
     
@@ -52,12 +53,6 @@ public class UsersProxy{
         Meteor.call("editUser", params: [user.toDictionary()]){ result, error in
             if (error == nil){
                 let errorId = ResponseHelper.getErrorId(result)
-                if errorId == nil {
-                    self.currentUser = user
-                    CachingHandler.saveObject(self.currentUser!, path: CachingHandler.currentUser)
-                    
-                    NotificationManager.sendNotification(.UserUpdated, object: nil)
-                }
                 callback(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: user)
             } else {
                 callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
@@ -79,13 +74,7 @@ public class UsersProxy{
     public func login(userName: String, password: String, callback: MeteorMethodCallback){
         Meteor.loginWithUsername(userName, password: password){ result, error in
             if (error == nil){
-                self.getCurrentUser(){ (success) in
-                    if (success){
-                        callback(success: true, errorId: nil, errorMessage: nil, result: nil)
-                    } else {
-                        callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
-                    }
-                }
+                callback(success: true, errorId: nil, errorMessage: nil, result: nil);
             } else {
                 let reason = error?.reason;
                 callback(success: false, errorId: nil, errorMessage: reason, result: nil);
@@ -96,8 +85,6 @@ public class UsersProxy{
     public func logoff(callback: (success: Bool)-> Void){
         Meteor.logout(){ result, error in
             if (error == nil){
-                CachingHandler.deleteAllFiles()
-                self.currentUser = nil;
                 callback(success: true)
             } else {
                 callback(success: false)

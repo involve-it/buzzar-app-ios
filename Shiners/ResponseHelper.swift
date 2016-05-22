@@ -32,15 +32,15 @@ public class ResponseHelper{
         return false
     }
     
-    public class func getErrorMessage(errorId: Int?) -> String?{
+    public class func getErrorMessage(errorId: Int?) -> String{
         if let id = errorId {
             if let message = errors[id]{
                 return message;
             } else {
-                return errors[900]
+                return errors[900]!
             }
         } else {
-            return nil
+            return errors[900]!
         }
     }
     

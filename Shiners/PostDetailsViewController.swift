@@ -11,13 +11,13 @@ import UIKit
 public class PostDetailsViewController: UITableViewController{
     @IBOutlet weak var svImages: UIScrollView!
     
-    public var post: Post?;
+    public var post: Post!;
     private var imagesScrollViewDelegate:ImagesScrollViewDelegate!;
     @IBOutlet weak var txtDetails: UILabel!
     @IBOutlet weak var txtViews: UILabel!
     
     @IBAction func btnShare_Click(sender: AnyObject) {
-        let activityViewController = UIActivityViewController(activityItems: ["Check out this post: http://msg.webhop.org/post/\(self.post!.id!)"], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: ["Check out this post: http://msg.webhop.org/post/\(self.post.id!)"], applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivityTypePrint, UIActivityTypeOpenInIBooks, UIActivityTypeSaveToCameraRoll];
         navigationController?.presentViewController(activityViewController, animated: true) {
             // ...
@@ -45,7 +45,8 @@ public class PostDetailsViewController: UITableViewController{
     }
     
     func updateScrollView(){
-        self.imagesScrollViewDelegate.setupScrollView(post?.imageIds);
+        let urls = post?.photos?.filter({ $0.original != nil }).map({ $0.original! });
+        self.imagesScrollViewDelegate.setupScrollView(urls);
     }
     
     public override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
