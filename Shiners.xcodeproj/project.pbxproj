@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7B0B316D1CF10A8200029458 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0B316C1CF10A8200029458 /* Photo.swift */; };
 		7B0B31711CF127A800029458 /* AccountHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0B31701CF127A700029458 /* AccountHandler.swift */; };
+		7B0B31731CF4086A00029458 /* PostDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0B31721CF4086A00029458 /* PostDetails.swift */; };
 		7B26B08E1CD564E1000495EE /* MyPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B08D1CD564E1000495EE /* MyPostsViewController.swift */; };
 		7B26B0921CD567D9000495EE /* list_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B26B0911CD567D9000495EE /* list_32.png */; };
 		7B26B0951CD568CB000495EE /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B0941CD568CB000495EE /* MessagesViewController.swift */; };
@@ -85,6 +86,7 @@
 		643ABEB340B81A6AB08AFEC7 /* Pods_Shiners.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shiners.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B0B316C1CF10A8200029458 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		7B0B31701CF127A700029458 /* AccountHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountHandler.swift; sourceTree = "<group>"; };
+		7B0B31721CF4086A00029458 /* PostDetails.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDetails.swift; sourceTree = "<group>"; };
 		7B26B08D1CD564E1000495EE /* MyPostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyPostsViewController.swift; sourceTree = "<group>"; };
 		7B26B0911CD567D9000495EE /* list_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = list_32.png; sourceTree = "<group>"; };
 		7B26B0941CD568CB000495EE /* MessagesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				7B3565331CE18A5E00012CA9 /* RegisterUser.swift */,
 				7B3565471CE7BB7C00012CA9 /* Dialog.swift */,
 				7B0B316C1CF10A8200029458 /* Photo.swift */,
+				7B0B31721CF4086A00029458 /* PostDetails.swift */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -522,6 +525,7 @@
 				7B26B1AF1CD99D25000495EE /* NewSearchViewController.swift in Sources */,
 				7BB2A80F1CCF199D00AD636D /* ProfileDetail.swift in Sources */,
 				7B26B1A91CD6DDA8000495EE /* SmallImageView.swift in Sources */,
+				7B0B31731CF4086A00029458 /* PostDetails.swift in Sources */,
 				7B26B1A71CD6D72E000495EE /* ImagePickerHandler.swift in Sources */,
 				7B26B0971CD5BF1C000495EE /* ConstantValuesHandler.swift in Sources */,
 				7B35654A1CE7BE0100012CA9 /* DialogViewController.swift in Sources */,

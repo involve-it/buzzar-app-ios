@@ -1085,7 +1085,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "89"
             endingLineNumber = "89"
-            landmarkName = "encodeWithCoder(_:)"
+            landmarkName = "getMainPhoto()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

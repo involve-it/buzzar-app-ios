@@ -41,4 +41,26 @@ public class PostsProxy{
             }
         }
     }
+    
+    public func addPost(post: Post, callback: MeteorMethodCallback? = nil){
+        Meteor.call("addPost", params: [post]) { (result, error) in
+            if error == nil {
+                let errorId = ResponseHelper.getErrorId(result);
+                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
+    
+    public func editPost(post: Post, callback: MeteorMethodCallback? = nil){
+        Meteor.call("editPost", params: [post]) { (result, error) in
+            if error == nil {
+                let errorId = ResponseHelper.getErrorId(result);
+                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
 }

@@ -466,7 +466,11 @@
                                 <action selector="btnCancel_Click:" destination="twE-dz-pDR" id="ON8-3Q-3hN"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Create" id="dHI-Cm-ri6"/>
+                        <barButtonItem key="rightBarButtonItem" title="Create" id="dHI-Cm-ri6">
+                            <connections>
+                                <action selector="btnCreate_Clicked:" destination="twE-dz-pDR" id="bUw-Rx-iHC"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="1000"/>

@@ -33,6 +33,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     var locationHandler = LocationHandler()
     
     private var currentStaticLocation: CLLocationCoordinate2D?
+    private var currentDynamicLocation: CLLocationCoordinate2D?
     private var imagePickerHandler: ImagePickerHandler?
     private var images = [UIImage]()
     
@@ -165,6 +166,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         } else if indexPath.section == 3 {
             self.view.endEditing(true)
             if indexPath.row == 0 {
+                self.currentDynamicLocation = nil
                 let cell = self.tableView.cellForRowAtIndexPath(indexPath)
                 if cell?.accessoryType == UITableViewCellAccessoryType.None {
                     self.detectLocation()
@@ -199,8 +201,9 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         } else if geocoderInfo.error {
             cell?.detailTextLabel?.text = "An error occurred getting your current location"
         } else {
-            cell?.detailTextLabel?.text = geocoderInfo.address;
+            cell?.detailTextLabel?.text = geocoderInfo.address
             cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
+            self.currentDynamicLocation = geocoderInfo.coordinate
         }
     }
     
@@ -267,4 +270,21 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
             self.lblNoImages.hidden = false
         }
     }
+    
+    private func composePost() -> Post{
+        let post = Post()
+        post.title = txtTitle.text
+        post.descr = descriptionHtml
+        post.type = lblAdType.text
+        //todo
+        //post.images
+        
+        
+        return post
+    }
+    
+    @IBAction func btnCreate_Clicked(sender: AnyObject) {
+        
+    }
+    
 }
