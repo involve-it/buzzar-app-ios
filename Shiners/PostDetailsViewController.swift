@@ -15,6 +15,7 @@ public class PostDetailsViewController: UITableViewController{
     private var imagesScrollViewDelegate:ImagesScrollViewDelegate!;
     @IBOutlet weak var txtDetails: UILabel!
     @IBOutlet weak var txtViews: UILabel!
+    @IBOutlet var btnEdit: UIBarButtonItem!
     
     @IBAction func btnShare_Click(sender: AnyObject) {
         let activityViewController = UIActivityViewController(activityItems: ["Check out this post: http://msg.webhop.org/post/\(self.post.id!)"], applicationActivities: nil)
@@ -42,6 +43,12 @@ public class PostDetailsViewController: UITableViewController{
         self.updateScrollView()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateScrollView), name: UIDeviceOrientationDidChangeNotification, object: nil)
+        if let index = self.navigationItem.rightBarButtonItems?.indexOf(self.btnEdit){
+            self.navigationItem.rightBarButtonItems?.removeAtIndex(index)
+        }
+        if self.post?.user?.id == AccountHandler.Instance.currentUser?.id {
+            self.navigationItem.rightBarButtonItems?.append(self.btnEdit)
+        }
     }
     
     func updateScrollView(){

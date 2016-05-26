@@ -14,7 +14,7 @@ public class ConstantValuesHandler {
     ]
     
     public let postDateRanges = [
-        "One day", "Two days", "Week", "Two weeks", "Month", "Year"
+        "One day": 1.0 * 60 * 60 * 24, "Two days": 2.0 * 60 * 60 * 24, "Week": 7.0 * 60 * 60 * 24, "Two weeks": 14.0 * 60 * 60 * 24, "Month": 30.0 * 60 * 60 * 24, "Year": 365.0 * 60 * 60 * 24
     ]
     
     private init(){

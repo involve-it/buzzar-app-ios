@@ -4,6 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Posts View Controller-->
@@ -476,6 +477,7 @@
                     <size key="freeformSize" width="600" height="1000"/>
                     <connections>
                         <outlet property="cellImages" destination="SuA-9r-50d" id="9Lh-0o-HA6"/>
+                        <outlet property="createButton" destination="dHI-Cm-ri6" id="Tvr-rk-ECa"/>
                         <outlet property="lblAdType" destination="9oO-zy-jdu" id="zSJ-ec-EqU"/>
                         <outlet property="lblDescription" destination="Z6o-G7-2wX" id="Vu1-yv-i8L"/>
                         <outlet property="lblDescriptionPlaceholder" destination="u09-Q9-mGC" id="xrG-Kh-uGj"/>
@@ -919,13 +921,17 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Post Details" id="t0e-3n-01U">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="action" id="Nw0-sH-M1d">
-                            <connections>
-                                <action selector="btnShare_Click:" destination="sbg-z1-jzp" id="XFT-Tr-HhA"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem style="plain" systemItem="action" id="Nw0-sH-M1d">
+                                <connections>
+                                    <action selector="btnShare_Click:" destination="sbg-z1-jzp" id="XFT-Tr-HhA"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="edit" id="nJ0-vb-21Z"/>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="btnEdit" destination="nJ0-vb-21Z" id="Eb5-Ad-c5z"/>
                         <outlet property="svImages" destination="zsa-pu-1tI" id="xvc-BU-wHR"/>
                         <outlet property="txtDetails" destination="eEw-df-ldv" id="0Lb-2s-Lil"/>
                         <outlet property="txtViews" destination="jfO-Ju-ro5" id="I4n-lk-Kwx"/>
@@ -1932,6 +1938,6 @@
         <image name="vk.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="AIb-zx-iKR"/>
+        <segue reference="KB5-f0-gGA"/>
     </inferredMetricsTieBreakers>
 </document>

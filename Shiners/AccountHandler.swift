@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftDDP
 
 public class AccountHandler{
     private let totalDependencies = 2
@@ -17,6 +18,7 @@ public class AccountHandler{
     
     public private(set) var myPosts: [Post]?
     public private(set) var currentUser: User?
+    public private(set) var userId: String?
     
     public func register(user: RegisterUser, callback: MeteorMethodCallback){
         ConnectionHandler.Instance.users.register(user, callback: callback)
@@ -37,6 +39,7 @@ public class AccountHandler{
                 CachingHandler.deleteAllPrivateFiles()
                 self.currentUser = nil
                 self.myPosts = nil
+                self.userId = nil
             }
             callback(success: success)
             NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
@@ -66,7 +69,7 @@ public class AccountHandler{
         let callId = self.latestCallId
         
         if ConnectionHandler.Instance.users.isLoggedIn(){
-            
+            self.userId = Meteor.client.userId()
             ConnectionHandler.Instance.users.getCurrentUser({ (success, errorId, errorMessage, result) in
                 if (self.latestCallId == callId){
                     if (success){
@@ -101,7 +104,7 @@ public class AccountHandler{
         }
     }
     
-    public func updateMyPosts(callback: MeteorMethodCallback){
+    public func updateMyPosts(callback: MeteorMethodCallback? = nil){
         ConnectionHandler.Instance.posts.getMyPosts(0, take: 100, callback: { (success, errorId, errorMessage, result) in
             if success {
                 self.myPosts = result as? [Post]
@@ -109,7 +112,7 @@ public class AccountHandler{
                 CachingHandler.saveObject(self.myPosts!, path: CachingHandler.postsMy)
                 NotificationManager.sendNotification(.MyPostsUpdated, object: nil)
             }
-            callback(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
+            callback?(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
         })
     }
     

@@ -19,12 +19,12 @@ class CachingHandler{
         return NSKeyedArchiver.archiveRootObject(obj, toFile: archiveUrl.path!)
     }
     
-    class func loadObjects<T>(path: String) -> [T]? {
+    class func loadObjects<T>(path: String) throws -> [T]? {
         let archiveUrl = documentDirectory.URLByAppendingPathComponent(path)
         return NSKeyedUnarchiver.unarchiveObjectWithFile(archiveUrl.path!) as? [T]
     }
     
-    class func loadObject<T>(path: String) -> T? {
+    class func loadObject<T>(path: String) throws -> T? {
         let archiveUrl = documentDirectory.URLByAppendingPathComponent(path)
         return NSKeyedUnarchiver.unarchiveObjectWithFile(archiveUrl.path!) as? T
     }
@@ -53,12 +53,22 @@ class CachingHandler{
     }
     
     func restoreAllOfflineData(){
-        ThreadHelper.runOnBackgroundThread { 
-            self.postsAll = CachingHandler.loadObjects(CachingHandler.postsAll)
-            self.postsMy = CachingHandler.loadObjects(CachingHandler.postsMy)
-            self.currentUser = CachingHandler.loadObject(CachingHandler.currentUser)
-            
-            self.status = .Complete
+        ThreadHelper.runOnBackgroundThread {
+            do {
+                try self.postsAll = CachingHandler.loadObjects(CachingHandler.postsAll)
+                try self.postsMy = CachingHandler.loadObjects(CachingHandler.postsMy)
+                try self.currentUser = CachingHandler.loadObject(CachingHandler.currentUser)
+                
+                self.status = .Complete
+            }
+            catch{
+                NSLog("Error occurred while restoring cache. Clearing all cache.")
+                self.postsAll = nil
+                self.postsMy = nil
+                self.currentUser = nil
+                
+                CachingHandler.deleteAllFiles()
+            }
             
             NotificationManager.sendNotification(.OfflineCacheRestored, object: nil)
         }

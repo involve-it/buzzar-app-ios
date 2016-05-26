@@ -20,6 +20,9 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
     public var url: String?
     public var anonymousPost: Bool?
     public var endDate: NSDate?
+    public var user: User?
+    public var visible: Bool?
+    public var timestamp: NSDate?
     
     public override init(){
         super.init()
@@ -44,14 +47,14 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         
         self.type = fields?.valueForKey(PropertyKey.type) as? String
         
-        if let details = fields?.valueForKey("details") as? NSDictionary {
+        if let details = fields?.valueForKey(PropertyKey.details) as? NSDictionary {
             self.title = details.valueForKey(PropertyKey.title) as? String
             
             self.descr = details.valueForKey(PropertyKey.description) as? String
             self.anonymousPost = details.valueForKey(PropertyKey.anonymousPost) as? Bool
             self.url = details.valueForKey(PropertyKey.url) as? String
             
-            if let photos = details.valueForKey("photos") as? NSArray{
+            if let photos = details.valueForKey(PropertyKey.photos) as? NSArray{
                 self.photos = [Photo]()
                 for photo in photos {
                     if let photoFields = photo as? NSDictionary{
@@ -72,7 +75,7 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
             self.price = details.valueForKey(PropertyKey.price) as? String
         }
         
-        if let stats = fields?.valueForKey("stats") as? NSDictionary{
+        if let stats = fields?.valueForKey(PropertyKey.stats) as? NSDictionary{
             if let seenTotal = stats.valueForKey(PropertyKey.seenTotal)as? String{
                 self.seenTotal = seenTotal;
             } else {
@@ -84,6 +87,12 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
                 self.seenToday = "0"
             }
         }
+        
+        if let userFields = fields?.valueForKey(PropertyKey.user) as? NSDictionary {
+            self.user = User(fields: userFields)
+        }
+        self.endDate = (fields?.valueForKey(PropertyKey.endDate) as? String)?.toDate()
+        self.timestamp = (fields?.valueForKey(PropertyKey.timestamp) as? String)?.toDate()
     }
     
     public func getMainPhoto() -> Photo? {
@@ -109,6 +118,11 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
             self.anonymousPost = aDecoder.decodeBoolForKey(PropertyKey.anonymousPost)
         }
         self.endDate = aDecoder.decodeObjectForKey(PropertyKey.endDate) as? NSDate
+        self.user = aDecoder.decodeObjectForKey(PropertyKey.user) as? User
+        if aDecoder.containsValueForKey(PropertyKey.visible){
+            self.visible = aDecoder.decodeBoolForKey(PropertyKey.visible)
+        }
+        self.timestamp = aDecoder.decodeObjectForKey(PropertyKey.timestamp) as? NSDate
         
         super.init()
     }
@@ -124,22 +138,50 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         aCoder.encodeObject(type, forKey: PropertyKey.type)
         aCoder.encodeObject(locations, forKey: PropertyKey.locations)
         aCoder.encodeObject(url, forKey: PropertyKey.url)
-        aCoder.encodeObject(anonymousPost, forKey: PropertyKey.anonymousPost)
+        if let anonymousPost = self.anonymousPost{
+            aCoder.encodeBool(anonymousPost, forKey: PropertyKey.anonymousPost)
+        }
         aCoder.encodeObject(endDate, forKey: PropertyKey.endDate)
+        aCoder.encodeObject(user, forKey: PropertyKey.user)
+        if let visible = self.visible{
+            aCoder.encodeBool(visible, forKey: PropertyKey.visible)
+        }
+        aCoder.encodeObject(timestamp, forKey: PropertyKey.timestamp)
     }
     
-    public func toDictionary() -> Dictionary<String, AnyObject?>{
-        var dict = Dictionary<String, AnyObject?>()
+    public func toDictionary() -> Dictionary<String, AnyObject>{
+        var dict = Dictionary<String, AnyObject>()
         
         dict[PropertyKey.id] = self.id
         dict[PropertyKey.type] = self.type
-        dict[PropertyKey.endDate] = self.endDate
-        if let photos = self.photos {
-            var photosArray = Array<Dictionary<String, AnyObject?>>()
-            for photo in photos {
-                
+        dict[PropertyKey.endDate] = self.endDate?.toString()
+        dict[PropertyKey.timestamp] = self.timestamp?.toString()
+        
+        var details = Dictionary<String, AnyObject>()
+        details[PropertyKey.anonymousPost] = self.anonymousPost
+        if let locations = self.locations{
+            var locationsArray = Array<Dictionary<String, AnyObject>>()
+            for location in locations{
+                locationsArray.append(location.toDictionary())
             }
+            details[PropertyKey.locations] = locationsArray
         }
+        details[PropertyKey.title] = self.title
+        details[PropertyKey.description] = self.descr
+        details[PropertyKey.price] = self.price
+        if let photos = self.photos {
+            var photosArray = Array<Dictionary<String, AnyObject>>()
+            for photo in photos {
+                photosArray.append(photo.toDictionary())
+            }
+            details[PropertyKey.photos] = photosArray
+        }
+        dict[PropertyKey.details] = details
+        if let _ = self.visible {
+            dict[PropertyKey.status] = [PropertyKey.visible: PropertyKey.visible]
+        }
+        
+        
         return dict
     }
     
@@ -152,9 +194,15 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         static let seenToday = "seenToday"
         static let photos = "photos"
         static let type = "type"
-        static let locations = "location"
+        static let locations = "locations"
         static let url = "url"
         static let anonymousPost = "anonymousPost"
         static let endDate = "endDatePost"
+        static let user = "user"
+        static let visible = "visible"
+        static let details = "details"
+        static let stats = "stats"
+        static let status = "status"
+        static let timestamp = "timestamp"
     }
 }

@@ -150,7 +150,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
     }
     
     private struct PropertyKeys{
-        static let id = "id"
+        static let id = "_id"
         static let createdAt = "createdAt"
         static let username = "username"
         static let email = "email"

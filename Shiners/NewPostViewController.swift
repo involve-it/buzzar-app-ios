@@ -12,6 +12,11 @@ import CoreLocation
 class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, DescriptionViewControllerDelegate, LocationHandlerDelegate, StaticLocationViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SmallImageViewDelegate{
     var descriptionHtml: String = ""
     
+    //private let createButton = UIBarButtonItem(title: "Create", style: .Plain, target: nil, action: #selector(btnCreate_Clicked));
+    @IBOutlet var createButton: UIBarButtonItem!
+    
+    private var post: Post?
+    
     @IBOutlet weak var svImages: UIScrollView!
     @IBOutlet weak var lblNoImages: UILabel!
     @IBOutlet weak var cellImages: UITableViewCell!
@@ -58,9 +63,8 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         self.lblNoImages.hidden = false;
         
         self.imagePickerHandler = ImagePickerHandler(viewController: self, delegate: self)
-    }
-    
-    override func viewDidAppear(animated: Bool) {
+        self.setLoading(false, rightBarButtonItem: self.createButton)
+        
         self.txtTitle.becomeFirstResponder()
     }
     
@@ -76,7 +80,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView === self.whenPicker{
-            return ConstantValuesHandler.Instance.postDateRanges[row]
+            return Array(ConstantValuesHandler.Instance.postDateRanges.keys)[row]
         } else if pickerView === self.adTypePicker{
             return ConstantValuesHandler.Instance.adTypes[row]
         }
@@ -94,8 +98,9 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if (pickerView === self.whenPicker){
-            self.txtWhen.text = ConstantValuesHandler.Instance.postDateRanges[row]
-            self.lblWhen.text = ConstantValuesHandler.Instance.postDateRanges[row]
+            let text = Array(ConstantValuesHandler.Instance.postDateRanges.keys)[row]
+            self.txtWhen.text = text
+            self.lblWhen.text = text
         } else if pickerView === self.adTypePicker {
             self.lblAdType.text = ConstantValuesHandler.Instance.adTypes[row]
             self.txtAdType.text = ConstantValuesHandler.Instance.adTypes[row]
@@ -158,8 +163,9 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
                 self.txtWhen.resignFirstResponder()
             } else {
                 if self.txtWhen.text == "" {
-                    self.txtWhen.text = ConstantValuesHandler.Instance.postDateRanges[0]
-                    self.lblWhen.text = ConstantValuesHandler.Instance.postDateRanges[0]
+                    let text = Array(ConstantValuesHandler.Instance.postDateRanges.keys)[0]
+                    self.txtWhen.text = text
+                    self.lblWhen.text = text
                 }
                 self.txtWhen.becomeFirstResponder()
             }
@@ -271,20 +277,65 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         }
     }
     
-    private func composePost() -> Post{
+    private func restorePost(){
+        if let post = self.post{
+            txtTitle.text = post.title
+            descriptionHtml = post.descr!
+            lblDescription.text = post.descr
+            lblAdType.text = post.type
+        }
+    }
+    
+    private func composePost() -> Post?{
         let post = Post()
         post.title = txtTitle.text
         post.descr = descriptionHtml
         post.type = lblAdType.text
+        post.timestamp = NSDate()
         //todo
         //post.images
+        post.locations = [Location]()
+        if let dynamicLocation = self.currentDynamicLocation {
+            let location = Location()
+            location.lat = dynamicLocation.latitude
+            location.lng = dynamicLocation.longitude
+            location.placeType = .Dynamic
+            
+            post.locations?.append(location)
+        }
         
+        if let staticLocation = self.currentStaticLocation{
+            let location = Location()
+            location.lat = staticLocation.latitude
+            location.lng = staticLocation.longitude
+            location.placeType = .Static
+            
+            post.locations?.append(location)
+        }
+        if let endDateText = self.txtWhen.text where self.txtWhen.text != ""{
+            post.endDate = NSDate().dateByAddingTimeInterval(ConstantValuesHandler.Instance.postDateRanges[endDateText]!)
+        } else {
+            return nil
+        }
         
         return post
     }
     
-    @IBAction func btnCreate_Clicked(sender: AnyObject) {
-        
+    func btnCreate_Clicked(sender: AnyObject) {
+        if let post = self.composePost(){
+            self.setLoading(true)
+            ConnectionHandler.Instance.posts.addPost(post) { (success, errorId, errorMessage, result) in
+                self.setLoading(false, rightBarButtonItem: self.createButton)
+                if success{
+                    AccountHandler.Instance.updateMyPosts()
+                    self.view.endEditing(true)
+                    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    self.showAlert("Error occurred", message: errorMessage)
+                }
+            }
+        } else {
+            self.showAlert("Error occurred", message: "Validation failed")
+        }
     }
-    
 }

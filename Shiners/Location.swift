@@ -14,8 +14,12 @@ public class Location: NSObject, NSCoding {
     public var name: String?
     public var lat: Double?
     public var lng: Double?
-    public var placeType: String?
+    public var placeType: PlaceType?
     public var isPublic: Bool?
+    
+    public override init (){
+        super.init()
+    }
     
     public init (fields: NSDictionary?){
         super.init()
@@ -29,7 +33,9 @@ public class Location: NSObject, NSCoding {
             self.lng = coords.valueForKey("lng") as? Double
         }
         
-        self.placeType = fields?.valueForKey("placeType") as? String
+        if let placeType = fields?.valueForKey("placeType") as? String{
+            self.placeType = PlaceType(rawValue: placeType)
+        }
         self.isPublic = fields?.valueForKey("public") as? Bool
     }
     
@@ -44,7 +50,9 @@ public class Location: NSObject, NSCoding {
         if aDecoder.containsValueForKey(PropertyKeys.lng){
             self.lng = aDecoder.decodeDoubleForKey(PropertyKeys.lng)
         }
-        self.placeType = aDecoder.decodeObjectForKey(PropertyKeys.placeType) as? String
+        if let placeType = aDecoder.decodeObjectForKey(PropertyKeys.placeType) as? String{
+            self.placeType = PlaceType(rawValue: placeType)
+        }
         if aDecoder.containsValueForKey(PropertyKeys.isPublic){
             self.isPublic = aDecoder.decodeBoolForKey(PropertyKeys.isPublic)
         }
@@ -60,14 +68,34 @@ public class Location: NSObject, NSCoding {
         if let lng = self.lng {
             aCoder.encodeDouble(lng, forKey: PropertyKeys.lng)
         }
-        aCoder.encodeObject(self.placeType, forKey: PropertyKeys.placeType)
+        aCoder.encodeObject(self.placeType?.rawValue, forKey: PropertyKeys.placeType)
         if let isPublic = self.isPublic {
             aCoder.encodeBool(isPublic, forKey: PropertyKeys.isPublic)
         }
     }
     
+    public func toDictionary() ->Dictionary<String, AnyObject>{
+        var dict = Dictionary<String, AnyObject>()
+        dict[PropertyKeys.id] = self.id
+        dict[PropertyKeys.userId] = self.userId
+        dict[PropertyKeys.name] = self.name
+        dict[PropertyKeys.lat] = self.lat
+        dict[PropertyKeys.lng] = self.lng
+        if let placeType = self.placeType {
+            dict[PropertyKeys.placeType] = placeType.rawValue
+        }
+        dict[PropertyKeys.isPublic] = self.isPublic
+        
+        return dict
+    }
+    
+    public enum PlaceType: String{
+        case Static = "static"
+        case Dynamic = "dynamic"
+    }
+    
     private struct PropertyKeys {
-        static let id = "id"
+        static let id = "_id"
         static let userId = "userId"
         static let name = "name"
         static let lat = "lat"

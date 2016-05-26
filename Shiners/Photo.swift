@@ -37,6 +37,15 @@ public class Photo: NSObject, NSCoding {
         aCoder.encodeObject(self.thumbnail, forKey: PropertyKeys.thumbnail)
     }
     
+    public func toDictionary() -> Dictionary<String, AnyObject>{
+        var dict = Dictionary<String, AnyObject>()
+        dict[PropertyKeys.id] = self.id
+        dict[PropertyKeys.original] = self.original
+        dict[PropertyKeys.thumbnail] = self.thumbnail
+        
+        return dict
+    }
+    
     private struct PropertyKeys{
         static let id = "_id"
         //todo: rename to 'original'
