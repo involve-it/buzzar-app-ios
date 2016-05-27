@@ -476,7 +476,9 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="1000"/>
                     <connections>
+                        <outlet property="cellDynamicLocation" destination="2Sa-sc-OOL" id="7Q2-rB-vnf"/>
                         <outlet property="cellImages" destination="SuA-9r-50d" id="9Lh-0o-HA6"/>
+                        <outlet property="cellStaticLocation" destination="rMt-Y6-eny" id="pWw-ej-JQU"/>
                         <outlet property="createButton" destination="dHI-Cm-ri6" id="Tvr-rk-ECa"/>
                         <outlet property="lblAdType" destination="9oO-zy-jdu" id="zSJ-ec-EqU"/>
                         <outlet property="lblDescription" destination="Z6o-G7-2wX" id="Vu1-yv-i8L"/>
@@ -491,7 +493,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8dx-4z-YU8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3088" y="-1764"/>
+            <point key="canvasLocation" x="3074" y="-1386"/>
         </scene>
         <!--Post Description-->
         <scene sceneID="Rfs-SL-8aU">
@@ -659,7 +661,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rvE-sr-73J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3078" y="-717"/>
+            <point key="canvasLocation" x="3932" y="-1"/>
         </scene>
         <!--My Posts-->
         <scene sceneID="M19-Uq-xoM">
@@ -827,7 +829,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VxU-Bh-t8D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2258" y="-717"/>
+            <point key="canvasLocation" x="3112" y="-1"/>
         </scene>
         <!--Post Details-->
         <scene sceneID="M0r-bE-ECn">
@@ -927,7 +929,11 @@
                                     <action selector="btnShare_Click:" destination="sbg-z1-jzp" id="XFT-Tr-HhA"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem systemItem="edit" id="nJ0-vb-21Z"/>
+                            <barButtonItem systemItem="edit" id="nJ0-vb-21Z">
+                                <connections>
+                                    <segue destination="pxY-TO-wJC" kind="presentation" identifier="editPost" id="boj-tj-SIe"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
@@ -1939,5 +1945,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="KB5-f0-gGA"/>
+        <segue reference="boj-tj-SIe"/>
     </inferredMetricsTieBreakers>
 </document>

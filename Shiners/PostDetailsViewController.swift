@@ -75,4 +75,12 @@ public class PostDetailsViewController: UITableViewController{
             return 44;
         }
     }
+    
+    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "editPost"{
+            let vc = segue.destinationViewController as! UINavigationController
+            let createVc = vc.viewControllers[0] as! NewPostViewController
+            createVc.post = self.post
+        }
+    }
 }

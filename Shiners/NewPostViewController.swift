@@ -15,7 +15,10 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     //private let createButton = UIBarButtonItem(title: "Create", style: .Plain, target: nil, action: #selector(btnCreate_Clicked));
     @IBOutlet var createButton: UIBarButtonItem!
     
-    private var post: Post?
+    var post: Post?
+    
+    @IBOutlet weak var cellStaticLocation: UITableViewCell!
+    @IBOutlet weak var cellDynamicLocation: UITableViewCell!
     
     @IBOutlet weak var svImages: UIScrollView!
     @IBOutlet weak var lblNoImages: UILabel!
@@ -37,8 +40,8 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     
     var locationHandler = LocationHandler()
     
-    private var currentStaticLocation: CLLocationCoordinate2D?
-    private var currentDynamicLocation: CLLocationCoordinate2D?
+    private var currentStaticLocation: Location?
+    private var currentDynamicLocation: Location?
     private var imagePickerHandler: ImagePickerHandler?
     private var images = [UIImage]()
     
@@ -65,7 +68,13 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         self.imagePickerHandler = ImagePickerHandler(viewController: self, delegate: self)
         self.setLoading(false, rightBarButtonItem: self.createButton)
         
-        self.txtTitle.becomeFirstResponder()
+        if let _ = self.post {
+            self.restorePost()
+            self.createButton.title = "Save"
+        } else {
+            self.txtTitle.becomeFirstResponder()
+            self.createButton.title = "Create"
+        }
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -117,7 +126,9 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         } else if segue.identifier == "staticLocationSegue" {
             let vc = segue.destinationViewController as! StaticLocationViewController
             vc.delegate = self;
-            vc.currentCoordinate = self.currentStaticLocation
+            if let lat = self.currentStaticLocation?.lat, lng = self.currentStaticLocation?.lng {
+                vc.currentCoordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+            }
         }
     }
     
@@ -201,29 +212,37 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     //from manager
     func locationReported(geocoderInfo: GeocoderInfo) {
         NSLog("Location reported: \(geocoderInfo)")
-        let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 3))
+        //let indexPath = NSIndexPath(forRow: 0, inSection: 3)
+        //let cell = self.tableView.cellForRowAtIndexPath(indexPath)
         if geocoderInfo.denied {
-            cell?.detailTextLabel?.text = "Please allow location services in settings"
+            self.cellDynamicLocation?.detailTextLabel?.text = "Please allow location services in settings"
         } else if geocoderInfo.error {
-            cell?.detailTextLabel?.text = "An error occurred getting your current location"
+            self.cellDynamicLocation?.detailTextLabel?.text = "An error occurred getting your current location"
         } else {
-            cell?.detailTextLabel?.text = geocoderInfo.address
-            cell?.accessoryType = UITableViewCellAccessoryType.Checkmark
-            self.currentDynamicLocation = geocoderInfo.coordinate
+            self.cellDynamicLocation?.detailTextLabel?.text = geocoderInfo.address
+            self.cellDynamicLocation?.accessoryType = UITableViewCellAccessoryType.Checkmark
+            let location = Location()
+            location.lat = geocoderInfo.coordinate?.latitude
+            location.lng = geocoderInfo.coordinate?.longitude
+            location.name = geocoderInfo.address
+            self.currentDynamicLocation = location
         }
     }
     
     //from map
     func locationSelected(location: CLLocationCoordinate2D?, address: String?) {
-        let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 1, inSection: 3))
         if let addr = address {
-            cell?.detailTextLabel?.text = addr
-            cell?.accessoryType = .Checkmark
+            self.cellStaticLocation?.detailTextLabel?.text = addr
+            self.cellStaticLocation?.accessoryType = .Checkmark
         } else {
-            cell?.accessoryType = .DisclosureIndicator
-            cell?.detailTextLabel?.text = "Pinned to static location"
+            self.cellStaticLocation?.accessoryType = .DisclosureIndicator
+            self.cellStaticLocation?.detailTextLabel?.text = "Pinned to static location"
         }
-        self.currentStaticLocation = location
+        let loc = Location()
+        loc.lat = location?.latitude
+        loc.lng = location?.longitude
+        loc.name = address
+        self.currentStaticLocation = loc
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
@@ -280,14 +299,37 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     private func restorePost(){
         if let post = self.post{
             txtTitle.text = post.title
-            descriptionHtml = post.descr!
-            lblDescription.text = post.descr
+            if let descr = post.descr {
+                descriptionHtml = descr
+                lblDescription.text = descr
+                
+                lblDescription.hidden = false
+                lblDescriptionPlaceholder.hidden = true
+            }
+            
             lblAdType.text = post.type
+            if let locations = post.locations {
+                for location in locations {
+                    if location.placeType == .Dynamic {
+                        self.cellDynamicLocation?.accessoryType = .Checkmark
+                        self.cellDynamicLocation?.detailTextLabel?.text = location.name
+                        self.currentDynamicLocation = location
+                        self.detectLocation()
+                    } else if location.placeType == .Static {
+                        self.cellStaticLocation?.accessoryType = .Checkmark
+                        self.cellStaticLocation?.detailTextLabel?.text = location.name
+                        self.currentStaticLocation = location
+                    }
+                }
+            }
         }
     }
     
     private func composePost() -> Post?{
-        let post = Post()
+        var post:Post = Post()
+        if self.post != nil {
+            post = self.post!
+        }
         post.title = txtTitle.text
         post.descr = descriptionHtml
         post.type = lblAdType.text
@@ -296,21 +338,11 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         //post.images
         post.locations = [Location]()
         if let dynamicLocation = self.currentDynamicLocation {
-            let location = Location()
-            location.lat = dynamicLocation.latitude
-            location.lng = dynamicLocation.longitude
-            location.placeType = .Dynamic
-            
-            post.locations?.append(location)
+            post.locations?.append(dynamicLocation)
         }
         
         if let staticLocation = self.currentStaticLocation{
-            let location = Location()
-            location.lat = staticLocation.latitude
-            location.lng = staticLocation.longitude
-            location.placeType = .Static
-            
-            post.locations?.append(location)
+            post.locations?.append(staticLocation)
         }
         if let endDateText = self.txtWhen.text where self.txtWhen.text != ""{
             post.endDate = NSDate().dateByAddingTimeInterval(ConstantValuesHandler.Instance.postDateRanges[endDateText]!)
@@ -324,15 +356,22 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     func btnCreate_Clicked(sender: AnyObject) {
         if let post = self.composePost(){
             self.setLoading(true)
-            ConnectionHandler.Instance.posts.addPost(post) { (success, errorId, errorMessage, result) in
+            let callback: MeteorMethodCallback = { (success, errorId, errorMessage, result) in
                 self.setLoading(false, rightBarButtonItem: self.createButton)
                 if success{
                     AccountHandler.Instance.updateMyPosts()
-                    self.view.endEditing(true)
-                    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                    ThreadHelper.runOnMainThread({ 
+                        self.view.endEditing(true)
+                        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                    })
                 } else {
                     self.showAlert("Error occurred", message: errorMessage)
                 }
+            }
+            if let _ = self.post {
+                ConnectionHandler.Instance.posts.editPost(post, callback:  callback)
+            } else {
+                ConnectionHandler.Instance.posts.addPost(post, callback: callback)
             }
         } else {
             self.showAlert("Error occurred", message: "Validation failed")
