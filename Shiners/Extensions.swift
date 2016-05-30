@@ -31,4 +31,10 @@ extension NSDate {
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZ"
         return dateFormatter.stringFromDate(self)
     }
+    
+    func toShortDateString() -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        return dateFormatter.stringFromDate(self)
+    }
 }

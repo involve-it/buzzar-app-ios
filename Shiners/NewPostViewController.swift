@@ -12,8 +12,7 @@ import CoreLocation
 class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, DescriptionViewControllerDelegate, LocationHandlerDelegate, StaticLocationViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SmallImageViewDelegate{
     var descriptionHtml: String = ""
     
-    //private let createButton = UIBarButtonItem(title: "Create", style: .Plain, target: nil, action: #selector(btnCreate_Clicked));
-    @IBOutlet var createButton: UIBarButtonItem!
+    @IBOutlet weak var createButton: UIBarButtonItem!
     
     var post: Post?
     
@@ -35,6 +34,11 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    //For sale
+    @IBOutlet weak var lblCurrency: UILabel!
+    @IBOutlet weak var txtCurrency: UITextField!
+    var currencyPicker = UIPickerView(frame: CGRectZero)
+    
     var whenPicker = UIPickerView(frame: CGRectZero)
     var adTypePicker = UIPickerView(frame: CGRectZero)
     
@@ -54,11 +58,17 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         self.adTypePicker.delegate = self;
         self.adTypePicker.dataSource = self;
         
+        self.currencyPicker.delegate = self
+        self.currencyPicker.dataSource = self
+        
         self.txtWhen.inputView = self.whenPicker;
         self.txtWhen.inputAccessoryView = nil
         
         self.txtAdType.inputView = self.adTypePicker;
         self.txtAdType.inputAccessoryView = nil
+        
+        self.txtCurrency.inputView = self.currencyPicker
+        self.txtCurrency.inputAccessoryView = nil
         
         self.locationHandler.delegate = self;
         
@@ -82,6 +92,8 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
             return ConstantValuesHandler.Instance.postDateRanges.count;
         } else if (pickerView === self.adTypePicker){
             return ConstantValuesHandler.Instance.adTypes.count;
+        } else if (pickerView === self.currencyPicker){
+            return ConstantValuesHandler.Instance.currencies.count
         }
         
         return 0;
@@ -91,14 +103,16 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         if pickerView === self.whenPicker{
             return Array(ConstantValuesHandler.Instance.postDateRanges.keys)[row]
         } else if pickerView === self.adTypePicker{
-            return ConstantValuesHandler.Instance.adTypes[row]
+            return Array(ConstantValuesHandler.Instance.adTypes.keys)[row]
+        } else if pickerView === self.currencyPicker {
+            return ConstantValuesHandler.Instance.currencies[row]
         }
         
         return "";
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        if pickerView === self.whenPicker || pickerView === self.adTypePicker{
+        if pickerView === self.whenPicker || pickerView === self.adTypePicker || pickerView === self.currencyPicker {
             return 1;
         } else {
             return 0;
@@ -111,8 +125,12 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
             self.txtWhen.text = text
             self.lblWhen.text = text
         } else if pickerView === self.adTypePicker {
-            self.lblAdType.text = ConstantValuesHandler.Instance.adTypes[row]
-            self.txtAdType.text = ConstantValuesHandler.Instance.adTypes[row]
+            let text = Array(ConstantValuesHandler.Instance.adTypes.keys)[row]
+            self.lblAdType.text = text
+            self.txtAdType.text = text
+        } else if pickerView === self.currencyPicker {
+            self.lblCurrency.text = ConstantValuesHandler.Instance.currencies[row] + " >"
+            self.txtCurrency.text = ConstantValuesHandler.Instance.currencies[row]
         }
     }
     
@@ -151,7 +169,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     }
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if (indexPath.section == 1 || indexPath.section == 3 || indexPath.section == 4 || (indexPath.section == 2)){
+        if indexPath.section != Section.Url {
             return indexPath
         }
         
@@ -159,17 +177,18 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 1 && indexPath.row == 2 {
+        if indexPath.section == Section.What && indexPath.row == 2 {
             if self.txtAdType.isFirstResponder(){
                 self.txtAdType.resignFirstResponder()
             } else {
                 if self.txtAdType.text == "" {
-                    self.txtAdType.text = ConstantValuesHandler.Instance.adTypes[0]
-                    self.lblAdType.text = ConstantValuesHandler.Instance.adTypes[0]
+                    let text = Array(ConstantValuesHandler.Instance.adTypes.keys)[0]
+                    self.txtAdType.text = text
+                    self.lblAdType.text = text
                 }
                 self.txtAdType.becomeFirstResponder()
             }
-        } else if indexPath.section == 4 {
+        } else if indexPath.section == Section.When {
             if (self.txtWhen.isFirstResponder()){
                 self.txtWhen.resignFirstResponder()
             } else {
@@ -180,7 +199,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
                 }
                 self.txtWhen.becomeFirstResponder()
             }
-        } else if indexPath.section == 3 {
+        } else if indexPath.section == Section.Location {
             self.view.endEditing(true)
             if indexPath.row == 0 {
                 self.currentDynamicLocation = nil
@@ -193,17 +212,23 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
                     cell?.detailTextLabel?.text = "Moving with your ad"
                 }
             }
-        } else if indexPath.section == 2 && indexPath.row == 1 {
+        } else if indexPath.section == Section.Photos && indexPath.row == 1 {
             //images
             self.view.endEditing(true)
             self.imagePickerHandler?.displayImagePicker()
+        } else if indexPath.section == Section.ForSale {
+            if self.txtCurrency.isFirstResponder() {
+                self.txtCurrency.resignFirstResponder()
+            } else {
+                self.txtCurrency.becomeFirstResponder()
+            }
         }
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     func detectLocation(){
         if !self.locationHandler.getLocationOnce() {
-            if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 3)){
+            if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: Section.Location)){
                 cell.detailTextLabel!.text = "Please allow location services in settings"
             }
         }
@@ -307,7 +332,9 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
                 lblDescriptionPlaceholder.hidden = true
             }
             
-            lblAdType.text = post.type
+            let typeIndex = ConstantValuesHandler.Instance.adTypes.values.indexOf(post.type!)
+            let adType = ConstantValuesHandler.Instance.adTypes.keys[typeIndex!]
+            lblAdType.text = adType
             if let locations = post.locations {
                 for location in locations {
                     if location.placeType == .Dynamic {
@@ -322,6 +349,9 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
                     }
                 }
             }
+            if let endDate = post.endDate {
+                lblWhen.text = endDate.toShortDateString()
+            }
         }
     }
     
@@ -332,7 +362,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         }
         post.title = txtTitle.text
         post.descr = descriptionHtml
-        post.type = lblAdType.text
+        post.type = ConstantValuesHandler.Instance.adTypes[lblAdType.text!]
         post.timestamp = NSDate()
         //todo
         //post.images
@@ -376,5 +406,36 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         } else {
             self.showAlert("Error occurred", message: "Validation failed")
         }
+    }
+    
+    override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if Section.ContextRelated.contains(section){
+            if self.txtAdType
+        }
+        
+        return super.tableView(tableView, heightForFooterInSection: section)
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+    }
+    
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+    }
+    
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        
+    }
+    
+    private struct Section {
+        static let Url = 0
+        static let What = 1
+        static let ForSale = 2
+        static let Photos = 3
+        static let Location = 4
+        static let When = 5
+        
+        static let ContextRelated = [ForSale]
     }
 }

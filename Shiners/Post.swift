@@ -91,8 +91,12 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         if let userFields = fields?.valueForKey(PropertyKey.user) as? NSDictionary {
             self.user = User(fields: userFields)
         }
-        self.endDate = (fields?.valueForKey(PropertyKey.endDate) as? String)?.toDate()
-        self.timestamp = (fields?.valueForKey(PropertyKey.timestamp) as? String)?.toDate()
+        if let endDateMilliseconds = fields?.valueForKey(PropertyKey.endDate) as? Double {
+            self.endDate = NSDate(timeIntervalSince1970: endDateMilliseconds / 1000)
+        }
+        if let timestampMillisecnods = fields?.valueForKey(PropertyKey.timestamp) as? Double {
+            self.timestamp = NSDate(timeIntervalSince1970: timestampMillisecnods / 1000)
+        }
     }
     
     public func getMainPhoto() -> Photo? {
@@ -141,11 +145,13 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         if let anonymousPost = self.anonymousPost{
             aCoder.encodeBool(anonymousPost, forKey: PropertyKey.anonymousPost)
         }
+        
         aCoder.encodeObject(endDate, forKey: PropertyKey.endDate)
         aCoder.encodeObject(user, forKey: PropertyKey.user)
         if let visible = self.visible{
             aCoder.encodeBool(visible, forKey: PropertyKey.visible)
         }
+        
         aCoder.encodeObject(timestamp, forKey: PropertyKey.timestamp)
     }
     
@@ -154,8 +160,13 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         
         dict[PropertyKey.id] = self.id
         dict[PropertyKey.type] = self.type
-        dict[PropertyKey.endDate] = self.endDate?.toString()
-        dict[PropertyKey.timestamp] = self.timestamp?.toString()
+        
+        if let endDate = self.endDate {
+            dict[PropertyKey.endDate] = Int(endDate.timeIntervalSince1970 * 1000)
+        }
+        if let timestamp = self.timestamp{
+            dict[PropertyKey.timestamp] = Int(timestamp.timeIntervalSince1970 * 1000)
+        }
         
         var details = Dictionary<String, AnyObject>()
         details[PropertyKey.anonymousPost] = self.anonymousPost
