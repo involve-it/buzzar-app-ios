@@ -14,7 +14,7 @@ public class MyPostsViewController: UITableViewController{
     var meteorLoaded = false
     
     public override func viewDidLoad() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(myPostsUpdated), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(myPostsUpdated), name: NotificationManager.Name.MyPostsUpdated.rawValue, object: nil)
         self.myPosts = [Post]()
         if AccountHandler.Instance.status == .Completed {
             self.meteorLoaded = true
@@ -119,6 +119,29 @@ public class MyPostsViewController: UITableViewController{
             let index = self.tableView.indexPathForSelectedRow!.row;
             let post = myPosts[index];
             vc.post = post;
+        }
+    }
+   
+    public override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    override public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            let post = self.myPosts[indexPath.row]
+            ConnectionHandler.Instance.posts.deletePost(post.id!) { success, errorId, errorMessage, result in
+                if success {
+                    self.myPosts.removeAtIndex(self.myPosts.indexOf({ (p) -> Bool in
+                        return p.id == post.id
+                    })!)
+                    self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                    
+                    //AccountHandler.Instance.updateMyPosts()
+                    
+                } else {
+                    self.showAlert("Error", message: errorMessage)
+                }
+            }
         }
     }
 }

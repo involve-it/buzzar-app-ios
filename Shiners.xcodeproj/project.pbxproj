@@ -78,6 +78,7 @@
 		7BC0A2411CCC164100DA2824 /* fdd6dfea-3666-5d7f-10ca-9dcac031634f.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BC0A23A1CCC164100DA2824 /* fdd6dfea-3666-5d7f-10ca-9dcac031634f.png */; };
 		7BC0A2421CCC164100DA2824 /* home.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BC0A23B1CCC164100DA2824 /* home.png */; };
 		7BC0A2431CCC164100DA2824 /* id-card.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BC0A23C1CCC164100DA2824 /* id-card.png */; };
+		7BC6BE5C1CFD060500664803 /* ValuePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC6BE5B1CFD060500664803 /* ValuePickerViewController.swift */; };
 		DA74BAEA2B14C252B3F9A418 /* Pods_Shiners.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 643ABEB340B81A6AB08AFEC7 /* Pods_Shiners.framework */; };
 /* End PBXBuildFile section */
 
@@ -157,6 +158,7 @@
 		7BC0A23A1CCC164100DA2824 /* fdd6dfea-3666-5d7f-10ca-9dcac031634f.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fdd6dfea-3666-5d7f-10ca-9dcac031634f.png"; sourceTree = "<group>"; };
 		7BC0A23B1CCC164100DA2824 /* home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = home.png; sourceTree = "<group>"; };
 		7BC0A23C1CCC164100DA2824 /* id-card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "id-card.png"; sourceTree = "<group>"; };
+		7BC6BE5B1CFD060500664803 /* ValuePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValuePickerViewController.swift; sourceTree = "<group>"; };
 		D9E569692E2B1B62B7F114B8 /* Pods-Shiners.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shiners.release.xcconfig"; path = "Pods/Target Support Files/Pods-Shiners/Pods-Shiners.release.xcconfig"; sourceTree = "<group>"; };
 		FB11C1D7A4B55954320FBCF1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -217,6 +219,7 @@
 			isa = PBXGroup;
 			children = (
 				7B3565581CE922DE00012CA9 /* NavigationControllerBase.swift */,
+				7BC6BE5B1CFD060500664803 /* ValuePickerViewController.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -551,6 +554,7 @@
 				7B35654E1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift in Sources */,
 				7BB2A8131CD30AD700AD636D /* ProfileViewController.swift in Sources */,
 				7BB2A7EE1CCC73B700AD636D /* PostDetailsViewController.swift in Sources */,
+				7BC6BE5C1CFD060500664803 /* ValuePickerViewController.swift in Sources */,
 				7B3565591CE922DE00012CA9 /* NavigationControllerBase.swift in Sources */,
 				7BC0A2321CCC160C00DA2824 /* PostsViewController.swift in Sources */,
 				7B35655F1CE92C1F00012CA9 /* Reachability.swift in Sources */,

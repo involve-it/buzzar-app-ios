@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, DescriptionViewControllerDelegate, LocationHandlerDelegate, StaticLocationViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SmallImageViewDelegate{
+class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPickerViewDataSource, DescriptionViewControllerDelegate, LocationHandlerDelegate, StaticLocationViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SmallImageViewDelegate, ValuePickerViewControllerDelegate{
     var descriptionHtml: String = ""
     
     @IBOutlet weak var createButton: UIBarButtonItem!
@@ -38,6 +38,33 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     @IBOutlet weak var lblCurrency: UILabel!
     @IBOutlet weak var txtCurrency: UITextField!
     var currencyPicker = UIPickerView(frame: CGRectZero)
+    @IBOutlet weak var txtPrice: UITextField!
+    
+    //Connections
+    var connectionsPicker = UIPickerView(frame: CGRectZero)
+    @IBOutlet weak var txtConnection: UITextField!
+    @IBOutlet weak var lblConnection: UILabel!
+    
+    //Training
+    var trainingPicker = UIPickerView(frame: CGRectZero)
+    @IBOutlet weak var txtTraining: UITextField!
+    @IBOutlet weak var lblTraining: UILabel!
+    var trainingCategoryPicker = UIPickerView(frame: CGRectZero)
+    @IBOutlet weak var txtTrainingCategory: UITextField!
+    @IBOutlet weak var lblTrainingCategory: UILabel!
+    
+    //Housing
+    var housingPicker = UIPickerView(frame:CGRectZero)
+    @IBOutlet weak var lblHousing: UILabel!
+    @IBOutlet weak var txtHousing: UITextField!
+    
+    //Local Events
+    var localEventsPicker = UIPickerView(frame: CGRectZero)
+    @IBOutlet weak var txtLocalEvent: UITextField!
+    @IBOutlet weak var lblLocalEvent: UILabel!
+    
+    //Help
+    @IBOutlet weak var lblHelp: UILabel!
     
     var whenPicker = UIPickerView(frame: CGRectZero)
     var adTypePicker = UIPickerView(frame: CGRectZero)
@@ -51,6 +78,9 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     
     @IBOutlet weak var lblWhen: UILabel!
     @IBOutlet weak var lblAdType: UILabel!
+    
+    private var adType: Post.AdType?
+    
     override func viewDidLoad() {
         self.whenPicker.delegate = self;
         self.whenPicker.dataSource = self;
@@ -61,6 +91,21 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         self.currencyPicker.delegate = self
         self.currencyPicker.dataSource = self
         
+        self.connectionsPicker.delegate = self
+        self.connectionsPicker.dataSource = self
+        
+        self.trainingPicker.delegate = self
+        self.trainingPicker.dataSource = self
+        
+        self.trainingCategoryPicker.delegate = self
+        self.trainingCategoryPicker.dataSource = self
+        
+        self.housingPicker.delegate = self
+        self.housingPicker.dataSource = self
+        
+        self.localEventsPicker.delegate = self
+        self.localEventsPicker.dataSource = self
+        
         self.txtWhen.inputView = self.whenPicker;
         self.txtWhen.inputAccessoryView = nil
         
@@ -69,6 +114,21 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         
         self.txtCurrency.inputView = self.currencyPicker
         self.txtCurrency.inputAccessoryView = nil
+        
+        self.txtConnection.inputView = self.connectionsPicker
+        self.txtConnection.inputAccessoryView = nil
+        
+        self.txtTraining.inputView = self.trainingPicker
+        self.txtTraining.inputAccessoryView = nil
+        
+        self.txtTrainingCategory.inputView = self.trainingCategoryPicker
+        self.txtTrainingCategory.inputAccessoryView = nil
+        
+        self.txtHousing.inputView = self.housingPicker
+        self.txtHousing.inputAccessoryView = nil
+        
+        self.txtLocalEvent.inputView = self.localEventsPicker
+        self.txtLocalEvent.inputAccessoryView = nil
         
         self.locationHandler.delegate = self;
         
@@ -82,8 +142,13 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
             self.restorePost()
             self.createButton.title = "Save"
         } else {
-            self.txtTitle.becomeFirstResponder()
             self.createButton.title = "Create"
+        }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        if self.post == nil {
+            self.txtTitle.becomeFirstResponder()
         }
     }
     
@@ -91,9 +156,19 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         if (pickerView === self.whenPicker){
             return ConstantValuesHandler.Instance.postDateRanges.count;
         } else if (pickerView === self.adTypePicker){
-            return ConstantValuesHandler.Instance.adTypes.count;
+            return ConstantValuesHandler.Instance.adTypes.count
         } else if (pickerView === self.currencyPicker){
             return ConstantValuesHandler.Instance.currencies.count
+        } else if pickerView === self.connectionsPicker {
+            return ConstantValuesHandler.Instance.connectionTypes.count
+        } else if pickerView === self.trainingPicker {
+            return ConstantValuesHandler.Instance.trainingTypes.count
+        } else if pickerView === self.housingPicker {
+            return ConstantValuesHandler.Instance.housingTypes.count
+        } else if pickerView === self.localEventsPicker{
+            return ConstantValuesHandler.Instance.localEventTypes.count
+        } else if pickerView === self.trainingCategoryPicker {
+            return ConstantValuesHandler.Instance.trainingCategoryTypes.count
         }
         
         return 0;
@@ -103,16 +178,26 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         if pickerView === self.whenPicker{
             return Array(ConstantValuesHandler.Instance.postDateRanges.keys)[row]
         } else if pickerView === self.adTypePicker{
-            return Array(ConstantValuesHandler.Instance.adTypes.keys)[row]
+            return Array(ConstantValuesHandler.Instance.adTypes.values)[row]
         } else if pickerView === self.currencyPicker {
             return ConstantValuesHandler.Instance.currencies[row]
+        } else if pickerView === self.connectionsPicker {
+            return Array(ConstantValuesHandler.Instance.connectionTypes.values)[row]
+        } else if pickerView === self.trainingPicker {
+            return Array(ConstantValuesHandler.Instance.trainingTypes.values)[row]
+        } else if pickerView === self.housingPicker {
+            return Array(ConstantValuesHandler.Instance.housingTypes.values)[row]
+        } else if pickerView === self.localEventsPicker {
+            return Array(ConstantValuesHandler.Instance.localEventTypes.values)[row]
+        } else if pickerView === self.trainingCategoryPicker {
+            return Array(ConstantValuesHandler.Instance.trainingCategoryTypes.values)[row]
         }
         
         return "";
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        if pickerView === self.whenPicker || pickerView === self.adTypePicker || pickerView === self.currencyPicker {
+        if pickerView === self.whenPicker || pickerView === self.adTypePicker || pickerView === self.currencyPicker || pickerView === self.connectionsPicker || pickerView === self.trainingPicker || pickerView === self.housingPicker || pickerView === self.localEventsPicker || pickerView == self.trainingCategoryPicker {
             return 1;
         } else {
             return 0;
@@ -125,13 +210,41 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
             self.txtWhen.text = text
             self.lblWhen.text = text
         } else if pickerView === self.adTypePicker {
-            let text = Array(ConstantValuesHandler.Instance.adTypes.keys)[row]
+            let text = Array(ConstantValuesHandler.Instance.adTypes.values)[row]
             self.lblAdType.text = text
             self.txtAdType.text = text
+            self.adType = Post.AdType(rawValue: Array(ConstantValuesHandler.Instance.adTypes.keys)[row])
+            self.refreshAdTypeDependencies()
         } else if pickerView === self.currencyPicker {
             self.lblCurrency.text = ConstantValuesHandler.Instance.currencies[row] + " >"
             self.txtCurrency.text = ConstantValuesHandler.Instance.currencies[row]
+        } else if pickerView === self.connectionsPicker {
+            let text = Array(ConstantValuesHandler.Instance.connectionTypes.values)[row]
+            self.lblConnection.text = text
+            self.txtConnection.text = text
+        } else if pickerView === self.trainingPicker {
+            let text = Array(ConstantValuesHandler.Instance.trainingTypes.values)[row]
+            self.lblTraining.text = text
+            self.txtTraining.text = text
+        } else if pickerView === self.housingPicker {
+            let text = Array(ConstantValuesHandler.Instance.housingTypes.values)[row]
+            self.lblHousing.text = text
+            self.txtHousing.text = text
+        } else if pickerView === self.localEventsPicker {
+            let text = Array(ConstantValuesHandler.Instance.localEventTypes.values)[row]
+            self.lblLocalEvent.text = text
+            self.txtLocalEvent.text = text
+        } else if pickerView === self.trainingCategoryPicker {
+            let text = Array(ConstantValuesHandler.Instance.trainingCategoryTypes.values)[row]
+            self.lblTrainingCategory.text = text
+            self.txtTrainingCategory.text = text
         }
+    }
+    
+    private func refreshAdTypeDependencies(){
+        let indexSet = NSMutableIndexSet()
+        Section.ContextRelated.forEach({indexSet.addIndex($0)})
+        self.tableView.reloadSections(indexSet, withRowAnimation: .Automatic)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -147,6 +260,28 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
             if let lat = self.currentStaticLocation?.lat, lng = self.currentStaticLocation?.lng {
                 vc.currentCoordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
             }
+        } else if segue.identifier == "helpSelectionSegue" {
+            let vc = (segue.destinationViewController as? UINavigationController)?.viewControllers.first as! ValuePickerViewController
+            vc.delegate = self
+            vc.multipleSelection = true
+            vc.items = ConstantValuesHandler.Instance.helpTypes
+            if let selected = self.lblHelp.text where self.lblHelp.text != " " && self.lblHelp.text != "" {
+                let split = selected.componentsSeparatedByString(", ").map({
+                    Array(ConstantValuesHandler.Instance.helpTypes.keys)[Array(ConstantValuesHandler.Instance.helpTypes.values).indexOf(String($0))!]
+                })
+                vc.selectedItems = split
+            }
+        }
+    }
+    
+    func valuePickerController(valuePickerController: ValuePickerViewController, withId: String?, selectionReturned: [String]) {
+        if selectionReturned.count > 0 {
+            let items = selectionReturned.map({
+                Array(ConstantValuesHandler.Instance.helpTypes.values)[Array(ConstantValuesHandler.Instance.helpTypes.keys).indexOf(String($0))!]
+            })
+            self.lblHelp.text = items.joinWithSeparator(", ")
+        } else {
+            self.lblHelp.text = " "
         }
     }
     
@@ -178,27 +313,9 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == Section.What && indexPath.row == 2 {
-            if self.txtAdType.isFirstResponder(){
-                self.txtAdType.resignFirstResponder()
-            } else {
-                if self.txtAdType.text == "" {
-                    let text = Array(ConstantValuesHandler.Instance.adTypes.keys)[0]
-                    self.txtAdType.text = text
-                    self.lblAdType.text = text
-                }
-                self.txtAdType.becomeFirstResponder()
-            }
+            self.toggleFirstResponder(self.txtAdType, label: self.lblAdType, pickerView: self.adTypePicker)
         } else if indexPath.section == Section.When {
-            if (self.txtWhen.isFirstResponder()){
-                self.txtWhen.resignFirstResponder()
-            } else {
-                if self.txtWhen.text == "" {
-                    let text = Array(ConstantValuesHandler.Instance.postDateRanges.keys)[0]
-                    self.txtWhen.text = text
-                    self.lblWhen.text = text
-                }
-                self.txtWhen.becomeFirstResponder()
-            }
+            self.toggleFirstResponder(self.txtWhen, label: self.lblWhen, pickerView: self.whenPicker)
         } else if indexPath.section == Section.Location {
             self.view.endEditing(true)
             if indexPath.row == 0 {
@@ -213,17 +330,37 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
                 }
             }
         } else if indexPath.section == Section.Photos && indexPath.row == 1 {
-            //images
             self.view.endEditing(true)
             self.imagePickerHandler?.displayImagePicker()
         } else if indexPath.section == Section.ForSale {
-            if self.txtCurrency.isFirstResponder() {
-                self.txtCurrency.resignFirstResponder()
-            } else {
-                self.txtCurrency.becomeFirstResponder()
+            self.toggleFirstResponder(self.txtCurrency, label: self.lblCurrency, pickerView: self.currencyPicker)
+        } else if indexPath.section == Section.Connections {
+            self.toggleFirstResponder(self.txtConnection, label: self.lblConnection, pickerView: self.connectionsPicker)
+        } else if indexPath.section == Section.Training {
+            if indexPath.row == 0 {
+                self.toggleFirstResponder(self.txtTraining, label: self.lblTraining, pickerView: self.trainingPicker)
+            } else if indexPath.row == 1 {
+                self.toggleFirstResponder(self.txtTrainingCategory, label: self.lblTrainingCategory, pickerView: self.trainingCategoryPicker)
             }
+        } else if indexPath.section == Section.Housing {
+            self.toggleFirstResponder(self.txtHousing, label: self.lblHousing, pickerView: self.housingPicker)
+        } else if indexPath.section == Section.LocalEvent {
+            self.toggleFirstResponder(self.txtLocalEvent, label: self.lblLocalEvent, pickerView: self.localEventsPicker)
         }
+
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    private func toggleFirstResponder(textField: UITextField, label: UILabel, pickerView: UIPickerView){
+        if textField.isFirstResponder(){
+            textField.resignFirstResponder()
+        } else {
+            if textField.text == "" {
+                //pickerView.selectRow(0, inComponent: 0, animated: true)
+                pickerView.delegate?.pickerView?(pickerView, didSelectRow: 0, inComponent: 0)
+            }
+            textField.becomeFirstResponder()
+        }
     }
     
     func detectLocation(){
@@ -250,6 +387,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
             location.lat = geocoderInfo.coordinate?.latitude
             location.lng = geocoderInfo.coordinate?.longitude
             location.name = geocoderInfo.address
+            location.placeType = .Dynamic
             self.currentDynamicLocation = location
         }
     }
@@ -267,6 +405,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         loc.lat = location?.latitude
         loc.lng = location?.longitude
         loc.name = address
+        loc.placeType = .Static
         self.currentStaticLocation = loc
     }
     
@@ -331,10 +470,11 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
                 lblDescription.hidden = false
                 lblDescriptionPlaceholder.hidden = true
             }
-            
-            let typeIndex = ConstantValuesHandler.Instance.adTypes.values.indexOf(post.type!)
-            let adType = ConstantValuesHandler.Instance.adTypes.keys[typeIndex!]
+            self.adType = post.type
+            let typeIndex = ConstantValuesHandler.Instance.adTypes.keys.indexOf(post.type!.rawValue)
+            let adType = ConstantValuesHandler.Instance.adTypes.values[typeIndex!]
             lblAdType.text = adType
+            self.txtPrice.text = post.price
             if let locations = post.locations {
                 for location in locations {
                     if location.placeType == .Dynamic {
@@ -362,22 +502,36 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         }
         post.title = txtTitle.text
         post.descr = descriptionHtml
-        post.type = ConstantValuesHandler.Instance.adTypes[lblAdType.text!]
+        post.type = self.adType
         post.timestamp = NSDate()
         //todo
         //post.images
+        post.photos = [Photo]()
+        
         post.locations = [Location]()
         if let dynamicLocation = self.currentDynamicLocation {
             post.locations?.append(dynamicLocation)
         }
-        
         if let staticLocation = self.currentStaticLocation{
             post.locations?.append(staticLocation)
         }
         if let endDateText = self.txtWhen.text where self.txtWhen.text != ""{
             post.endDate = NSDate().dateByAddingTimeInterval(ConstantValuesHandler.Instance.postDateRanges[endDateText]!)
+        } else if self.post?.endDate != nil {
+            //nothing
         } else {
             return nil
+        }
+        if let adType = self.adType {
+            switch adType {
+            case .Trade:
+                post.price = self.txtPrice.text
+            case .Trainings:
+                post.trainingCategory = self.txtTrainingCategory.text
+                post.sectionLearning = self.txtTraining.text
+            default:
+                break
+            }
         }
         
         return post
@@ -409,33 +563,71 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if Section.ContextRelated.contains(section){
-            if self.txtAdType
+        if self.isSectionVisible(section){
+            return super.tableView(tableView, heightForFooterInSection: section)
+        } else {
+            return 0.1
         }
-        
-        return super.tableView(tableView, heightForFooterInSection: section)
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
+        if self.isSectionVisible(section){
+            return super.tableView(tableView, heightForHeaderInSection: section)
+        } else {
+            return 0.1
+        }
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+        if self.isSectionVisible(section){
+            return super.tableView(tableView, numberOfRowsInSection: section)
+        } else {
+            return 0
+        }
     }
     
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if self.isSectionVisible(section){
+            return super.tableView(tableView, viewForHeaderInSection: section)
+        } else {
+            return nil
+        }
+    }
+    
+    private func isSectionVisible(section: Int) -> Bool {
+        if Section.ContextRelated.contains(section){
+            if self.adType == .Trade && section == Section.ForSale
+                || self.adType == .Connect && section == Section.Connections
+                || self.adType == .Trainings && section == Section.Training
+                || self.adType == .Housing && section == Section.Housing
+                || self.adType == .Events && section == Section.LocalEvent
+                || self.adType == .Services && section == Section.LocalEvent
+                || self.adType == .Help && section == Section.Help
+            {
+                return true
+            }
+            
+            return false
+        }
         
+        return true
     }
     
     private struct Section {
         static let Url = 0
         static let What = 1
-        static let ForSale = 2
-        static let Photos = 3
-        static let Location = 4
-        static let When = 5
         
-        static let ContextRelated = [ForSale]
+        static let ForSale = 2
+        static let Connections = 3
+        static let Training = 4
+        static let Housing = 5
+        static let LocalEvent = 6
+        static let Help = 7
+        
+        static let Photos = 8
+        static let Location = 9
+        static let When = 10
+        
+        static let ContextRelated = [ForSale, Connections, Training, Housing, LocalEvent, Help]
     }
 }

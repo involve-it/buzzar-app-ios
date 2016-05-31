@@ -15,7 +15,7 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
     public var price: String?
     public var seenTotal: String?
     public var seenToday: String?
-    public var type: String?
+    public var type: AdType?
     public var locations: [Location]?
     public var url: String?
     public var anonymousPost: Bool?
@@ -23,6 +23,8 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
     public var user: User?
     public var visible: Bool?
     public var timestamp: NSDate?
+    public var trainingCategory: String?
+    public var sectionLearning: String?
     
     public override init(){
         super.init()
@@ -45,7 +47,9 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
             self.id = id
         }
         
-        self.type = fields?.valueForKey(PropertyKey.type) as? String
+        if let type = fields?.valueForKey(PropertyKey.type) as? String {
+            self.type = AdType(rawValue: type)
+        }
         
         if let details = fields?.valueForKey(PropertyKey.details) as? NSDictionary {
             self.title = details.valueForKey(PropertyKey.title) as? String
@@ -115,7 +119,10 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         self.seenTotal = aDecoder.decodeObjectForKey(PropertyKey.seenTotal) as? String
         self.seenToday = aDecoder.decodeObjectForKey(PropertyKey.seenToday) as? String
         self.photos = aDecoder.decodeObjectForKey(PropertyKey.photos) as? [Photo]
-        self.type = aDecoder.decodeObjectForKey(PropertyKey.type) as? String
+        if let type = aDecoder.decodeObjectForKey(PropertyKey.type) as? String {
+            self.type = AdType(rawValue: type)
+        }
+        
         self.locations = aDecoder.decodeObjectForKey(PropertyKey.locations) as? [Location]
         self.url = aDecoder.decodeObjectForKey(PropertyKey.url) as? String
         if aDecoder.containsValueForKey(PropertyKey.anonymousPost){
@@ -139,7 +146,7 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         aCoder.encodeObject(price, forKey: PropertyKey.price)
         aCoder.encodeObject(seenTotal, forKey: PropertyKey.seenTotal)
         aCoder.encodeObject(seenToday, forKey: PropertyKey.seenToday)
-        aCoder.encodeObject(type, forKey: PropertyKey.type)
+        aCoder.encodeObject(type?.rawValue, forKey: PropertyKey.type)
         aCoder.encodeObject(locations, forKey: PropertyKey.locations)
         aCoder.encodeObject(url, forKey: PropertyKey.url)
         if let anonymousPost = self.anonymousPost{
@@ -159,7 +166,7 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         var dict = Dictionary<String, AnyObject>()
         
         dict[PropertyKey.id] = self.id
-        dict[PropertyKey.type] = self.type
+        dict[PropertyKey.type] = self.type?.rawValue
         
         if let endDate = self.endDate {
             dict[PropertyKey.endDate] = Int(endDate.timeIntervalSince1970 * 1000)
@@ -192,6 +199,12 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
             dict[PropertyKey.status] = [PropertyKey.visible: PropertyKey.visible]
         }
         
+        if self.type == .Trainings {
+            var trainingDetails = Dictionary<String, AnyObject>()
+            trainingDetails[PropertyKey.trainingCategory] = self.trainingCategory
+            trainingDetails[PropertyKey.sectionLearning] = self.sectionLearning
+            dict[PropertyKey.trainingDetails] = trainingDetails
+        }
         
         return dict
     }
@@ -215,5 +228,62 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         static let stats = "stats"
         static let status = "status"
         static let timestamp = "timestamp"
+        static let trainingCategory = "typeCategory"
+        static let sectionLearning = "sectionLearning"
+        static let trainingDetails = "trainingsDetails"
+        static let jobDetails = "jobsDetails"
+    }
+    
+    public enum AdType: String {
+        case Jobs = "jobs"
+        case Trainings = "trainings"
+        case Connect = "connect"
+        case Trade = "trade"
+        case Housing = "housing"
+        case Events = "events"
+        case Services = "services"
+        case Help = "help"
+    }
+    
+    public enum ConnectionType: String{
+        case Artists = "artists"
+        case Friends = "friends"
+        case Sport = "sport"
+        case Professionals = "professionals"
+        case Other = "other"
+    }
+    
+    public enum TrainingType: String{
+        case Learn = "learn"
+        case Train = "train"
+    }
+    
+    public enum TrainingCategoryType: String {
+        case Trainings = "trainings"
+        case MasterClass = "master-class"
+        case Tutoring = "tutoring"
+        case Courses = "courses"
+        case School = "school"
+        case HighSchool = "high-school"
+    }
+    
+    public enum HousingType: String {
+        case Roommates = "roommates"
+        case Rent = "rent"
+        case RentOut = "rentOut"
+        case Buy = "buy"
+        case Sell = "sell"
+    }
+    
+    public enum LocalEventType: String {
+        case Provide = "provide"
+        case Need = "need"
+    }
+    
+    public enum HelpType: String{
+        case LostMyPet = "Lost my pet"
+        case NeedMoneyForFood = "Need money for food"
+        case Emergency = "Emergency"
+        case Other = "Other"
     }
 }

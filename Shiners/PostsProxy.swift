@@ -65,4 +65,15 @@ public class PostsProxy{
             }
         }
     }
+    
+    public func deletePost(id: String, callback: MeteorMethodCallback? = nil){
+        Meteor.call("deletePost", params: [id]){(result, error) in
+            if error == nil {
+                let errorId = ResponseHelper.getErrorId(result);
+                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
 }

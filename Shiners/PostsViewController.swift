@@ -105,13 +105,15 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
             } else {
                 postCell.txtPrice.text = "";
             }
-            
-            let loading = ImageCachingHandler.Instance.getImageFromUrl(post.getMainPhoto()?.original) { (image) in
-                dispatch_async(dispatch_get_main_queue(), {
-                    if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
-                        cellToUpdate.imgPhoto?.image = image;
-                    }
-                })
+            var loading = false
+            if let url = post.getMainPhoto()?.original {
+                loading = ImageCachingHandler.Instance.getImageFromUrl(url) { (image) in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
+                            cellToUpdate.imgPhoto?.image = image;
+                        }
+                    })
+                }
             }
             if loading {
                 postCell.imgPhoto?.image = ImageCachingHandler.defaultImage;

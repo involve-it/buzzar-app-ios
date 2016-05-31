@@ -79,8 +79,12 @@ public class Location: NSObject, NSCoding {
         dict[PropertyKeys.id] = self.id
         dict[PropertyKeys.userId] = self.userId
         dict[PropertyKeys.name] = self.name
-        dict[PropertyKeys.lat] = self.lat
-        dict[PropertyKeys.lng] = self.lng
+        
+        var coords = Dictionary<String, AnyObject>()
+        coords[PropertyKeys.lat] = self.lat
+        coords[PropertyKeys.lng] = self.lng
+        dict[PropertyKeys.coords] = coords
+        
         if let placeType = self.placeType {
             dict[PropertyKeys.placeType] = placeType.rawValue
         }
@@ -102,5 +106,6 @@ public class Location: NSObject, NSCoding {
         static let lng = "lng"
         static let placeType = "placeType"
         static let isPublic = "isPublic"
+        static let coords = "coords"
     }
 }

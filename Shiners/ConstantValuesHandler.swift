@@ -9,8 +9,58 @@
 import Foundation
 
 public class ConstantValuesHandler {
+    
     public let adTypes = [
-        "Job market": "jobs", "Need or provide training": "trainings", "Looking for connections": "connect", "Buy & sell": "trade", "Housing market": "housing", "Local events": "events", "Need or provide service": "services", "Need or give help": "help"
+        Post.AdType.Jobs.rawValue: "Job market",
+        Post.AdType.Trainings.rawValue: "Need or provide training",
+        Post.AdType.Connect.rawValue: "Looking for connections",
+        Post.AdType.Trade.rawValue: "Buy & sell",
+        Post.AdType.Housing.rawValue: "Housing market",
+        Post.AdType.Events.rawValue: "Local events",
+        Post.AdType.Services.rawValue: "Need or provide service",
+        Post.AdType.Help.rawValue: "Need or give help"
+    ]
+    
+    public let connectionTypes = [
+        Post.ConnectionType.Artists.rawValue: "Artists and other creative people",
+        Post.ConnectionType.Friends.rawValue: "Friendship",
+        Post.ConnectionType.Sport.rawValue: "Sport activities",
+        Post.ConnectionType.Professionals.rawValue: "Professionals",
+        Post.ConnectionType.Other.rawValue: "Other"
+    ]
+    
+    public let trainingTypes = [
+        Post.TrainingType.Learn.rawValue: "Learn",
+        Post.TrainingType.Train.rawValue: "Train others"
+    ]
+    
+    public let trainingCategoryTypes = [
+        Post.TrainingCategoryType.Trainings.rawValue: "Trainings",
+        Post.TrainingCategoryType.MasterClass.rawValue: "Master class",
+        Post.TrainingCategoryType.Tutoring.rawValue: "Tutoring",
+        Post.TrainingCategoryType.Courses.rawValue: "Courses",
+        Post.TrainingCategoryType.School.rawValue: "School",
+        Post.TrainingCategoryType.HighSchool.rawValue: "High school"
+    ]
+    
+    public let housingTypes = [
+        Post.HousingType.Roommates.rawValue: "Roommates",
+        Post.HousingType.Rent.rawValue: "Renting",
+        Post.HousingType.RentOut.rawValue: "Renting out",
+        Post.HousingType.Buy.rawValue: "Buying",
+        Post.HousingType.Sell.rawValue: "Selling"
+    ]
+    
+    public let localEventTypes = [
+        Post.LocalEventType.Provide.rawValue: "Provide",
+        Post.LocalEventType.Need.rawValue: "Need"
+    ]
+    
+    public let helpTypes = [
+        Post.HelpType.LostMyPet.rawValue: "Lost my pet",
+        Post.HelpType.NeedMoneyForFood.rawValue: "Need money for food",
+        Post.HelpType.Emergency.rawValue: "Emergency Situation",
+        Post.HelpType.Other.rawValue: "Other"
     ]
     
     public let postDateRanges = [
