@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CoreLocation
 
-class PostsViewController: UITableViewController, SearchViewControllerDelegate{
+class PostsViewController: UITableViewController, SearchViewControllerDelegate, LocationHandlerDelegate{
     private var posts = [Post]();
     
     @IBOutlet weak var lcTxtSearchBoxLeft: NSLayoutConstraint!
@@ -18,6 +19,10 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
     var searchViewController: NewSearchViewController?
     
     private var meteorLoaded = false;
+    private var locationAcquired = false;
+    private let locationHandler = LocationHandler()
+    private var currentLocation: CLLocationCoordinate2D?
+    private var errorMessage: String?
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
@@ -32,17 +37,17 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
     }
     
     override func viewDidLoad() {
+        self.locationHandler.delegate = self
         self.searchView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
         
-        if ConnectionHandler.Instance.status == .Connected {
-            self.meteorLoaded = true
-            self.posts = ConnectionHandler.Instance.postsCollection.posts;
-        } else {
-            if CachingHandler.Instance.status != .Complete {
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
-            } else if let posts = CachingHandler.Instance.postsAll {
-                self.posts = posts
-            }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showPostsFromCollection), name: NotificationManager.Name.NearbyPostsSubscribed.rawValue, object: nil)
+        
+        self.locationHandler.getLocationOnce()
+        
+        if CachingHandler.Instance.status != .Complete {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
+        } else if let posts = CachingHandler.Instance.postsAll {
+            self.posts = posts
         }
         
         if (self.posts.count == 0){
@@ -58,12 +63,43 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(forceLayout), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
-    @objc private func meteorConnected(notification: NSNotification){
+    func showPostsFromCollection(){
         self.meteorLoaded = true
-        self.posts = ConnectionHandler.Instance.postsCollection.posts
+        self.posts = ConnectionHandler.Instance.posts.postsCollection.posts
         self.tableView.separatorStyle = .SingleLine;
-        ThreadHelper.runOnMainThread { 
+        ThreadHelper.runOnMainThread {
             self.tableView.reloadData()
+        }
+    }
+    
+    func locationReported(geocoderInfo: GeocoderInfo) {
+        if geocoderInfo.denied {
+            self.errorMessage = "Please allow location services in settings"
+            ThreadHelper.runOnMainThread {
+                self.tableView.reloadData()
+            }
+        } else if geocoderInfo.error {
+            self.errorMessage = "An error occurred getting your current location"
+            ThreadHelper.runOnMainThread {
+                self.tableView.reloadData()
+            }
+        } else {
+            self.currentLocation = geocoderInfo.coordinate
+            self.locationAcquired = true
+            
+            if ConnectionHandler.Instance.status == .Connected {
+                self.subscribeToNearby()
+            }
+        }
+    }
+    
+    private func subscribeToNearby(){
+        ConnectionHandler.Instance.posts.subscribeToNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude, radius: 100);
+    }
+    
+    @objc private func meteorConnected(notification: NSNotification){
+        if self.locationAcquired {
+            self.subscribeToNearby()
         }
     }
     
@@ -89,8 +125,10 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate{
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell!
         if posts.count == 0 {
-            if ConnectionHandler.Instance.status == .Connected{
-                cell = tableView.dequeueReusableCellWithIdentifier("noPosts")
+            if (self.errorMessage != nil || (self.meteorLoaded && self.locationAcquired)){
+                let errorCell = tableView.dequeueReusableCellWithIdentifier("postsError") as! ErrorCell
+                errorCell.lblMessage.text = self.errorMessage ?? "There are no posts around you"
+                cell = errorCell
             } else {
                 cell = tableView.dequeueReusableCellWithIdentifier("waitingPosts")
             }

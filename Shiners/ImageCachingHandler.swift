@@ -85,10 +85,10 @@ public class ImageCachingHandler{
         var loading = false;
         if let url = imageUrl?.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) {
             if let image = self.get(url){
-                NSLog("From memory cache: \(url)")
+                NSLog("From memory cache: \(imageUrl)")
                 callback(image: image);
             } else if self.failedUrls.contains(url) {
-                NSLog("Failed URL: \(url)")
+                NSLog("Failed URL: \(imageUrl)")
                 callback(image: defaultImage)
             } else if self.savedImages.keys.contains(url) {
                 ThreadHelper.runOnBackgroundThread({
@@ -97,7 +97,7 @@ public class ImageCachingHandler{
             } else {
                 let nsUrl = NSURL(string: url);
                 loading = true;
-                NSLog("Downloading from url: \(url)")
+                NSLog("Downloading from url: \(imageUrl)")
                 NSURLSession.sharedSession().dataTaskWithURL(nsUrl!){data, response, error in
                     if (error == nil && data != nil){
                         if let image = UIImage(data: data!){

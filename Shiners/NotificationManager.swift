@@ -21,5 +21,6 @@ public class NotificationManager{
         case MeteorConnected = "shiners:meteorConnected"
         case OfflineCacheRestored = "shiners:offlineCacheRestored"
         case AccountUpdated = "shiners:AccountUpdated"
+        case NearbyPostsSubscribed = "shiners:NearbyPostsSubscribed"
     }
 }

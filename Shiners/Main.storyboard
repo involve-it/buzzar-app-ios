@@ -98,7 +98,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="noPosts" id="N5a-Lm-xTH">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="postsError" id="N5a-Lm-xTH" customClass="ErrorCell" customModule="Shiners" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="266" width="600" height="87"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="N5a-Lm-xTH" id="ORH-km-HDf">
@@ -117,6 +117,9 @@
                                         <constraint firstItem="Z1L-bL-eDJ" firstAttribute="centerX" secondItem="ORH-km-HDf" secondAttribute="centerX" id="nVI-zM-3rB"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="lblMessage" destination="Z1L-bL-eDJ" id="Dbi-7F-9Gv"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <sections/>
