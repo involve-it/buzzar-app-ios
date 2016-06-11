@@ -10,8 +10,6 @@ import Foundation
 import SwiftDDP
 
 public class PostsProxy{
-    //public var myPosts = [Post]()
-    
     private static let instance = PostsProxy()
     public class var Instance: PostsProxy{
         get{
@@ -21,14 +19,6 @@ public class PostsProxy{
     
     public var postsCollection = PostsCollection()
     private var nearbyPostsId: String?
-    
-    /*private init(){
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didLogin), name: DDP_USER_DID_LOGIN, object: nil);
-    }
-    
-    @objc private func didLogin(){
-        self.getMyPosts(true, callback: nil)
-    }*/
     
     public func subscribeToNearbyPosts(lat: Double, lng: Double, radius: Double){
         if let nearbyPostsId = self.nearbyPostsId {

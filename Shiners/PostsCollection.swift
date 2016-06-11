@@ -19,11 +19,13 @@ public class PostsCollection:AbstractCollection{
     override public func documentWasAdded(collection: String, id: String, fields: NSDictionary?) {
         let post = Post(id: id, fields: fields)
         self.posts.append(post)
+        NotificationManager.sendNotification(NotificationManager.Name.NearbyPostAdded, object: nil)
     }
     
     override public func documentWasRemoved(collection: String, id: String) {
         if let index = self.posts.indexOf({post in return post.id == id}){
             self.posts.removeAtIndex(index)
+            NotificationManager.sendNotification(NotificationManager.Name.NearbyPostRemoved, object: nil)
         }
     }
     
@@ -31,6 +33,7 @@ public class PostsCollection:AbstractCollection{
         if let index = self.posts.indexOf({post in return post.id == id}){
             let post = self.posts[index];
             post.update(fields);
+            NotificationManager.sendNotification(NotificationManager.Name.NearbyPostModified, object: nil)
         }
     }
     
@@ -41,8 +44,4 @@ public class PostsCollection:AbstractCollection{
     public func itemAtIndex(index: Int) -> Post{
         return posts[index];
     }
-    
-    /*public func insert(post: Post){
-        client.insert(self.name, document: NSArray, callback: DDPMethodCallback?)
-    }*/
 }
