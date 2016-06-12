@@ -34,7 +34,6 @@
 		7B3565341CE18A5E00012CA9 /* RegisterUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565331CE18A5E00012CA9 /* RegisterUser.swift */; };
 		7B35653E1CE42F8700012CA9 /* add-30.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B35653D1CE42F8700012CA9 /* add-30.png */; };
 		7B3565451CE7B99C00012CA9 /* MessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565441CE7B99C00012CA9 /* MessagesTableViewCell.swift */; };
-		7B3565481CE7BB7C00012CA9 /* Dialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565471CE7BB7C00012CA9 /* Dialog.swift */; };
 		7B35654A1CE7BE0100012CA9 /* DialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565491CE7BE0100012CA9 /* DialogViewController.swift */; };
 		7B35654E1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35654D1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift */; };
 		7B3565501CE7D74400012CA9 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35654F1CE7D74400012CA9 /* NotificationManager.swift */; };
@@ -117,7 +116,6 @@
 		7B3565331CE18A5E00012CA9 /* RegisterUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterUser.swift; sourceTree = "<group>"; };
 		7B35653D1CE42F8700012CA9 /* add-30.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "add-30.png"; sourceTree = "<group>"; };
 		7B3565441CE7B99C00012CA9 /* MessagesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesTableViewCell.swift; sourceTree = "<group>"; };
-		7B3565471CE7BB7C00012CA9 /* Dialog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dialog.swift; sourceTree = "<group>"; };
 		7B3565491CE7BE0100012CA9 /* DialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogViewController.swift; sourceTree = "<group>"; };
 		7B35654D1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		7B35654F1CE7D74400012CA9 /* NotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
@@ -276,7 +274,6 @@
 				7BB2A80E1CCF199D00AD636D /* ProfileDetail.swift */,
 				7BB2A8141CD5245500AD636D /* Location.swift */,
 				7B3565331CE18A5E00012CA9 /* RegisterUser.swift */,
-				7B3565471CE7BB7C00012CA9 /* Dialog.swift */,
 				7B0B316C1CF10A8200029458 /* Photo.swift */,
 				7B0B31721CF4086A00029458 /* PostDetails.swift */,
 				7B1C12431D0CCDD7001355AB /* Chat.swift */,
@@ -583,7 +580,6 @@
 				7BB2A7F81CCD8EC500AD636D /* Extensions.swift in Sources */,
 				7BB2A8051CCDA58C00AD636D /* NewPostViewController.swift in Sources */,
 				7B1C12441D0CCDD7001355AB /* Chat.swift in Sources */,
-				7B3565481CE7BB7C00012CA9 /* Dialog.swift in Sources */,
 				7B0B31711CF127A800029458 /* AccountHandler.swift in Sources */,
 				7BB2A80B1CCF15D000AD636D /* User.swift in Sources */,
 				7B26B1A31CD694A0000495EE /* StaticLocationViewController.swift in Sources */,

@@ -8,13 +8,15 @@
 
 import Foundation
 
-class Chat: NSObject, DictionaryInitializable, NSCoding {
+public class Chat: NSObject, DictionaryInitializable, NSCoding {
     var id: String?
     var userId: String?
     var otherUserIds: [String]?
     var created: NSDate?
     var lastMessageTimestamp: NSDate?
     var activated: Bool?
+    var lastMessage: String?
+    var otherParty: User?
     
     var messages = [Message]()
     
@@ -22,7 +24,7 @@ class Chat: NSObject, DictionaryInitializable, NSCoding {
         super.init()
     }
     
-    required init (fields: NSDictionary?){
+    required public init (fields: NSDictionary?){
         super.init()
         
         self.id = fields?.objectForKey(PropertyKeys.id) as? String
@@ -48,9 +50,16 @@ class Chat: NSObject, DictionaryInitializable, NSCoding {
                 self.messages.append(Message(fields: messageFields))
             })
         }
+        
+        self.lastMessage = fields?.valueForKey(PropertyKeys.lastMessage) as? String
+        if let otherUsers = fields?.valueForKey(PropertyKeys.otherParty) as? NSArray {
+            if let otherUserFields = otherUsers.firstObject as? NSDictionary {
+                self.otherParty = User(fields: otherUserFields)
+            }
+        }
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         self.id = aDecoder.decodeObjectForKey(PropertyKeys.id) as? String
         self.userId = aDecoder.decodeObjectForKey(PropertyKeys.userId) as? String
         self.otherUserIds = aDecoder.decodeObjectForKey(PropertyKeys.otherUserIds) as? [String]
@@ -60,9 +69,11 @@ class Chat: NSObject, DictionaryInitializable, NSCoding {
             self.activated = aDecoder.decodeBoolForKey(PropertyKeys.activated)
         }
         self.messages = aDecoder.decodeObjectForKey(PropertyKeys.messages) as! [Message]
+        self.lastMessage = aDecoder.decodeObjectForKey(PropertyKeys.lastMessage) as? String
+        self.otherParty = aDecoder.decodeObjectForKey(PropertyKeys.otherParty) as? User
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
+    public func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.id, forKey: PropertyKeys.id)
         aCoder.encodeObject(self.userId, forKey: PropertyKeys.userId)
         aCoder.encodeObject(self.otherUserIds, forKey: PropertyKeys.otherUserIds)
@@ -72,6 +83,13 @@ class Chat: NSObject, DictionaryInitializable, NSCoding {
             aCoder.encodeBool(activated, forKey: PropertyKeys.activated)
         }
         aCoder.encodeObject(self.messages, forKey: PropertyKeys.messages)
+        aCoder.encodeObject(self.lastMessage, forKey: PropertyKeys.lastMessage)
+        aCoder.encodeObject(self.otherParty, forKey: PropertyKeys.otherParty)
+    }
+    
+    func addMessage(message: Message){
+        self.messages.append(message)
+        self.lastMessage = message.text
     }
     
     private struct PropertyKeys {
@@ -81,6 +99,8 @@ class Chat: NSObject, DictionaryInitializable, NSCoding {
         static let created = "timeBegin"
         static let lastMessageTimestamp = "lastMessageTs"
         static let activated = "activated"
+        static let lastMessage = "lastMessage"
+        static let otherParty = "otherParty"
         
         static let messages = "messages"
     }

@@ -9,11 +9,21 @@
 import Foundation
 import SwiftDDP
 
-class MessagesProxy {
+public class MessagesProxy {
     private static let instance = MessagesProxy()
     class var Instance: MessagesProxy{
         get{
             return instance;
+        }
+    }
+    
+    func getChat(id: String, callback: MeteorMethodCallback? = nil){
+        Meteor.call("getChat", params: [id]) { (result, error) in
+            if error == nil {
+                ResponseHelper.callHandler(result, handler: callback) as Chat?
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
         }
     }
     

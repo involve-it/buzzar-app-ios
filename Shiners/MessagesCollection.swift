@@ -19,21 +19,53 @@ class MessagesCollection: AbstractCollection{
     override func documentWasAdded(collection: String, id: String, fields: NSDictionary?) {
         let message = Message(id: id, fields: fields)
         self.messages.append(message)
-        NotificationManager.sendNotification(NotificationManager.Name.MessageAdded, object: nil)
+        
+        if let chatIndex = AccountHandler.Instance.myChats?.indexOf({return $0.id == message.chatId}), chat = AccountHandler.Instance.myChats?[chatIndex] {
+            chat.messages.append(message)
+            
+            NotificationManager.sendNotification(NotificationManager.Name.MessageAdded, object: message)
+        } else {
+            ConnectionHandler.Instance.messages.getChat(message.chatId!){ success, errorId, errorMessage, result in
+                if let chat = result as? Chat where success {
+                    chat.messages.append(message)
+                    AccountHandler.Instance.myChats?.append(chat)
+                    
+                    NotificationManager.sendNotification(.ChatAdded, object: chat)
+                } else {
+                    NSLog("error loading chat")
+                }
+            }
+        }
     }
     
     override func documentWasRemoved(collection: String, id: String) {
-        if let index = self.messages.indexOf({post in return post.id == id}){
+        if let index = self.messages.indexOf({message in return message.id == id}){
+            let message = self.messages[index]
             self.messages.removeAtIndex(index)
-            NotificationManager.sendNotification(NotificationManager.Name.MessageRemoved, object: nil)
+            
+            if let chatIndex = AccountHandler.Instance.myChats?.indexOf({return $0.id == message.chatId}), chat = AccountHandler.Instance.myChats?[chatIndex], messageIndex = chat.messages.indexOf({return $0.id == message.id}) {
+                chat.messages.removeAtIndex(messageIndex)
+                
+                NotificationManager.sendNotification(NotificationManager.Name.MessageRemoved, object: message)
+            } else {
+                NSLog("message was removed, chat unknown!")
+            }
         }
     }
     
     override func documentWasChanged(collection: String, id: String, fields: NSDictionary?, cleared: [String]?) {
-        if let index = self.messages.indexOf({post in return post.id == id}){
+        if let index = self.messages.indexOf({message in return message.id == id}){
             let message = self.messages[index];
             message.update(fields);
-            NotificationManager.sendNotification(NotificationManager.Name.MessageModified, object: nil)
+            
+            if let chatIndex = AccountHandler.Instance.myChats?.indexOf({return $0.id == message.chatId}), chat = AccountHandler.Instance.myChats?[chatIndex], messageIndex = chat.messages.indexOf({return $0.id == message.id}) {
+                chat.messages.removeAtIndex(messageIndex)
+                chat.messages.insert(message, atIndex: messageIndex)
+                
+                NotificationManager.sendNotification(NotificationManager.Name.MessageModified, object: message)
+            } else {
+                NSLog("message was changed, chat unknown!")
+            }
         }
     }
     

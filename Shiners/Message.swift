@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Message: NSObject, DictionaryInitializable, NSCoding {
+public class Message: NSObject, DictionaryInitializable, NSCoding {
     var id: String?
     var userId: String?
     var toUserId: String?
@@ -27,7 +27,7 @@ class Message: NSObject, DictionaryInitializable, NSCoding {
         self.id = id
     }
     
-    required init(fields: NSDictionary?){
+    required public init(fields: NSDictionary?){
         super.init()
         self.update(fields)
     }
@@ -45,7 +45,7 @@ class Message: NSObject, DictionaryInitializable, NSCoding {
         self.seen = fields?.objectForKey(PropertyKeys.seen) as? Bool
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         self.id = aDecoder.decodeObjectForKey(PropertyKeys.id) as? String
         self.userId = aDecoder.decodeObjectForKey(PropertyKeys.userId) as? String
         self.toUserId = aDecoder.decodeObjectForKey(PropertyKeys.toUserId) as? String
@@ -58,7 +58,7 @@ class Message: NSObject, DictionaryInitializable, NSCoding {
         }
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
+    public func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(self.id, forKey: PropertyKeys.id)
         aCoder.encodeObject(self.userId, forKey: PropertyKeys.userId)
         aCoder.encodeObject(self.toUserId, forKey: PropertyKeys.toUserId)

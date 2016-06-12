@@ -14,6 +14,8 @@ public class DialogViewController : JSQMessagesViewController{
     var outgoingBubbleImageView: JSQMessagesBubbleImage!
     var incomingBubbleImageView: JSQMessagesBubbleImage!
     
+    var chat: Chat!
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,11 +23,46 @@ public class DialogViewController : JSQMessagesViewController{
         collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
         self.inputToolbar.contentView.leftBarButtonItem = nil
         
-        
-        self.senderId = "testid"
-        self.senderDisplayName = "Ashot"
         self.setupBubbles()
-        self.populateDumbMessages()
+    }
+    
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.senderId = AccountHandler.Instance.userId
+        self.senderDisplayName = chat.otherParty?.username
+        
+        self.chat.messages.forEach { (message) in
+            addMessage(message.userId!, text: message.text!)
+        }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageAdded), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageRemoved), name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageModified), name: NotificationManager.Name.MessageModified.rawValue, object: nil)
+    }
+    
+    func messageAdded(notification: NSNotification){
+        if let message = notification.object as? Message where message.chatId == self.chat.id {
+            addMessage(message.userId!, text: message.text!, callFinish: true)
+        }
+    }
+    
+    func messageRemoved(notification: NSNotification){
+        if let message = notification.object as? Message where message.chatId == self.chat.id {
+            //todo
+        }
+    }
+    
+    func messageModified(notification: NSNotification){
+        if let message = notification.object as? Message where message.chatId == self.chat.id {
+            //todo
+        }
+    }
+    
+    public override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageModified.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
     }
     
     public override func viewDidAppear(animated: Bool) {
@@ -74,28 +111,26 @@ public class DialogViewController : JSQMessagesViewController{
         return nil
     }
     
-    func populateDumbMessages(){
-        addMessage("foo", text: "Hey person!")
-        // messages sent from local sender
-        addMessage(senderId, text: "Yo!")
-        addMessage(senderId, text: "I like turtles!")
-        
-        finishReceivingMessage()
-        
-    }
-    
-    func addMessage(id: String, text: String){
+    func addMessage(id: String, text: String, callFinish: Bool = false){
         let message = JSQMessage(senderId: id, displayName: "", text: text)
         messages.append(message)
+        if callFinish{
+            if id == self.senderId {
+                JSQSystemSoundPlayer.jsq_playMessageSentSound()
+                finishSendingMessage()
+            } else {
+                JSQSystemSoundPlayer.jsq_playMessageReceivedSound()
+                finishReceivingMessage()
+            }
+        }
     }
     
     public override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-        addMessage(self.senderId, text: text)
+        addMessage(self.senderId, text: text, callFinish: true)
+        let message = Message()
+        message.chatId = self.chat.id
+        message.text = text
         
-        // 4
-        JSQSystemSoundPlayer.jsq_playMessageSentSound()
-        
-        // 5
-        finishSendingMessage()
+        ConnectionHandler.Instance.messages.sendMessage(message);
     }
 }

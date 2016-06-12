@@ -10,13 +10,13 @@ import Foundation
 import SwiftDDP
 
 public class AccountHandler{
-    private let totalDependencies = 2
+    private let totalDependencies = 3
     private var resolvedDependencies = 0
     private var latestCallId = 0
     
     public private(set) var status:Status = .NotInitialized;
     
-    public private(set) var myChats: [Chat]?
+    public var myChats: [Chat]?
     public private(set) var myPosts: [Post]?
     public private(set) var currentUser: User?
     public private(set) var userId: String?
@@ -30,11 +30,19 @@ public class AccountHandler{
     func subscribeToNewMessages(){
         if let messagesId = self.messagesId {
             Meteor.unsubscribe(withId: messagesId)
+        } else {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveMyChats), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveMyChats), name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveMyChats), name: NotificationManager.Name.MessageModified.rawValue, object: nil)
         }
         self.messagesId = Meteor.subscribe("messages-new") {
             NSLog("messages-new subscribed");
             NotificationManager.sendNotification(NotificationManager.Name.MessagesNewSubscribed, object: nil)
         }
+    }
+    
+    @objc private func saveMyChats(){
+        CachingHandler.saveObject(self.myChats!, path: CachingHandler.chats)
     }
     
     public func subscribeToNearbyPosts(lat: Double, lng: Double, radius: Double){
@@ -135,6 +143,23 @@ public class AccountHandler{
                     }
                 }
             })
+            
+            ConnectionHandler.Instance.messages.getChats(0, take: 100, callback: { (success, errorId, errorMessage, result) in
+                if self.latestCallId == callId {
+                    if (success){
+                        self.myChats = result as? [Chat]
+                        
+                        CachingHandler.saveObject(self.myChats!, path: CachingHandler.chats)
+                        
+                        NotificationManager.sendNotification(.MyChatsUpdated, object: nil)
+                    }
+                    self.resolvedDependencies += 1
+                    self.handleCompleted(callId)
+                    if !success {
+                        NSLog("Error loading my chats")
+                    }
+                }
+            })
         }
     }
     
@@ -155,7 +180,7 @@ public class AccountHandler{
             if success {
                 self.myChats = result as? [Chat]
                 
-                CachingHandler.saveObject(self.myChats!, path: CachingHandler.chats)
+                self.saveMyChats()
                 NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
             }
             callback?(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
