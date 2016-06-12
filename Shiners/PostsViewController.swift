@@ -65,7 +65,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     
     func showPostsFromCollection(){
         self.meteorLoaded = true
-        self.posts = ConnectionHandler.Instance.posts.postsCollection.posts
+        self.posts = AccountHandler.Instance.postsCollection.posts
         self.tableView.separatorStyle = .SingleLine;
         ThreadHelper.runOnMainThread {
             self.tableView.reloadData()
@@ -94,7 +94,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     }
     
     private func subscribeToNearby(){
-        ConnectionHandler.Instance.posts.subscribeToNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude, radius: 100);
+        AccountHandler.Instance.subscribeToNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude, radius: 100);
     }
     
     @objc private func meteorConnected(notification: NSNotification){

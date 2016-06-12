@@ -22,6 +22,8 @@ public class NotificationManager{
         case OfflineCacheRestored = "shiners:offlineCacheRestored"
         case AccountUpdated = "shiners:AccountUpdated"
         
+        case MyChatsUpdated = "shiners:MyChatsUpdated"
+        
         case NearbyPostsSubscribed = "shiners:NearbyPostsSubscribed"
         case NearbyPostAdded = "shiners:NearbyPostAdded"
         case NearbyPostRemoved = "shiners:NearbyPostRemoved"

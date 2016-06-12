@@ -17,26 +17,6 @@ public class PostsProxy{
         }
     }
     
-    public var postsCollection = PostsCollection()
-    private var nearbyPostsId: String?
-    
-    public func subscribeToNearbyPosts(lat: Double, lng: Double, radius: Double){
-        if let nearbyPostsId = self.nearbyPostsId {
-            Meteor.unsubscribe(withId: nearbyPostsId)
-        }
-        self.nearbyPostsId = Meteor.subscribe("posts-nearby", params: [["lat": lat, "lng": lng, "radius": radius]]) {
-            //saving posts for offline use
-            ThreadHelper.runOnBackgroundThread(){
-                if !CachingHandler.saveObject(self.postsCollection.posts, path: CachingHandler.postsAll){
-                    NSLog("Unable to archive posts")
-                }
-            }
-            
-            NSLog("posts-nearby subscribed");
-            NotificationManager.sendNotification(NotificationManager.Name.NearbyPostsSubscribed, object: nil)
-        }
-    }
-    
     public func getMyPosts(skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
         dict["type"] = "all"

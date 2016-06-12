@@ -16,9 +16,43 @@ public class AccountHandler{
     
     public private(set) var status:Status = .NotInitialized;
     
+    public private(set) var myChats: [Chat]?
     public private(set) var myPosts: [Post]?
     public private(set) var currentUser: User?
     public private(set) var userId: String?
+    
+    public var postsCollection = PostsCollection()
+    private var nearbyPostsId: String?
+    
+    var messagesCollection = MessagesCollection()
+    private var messagesId: String?
+    
+    func subscribeToNewMessages(){
+        if let messagesId = self.messagesId {
+            Meteor.unsubscribe(withId: messagesId)
+        }
+        self.messagesId = Meteor.subscribe("messages-new") {
+            NSLog("messages-new subscribed");
+            NotificationManager.sendNotification(NotificationManager.Name.MessagesNewSubscribed, object: nil)
+        }
+    }
+    
+    public func subscribeToNearbyPosts(lat: Double, lng: Double, radius: Double){
+        if let nearbyPostsId = self.nearbyPostsId {
+            Meteor.unsubscribe(withId: nearbyPostsId)
+        }
+        self.nearbyPostsId = Meteor.subscribe("posts-nearby", params: [["lat": lat, "lng": lng, "radius": radius]]) {
+            //saving posts for offline use
+            ThreadHelper.runOnBackgroundThread(){
+                if !CachingHandler.saveObject(self.postsCollection.posts, path: CachingHandler.postsAll){
+                    NSLog("Unable to archive posts")
+                }
+            }
+            
+            NSLog("posts-nearby subscribed");
+            NotificationManager.sendNotification(NotificationManager.Name.NearbyPostsSubscribed, object: nil)
+        }
+    }
     
     public func register(user: RegisterUser, callback: MeteorMethodCallback){
         ConnectionHandler.Instance.users.register(user, callback: callback)
@@ -111,6 +145,18 @@ public class AccountHandler{
                 
                 CachingHandler.saveObject(self.myPosts!, path: CachingHandler.postsMy)
                 NotificationManager.sendNotification(.MyPostsUpdated, object: nil)
+            }
+            callback?(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
+        })
+    }
+    
+    public func updateMyChats(callback: MeteorMethodCallback? = nil){
+        ConnectionHandler.Instance.messages.getChats(0, take: 100, callback: { (success, errorId, errorMessage, result) in
+            if success {
+                self.myChats = result as? [Chat]
+                
+                CachingHandler.saveObject(self.myChats!, path: CachingHandler.chats)
+                NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
             }
             callback?(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
         })

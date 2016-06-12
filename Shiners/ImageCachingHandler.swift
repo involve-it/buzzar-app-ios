@@ -47,48 +47,15 @@ public class ImageCachingHandler{
         }
         return image;
     }
-    
-    //will be deprecated after server refactoring
-    /*public func getImage(imageId: String?, callback: (image: UIImage?) -> Void) -> Bool{
-        var res = false;
-        if let id = imageId {
-            if let image = self.get(id){
-                NSLog("From cache: \(id)")
-                callback(image: image);
-            } else if let imageUrl = ConnectionHandler.Instance.imagesCollection.findOne(id)?.data,
-                nsUrl = NSURL(string: imageUrl){
-                res = true;
-                NSLog("Downloading by id: \(id)")
-                NSURLSession.sharedSession().dataTaskWithURL(nsUrl){data, response, error in
-                    if (error == nil && data != nil){
-                        if let image = UIImage(data: data!){
-                            self.add(id, image: image);
-                            callback(image: image);
-                        } else {
-                            callback(image: ImageCachingHandler.defaultImage);
-                        }
-                    } else {
-                        NSLog("Error: \(error)");
-                        callback(image: ImageCachingHandler.defaultImage);
-                    }
-                }.resume()
-            } else {
-                callback(image: ImageCachingHandler.defaultImage);
-            }
-        } else {
-            callback(image: ImageCachingHandler.defaultImage);
-        }
-        return res;
-    }*/
-    
+        
     public func getImageFromUrl (imageUrl: String?, defaultImage: UIImage? = ImageCachingHandler.defaultImage, callback: (image: UIImage?) ->Void) -> Bool{
         var loading = false;
         if let url = imageUrl?.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) {
             if let image = self.get(url){
-                NSLog("From memory cache: \(imageUrl)")
+                //NSLog("From memory cache: \(imageUrl)")
                 callback(image: image);
             } else if self.failedUrls.contains(url) {
-                NSLog("Failed URL: \(imageUrl)")
+                //NSLog("Failed URL: \(imageUrl)")
                 callback(image: defaultImage)
             } else if self.savedImages.keys.contains(url) {
                 ThreadHelper.runOnBackgroundThread({
@@ -97,7 +64,7 @@ public class ImageCachingHandler{
             } else {
                 let nsUrl = NSURL(string: url);
                 loading = true;
-                NSLog("Downloading from url: \(imageUrl)")
+                //NSLog("Downloading from url: \(imageUrl)")
                 NSURLSession.sharedSession().dataTaskWithURL(nsUrl!){data, response, error in
                     if (error == nil && data != nil){
                         if let image = UIImage(data: data!){

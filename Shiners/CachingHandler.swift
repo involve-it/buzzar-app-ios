@@ -10,9 +10,11 @@ import Foundation
 
 class CachingHandler{
     private static let documentDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    
     static let postsAll = "postsall"
     static let postsMy = "postsmy"
     static let currentUser = "currentuser"
+    static let chats = "chats"
     
     class func saveObject(obj: AnyObject, path: String) -> Bool{
         let archiveUrl = documentDirectory.URLByAppendingPathComponent(path)
@@ -45,11 +47,11 @@ class CachingHandler{
     }
     
     class func deleteAllFiles() -> Bool {
-        return deleteFile(postsAll) && deleteFile(postsMy) && deleteFile(currentUser)
+        return deleteFile(postsAll) && deleteFile(postsMy) && deleteFile(currentUser) && deleteFile(chats)
     }
     
     class func deleteAllPrivateFiles() -> Bool {
-        return deleteFile(postsMy) && deleteFile(currentUser)
+        return deleteFile(postsMy) && deleteFile(currentUser) && deleteFile(chats)
     }
     
     func restoreAllOfflineData(){
@@ -58,6 +60,7 @@ class CachingHandler{
                 try self.postsAll = CachingHandler.loadObjects(CachingHandler.postsAll)
                 try self.postsMy = CachingHandler.loadObjects(CachingHandler.postsMy)
                 try self.currentUser = CachingHandler.loadObject(CachingHandler.currentUser)
+                try self.chats = CachingHandler.loadObject(CachingHandler.chats)
                 
                 self.status = .Complete
             }
@@ -66,6 +69,7 @@ class CachingHandler{
                 self.postsAll = nil
                 self.postsMy = nil
                 self.currentUser = nil
+                self.chats = nil
                 
                 CachingHandler.deleteAllFiles()
             }
@@ -79,6 +83,7 @@ class CachingHandler{
     var postsAll: [Post]?
     var postsMy: [Post]?
     var currentUser: User?
+    var chats: [Chat]?
     
     private init(){}
     private static let instance = CachingHandler()

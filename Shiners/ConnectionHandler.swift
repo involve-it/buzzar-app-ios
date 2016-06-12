@@ -18,6 +18,7 @@ public class ConnectionHandler{
     
     public var users = UsersProxy.Instance
     public var posts = PostsProxy.Instance
+    public var messages = MessagesProxy.Instance
     
     private var totalDependencies = 0
     private var dependenciesResolved = 0

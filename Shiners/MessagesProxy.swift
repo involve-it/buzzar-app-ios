@@ -17,25 +17,6 @@ class MessagesProxy {
         }
     }
     
-    var messagesCollection = MessagesCollection()
-    private var messagesId: String?
-    
-    func subscribeToNewMessages(){
-        if let messagesId = self.messagesId {
-            Meteor.unsubscribe(withId: messagesId)
-        }
-        self.messagesId = Meteor.subscribe("messages-new") {
-            /*ThreadHelper.runOnBackgroundThread(){
-                if !CachingHandler.saveObject(self.postsCollection.posts, path: CachingHandler.postsAll){
-                    NSLog("Unable to archive posts")
-                }
-            }*/
-            
-            NSLog("messages-new subscribed");
-            NotificationManager.sendNotification(NotificationManager.Name.MessagesNewSubscribed, object: nil)
-        }
-    }
-    
     func getChats(skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
         dict["take"] = take
