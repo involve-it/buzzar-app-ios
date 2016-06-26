@@ -105,7 +105,7 @@ public class MyPostsViewController: UITableViewController{
             })
         }
         if loading {
-            cell.imgPhoto?.image = ImageCachingHandler.defaultImage;
+            cell.imgPhoto?.image = ImageCachingHandler.defaultPhoto;
         }
         
         return cell

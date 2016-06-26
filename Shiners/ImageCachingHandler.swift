@@ -17,7 +17,7 @@ public class ImageCachingHandler{
     private var failedUrls: [String] = []
     private let lockQueue = dispatch_queue_create("org.buzzar.app.Shiners.imageCachingHandler", nil);
     private static let MAX_COUNT = 30;
-    public static let defaultImage = UIImage(named: "clipping_picture.png");
+    public static let defaultPhoto = UIImage(named: "clipping_picture.png");
     public static let defaultAccountImage = UIImage(named: "show_offliners.png");
     
     private init(){
@@ -48,7 +48,7 @@ public class ImageCachingHandler{
         return image;
     }
         
-    public func getImageFromUrl (imageUrl: String?, defaultImage: UIImage? = ImageCachingHandler.defaultImage, callback: (image: UIImage?) ->Void) -> Bool{
+    public func getImageFromUrl (imageUrl: String?, defaultImage: UIImage? = ImageCachingHandler.defaultPhoto, callback: (image: UIImage?) ->Void) -> Bool{
         var loading = false;
         if let url = imageUrl?.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet()) {
             if let image = self.get(url){

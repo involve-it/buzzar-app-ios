@@ -154,7 +154,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
                 }
             }
             if loading {
-                postCell.imgPhoto?.image = ImageCachingHandler.defaultImage;
+                postCell.imgPhoto?.image = ImageCachingHandler.defaultPhoto;
             }
             cell = postCell
         }

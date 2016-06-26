@@ -90,7 +90,7 @@ public class MessagesViewController: UITableViewController{
         cell.lblTitle.text = dialog.otherParty?.username
         cell.lblLastMessage.text = dialog.lastMessage
         
-        let loading = ImageCachingHandler.Instance.getImageFromUrl(dialog.otherParty?.imageUrl) { (image) in
+        let loading = ImageCachingHandler.Instance.getImageFromUrl(dialog.otherParty?.imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage) { (image) in
             ThreadHelper.runOnMainThread({ 
                 if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
                     cellToUpdate.imgPhoto?.image = image;
@@ -98,7 +98,7 @@ public class MessagesViewController: UITableViewController{
             })
         }
         if loading {
-            cell.imgPhoto?.image = ImageCachingHandler.defaultImage;
+            cell.imgPhoto?.image = ImageCachingHandler.defaultAccountImage;
         }
         
         return cell
