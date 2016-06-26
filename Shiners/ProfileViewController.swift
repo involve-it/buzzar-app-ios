@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FBSDKLoginKit
+import FBSDKCoreKit
 
 public class ProfileViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate{
     @IBOutlet weak var txtFirstName: UITextField!
@@ -15,6 +17,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     @IBOutlet weak var txtPhoneNumber: UITextField!
     @IBOutlet weak var txtSkype: UITextField!
     @IBOutlet weak var imgPhoto: UIImageView!
+    @IBOutlet weak var cellFacebook: UITableViewCell!
     
     private var imagePickerHandler: ImagePickerHandler?
     
@@ -83,6 +86,17 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
             self.currentUser = AccountHandler.Instance.currentUser
             self.refreshUserData()
         }
+        
+        self.refreshSocialState()
+    }
+    
+    private func refreshSocialState(){
+        if let _ = FBSDKAccessToken.currentAccessToken() {
+            cellFacebook.accessoryType = UITableViewCellAccessoryType.None
+            cellFacebook.detailTextLabel?.text = "Connected"
+        } else {
+            cellFacebook.detailTextLabel?.text = ""
+        }
     }
     
     private func refreshUserData(){
@@ -102,7 +116,40 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
         }
     }
     
+    public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        
+        if indexPath.section == 2{
+            //facebook
+            if indexPath.row == 0 {
+                self.loginFacebook()
+            }
+        }
+    }
+    
+    private func loginFacebook(){
+        if let _ = FBSDKAccessToken.currentAccessToken() {
+            let alertController = UIAlertController(title: "Facebook", message: "Do you wish to log out?", preferredStyle: .Alert);
+            alertController.addAction(UIAlertAction(title: "Log out", style: .Destructive, handler: { (action) in
+                FBSDKLoginManager().logOut()
+                ThreadHelper.runOnMainThread({ 
+                    self.refreshSocialState()
+                })
+            }))
+            alertController.addAction(UIAlertAction(title: "Log out", style: .Cancel, handler: nil));
+            
+            self.presentViewController(alertController, animated: true, completion: nil)
+        } else {
+            FBSDKLoginManager().logInWithPublishPermissions(["publish_actions"], fromViewController: self) { (loginResult, error) in
+                if error != nil || loginResult.isCancelled {
+                    self.showAlert("Error", message: "Error logginig in to Facebook")
+                }
+            }
+        }
+    }
+    
     override public func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        
         if (indexPath.section == 2){
             return indexPath;
         } else {

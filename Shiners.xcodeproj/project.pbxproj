@@ -85,6 +85,9 @@
 		7BC6BE5C1CFD060500664803 /* ValuePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC6BE5B1CFD060500664803 /* ValuePickerViewController.swift */; };
 		7BFFB1001D2042DA007CCF87 /* MessageToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB0FF1D2042DA007CCF87 /* MessageToSend.swift */; };
 		7BFFB1021D20445A007CCF87 /* MessagesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB1011D20445A007CCF87 /* MessagesHandler.swift */; };
+		7BFFB1061D2081CE007CCF87 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BFFB1031D2081CE007CCF87 /* FBSDKCoreKit.framework */; };
+		7BFFB1071D2081CE007CCF87 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BFFB1041D2081CE007CCF87 /* FBSDKLoginKit.framework */; };
+		7BFFB1081D2081CE007CCF87 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BFFB1051D2081CE007CCF87 /* FBSDKShareKit.framework */; };
 		DA74BAEA2B14C252B3F9A418 /* Pods_Shiners.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 643ABEB340B81A6AB08AFEC7 /* Pods_Shiners.framework */; };
 /* End PBXBuildFile section */
 
@@ -171,6 +174,9 @@
 		7BC6BE5B1CFD060500664803 /* ValuePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValuePickerViewController.swift; sourceTree = "<group>"; };
 		7BFFB0FF1D2042DA007CCF87 /* MessageToSend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageToSend.swift; sourceTree = "<group>"; };
 		7BFFB1011D20445A007CCF87 /* MessagesHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesHandler.swift; sourceTree = "<group>"; };
+		7BFFB1031D2081CE007CCF87 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		7BFFB1041D2081CE007CCF87 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		7BFFB1051D2081CE007CCF87 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		D9E569692E2B1B62B7F114B8 /* Pods-Shiners.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shiners.release.xcconfig"; path = "Pods/Target Support Files/Pods-Shiners/Pods-Shiners.release.xcconfig"; sourceTree = "<group>"; };
 		FB11C1D7A4B55954320FBCF1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -181,6 +187,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B26B1A11CD693D5000495EE /* MapKit.framework in Frameworks */,
+				7BFFB1061D2081CE007CCF87 /* FBSDKCoreKit.framework in Frameworks */,
+				7BFFB1081D2081CE007CCF87 /* FBSDKShareKit.framework in Frameworks */,
+				7BFFB1071D2081CE007CCF87 /* FBSDKLoginKit.framework in Frameworks */,
 				DA74BAEA2B14C252B3F9A418 /* Pods_Shiners.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -383,6 +392,9 @@
 		FDC5E51674789C2348BFABE5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7BFFB1031D2081CE007CCF87 /* FBSDKCoreKit.framework */,
+				7BFFB1041D2081CE007CCF87 /* FBSDKLoginKit.framework */,
+				7BFFB1051D2081CE007CCF87 /* FBSDKShareKit.framework */,
 				7B26B1A01CD693D5000495EE /* MapKit.framework */,
 				FB11C1D7A4B55954320FBCF1 /* Pods.framework */,
 				643ABEB340B81A6AB08AFEC7 /* Pods_Shiners.framework */,
@@ -698,6 +710,10 @@
 			baseConfigurationReference = 1F147896ADC1A887A2D48487 /* Pods-Shiners.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Shiners/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -712,6 +728,10 @@
 			baseConfigurationReference = D9E569692E2B1B62B7F114B8 /* Pods-Shiners.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Shiners/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
