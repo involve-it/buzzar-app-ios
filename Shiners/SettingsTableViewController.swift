@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FBSDKLoginKit
+import FBSDKCoreKit
 
 class SettingsTableViewController: UITableViewController{
     @IBAction func btnSave_Click(sender: UIBarButtonItem) {
@@ -99,7 +101,7 @@ class SettingsTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if (section > 0 && self.currentUser == nil){
+        if (section > Section.social && self.currentUser == nil || section == Section.social && self.currentUser != nil){
             return 0.1;
         } else {
             return super.tableView(tableView, heightForFooterInSection: section);
@@ -107,7 +109,7 @@ class SettingsTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if (section > 0 && self.currentUser == nil){
+        if (section > Section.social && self.currentUser == nil || section == Section.social && self.currentUser != nil){
             return 0.1;
         } else {
             return super.tableView(tableView, heightForFooterInSection: section);
@@ -115,7 +117,7 @@ class SettingsTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (section > 0 && self.currentUser == nil){
+        if (section > Section.social && self.currentUser == nil || section == Section.social && self.currentUser != nil){
             return 0;
         } else {
             return super.tableView(tableView, numberOfRowsInSection: section)
@@ -123,7 +125,7 @@ class SettingsTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if (section > 0 && self.currentUser == nil){
+        if (section > Section.social && self.currentUser == nil || section == Section.social && self.currentUser != nil){
             return nil;
         } else {
             return super.tableView(tableView, viewForHeaderInSection: section)
@@ -131,7 +133,7 @@ class SettingsTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if (indexPath.section == 1){
+        if (indexPath.section == Section.settings){
             return nil;
         } else {
             return indexPath;
@@ -139,7 +141,7 @@ class SettingsTableViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if (indexPath.section == 0){
+        if (indexPath.section == Section.account){
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             
             if (self.currentUser == nil){
@@ -155,7 +157,7 @@ class SettingsTableViewController: UITableViewController{
                 }
             }
         }
-        else if (indexPath.section == 2){
+        else if (indexPath.section == Section.logOut){
             let alertViewController = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: .ActionSheet)
             alertViewController.addAction(UIAlertAction(title: "Log out", style: .Destructive, handler: { (_) in
                 AccountHandler.Instance.logoff(){ success in
@@ -172,7 +174,60 @@ class SettingsTableViewController: UITableViewController{
             alertViewController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
             
             self.presentViewController(alertViewController, animated: true, completion: nil)
+        } else if indexPath.section == Section.social{
+            //facebook
+            if indexPath.row == 0{
+                /*FBSDKLoginManager().logInWithPublishPermissions(["email", "public_profile"], fromViewController: self, handler: { (loginResult, error) in
+                    if error != nil || loginResult.isCancelled {
+                        self.showAlertErrorLoginFacebook()
+                    } else {
+                        let params = ["fields": "id,name,email"]
+                        FBSDKGraphRequest(graphPath: "me", parameters: params).startWithCompletionHandler({ (connection, result, error) in
+                            if error != nil, let email = result.valueForKey("email") as? String, id = result.valueForKey("id") as? String {
+                                let user = RegisterUser(username: email, email: email, password: id)
+                                
+                                self.setLoading(true)
+                                AccountHandler.Instance.register(user, callback: { (success, errorId, errorMessage, result) in
+                                    if (success){
+                                        AccountHandler.Instance.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
+                                            if (success){
+                                                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+                                            } else {
+                                                self.showAlertErrorLoginFacebook()
+                                            }
+                                        })
+                                    } else {
+                                        self.setLoading(false)
+                                        self.showAlertErrorLoginFacebook()
+                                    }
+                                })
+
+                            } else {
+                                self.showAlertErrorLoginFacebook()
+                            }
+                        })
+                    }
+                })*/
+            }
         }
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
+    private func showAlertErrorLoginFacebook(){
+        self.showAlert("Facebook Login", message: "Error occurred while logging in with Facebook")
+    }
+    
+    @objc private func processLogin(notification: NSNotification){
+        ThreadHelper.runOnMainThread {
+            self.setLoading(false)
+            self.refreshUser()
+        }
+    }
+    
+    private struct Section{
+        static let account = 0
+        static let social = 1
+        static let settings = 2
+        static let logOut = 3
     }
 }
