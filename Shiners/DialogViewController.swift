@@ -162,6 +162,7 @@ public class DialogViewController : JSQMessagesViewController{
         let message = MessageToSend()
         message.destinationUserId = self.chat.otherParty?.id
         message.message = text
+        chat.lastMessage = text
         
         ConnectionHandler.Instance.messages.sendMessage(message);
     }
