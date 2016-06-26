@@ -41,10 +41,11 @@ public class MessagesProxy {
         }
     }
     
-    func getMessages(skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
+    func getMessages(chatId: String, skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
         dict["take"] = take
         dict["skip"] = skip
+        dict["chatId"] = chatId
         
         Meteor.call("getMessages", params: [dict]) { (result, error) in
             if error == nil {
@@ -55,9 +56,20 @@ public class MessagesProxy {
         }
     }
     
-    func sendMessage(message: Message, callback: MeteorMethodCallback? = nil){
+    func sendMessage(message: MessageToSend, callback: MeteorMethodCallback? = nil){
         let dict = message.toDictionary()
         Meteor.call("addMessage", params: [dict]) { (result, error) in
+            if error == nil {
+                let errorId = ResponseHelper.getErrorId(result);
+                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
+    
+    func deleteChats(chatIds: Array<String>, callback: MeteorMethodCallback? = nil){
+        Meteor.call("deleteChats", params: [chatIds]){ (result, error) in
             if error == nil {
                 let errorId = ResponseHelper.getErrorId(result);
                 callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)

@@ -107,8 +107,15 @@ public class MessagesViewController: UITableViewController{
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "dialog"{
             let selectedCell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow!) as! MessagesTableViewCell;
+            let chat = self.dialogs[self.tableView.indexPathForSelectedRow!.row]
+            
             let viewController = segue.destinationViewController as! DialogViewController
             viewController.navigationItem.title = selectedCell.lblTitle.text
+            viewController.chat = chat
+            if !chat.messagesRequested {
+                chat.messagesRequested = true
+                viewController.pendingMessagesAsyncId = MessagesHandler.Instance.getMessagesAsync(chat.id!, skip: 0)
+            }
         }
     }
     
@@ -118,23 +125,17 @@ public class MessagesViewController: UITableViewController{
     
     override public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            self.dialogs.removeAtIndex(indexPath.row)
-            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            let dialog = self.dialogs[indexPath.row]
             
-            //todo: network call
-            /*ConnectionHandler.Instance.posts.deletePost(post.id!) { success, errorId, errorMessage, result in
+            ConnectionHandler.Instance.messages.deleteChats([dialog.id!]) { success, errorId, errorMessage, result in
                 if success {
-                    self.myPosts.removeAtIndex(self.myPosts.indexOf({ (p) -> Bool in
-                        return p.id == post.id
-                    })!)
+                    self.dialogs.removeAtIndex(indexPath.row)
                     self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-                    
-                    //AccountHandler.Instance.updateMyPosts()
-                    
                 } else {
                     self.showAlert("Error", message: errorMessage)
                 }
-            }*/
+                
+            }
         }
     }
 }

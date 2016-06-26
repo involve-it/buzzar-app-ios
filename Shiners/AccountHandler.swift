@@ -112,6 +112,7 @@ public class AccountHandler{
         
         if ConnectionHandler.Instance.users.isLoggedIn(){
             self.userId = Meteor.client.userId()
+            self.subscribeToNewMessages()
             ConnectionHandler.Instance.users.getCurrentUser({ (success, errorId, errorMessage, result) in
                 if (self.latestCallId == callId){
                     if (success){

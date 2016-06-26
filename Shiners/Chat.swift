@@ -19,6 +19,7 @@ public class Chat: NSObject, DictionaryInitializable, NSCoding {
     var otherParty: User?
     
     var messages = [Message]()
+    var messagesRequested = false
     
     override init (){
         super.init()
@@ -50,8 +51,10 @@ public class Chat: NSObject, DictionaryInitializable, NSCoding {
                 self.messages.append(Message(fields: messageFields))
             })
         }
+        if let lastMessageFields = fields?.valueForKey(PropertyKeys.lastMessage) as? NSDictionary{
+            self.lastMessage = lastMessageFields.valueForKey("text") as? String
+        }
         
-        self.lastMessage = fields?.valueForKey(PropertyKeys.lastMessage) as? String
         if let otherUsers = fields?.valueForKey(PropertyKeys.otherParty) as? NSArray {
             if let otherUserFields = otherUsers.firstObject as? NSDictionary {
                 self.otherParty = User(fields: otherUserFields)

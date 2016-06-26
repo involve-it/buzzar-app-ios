@@ -34,6 +34,8 @@ public class NotificationManager{
         case MessageRemoved = "shiners:MessageRemoved"
         case MessageModified = "shiners:MessageModified"
         
+        case MessagesAsyncRequestCompleted = "shiners:MessagesAsyncRequestCompleted"
+        
         case ChatAdded = "shiners:ChatAdded"
     }
 }

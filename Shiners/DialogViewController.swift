@@ -15,30 +15,62 @@ public class DialogViewController : JSQMessagesViewController{
     var incomingBubbleImageView: JSQMessagesBubbleImage!
     
     var chat: Chat!
+    var pendingMessagesAsyncId: String?
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.senderId = AccountHandler.Instance.userId
+        self.senderDisplayName = chat.otherParty?.username
         
         collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
         collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
         self.inputToolbar.contentView.leftBarButtonItem = nil
         
         self.setupBubbles()
+        
+        if let pendingMessagesAsyncId = self.pendingMessagesAsyncId, isCompleted = MessagesHandler.Instance.isCompleted(pendingMessagesAsyncId) {
+            if isCompleted {
+                if let messages = MessagesHandler.Instance.getMessagesByRequestId(pendingMessagesAsyncId){
+                    chat.messages = messages
+                }
+            } else {
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messagesPageReceived), name: NotificationManager.Name.MessagesAsyncRequestCompleted.rawValue, object: nil)
+            }
+        }
+        
+        if self.chat.messages.count > 0{
+            self.updateMessages(self.chat.messages)
+        }
     }
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.senderId = AccountHandler.Instance.userId
-        self.senderDisplayName = chat.otherParty?.username
+        
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageAdded), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageRemoved), name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageModified), name: NotificationManager.Name.MessageModified.rawValue, object: nil)
+    }
+    
+    func messagesPageReceived(notification:NSNotification){
+        if let pendingMessagesAsyncId = self.pendingMessagesAsyncId where pendingMessagesAsyncId == notification.object as! String,
+            let messages = MessagesHandler.Instance.getMessagesByRequestId(pendingMessagesAsyncId){
+            self.updateMessages(messages)
+        }
+    }
+    
+    private func updateMessages(messages: Array<Message>){
+        chat.messages = messages.sort({
+            return $0.timestamp!.compare($1.timestamp!) == NSComparisonResult.OrderedAscending
+        })
         
         self.chat.messages.forEach { (message) in
             addMessage(message.userId!, text: message.text!)
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageAdded), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageRemoved), name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageModified), name: NotificationManager.Name.MessageModified.rawValue, object: nil)
+        self.collectionView.reloadData()
     }
     
     func messageAdded(notification: NSNotification){
@@ -127,9 +159,9 @@ public class DialogViewController : JSQMessagesViewController{
     
     public override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         addMessage(self.senderId, text: text, callFinish: true)
-        let message = Message()
-        message.chatId = self.chat.id
-        message.text = text
+        let message = MessageToSend()
+        message.destinationUserId = self.chat.otherParty?.id
+        message.message = text
         
         ConnectionHandler.Instance.messages.sendMessage(message);
     }
