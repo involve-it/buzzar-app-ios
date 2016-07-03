@@ -64,7 +64,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     
     private func addImageToScrollView(imageUrl: String?, index: Int){
         //add default - it will be updated later
-        self.addPhoto(ImageCachingHandler.defaultImage!, index: index)
+        self.addPhoto(ImageCachingHandler.defaultPhoto!, index: index)
         
         let imageView = UIImageView(frame: CGRectMake( CGFloat(index) * mainView.frame.size.width, 0, mainView.frame.size.width, scrollView.frame.size.height));
         imageView.contentMode = .ScaleAspectFit;
@@ -77,7 +77,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
             })
         })
         if loading {
-            imageView.image = ImageCachingHandler.defaultImage;
+            imageView.image = ImageCachingHandler.defaultPhoto;
         }
         
         scrollView.addSubview(imageView);

@@ -32,10 +32,8 @@ public class MyPostsViewController: UITableViewController{
         }
         
         if (myPosts.count == 0){
-            //self.tableView.scrollEnabled = false;
             self.tableView.separatorStyle = .None;
         } else {
-            //self.tableView.scrollEnabled = true;
             self.tableView.separatorStyle = .SingleLine;
         }
         
@@ -107,7 +105,7 @@ public class MyPostsViewController: UITableViewController{
             })
         }
         if loading {
-            cell.imgPhoto?.image = ImageCachingHandler.defaultImage;
+            cell.imgPhoto?.image = ImageCachingHandler.defaultPhoto;
         }
         
         return cell

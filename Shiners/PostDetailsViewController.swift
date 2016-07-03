@@ -18,11 +18,9 @@ public class PostDetailsViewController: UITableViewController{
     @IBOutlet var btnEdit: UIBarButtonItem!
     
     @IBAction func btnShare_Click(sender: AnyObject) {
-        let activityViewController = UIActivityViewController(activityItems: ["Check out this post: http://msg.webhop.org/post/\(self.post.id!)"], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: ["Check out this post: http://msg.webhop.org/post/\(self.post.id!)", NSURL(string: "http://msg.webhop.org/post/\(self.post.id!)")!], applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivityTypePrint, UIActivityTypeOpenInIBooks, UIActivityTypeSaveToCameraRoll];
-        navigationController?.presentViewController(activityViewController, animated: true) {
-            // ...
-        }
+        navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
     }
     public override func viewDidLoad() {
         self.navigationItem.title = post?.title;

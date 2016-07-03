@@ -10,22 +10,12 @@ import Foundation
 import SwiftDDP
 
 public class PostsProxy{
-    //public var myPosts = [Post]()
-    
     private static let instance = PostsProxy()
     public class var Instance: PostsProxy{
         get{
             return instance;
         }
     }
-    
-    /*private init(){
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didLogin), name: DDP_USER_DID_LOGIN, object: nil);
-    }
-    
-    @objc private func didLogin(){
-        self.getMyPosts(true, callback: nil)
-    }*/
     
     public func getMyPosts(skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
