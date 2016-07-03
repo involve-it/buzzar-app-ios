@@ -4,5 +4,7 @@ target "Shiners" do
 	pod "RichEditorView"
 	pod 'NYTPhotoViewer', '~> 1.1.0'
 	pod 'JSQMessagesViewController'
+    source 'https://github.com/CocoaPods/Specs.git'
+    pod 'AWSS3'
 end
 use_frameworks!
