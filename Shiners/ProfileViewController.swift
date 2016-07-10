@@ -9,6 +9,7 @@
 import UIKit
 import FBSDKLoginKit
 import FBSDKCoreKit
+import AWSS3
 
 public class ProfileViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate{
     @IBOutlet weak var txtFirstName: UITextField!
