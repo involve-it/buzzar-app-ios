@@ -14,6 +14,7 @@ import SwiftDDP
 public class ConnectionHandler{
     private let url:String = "ws://msg.webhop.org/websocket"
     //private let url:String = "ws://192.168.1.61:3000/websocket"
+    //private let url:String = "wss://www.shiners.mobi/websocket"
     public private(set) var status: ConnectionStatus = .NotInitialized
     
     public var users = UsersProxy.Instance
