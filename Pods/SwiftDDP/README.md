@@ -1,7 +1,7 @@
 SwiftDDP  <img src="https://github.com/siegesmund/SwiftDDP/blob/master/assets/logo.jpg" height="75" width="75"/> 
 =====
 ## A client for Meteor servers, written in Swift
-### version 0.3.1
+### version 0.3.2
 
 #### License
 MIT  
@@ -26,10 +26,9 @@ MIT
     - [Change the subscription's parameters and manage your subscription with unsubscribe](#change-the-subscriptions-parameters-and-manage-your-subscription-with-unsubscribe)
     - [Call a method on the server](#call-a-method-on-the-server)
     - [Simple in-memory persistence](#simple-in-memory-persistence)
-- [Example Projects](#example-projects)
-    - [Todos](#todos)
 - [Example: Creating an array based custom collection](#example-creating-an-array-based-custom-collection)
 - [Changelog](#changelog)
+  - [0.3.2](#032)
   - [0.3.1](#031)
   - [0.3.0](#030)
   - [0.2.2.1](#0221)
@@ -44,7 +43,7 @@ MIT
 With [CocoaPods](http://cocoapods.org). Add the following line to your Podfile:
 
 ```ruby
-pod "SwiftDDP", "~> 0.3.0"
+pod "SwiftDDP", "~> 0.3.2"
 ```
 
 ## Documentation
@@ -246,19 +245,6 @@ lists.remove(list)
 ```
 For each operation the action is executed on the client, and rolled back if the server returns an error.
 
-## Example Projects
-#### Todos
-These are iOS implementations of [Meteor's Todos example](https://www.meteor.com/todos). The best way to run the examples is to connect to a local instance of Meteor's Todos app: ``` meteor create --example todos && cd todos && meteor ```. You can specify the server that the Todos app connects to by changing the url variable in AppDelegate.swift. There are currently two flavors: a simple example with dictionary based persistence and an example showing how to use SwiftDDP with Core Data and NSFetchedResultsController.
-- [Meteor Todos with dictionary based in-memory storage](https://github.com/siegesmund/SwiftDDP/tree/master/Examples/Dictionary)
-- [Meteor Todos Core Data integration](https://github.com/siegesmund/SwiftDDP/tree/master/Examples/CoreData)
-
-When running the examples with preexisting instances of the todos app hosted at *.meteor.com, note that connectivity to apps hosted on Meteor's free hosting (not to be confused with Galaxy) can be erratic as the server periodically idles. If SwiftTodos does not connect or you cannot add or remove items or login, try connecting to a different instance. The surest way to do this is to run an instance of the todos app locally.
-
-```bash meteor create --example todos```
-
-Once you've created and started the Meteor todos server, set the url variable in AppDelegate.swift to ws://localhost:3000/websocket, then run the iOS app.
-
-
 ## Example: Creating an array based custom collection
 **The following pattern can be used to create custom collections backed by any datastore**
 
@@ -364,6 +350,9 @@ Creating update and remove methods are also easy to create, and follow the same 
 
 
 ## Changelog
+### 0.3.2
+- Bugfixes
+
 ### 0.3.1
 - Bug fixed that affected DDP dates in 32 bit environments 
 

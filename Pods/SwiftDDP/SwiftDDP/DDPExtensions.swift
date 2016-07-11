@@ -52,7 +52,7 @@ extension String {
 extension NSDictionary {
     func stringValue() -> String? {
         if let data = try? NSJSONSerialization.dataWithJSONObject(self, options: NSJSONWritingOptions(rawValue: 0)) {
-            return NSString(data: data, encoding: NSASCIIStringEncoding) as? String
+            return String(data: data, encoding: NSUTF8StringEncoding)
         }
         return nil
     }
@@ -402,7 +402,7 @@ extension DDPClient {
      */
     
     public func signupWithUsername(username: String, password: String, email: String?, profile: NSDictionary?, callback: ((result:AnyObject?, error:DDPError?) -> ())?) {
-        var params: NSMutableDictionary = ["username":username, "password":["digest":password.sha256(), "algorithm":"sha-256"]]
+        let params: NSMutableDictionary = ["username":username, "password":["digest":password.sha256(), "algorithm":"sha-256"]]
         if let email = email {
             params.setValue(email, forKey: "email")
         }
