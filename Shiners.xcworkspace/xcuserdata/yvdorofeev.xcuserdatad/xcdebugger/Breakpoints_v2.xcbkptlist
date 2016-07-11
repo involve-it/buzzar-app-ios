@@ -2312,59 +2312,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shiners/DialogViewController.swift"
-            timestampString = "488659469.166713"
+            timestampString = "489876875.160111"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "viewWillAppear(_:)"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Shiners.DialogViewController.viewWillAppear (Swift.Bool) -&gt; ()"
-                  moduleName = "Shiners"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yvdorofeev/Documents/XCode%20Projects/buzzar-app-ios/Shiners/DialogViewController.swift"
-                  timestampString = "488653857.590049"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "35"
-                  endingLineNumber = "35"
-                  offsetFromSymbolStart = "130">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Shiners.DialogViewController.(viewWillAppear (Swift.Bool) -&gt; ()).(closure #1)"
-                  moduleName = "Shiners"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yvdorofeev/Documents/XCode%20Projects/buzzar-app-ios/Shiners/DialogViewController.swift"
-                  timestampString = "488653857.590304"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "36"
-                  endingLineNumber = "36"
-                  offsetFromSymbolStart = "30">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Shiners/DialogViewController.swift"
-            timestampString = "488659469.166713"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
             landmarkName = "messagesPageReceived(_:)"
             landmarkType = "5">
             <Locations>
@@ -2376,7 +2328,7 @@
                   moduleName = "Shiners"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/yvdorofeev/Documents/XCode%20Projects/buzzar-app-ios/Shiners/DialogViewController.swift"
-                  timestampString = "488659479.931472"
+                  timestampString = "489875018.964607"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "58"
@@ -2391,7 +2343,7 @@
                   moduleName = "Shiners"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/yvdorofeev/Documents/XCode%20Projects/buzzar-app-ios/Shiners/DialogViewController.swift"
-                  timestampString = "488659479.931663"
+                  timestampString = "489875018.964936"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "58"
@@ -2408,11 +2360,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shiners/MessagesViewController.swift"
-            timestampString = "488659361.559555"
+            timestampString = "489877281.718714"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
             landmarkName = "prepareForSegue(_:sender:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -2712,11 +2664,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shiners/MessagesViewController.swift"
-            timestampString = "488668599.51646"
+            timestampString = "489877281.718714"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
             landmarkName = "tableView(_:cellForRowAtIndexPath:)"
             landmarkType = "5">
             <Locations>
@@ -2767,6 +2719,85 @@
             endingLineNumber = "153"
             landmarkName = "tableView(_:willSelectRowAtIndexPath:)"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shiners/DialogViewController.swift"
+            timestampString = "489874496.961314"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shiners/MessagesCollection.swift"
+            timestampString = "489877170.88901"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
+            landmarkName = "documentWasChanged(_:id:fields:cleared:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Shiners.MessagesCollection.documentWasChanged (Swift.String, id : Swift.String, fields : Swift.Optional&lt;__ObjC.NSDictionary&gt;, cleared : Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;) -&gt; ()"
+                  moduleName = "Shiners"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yvdorofeev/Documents/XCode%20Projects/buzzar-app-ios/Shiners/MessagesCollection.swift"
+                  timestampString = "489877186.010519"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61"
+                  offsetFromSymbolStart = "2031">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Shiners.MessagesCollection.(documentWasChanged (Swift.String, id : Swift.String, fields : Swift.Optional&lt;__ObjC.NSDictionary&gt;, cleared : Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;) -&gt; ()).(closure #2)"
+                  moduleName = "Shiners"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yvdorofeev/Documents/XCode%20Projects/buzzar-app-ios/Shiners/MessagesCollection.swift"
+                  timestampString = "489877186.010798"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61"
+                  offsetFromSymbolStart = "19">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Shiners.MessagesCollection.(documentWasChanged (Swift.String, id : Swift.String, fields : Swift.Optional&lt;__ObjC.NSDictionary&gt;, cleared : Swift.Optional&lt;Swift.Array&lt;Swift.String&gt;&gt;) -&gt; ()).(closure #3)"
+                  moduleName = "Shiners"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yvdorofeev/Documents/XCode%20Projects/buzzar-app-ios/Shiners/MessagesCollection.swift"
+                  timestampString = "489877186.01099"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61"
+                  offsetFromSymbolStart = "19">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
