@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FBSDKLoginKit
+import FBSDKCoreKit
 
 class LogInViewController: UITableViewController, UITextFieldDelegate{
     @IBOutlet weak var txtUsername: UITextField!
@@ -61,7 +63,7 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
             tableView.deselectRowAtIndexPath(indexPath, animated: false)
             
             self.login();
-        }
+        } 
     }
     
     func processLogin(){

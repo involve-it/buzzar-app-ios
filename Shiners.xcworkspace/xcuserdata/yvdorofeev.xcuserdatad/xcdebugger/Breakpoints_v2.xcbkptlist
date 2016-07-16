@@ -1016,11 +1016,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shiners/LogInViewController.swift"
-            timestampString = "485570724.656147"
+            timestampString = "490401835.044339"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
             landmarkName = "btnRegister_Click(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1352,11 +1352,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Shiners/AccountHandler.swift"
-            timestampString = "488659814.504767"
+            timestampString = "490402295.222768"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "131"
-            endingLineNumber = "131"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
             landmarkName = "loadAccount()"
             landmarkType = "5">
          </BreakpointContent>
@@ -2479,38 +2479,6 @@
             endingLineNumber = "54"
             landmarkName = "subscribeToNearbyPosts(_:lng:radius:)"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Shiners.AccountHandler.(subscribeToNearbyPosts (Swift.Double, lng : Swift.Double, radius : Swift.Double) -&gt; ()).(closure #1)"
-                  moduleName = "Shiners"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yvdorofeev/Documents/XCode%20Projects/buzzar-app-ios/Shiners/AccountHandler.swift"
-                  timestampString = "488662951.242984"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "54"
-                  endingLineNumber = "54"
-                  offsetFromSymbolStart = "16">
-               </Location>
-               <Location
-                  shouldBeEnabled = "No"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Shiners.AccountHandler.(subscribeToNearbyPosts (Swift.Double, lng : Swift.Double, radius : Swift.Double) -&gt; ()).(closure #1).(closure #1)"
-                  moduleName = "Shiners"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yvdorofeev/Documents/XCode%20Projects/buzzar-app-ios/Shiners/AccountHandler.swift"
-                  timestampString = "488662951.243295"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "55"
-                  endingLineNumber = "55"
-                  offsetFromSymbolStart = "16">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -2958,6 +2926,182 @@
             endingLineNumber = "55"
             landmarkName = "stringValue()"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shiners/PostsViewController.swift"
+            timestampString = "490380006.701804"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shiners/ConnectionHandler.swift"
+            timestampString = "490402010.849689"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
+            landmarkName = "connect()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shiners/MyPostsViewController.swift"
+            timestampString = "490402334.908439"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "tableView(_:cellForRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shiners/ConnectionHandler.swift"
+            timestampString = "490402525.575686"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "executeHandlers(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shiners/SettingsTableViewController.swift"
+            timestampString = "490403382.600803"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "186"
+            endingLineNumber = "186"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shiners/SettingsTableViewController.swift"
+            timestampString = "490403382.600803"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Shiners/SettingsTableViewController.swift"
+            timestampString = "490403382.600803"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/SwiftDDP/SwiftDDP/MeteorOAuthViewController.swift"
+            timestampString = "490403638.269318"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "signIn(_:secret:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Pods/SwiftDDP/SwiftDDP/MeteorOAuthViewController.swift"
+            timestampString = "490403681.909552"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "signIn(_:secret:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SwiftDDP.MeteorOAuthDialogViewController.signIn (Swift.String, secret : Swift.String) -&gt; ()"
+                  moduleName = "SwiftDDP"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yvdorofeev/Documents/XCode%20Projects/buzzar-app-ios/Pods/SwiftDDP/SwiftDDP/MeteorOAuthViewController.swift"
+                  timestampString = "490403681.919992"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "82"
+                  endingLineNumber = "82"
+                  offsetFromSymbolStart = "448">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SwiftDDP.MeteorOAuthDialogViewController.(signIn (Swift.String, secret : Swift.String) -&gt; ()).(closure #1)"
+                  moduleName = "SwiftDDP"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yvdorofeev/Documents/XCode%20Projects/buzzar-app-ios/Pods/SwiftDDP/SwiftDDP/MeteorOAuthViewController.swift"
+                  timestampString = "490403681.920193"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "83"
+                  endingLineNumber = "83"
+                  offsetFromSymbolStart = "24">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

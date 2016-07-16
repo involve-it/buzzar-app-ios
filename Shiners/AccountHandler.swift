@@ -75,17 +75,27 @@ public class AccountHandler{
         }
     }
     
+    public func loginFacebook(clientId: String, viewController: UIViewController){
+        Meteor.loginWithFacebook(clientId, viewController: viewController)
+    }
+    
     public func logoff(callback: (success: Bool)-> Void){
         ConnectionHandler.Instance.users.logoff { (success) in
             if success {
-                CachingHandler.deleteAllPrivateFiles()
-                self.currentUser = nil
-                self.myPosts = nil
-                self.userId = nil
+                self.processLogoff()
             }
+            
             callback(success: success)
-            NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
         }
+    }
+    
+    public func processLogoff(){
+        CachingHandler.deleteAllPrivateFiles()
+        self.currentUser = nil
+        self.myPosts = nil
+        self.userId = nil
+        
+        NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
     }
 
     
