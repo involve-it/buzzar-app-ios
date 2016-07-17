@@ -59,8 +59,9 @@ class MessagesCollection: AbstractCollection{
             message.update(fields);
             
             if let chatIndex = AccountHandler.Instance.myChats?.indexOf({return $0.id == message.chatId}), chat = AccountHandler.Instance.myChats?[chatIndex], messageIndex = chat.messages.indexOf({return $0.id == message.id}) {
-                chat.messages.removeAtIndex(messageIndex)
-                chat.messages.insert(message, atIndex: messageIndex)
+                chat.messages[messageIndex] = message
+                //chat.messages.removeAtIndex(messageIndex)
+                //chat.messages.insert(message, atIndex: messageIndex)
                 
                 NotificationManager.sendNotification(NotificationManager.Name.MessageModified, object: message)
             } else {

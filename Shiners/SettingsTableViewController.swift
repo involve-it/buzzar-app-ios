@@ -19,9 +19,32 @@ class SettingsTableViewController: UITableViewController{
     @IBOutlet weak var imgPhoto: UIImageView!
     @IBOutlet weak var lblLoginOrRegister: UILabel!
     
+    @IBOutlet weak var cbNotifications: UISwitch!
     private var currentUser: User?
     private var meteorLoaded = false
     private var accountDetailsPending = false
+    
+    @IBAction func cbNotifications_Changed(sender: UISwitch) {
+        if let currentUser = self.currentUser {
+            if sender.on && !UIApplication.sharedApplication().isRegisteredForRemoteNotifications(){
+                self.showAlert("Notifications", message: "To receive notifications, please allow this in device Settings.");
+                sender.on = false
+            } else {
+                let initialState = currentUser.enableNearbyNotifications
+                currentUser.enableNearbyNotifications = sender.on
+                
+                AccountHandler.Instance.saveUser(currentUser) { (success, errorMessage) in
+                    if (!success){
+                        ThreadHelper.runOnMainThread({ 
+                            self.showAlert("Error", message: "An error occurred while saving.")
+                            self.currentUser?.enableNearbyNotifications = initialState
+                            sender.on = initialState ?? false
+                        })
+                    }
+                }
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -90,6 +113,12 @@ class SettingsTableViewController: UITableViewController{
                 })
             } else {
                 imgPhoto.image = ImageCachingHandler.defaultAccountImage;
+            }
+            
+            if let enableNearbyNotifications = self.currentUser?.enableNearbyNotifications{
+                self.cbNotifications.on = enableNearbyNotifications
+            } else {
+                self.cbNotifications.on = false
             }
         } else {
             imgPhoto.image = ImageCachingHandler.defaultAccountImage;

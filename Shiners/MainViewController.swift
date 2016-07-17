@@ -14,6 +14,8 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         self.delegate = self
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pushRegistrationFailed), name: NotificationManager.Name.PushRegistrationFailed.rawValue, object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,6 +33,15 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         return true;
     }
 
-
+    @objc private func pushRegistrationFailed(object: AnyObject?){
+        if UsersProxy.Instance.isLoggedIn() {
+            AccountHandler.Instance.currentUser?.enableNearbyNotifications = false
+            NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
+        }
+        
+        ThreadHelper.runOnMainThread {
+            self.showAlert("Error", message: "Error subscribing to notifications");
+        }
+    }
 }
 

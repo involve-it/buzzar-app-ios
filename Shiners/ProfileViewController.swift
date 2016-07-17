@@ -47,12 +47,14 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
         self.setLoading(true)
         let user = self.getUser();
         AccountHandler.Instance.saveUser(user) { (success, errorMessage) in
-            self.setLoading(false, rightBarButtonItem: self.cancelButton)
-            if (success){
-                self.dismissSelf()
-            } else {
-                self.showAlert("Error", message: "An error occurred while saving.")
-            }
+            ThreadHelper.runOnMainThread({ 
+                self.setLoading(false, rightBarButtonItem: self.cancelButton)
+                if (success){
+                    self.dismissSelf()
+                } else {
+                    self.showAlert("Error", message: "An error occurred while saving.")
+                }
+            })
         }
     }
     

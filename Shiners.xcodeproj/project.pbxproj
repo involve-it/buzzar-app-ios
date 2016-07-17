@@ -463,8 +463,12 @@
 				TargetAttributes = {
 					7BC0A2171CCC15E700DA2824 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = L37DAD4AS6;
 						SystemCapabilities = {
 							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+							com.apple.Push = {
 								enabled = 1;
 							};
 						};
@@ -749,7 +753,7 @@
 				INFOPLIST_FILE = Shiners/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.buzzar.app.Shiners;
+				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -767,7 +771,7 @@
 				INFOPLIST_FILE = Shiners/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.buzzar.app.Shiners;
+				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

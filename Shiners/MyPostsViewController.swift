@@ -12,6 +12,7 @@ public class MyPostsViewController: UITableViewController{
     var myPosts = [Post]()
     
     var meteorLoaded = false
+    var pendingPostId: String?
     
     public override func viewDidLoad() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(myPostsUpdated), name: NotificationManager.Name.MyPostsUpdated.rawValue, object: nil)
@@ -23,6 +24,7 @@ public class MyPostsViewController: UITableViewController{
             } else {
                 self.myPosts = [Post]()
             }
+            self.checkPending()
         } else {
             if CachingHandler.Instance.status != .Complete {
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
@@ -39,6 +41,20 @@ public class MyPostsViewController: UITableViewController{
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self, action: #selector(updateMyPosts), forControlEvents: .ValueChanged)
+    }
+    
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.checkPending()
+    }
+    
+    func checkPending(){
+        if let pendingPostId = self.pendingPostId, postIndex = self.myPosts.indexOf({$0.id == pendingPostId}){
+            let indexPath = NSIndexPath(forRow: postIndex, inSection: 0)
+            self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
+            self.performSegueWithIdentifier("myPostDetails", sender: self)
+        }
+        self.pendingPostId = nil
     }
     
     func showOfflineData(){
@@ -70,6 +86,8 @@ public class MyPostsViewController: UITableViewController{
             self.refreshControl?.endRefreshing()
             self.tableView.separatorStyle = .SingleLine;
             self.tableView.reloadData()
+            
+            self.checkPending()
         }
     }
     

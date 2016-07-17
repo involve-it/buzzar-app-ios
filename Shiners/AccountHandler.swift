@@ -49,7 +49,12 @@ public class AccountHandler{
         if let nearbyPostsId = self.nearbyPostsId {
             Meteor.unsubscribe(withId: nearbyPostsId)
         }
-        self.nearbyPostsId = Meteor.subscribe("posts-nearby", params: [["lat": lat, "lng": lng, "radius": radius]]) {
+        var dict = Dictionary<String, AnyObject>()
+        dict["lat"] = lat
+        //todo: fix paging
+        dict["lng"] = lng
+        dict["radius"] = radius
+        self.nearbyPostsId = Meteor.subscribe("posts-nearby", params: [dict]) {
             //saving posts for offline use
             ThreadHelper.runOnBackgroundThread(){
                 if !CachingHandler.saveObject(self.postsCollection.posts, path: CachingHandler.postsAll){
@@ -80,12 +85,18 @@ public class AccountHandler{
     }
     
     public func logoff(callback: (success: Bool)-> Void){
-        ConnectionHandler.Instance.users.logoff { (success) in
-            if success {
-                self.processLogoff()
+        self.unregisterToken { (success) in
+            if success{
+                ConnectionHandler.Instance.users.logoff { (success) in
+                    if success {
+                        self.processLogoff()
+                    }
+                    
+                    callback(success: success)
+                }
+            } else {
+                callback(success: false)
             }
-            
-            callback(success: success)
         }
     }
     
@@ -210,14 +221,14 @@ public class AccountHandler{
     public func requestPushNotifications(){
         let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
         let app = UIApplication.sharedApplication()
+        app.registerForRemoteNotifications()
         app.registerUserNotificationSettings(settings)
     }
     
-    public func savePushToken(callback: (success: Bool) -> Void){
+    /*public func savePushToken(callback: (success: Bool) -> Void){
         if let token = PushNotificationsHandler.getToken(), deviceId = UIDevice.currentDevice().identifierForVendor?.UUIDString, userId = Meteor.client.userId(){
             var dict = Dictionary<String, AnyObject>()
             dict["token"] = token
-            //todo: fix paging
             dict["deviceId"] = deviceId
             dict["platform"] = "apn"
             dict["userId"] = userId
@@ -232,6 +243,49 @@ public class AccountHandler{
         } else {
             callback(success: false)
         }
+    }*/
+
+    public func savePushToken(callback: (success: Bool) -> Void){
+        if let token = PushNotificationsHandler.getToken(), userId = Meteor.client.userId(){
+            var dict = Dictionary<String, AnyObject>()
+            var tokenDict = Dictionary<String, AnyObject>()
+            tokenDict["apn"] = token
+            dict["token"] = tokenDict
+            dict["appName"] = "org.buzzar.app"
+            dict["userId"] = userId
+            
+            Meteor.call("raix:push-update", params: [dict], callback: { (result, error) in
+                if error == nil, let fields = result as? NSDictionary, _ = fields.valueForKey("_id") as? String{
+                    callback(success: true)
+                } else {
+                    callback(success: false)
+                }
+            })
+        } else {
+            callback(success: false)
+        }
+    }
+
+    
+    public func unregisterToken(callback: (success: Bool) -> Void){
+        /*if let deviceId = UIDevice.currentDevice().identifierForVendor?.UUIDString, userId = Meteor.client.userId(){
+            var dict = Dictionary<String, AnyObject>()
+            dict["deviceId"] = deviceId
+            dict["platform"] = "apn"
+            dict["userId"] = userId
+            
+            Meteor.call("unregisterPushToken", params: [dict], callback: { (result, error) in
+                if error == nil, let fields = result as? NSDictionary, success = fields.valueForKey("success") as? Bool{
+                    callback(success: success)
+                } else {
+                    callback(success: false)
+                }
+            })
+        } else {
+            callback(success: false)
+        }*/
+        
+        callback(success: true)
     }
     
     private init (){}

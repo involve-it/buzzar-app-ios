@@ -72,6 +72,7 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
             self.setLoading(false, rightBarButtonItem: self.registerButton)
             if AccountHandler.Instance.currentUser != nil {
                 self.dismissSelf();
+                AccountHandler.Instance.requestPushNotifications()
             } else {
                 self.showAlert("Log in failed", message: ResponseHelper.getDefaultErrorMessage())
             }

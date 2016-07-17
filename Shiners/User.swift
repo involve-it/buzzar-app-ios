@@ -18,6 +18,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
     public var locations: [Location]?
     public var profileDetails: [ProfileDetail]?
     public var language: String?
+    public var enableNearbyNotifications: Bool?
     
     override init(){
         super.init()
@@ -47,7 +48,9 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
             }
         }
         
-        self.online = fields?.valueForKey("online") as? Bool
+        if let statusFields = fields?.valueForKey("status") as? NSDictionary{
+            self.online = statusFields.valueForKey("online") as? Bool
+        }
         if let image = fields?.valueForKey("image") as? NSDictionary{
             self.imageUrl = image.valueForKey("imageUrl") as? String
         }
@@ -71,6 +74,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
             }
         }
         self.language = fields?.valueForKey("language") as? String
+        self.enableNearbyNotifications = fields?.valueForKey(PropertyKeys.enableNearbyNotifications) as? Bool
     }
     
     public func getProfileDetailValue(key: ProfileDetail.Key) -> String? {
@@ -114,6 +118,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
             }
             dict["profileDetails"] = profileDetailsDict
         }
+        dict[PropertyKeys.enableNearbyNotifications] = self.enableNearbyNotifications
         
         return dict
     }
@@ -128,6 +133,9 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         self.imageUrl = aDecoder.decodeObjectForKey(PropertyKeys.imageUrl) as? String
         if aDecoder.containsValueForKey(PropertyKeys.online){
             self.online = aDecoder.decodeBoolForKey(PropertyKeys.online)
+        }
+        if aDecoder.containsValueForKey(PropertyKeys.enableNearbyNotifications){
+            self.enableNearbyNotifications = aDecoder.decodeBoolForKey(PropertyKeys.enableNearbyNotifications)
         }
         self.locations = aDecoder.decodeObjectForKey(PropertyKeys.locations) as? [Location]
         self.profileDetails = aDecoder.decodeObjectForKey(PropertyKeys.profileDetails) as? [ProfileDetail]
@@ -146,7 +154,9 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         aCoder.encodeObject(self.locations, forKey: PropertyKeys.locations)
         aCoder.encodeObject(self.profileDetails, forKey: PropertyKeys.profileDetails)
         aCoder.encodeObject(self.language, forKey: PropertyKeys.language)
-        
+        if let enableNearbyNotifications = self.enableNearbyNotifications{
+            aCoder.encodeBool(enableNearbyNotifications, forKey: PropertyKeys.enableNearbyNotifications)
+        }
     }
     
     private struct PropertyKeys{
@@ -159,5 +169,6 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         static let locations = "locations"
         static let profileDetails = "profileDetails"
         static let language = "language"
+        static let enableNearbyNotifications = "enableNearbyNotifications"
     }
 }

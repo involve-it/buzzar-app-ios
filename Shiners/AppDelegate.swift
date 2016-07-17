@@ -42,7 +42,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         application.registerForRemoteNotifications()
         
+        if let notification = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? [String: AnyObject]{
+            self.handlePushNotification(notification)
+        }
+        
         return true
+    }
+    
+    private func handlePushNotification(notification: [String: AnyObject]){
+        if let payload = notification["ejson"] as? String{
+            PushNotificationsHandler.handleNotification(payload, rootViewController: self.window?.rootViewController as! MainViewController)
+        }
+    }
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        if (application.applicationState == .Inactive || application.applicationState == .Background  )
+        {
+            if let payload = userInfo["ejson"] as? String{
+                PushNotificationsHandler.handleNotification(payload, rootViewController: self.window?.rootViewController as! MainViewController)
+            }
+        }
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
@@ -52,18 +71,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let token = PushNotificationsHandler.saveToken(deviceToken)
+        if UsersProxy.Instance.isLoggedIn(){
+            AccountHandler.Instance.savePushToken({ (success) in
+                if !success {
+                    application.unregisterForRemoteNotifications()
+                    NotificationManager.sendNotification(NotificationManager.Name.PushRegistrationFailed, object: nil)
+                }
+            })
+        }
         print("Registered for push. Token: \(token)")
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
         print("Failed to register for push notifications")
+        application.unregisterForRemoteNotifications()
+        NotificationManager.sendNotification(NotificationManager.Name.PushRegistrationFailed, object: nil)
     }
     
-    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forRemoteNotification userInfo: [NSObject : AnyObject], completionHandler: () -> Void) {
-        if (identifier == "declineAction"){
-            
-        } else if (identifier == "answerAction"){
-            
+    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+        if !application.isRegisteredForRemoteNotifications(){
+            NotificationManager.sendNotification(NotificationManager.Name.PushRegistrationFailed, object: nil)
         }
     }
     
