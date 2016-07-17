@@ -63,8 +63,8 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
         user.setProfileDetail(.City, value: self.txtLocation.text)
         user.setProfileDetail(.Phone, value: self.txtPhoneNumber.text)
         user.setProfileDetail(.Skype, value: self.txtSkype.text)
-        uploadPhoto();
-//        user.imageUrl =
+        
+        user.imageUrl = self.currentUser?.imageUrl
         return user;
     }
     
@@ -162,66 +162,23 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     
     public func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         picker.dismissViewControllerAnimated(true, completion: nil)
-        //        self.setLoading(true)
+        self.setLoading(true)
         
-        self.imgPhoto.image = image;
+        ImageCachingHandler.Instance.saveImage(image) { (success, imageUrl) in
+            ThreadHelper.runOnMainThread({
+                self.setLoading(false)
+                if success {
+                    self.imgPhoto.image = image;
+                    self.currentUser?.imageUrl = imageUrl
+                } else {
+                    self.showAlert("Error", message: "Error uploading photo");
+                }
+            })
+        }
     }
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder();
         return false;
-    }
-    
-    private func uploadPhoto() {
-        // See https://www.codementor.io/tips/5748713276/how-to-upload-images-to-aws-s3-in-swift
-        // Setup a new swift project in Xcode and run pod install. Then open the created Xcode workspace.
-        // Once AWSS3 framework is ready, we need to configure the authentication:
-        
-        // configure S3
-        let S3BucketName = "shiners/v1.0/public/images";
-        
-        // configure authentication with Cognito
-//        let cognitoPoolID = "us-east-1_ckxes1C2W";
-        let cognitoPoolID = "us-east-1:611e9556-43f7-465d-a35b-57a31e11af8b";
-        let region = AWSRegionType.USEast1;
-        let credentialsProvider = AWSCognitoCredentialsProvider(regionType:region,
-                                                                identityPoolId:cognitoPoolID)
-        let configuration = AWSServiceConfiguration(region:region, credentialsProvider:credentialsProvider)
-        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration;
-        
-        //Add any image to your project and get its URL like this:
-        let ext = "png"
-        let imageURL = NSBundle.mainBundle().URLForResource("lock_open", withExtension: ext)!;
-        
-        // Prepare the actual uploader:
-        let uploadRequest = AWSS3TransferManagerUploadRequest()
-        uploadRequest.body = imageURL
-        uploadRequest.key = NSProcessInfo.processInfo().globallyUniqueString + "." + ext
-        uploadRequest.bucket = S3BucketName
-        uploadRequest.contentType = "image/" + ext
-        
-        // push img to server:
-        let transferManager = AWSS3TransferManager.defaultS3TransferManager();
-        transferManager.upload(uploadRequest).continueWithBlock { (task) -> AnyObject! in
-            if let error = task.error {
-                print("Upload failed ❌ (\(error))");
-            }
-            if let exception = task.exception {
-                print("Upload failed ❌ (\(exception))");
-            }
-            if task.result != nil {
-            
-                let s3URL = NSURL(string: "http://s3.amazonaws.com/\(S3BucketName)/\(uploadRequest.key!)")!;
-                print("Uploaded to:\n\(s3URL)");
-                let data = NSData(contentsOfURL: s3URL);
-                let image = UIImage(data: data!);
-                
-            }
-            else {
-                print("Unexpected empty result.")
-            }
-            return nil
-        }
-        
     }
 }

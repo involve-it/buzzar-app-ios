@@ -1,10 +1,10 @@
 PODS:
-  - AWSCore (2.4.3)
-  - AWSS3 (2.4.3):
-  - AWSCore (= 2.4.3)
+  - AWSCore (2.4.5)
+  - AWSS3 (2.4.5):
+    - AWSCore (= 2.4.5)
   - CryptoSwift (0.5.1)
   - FLAnimatedImage (1.0.12)
-  - JSQMessagesViewController (7.2.0):
+  - JSQMessagesViewController (7.3.3):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
   - NYTPhotoViewer (1.1.0):
@@ -30,11 +30,11 @@ DEPENDENCIES:
   - SwiftDDP (~> 0.3.2)
 
 SPEC CHECKSUMS:
-  AWSCore: 1b1edbf65f948804c9d522f1c49e29f51f72c6d8
-  AWSS3: 82159813c72679e1a049e9d0be40ad73ffdb2982
+  AWSCore: 2f356385bcea9b81ea47f9be0228c71697d9597d
+  AWSS3: 8f73b439f12c4aaaea39fbec87f67a1f1e15bd42
   CryptoSwift: df42dda18baf6c76347a94e227dbcc0a341304bd
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5
+  JSQMessagesViewController: 0ee3f80237268192a3e8337fd0d787f1a1bf5a7a
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   NYTPhotoViewer: e80e8767f3780d2df37c6f72cbab15d6c7232911
   RichEditorView: b4ee60a4f5301cbe8f3fcb1f065cdd7de74ddd10
@@ -42,6 +42,6 @@ SPEC CHECKSUMS:
   SwiftWebSocket: 2bb9dda75c87f64eaf9768131141857ca8611aac
   XCGLogger: d6e196e78940ff6daab17d6917107876f973fa31
 
-PODFILE CHECKSUM: 81399b870686fc1ba91e21b5a82d6b514deda11a
+PODFILE CHECKSUM: 982cdc3824f7d1eacf5ca1c76a4f8a90383a04fa
 
 COCOAPODS: 1.0.1

@@ -8,12 +8,14 @@
 
 import Foundation
 import UIKit
+import AWSS3
 
 public class ImageCachingHandler{
     private static let imagesDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!.URLByAppendingPathComponent("images")
     private static let contentsFile = ImageCachingHandler.imagesDirectory.URLByAppendingPathComponent("contents")
     
     private var images: Dictionary<String, ImageEntity> = [:]
+    //private var imagesPendingUpload: Dictionary<NSURL, LocalImageEntity> = [:]
     private var failedUrls: [String] = []
     private let lockQueue = dispatch_queue_create("org.buzzar.app.Shiners.imageCachingHandler", nil);
     private static let MAX_COUNT = 30;
@@ -46,6 +48,25 @@ public class ImageCachingHandler{
             image = self.images[id]?.image;
         }
         return image;
+    }
+    
+    public func saveImage(image: UIImage, callback: (success: Bool, imageUrl: String?) -> Void) -> Void{
+        ThreadHelper.runOnBackgroundThread {
+            if let imageEntity = self.saveImageToLocalStorage(image) {
+                self.uploadPhotoToAmazon(ImageCachingHandler.imagesDirectory.URLByAppendingPathComponent(imageEntity.filename), contentType: imageEntity.contentType!, callback: { (url) in
+                    if let _ = url{
+                        imageEntity.setUrl(url!)
+                        self.savedImages[url!] = imageEntity
+                        self.saveContentsFile()
+                        callback(success: true, imageUrl: url!)
+                    } else {
+                        callback(success: false, imageUrl: nil)
+                    }
+                })
+            } else {
+                callback(success: false, imageUrl: nil)
+            }
+        }
     }
         
     public func getImageFromUrl (imageUrl: String?, defaultImage: UIImage? = ImageCachingHandler.defaultPhoto, callback: (image: UIImage?) ->Void) -> Bool{
@@ -89,6 +110,61 @@ public class ImageCachingHandler{
         
         return loading;
     }
+    
+    private func uploadPhotoToAmazon(url: NSURL, contentType: String, callback: (url: String?)->Void) {
+        // See https://www.codementor.io/tips/5748713276/how-to-upload-images-to-aws-s3-in-swift
+        // Setup a new swift project in Xcode and run pod install. Then open the created Xcode workspace.
+        // Once AWSS3 framework is ready, we need to configure the authentication:
+        
+        // configure S3
+        let S3BucketName = "shiners/v1.0/public/images";
+        
+        // configure authentication with Cognito
+        //        let cognitoPoolID = "us-east-1_ckxes1C2W";
+        let cognitoPoolID = "us-east-1:611e9556-43f7-465d-a35b-57a31e11af8b";
+        let region = AWSRegionType.USEast1;
+        let credentialsProvider = AWSCognitoCredentialsProvider(regionType:region,
+                                                                identityPoolId:cognitoPoolID)
+        let configuration = AWSServiceConfiguration(region:region, credentialsProvider:credentialsProvider)
+        AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration;
+        
+        //Add any image to your project and get its URL like this:
+        //let ext = "png"
+        //let imageURL = NSBundle.mainBundle().URLForResource("lock_open", withExtension: ext)!;
+        
+        // Prepare the actual uploader:
+        let uploadRequest = AWSS3TransferManagerUploadRequest()
+        uploadRequest.body = url
+        uploadRequest.key = NSProcessInfo.processInfo().globallyUniqueString //+ "." + ext
+        uploadRequest.bucket = S3BucketName
+        uploadRequest.contentType = contentType
+            //"image/" + ext
+        
+        // push img to server:
+        let transferManager = AWSS3TransferManager.defaultS3TransferManager();
+        transferManager.upload(uploadRequest).continueWithBlock { (task) -> AnyObject! in
+            if let error = task.error {
+                print("Upload failed ❌ (\(error))");
+            }
+            if let exception = task.exception {
+                print("Upload failed ❌ (\(exception))");
+            }
+            if task.result != nil {
+                let urlString = "https://s3.amazonaws.com/\(S3BucketName)/\(uploadRequest.key!)"
+                //let s3URL = NSURL(string: urlString)!;
+                print("Uploaded to:\n\(urlString)");
+                //let data = NSData(contentsOfURL: s3URL);
+                //let image = UIImage(data: data!);
+                callback(url: urlString)
+            }
+            else {
+                print("Unexpected empty result.")
+                callback(url: nil)
+            }
+            return nil
+        }
+    }
+
     
     private func findOldestId() -> String?{
         var oldest:NSDate?, id: String?;
@@ -142,6 +218,49 @@ public class ImageCachingHandler{
         }
     }
     
+    private func saveImageToLocalStorage(image: UIImage) -> LocalImageEntity?{
+        let filename = NSUUID().UUIDString
+        let url = ImageCachingHandler.imagesDirectory.URLByAppendingPathComponent(filename)
+        
+        if let imageData = UIImagePNGRepresentation(image) {
+            do {
+                try imageData.writeToURL(url, options: NSDataWritingOptions.DataWritingAtomic)
+                
+                return LocalImageEntity(fileName: filename, contentType: self.getContentType(imageData))
+                
+                //self.imagesPendingUpload[url] = imageEntity
+            }
+            catch {
+                NSLog("Error writing image file: \(filename) for URL: \(url)")
+                return nil
+            }
+            
+        }
+        return nil
+    }
+    
+    private func getContentType(data: NSData) -> String{
+        var c:UInt8 = 0
+        data.getBytes(&c, length: 1)
+        
+        switch (c) {
+        case 0xFF:
+            return "image/jpeg";
+        case 0x89:
+            return "image/png";
+        case 0x47:
+            return "image/gif";
+        /*case 0x49:
+            break;*/
+        case 0x42:
+            return "image/bmp";
+        case 0x4D:
+            return "image/tiff";
+        default:
+            return "image/png";
+        }
+    }
+    
     private func saveContentsFile(){
         NSKeyedArchiver.archiveRootObject(self.savedImages, toFile: ImageCachingHandler.contentsFile.path!)
     }
@@ -186,16 +305,31 @@ public class ImageCachingHandler{
     
     private class LocalImageEntity: NSObject, NSCoding{
         let timestamp: NSDate
-        let url: String
         let filename: String
+        let contentType: String?
+        var url: String!
+        
+        func setUrl(url: String){
+            self.url = url
+        }
         
         init (url: String, filename: String){
             self.timestamp = NSDate()
             self.url = url
             self.filename = filename
+            self.contentType = nil
+            super.init()
+        }
+        
+        init (fileName: String, contentType: String){
+            self.filename = fileName
+            self.timestamp = NSDate()
+            self.contentType = contentType
+            super.init()
         }
         
         @objc required init(coder aDecoder: NSCoder) {
+            self.contentType = nil
             self.timestamp = aDecoder.decodeObjectForKey(PropertyKeys.timestamp) as! NSDate
             self.url = aDecoder.decodeObjectForKey(PropertyKeys.url) as! String
             self.filename = aDecoder.decodeObjectForKey(PropertyKeys.filename) as! String
