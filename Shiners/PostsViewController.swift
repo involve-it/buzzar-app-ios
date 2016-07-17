@@ -145,6 +145,42 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
             dateFormatter.dateFormat = "dd MMM HH:mm"
             postCell.txtPostCreated.text = dateFormatter.stringFromDate(postCreated!).uppercaseString
             
+            //Post disatance
+            if let currentLocation = self.currentLocation {
+                var metr:Double
+                
+                //current location
+                let curLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
+                
+                //Post location
+        
+                if let locations = post.locations {
+                    for location in locations {
+                        
+                        if location.placeType == .Dynamic {
+                            metr = curLocation.distanceFromLocation(CLLocation(latitude: location.lat!, longitude: location.lng!))
+                            postCell.txtPostDistance.text = String(format:"%2.f" ,metr)
+                            //postCell.txtPostDistance = metr
+                            //print("Dynamic \(curLocation)")
+                        } else if location.placeType == .Static {
+                            metr = curLocation.distanceFromLocation(CLLocation(latitude: location.lat!, longitude: location.lng!))
+                            postCell.txtPostDistance.text = String(format:"%2.f" ,metr)
+                            //print("Static \(metr)")
+                        }
+                        
+                       
+                        
+                        
+                        
+                    }
+                }
+            }
+            
+           
+            
+    
+    
+            
             if let price = post.price where post.price != "" {
                 postCell.txtPrice.text = "$\(price)";
             } else {
