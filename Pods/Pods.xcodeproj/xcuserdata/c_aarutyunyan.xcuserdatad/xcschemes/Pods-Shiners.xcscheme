@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DE1AE69A258AA65E619535D6543A2C2D"
-               BuildableName = "Pods_Shiners.framework"
+               BuildableName = "Pods-Shiners"
                BlueprintName = "Pods-Shiners"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DE1AE69A258AA65E619535D6543A2C2D"
-            BuildableName = "Pods_Shiners.framework"
+            BuildableName = "Pods-Shiners"
             BlueprintName = "Pods-Shiners"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>

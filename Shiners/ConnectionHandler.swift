@@ -12,15 +12,16 @@ import SwiftDDP
 
 
 public class ConnectionHandler{
-    private let url:String = "ws://msg.webhop.org/websocket"
+    //private let url:String = "ws://msg.webhop.org/websocket"
     //private let url:String = "ws://192.168.1.61:3000/websocket"
+    private let url:String = "wss://www.shiners.mobi/websocket"
     public private(set) var status: ConnectionStatus = .NotInitialized
     
     public var users = UsersProxy.Instance
     public var posts = PostsProxy.Instance
     public var messages = MessagesProxy.Instance
     
-    private var totalDependencies = 0
+    private var totalDependencies = 1
     private var dependenciesResolved = 0
     
     @objc private func accountLoaded(){
@@ -32,6 +33,7 @@ public class ConnectionHandler{
         if self.status != .Connected && self.status != .Connecting{
             self.status = ConnectionStatus.Connecting
             //Meteor.client.logLevel = .Debug;
+            Meteor.client.allowSelfSignedSSL = true
             
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.accountLoaded), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
             
@@ -39,8 +41,9 @@ public class ConnectionHandler{
                 NSLog("Meteor connected")
                 
                 if self.users.isLoggedIn(){
-                    self.totalDependencies += 1
                     AccountHandler.Instance.loadAccount()
+                } else {
+                    AccountHandler.Instance.processLogoff()
                 }
                 self.executeHandlers(self.dependenciesResolved)
             }

@@ -13,7 +13,7 @@ class MessagesCollection: AbstractCollection{
     var messages = [Message]()
     
     init() {
-        super.init(name: "messages");
+        super.init(name: "bz.messages");
     }
     
     override func documentWasAdded(collection: String, id: String, fields: NSDictionary?) {

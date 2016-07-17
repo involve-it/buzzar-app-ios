@@ -47,8 +47,6 @@ public class DialogViewController : JSQMessagesViewController{
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageAdded), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageRemoved), name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageModified), name: NotificationManager.Name.MessageModified.rawValue, object: nil)
@@ -75,7 +73,9 @@ public class DialogViewController : JSQMessagesViewController{
     
     func messageAdded(notification: NSNotification){
         if let message = notification.object as? Message where message.chatId == self.chat.id {
-            addMessage(message.userId!, text: message.text!, callFinish: true)
+            ThreadHelper.runOnMainThread({ 
+                self.addMessage(message.userId!, text: message.text!, callFinish: true)
+            })
         }
     }
     
@@ -158,12 +158,15 @@ public class DialogViewController : JSQMessagesViewController{
     }
     
     public override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-        addMessage(self.senderId, text: text, callFinish: true)
         let message = MessageToSend()
         message.destinationUserId = self.chat.otherParty?.id
         message.message = text
-        chat.lastMessage = text
-        
-        ConnectionHandler.Instance.messages.sendMessage(message);
+        ConnectionHandler.Instance.messages.sendMessage(message){ success, errorId, errorMessage, result in
+            if success {
+                self.chat.lastMessage = text
+            } else {
+                self.showAlert("Erorr", message: errorMessage)
+            }
+        };
     }
 }

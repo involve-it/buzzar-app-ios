@@ -29,7 +29,9 @@ public class MeteorDocument: NSObject {
         super.init()
         if let properties = fields {
             for (key,value) in properties  {
-                self.setValue(value, forKey: key as! String)
+                if !value.isEqual(NSNull()) {
+                    self.setValue(value, forKey: key as! String)
+                }
             }
         }
     }
@@ -60,13 +62,22 @@ public class MeteorDocument: NSObject {
     func propertyNames() -> [String] {
         return Mirror(reflecting: self).children.filter { $0.label != nil }.map { $0.label! }
     }
-    
-    func fields() -> NSDictionary {
+
+
+    /*
+    This method should be public so users of this library can override it for parsing their variables in their MeteorDocument object when having structs and such in their Document.
+    */
+    public func fields() -> NSDictionary {
         let fieldsDict = NSMutableDictionary()
         let properties = propertyNames()
         
         for name in properties {
-            if let value = self.valueForKey(name) {
+            if var value = self.valueForKey(name) {
+                
+                if value as? NSDate != nil {
+                    value = EJSON.convertToEJSONDate(value as! NSDate)
+                }
+                
                 fieldsDict.setValue(value, forKey: name)
             }
         }

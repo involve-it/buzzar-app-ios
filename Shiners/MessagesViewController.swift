@@ -38,6 +38,12 @@ public class MessagesViewController: UITableViewController{
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self, action: #selector(updateDialogs), forControlEvents: .ValueChanged)
+    
+    }
+    
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tableView.reloadData()
     }
     
     func showOfflineData(){

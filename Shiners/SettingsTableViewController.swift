@@ -177,6 +177,19 @@ class SettingsTableViewController: UITableViewController{
         } else if indexPath.section == Section.social{
             //facebook
             if indexPath.row == 0{
+                AccountHandler.Instance.loginFacebook(NSBundle.mainBundle().infoDictionary!["FacebookAppID"] as! String, viewController: self)
+                
+                /*if let token = FBSDKAccessToken.currentAccessToken(){
+                    AccountHandler.Instance.loginFacebook(token.appID, viewController: self)
+                } else {
+                    FBSDKLoginManager().logInWithReadPermissions(["email", "public_profile"], fromViewController: self, handler: { (loginResult, error) in
+                        if error != nil || loginResult.isCancelled {
+                            self.showAlertErrorLoginFacebook()
+                        } else {
+                            AccountHandler.Instance.loginFacebook(loginResult.token.userID, viewController: self)
+                        }
+                    })
+                }*/
                 /*FBSDKLoginManager().logInWithPublishPermissions(["email", "public_profile"], fromViewController: self, handler: { (loginResult, error) in
                     if error != nil || loginResult.isCancelled {
                         self.showAlertErrorLoginFacebook()
@@ -184,9 +197,10 @@ class SettingsTableViewController: UITableViewController{
                         let params = ["fields": "id,name,email"]
                         FBSDKGraphRequest(graphPath: "me", parameters: params).startWithCompletionHandler({ (connection, result, error) in
                             if error != nil, let email = result.valueForKey("email") as? String, id = result.valueForKey("id") as? String {
-                                let user = RegisterUser(username: email, email: email, password: id)
                                 
-                                self.setLoading(true)
+                                //let user = RegisterUser(username: email, email: email, password: id)
+                                
+                                //self.setLoading(true)
                                 AccountHandler.Instance.register(user, callback: { (success, errorId, errorMessage, result) in
                                     if (success){
                                         AccountHandler.Instance.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
