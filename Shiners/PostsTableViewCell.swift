@@ -14,4 +14,6 @@ class PostsTableViewCell: UITableViewCell{
     @IBOutlet weak var txtPrice: UILabel!
     @IBOutlet weak var txtDetails: UILabel!
     
+    @IBOutlet weak var txtPostCreated: UILabel!
+    @IBOutlet weak var txtPostDistance: UILabel!
 }
