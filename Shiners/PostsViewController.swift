@@ -138,6 +138,13 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
             
             postCell.txtTitle.text = post.title;
             postCell.txtDetails.text = post.descr;
+            
+            //Additional labels
+            let postCreated = post.timestamp
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "dd MMM HH:mm"
+            postCell.txtPostCreated.text = dateFormatter.stringFromDate(postCreated!).uppercaseString
+            
             if let price = post.price where post.price != "" {
                 postCell.txtPrice.text = "$\(price)";
             } else {
@@ -164,6 +171,13 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return max(1, posts.count);
+    }
+    
+    
+    //Animation cell
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        cell.alpha = 0
+        UIView.animateWithDuration(0.35, animations: {cell.alpha = 1}, completion: nil)
     }
     
     func didApplyFilter() {
