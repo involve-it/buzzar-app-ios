@@ -31,6 +31,9 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         return true;
     }
 
+    //unwind close newPostViewController
+    @IBAction func closeNewPostViewControlle(segue: UIStoryboardSegue) {}
+
 
 }
 
