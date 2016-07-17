@@ -43,5 +43,9 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
             self.showAlert("Error", message: "Error subscribing to notifications");
         }
     }
+    //unwind close newPostViewController
+    @IBAction func closeNewPostViewControlle(segue: UIStoryboardSegue) {}
+
+
 }
 
