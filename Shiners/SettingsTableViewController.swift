@@ -38,8 +38,7 @@ class SettingsTableViewController: UITableViewController{
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(accountUpdated), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-        
-        //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(userUpdated), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(accountUpdated), name: NotificationManager.Name.UserUpdated.rawValue, object: nil)
     }
     
     func showOfflineData(){
