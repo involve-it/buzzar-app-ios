@@ -207,6 +207,33 @@ public class AccountHandler{
         }
     }
     
+    public func requestPushNotifications(){
+        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+        let app = UIApplication.sharedApplication()
+        app.registerUserNotificationSettings(settings)
+    }
+    
+    public func savePushToken(callback: (success: Bool) -> Void){
+        if let token = PushNotificationsHandler.getToken(), deviceId = UIDevice.currentDevice().identifierForVendor?.UUIDString, userId = Meteor.client.userId(){
+            var dict = Dictionary<String, AnyObject>()
+            dict["token"] = token
+            //todo: fix paging
+            dict["deviceId"] = deviceId
+            dict["platform"] = "apn"
+            dict["userId"] = userId
+            
+            Meteor.call("registerPushToken", params: [dict], callback: { (result, error) in
+                if error == nil, let fields = result as? NSDictionary, success = fields.valueForKey("success") as? Bool{
+                    callback(success: success)
+                } else {
+                    callback(success: false)
+                }
+            })
+        } else {
+            callback(success: false)
+        }
+    }
+    
     private init (){}
     private static let instance = AccountHandler()
     public static var Instance: AccountHandler {

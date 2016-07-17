@@ -43,6 +43,7 @@
 		7B35655B1CE9259E00012CA9 /* MessagesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35655A1CE9259E00012CA9 /* MessagesProvider.swift */; };
 		7B35655F1CE92C1F00012CA9 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35655E1CE92C1F00012CA9 /* Reachability.swift */; };
 		7B3565611CE93E0800012CA9 /* CachingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565601CE93E0800012CA9 /* CachingHandler.swift */; };
+		7B86FFD91D3BFAB7008343B3 /* PushNotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B86FFD81D3BFAB7008343B3 /* PushNotificationsHandler.swift */; };
 		7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */; };
 		7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DB1CCC19DE00AD636D /* Post.swift */; };
 		7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */; };
@@ -130,6 +131,7 @@
 		7B35655A1CE9259E00012CA9 /* MessagesProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesProvider.swift; sourceTree = "<group>"; };
 		7B35655E1CE92C1F00012CA9 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		7B3565601CE93E0800012CA9 /* CachingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachingHandler.swift; sourceTree = "<group>"; };
+		7B86FFD81D3BFAB7008343B3 /* PushNotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationsHandler.swift; sourceTree = "<group>"; };
 		7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsTableViewCell.swift; sourceTree = "<group>"; };
 		7BB2A7DB1CCC19DE00AD636D /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		7BB2A7DE1CCC1BF900AD636D /* ConnectionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionHandler.swift; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 				7B35655A1CE9259E00012CA9 /* MessagesProvider.swift */,
 				7B35655E1CE92C1F00012CA9 /* Reachability.swift */,
 				7B3565601CE93E0800012CA9 /* CachingHandler.swift */,
+				7B86FFD81D3BFAB7008343B3 /* PushNotificationsHandler.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -583,6 +586,7 @@
 				7B3564911CDAFDCE00012CA9 /* UsersProxy.swift in Sources */,
 				7B3565321CE1747500012CA9 /* ResponseHelper.swift in Sources */,
 				7B26B0BB1CD655C2000495EE /* DescriptionViewController.swift in Sources */,
+				7B86FFD91D3BFAB7008343B3 /* PushNotificationsHandler.swift in Sources */,
 				7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */,
 				7B26B0951CD568CB000495EE /* MessagesViewController.swift in Sources */,
 				7BB2A8031CCDA15500AD636D /* RegisterViewController.swift in Sources */,
