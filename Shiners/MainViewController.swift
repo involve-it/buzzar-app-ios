@@ -39,9 +39,9 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
             NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
         }
         
-        ThreadHelper.runOnMainThread {
+        /*ThreadHelper.runOnMainThread {
             self.showAlert("Error", message: "Error subscribing to notifications");
-        }
+        }*/
     }
     //unwind close newPostViewController
     @IBAction func closeNewPostViewControlle(segue: UIStoryboardSegue) {}

@@ -43,10 +43,10 @@ public class MyPostsViewController: UITableViewController{
         self.refreshControl?.addTarget(self, action: #selector(updateMyPosts), forControlEvents: .ValueChanged)
     }
     
-    public override func viewWillAppear(animated: Bool) {
+    /*public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.checkPending()
-    }
+    }*/
     
     func checkPending(){
         if let pendingPostId = self.pendingPostId, postIndex = self.myPosts.indexOf({$0.id == pendingPostId}){

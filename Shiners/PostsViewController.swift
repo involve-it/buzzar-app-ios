@@ -24,6 +24,8 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     private var currentLocation: CLLocationCoordinate2D?
     private var errorMessage: String?
     
+    var pendingPostId: String?
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
             let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
@@ -34,6 +36,15 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
             self.searchViewController = segue.destinationViewController as? NewSearchViewController
             self.searchViewController?.delegate = self
         }
+    }
+    
+    func checkPending(){
+        if let pendingPostId = self.pendingPostId, postIndex = self.posts.indexOf({$0.id == pendingPostId}){
+            let indexPath = NSIndexPath(forRow: postIndex, inSection: 0)
+            self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
+            self.performSegueWithIdentifier("postDetails", sender: self)
+        }
+        self.pendingPostId = nil
     }
     
     override func viewDidLoad() {
@@ -69,6 +80,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
         self.tableView.separatorStyle = .SingleLine;
         ThreadHelper.runOnMainThread {
             self.tableView.reloadData()
+            self.checkPending()
         }
     }
     

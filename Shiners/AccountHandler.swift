@@ -10,6 +10,7 @@ import Foundation
 import SwiftDDP
 
 public class AccountHandler{
+    private static let USER_ID = "shiners:userId"
     private let totalDependencies = 3
     private var resolvedDependencies = 0
     private var latestCallId = 0
@@ -51,7 +52,6 @@ public class AccountHandler{
         }
         var dict = Dictionary<String, AnyObject>()
         dict["lat"] = lat
-        //todo: fix paging
         dict["lng"] = lng
         dict["radius"] = radius
         self.nearbyPostsId = Meteor.subscribe("posts-nearby", params: [dict]) {
@@ -75,7 +75,10 @@ public class AccountHandler{
         ConnectionHandler.Instance.users.login(userName, password: password) { (success, errorId, errorMessage, result) in
             callback(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
             if (success){
+                NSUserDefaults.standardUserDefaults().setObject(Meteor.client.userId(), forKey: AccountHandler.USER_ID)
                 self.loadAccount()
+            } else {
+                NSUserDefaults.standardUserDefaults().setObject(nil, forKey: AccountHandler.USER_ID)
             }
         }
     }
@@ -100,7 +103,12 @@ public class AccountHandler{
         }
     }
     
+    public func getSavedUserId() -> String?{
+        return NSUserDefaults.standardUserDefaults().objectForKey(AccountHandler.USER_ID) as? String
+    }
+    
     public func processLogoff(){
+        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: AccountHandler.USER_ID)
         CachingHandler.deleteAllPrivateFiles()
         self.currentUser = nil
         self.myPosts = nil

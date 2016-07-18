@@ -11,12 +11,18 @@ import SystemConfiguration
 import FBSDKCoreKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
-
+class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
     var window: UIWindow?
     private var reachability: Reachability?
+    
+    private let locationManager = LocationHandler()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        self.locationManager.delegate = self
+        if UsersProxy.Instance.isLoggedIn(){
+            self.locationManager.monitorSignificantLocationChanges()
+        }
+        
         // Override point for customization after application launch.
         do {
             reachability = try Reachability.reachabilityForInternetConnection()
@@ -47,6 +53,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         return true
+    }
+    
+    func locationReported(geocoderInfo: GeocoderInfo) {
+        if UIApplication.sharedApplication().applicationState == .Background, let coords = geocoderInfo.coordinate {
+            ConnectionHandler.Instance.reportLocation(coords.latitude, lng: coords.longitude)
+        }
     }
     
     private func handlePushNotification(notification: [String: AnyObject]){
@@ -112,6 +124,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        if UsersProxy.Instance.isLoggedIn(){
+            self.locationManager.monitorSignificantLocationChanges()
+        }
     }
 
     func applicationWillEnterForeground(application: UIApplication) {

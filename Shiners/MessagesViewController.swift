@@ -46,7 +46,7 @@ public class MessagesViewController: UITableViewController{
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.tableView.reloadData()
-        self.checkPending()
+        //self.checkPending()
     }
     
     private func checkPending(){

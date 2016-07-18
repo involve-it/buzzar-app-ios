@@ -54,6 +54,17 @@ class PushNotificationsHandler{
                         navigationController.popViewControllerAnimated(false)
                     }
                 }
+            case POST:
+                if let postId = payload.id{
+                    rootViewController.selectedIndex = 0
+                    let navigationController = rootViewController.viewControllers![0] as! UINavigationController
+                    let postsViewController = navigationController.viewControllers[0] as? PostsViewController
+                    postsViewController?.pendingPostId = postId
+                    
+                    if let _ = navigationController.visibleViewController as? PostDetailsViewController{
+                        navigationController.popViewControllerAnimated(false)
+                    }
+                }
             default:
                 break
             }

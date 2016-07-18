@@ -9,12 +9,15 @@
 import Foundation
 import SwiftDDP
 
-
-
 public class ConnectionHandler{
+    private let baseUrl = "http://192.168.1.61:3000"
+    //private let baseUrl = "http://msg.webhop.org"
+    //private let baseUrl = "https://www.shiners.mobi"
+    
     //private let url:String = "ws://msg.webhop.org/websocket"
     private let url:String = "ws://192.168.1.61:3000/websocket"
     //private let url:String = "wss://www.shiners.mobi/websocket"
+    
     public private(set) var status: ConnectionStatus = .NotInitialized
     
     public var users = UsersProxy.Instance
@@ -23,6 +26,38 @@ public class ConnectionHandler{
     
     private var totalDependencies = 1
     private var dependenciesResolved = 0
+    
+    private var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    
+    public func reportLocation(lat: Double, lng: Double){
+        if let userId = AccountHandler.Instance.getSavedUserId() {
+            var dict = Dictionary<String, AnyObject>()
+            dict["lat"] = lat
+            dict["lng"] = lng
+            dict["userId"] = userId
+            if let jsonData = try? NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions()), url = NSURL(string: baseUrl + "/api/geolocation"){
+                let request = NSMutableURLRequest(URL: url)
+                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                request.HTTPMethod = "POST"
+                request.HTTPBody = jsonData
+                
+                
+                self.backgroundTask = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler({
+                    UIApplication.sharedApplication().endBackgroundTask(self.backgroundTask)
+                })
+                
+                NSURLSession.sharedSession().dataTaskWithRequest(request){data,response,error in
+                    print(data)
+                }.resume()
+                
+                if self.backgroundTask != UIBackgroundTaskInvalid{
+                    UIApplication.sharedApplication().endBackgroundTask(self.backgroundTask)
+                    self.backgroundTask = UIBackgroundTaskInvalid
+                }
+            }
+        }
+    }
+
     
     @objc private func accountLoaded(){
         self.dependenciesResolved += 1

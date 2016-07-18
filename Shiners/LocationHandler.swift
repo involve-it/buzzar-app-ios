@@ -39,6 +39,7 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
     
     public func monitorSignificantLocationChanges() -> Bool {
         if self.notDenied {
+            self.locationManager.allowsBackgroundLocationUpdates = true
             self.locationManager.requestAlwaysAuthorization()
             self.locationManager.startMonitoringSignificantLocationChanges()
         }
