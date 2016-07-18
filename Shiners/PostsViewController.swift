@@ -205,7 +205,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
                     for location in locations {
                         if let lat = location.lat, lng = location.lng {
                             metr = curLocation.distanceFromLocation(CLLocation(latitude: lat, longitude: lng))
-                            postCell.txtPostDistance.text = String(format:"%2.f" ,metr)
+                            postCell.txtPostDistance.text = String(format:"%2.f m" ,metr)
                             
                             if location.placeType == .Dynamic {
                                 break
