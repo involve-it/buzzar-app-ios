@@ -1536,6 +1536,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="btnSave" destination="t0Q-Ri-jJX" id="nr9-Qb-BJx"/>
                         <outlet property="cellFacebook" destination="7jU-l0-jD8" id="oQu-n3-Vh6"/>
                         <outlet property="imgPhoto" destination="aLg-A5-Z2q" id="MAe-Hx-lfE"/>
                         <outlet property="txtFirstName" destination="9SA-il-lx9" id="s5n-ey-Qv2"/>

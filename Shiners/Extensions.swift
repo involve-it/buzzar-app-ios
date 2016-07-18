@@ -45,3 +45,18 @@ extension NSData {
         return bytes.map { String(format: "%02hhx", $0) }.reduce("", combine: { $0 + $1 })
     }
 }
+
+extension UIImage {
+    func correctlyOrientedImage() -> UIImage{
+        if self.imageOrientation == .Up{
+            return self
+        }
+        
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
+        self.drawInRect(CGRectMake(0, 0, self.size.width, self.size.height))
+        let normalizedImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        return normalizedImage;
+    }
+}

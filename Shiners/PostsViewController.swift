@@ -179,19 +179,9 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
                             postCell.txtPostDistance.text = String(format:"%2.f" ,metr)
                             //print("Static \(metr)")
                         }
-                        
-                       
-                        
-                        
-                        
                     }
                 }
             }
-            
-           
-            
-    
-    
             
             if let price = post.price where post.price != "" {
                 postCell.txtPrice.text = "$\(price)";
@@ -225,7 +215,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     //Animation cell
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         cell.alpha = 0
-        UIView.animateWithDuration(0.35, animations: {cell.alpha = 1}, completion: nil)
+        UIView.animateWithDuration(0.2, animations: {cell.alpha = 1}, completion: nil)
     }
     
     func didApplyFilter() {

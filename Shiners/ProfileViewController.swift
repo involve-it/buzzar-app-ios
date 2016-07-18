@@ -24,6 +24,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     
     var currentUser: User?;
     
+    @IBOutlet weak var btnSave: UIBarButtonItem!
     private var cancelButton: UIBarButtonItem?
     
     @IBAction func btnCancel_Click(sender: AnyObject) {
@@ -122,14 +123,18 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     }
     
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        var animated = false
         
         if indexPath.section == 2{
             //facebook
             if indexPath.row == 0 {
                 self.loginFacebook()
             }
+            animated = true
         }
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: animated)
+        
+        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
     }
     
     private func loginFacebook(){
@@ -165,14 +170,18 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     public func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.setLoading(true)
-        
-        ImageCachingHandler.Instance.saveImage(image) { (success, imageUrl) in
+        let rotatedImage = image.correctlyOrientedImage()
+        let currentImage = self.imgPhoto.image
+        self.imgPhoto.image = rotatedImage
+        self.btnSave.enabled = false
+        ImageCachingHandler.Instance.saveImage(rotatedImage) { (success, imageUrl) in
             ThreadHelper.runOnMainThread({
-                self.setLoading(false)
+                self.setLoading(false, rightBarButtonItem: self.cancelButton)
+                self.btnSave.enabled = true
                 if success {
-                    self.imgPhoto.image = image;
                     self.currentUser?.imageUrl = imageUrl
                 } else {
+                    self.imgPhoto.image = currentImage
                     self.showAlert("Error", message: "Error uploading photo");
                 }
             })
