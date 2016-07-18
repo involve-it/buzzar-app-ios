@@ -68,7 +68,7 @@ public class ConnectionHandler{
         if self.status != .Connected && self.status != .Connecting{
             self.status = ConnectionStatus.Connecting
             //Meteor.client.logLevel = .Debug;
-            //Meteor.client.allowSelfSignedSSL = true
+            Meteor.client.allowSelfSignedSSL = true
             
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.accountLoaded), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
             
