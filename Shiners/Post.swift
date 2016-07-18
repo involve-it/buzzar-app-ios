@@ -62,7 +62,10 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
                 self.photos = [Photo]()
                 for photo in photos {
                     if let photoFields = photo as? NSDictionary{
-                        self.photos?.append(Photo(fields: photoFields))
+                        let photoObj = Photo(fields: photoFields)
+                        if photoObj.original != nil{
+                            self.photos?.append(photoObj)
+                        }
                     }
                 }
             }

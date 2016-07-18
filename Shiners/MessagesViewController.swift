@@ -111,7 +111,7 @@ public class MessagesViewController: UITableViewController{
         
         let loading = ImageCachingHandler.Instance.getImageFromUrl(dialog.otherParty?.imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage) { (image) in
             ThreadHelper.runOnMainThread({ 
-                if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
+                if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? MessagesTableViewCell{
                     cellToUpdate.imgPhoto?.image = image;
                 }
             })
