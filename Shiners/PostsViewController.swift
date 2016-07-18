@@ -47,13 +47,25 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
         self.pendingPostId = nil
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.locationHandler.monitorSignificantLocationChanges()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        self.locationHandler.stopMonitoringLocation()
+    }
+    
     override func viewDidLoad() {
         self.locationHandler.delegate = self
         self.searchView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showPostsFromCollection), name: NotificationManager.Name.NearbyPostsSubscribed.rawValue, object: nil)
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showPostsFromCollection), name: NotificationManager.Name.NearbyPostsSubscribed.rawValue, object: nil)
         
-        self.locationHandler.getLocationOnce()
+        //self.locationHandler.getLocationOnce()
         
         if CachingHandler.Instance.status != .Complete {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
@@ -70,11 +82,17 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorConnected), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(forceLayout), name: UIDeviceOrientationDidChangeNotification, object: nil)
+        
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl?.addTarget(self, action: #selector(requestLocation), forControlEvents: .ValueChanged)
     }
     
-    func showPostsFromCollection(){
+    func requestLocation(){
+        self.locationHandler.getLocationOnce(false)
+    }
+    
+    /*func showPostsFromCollection(){
         self.meteorLoaded = true
         self.posts = AccountHandler.Instance.postsCollection.posts
         self.tableView.separatorStyle = .SingleLine;
@@ -82,7 +100,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
             self.tableView.reloadData()
             self.checkPending()
         }
-    }
+    }*/
     
     func locationReported(geocoderInfo: GeocoderInfo) {
         if geocoderInfo.denied {
@@ -100,18 +118,35 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
             self.locationAcquired = true
             
             if ConnectionHandler.Instance.status == .Connected {
-                self.subscribeToNearby()
+                //self.subscribeToNearby()
+                self.getNearby()
             }
         }
     }
     
-    private func subscribeToNearby(){
+    /*private func subscribeToNearby(){
         AccountHandler.Instance.subscribeToNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude, radius: 100);
+    }*/
+    
+    private func getNearby(){
+        AccountHandler.Instance.getNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude, radius: 10) { (success, errorId, errorMessage, result) in
+            ThreadHelper.runOnMainThread({
+                self.refreshControl?.endRefreshing()
+                if success {
+                    self.posts = result as! [Post]
+                    self.tableView.reloadData()
+                } else {
+                    self.showAlert("Error", message: "Error updating posts")
+                }
+                self.checkPending()
+            })
+        }
     }
     
     @objc private func meteorConnected(notification: NSNotification){
         if self.locationAcquired {
-            self.subscribeToNearby()
+            //self.subscribeToNearby()
+            self.getNearby()
         }
     }
     
@@ -168,16 +203,15 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
         
                 if let locations = post.locations {
                     for location in locations {
-                        
-                        if location.placeType == .Dynamic {
-                            metr = curLocation.distanceFromLocation(CLLocation(latitude: location.lat!, longitude: location.lng!))
+                        if let lat = location.lat, lng = location.lng {
+                            metr = curLocation.distanceFromLocation(CLLocation(latitude: lat, longitude: lng))
                             postCell.txtPostDistance.text = String(format:"%2.f" ,metr)
-                            //postCell.txtPostDistance = metr
-                            //print("Dynamic \(curLocation)")
-                        } else if location.placeType == .Static {
-                            metr = curLocation.distanceFromLocation(CLLocation(latitude: location.lat!, longitude: location.lng!))
-                            postCell.txtPostDistance.text = String(format:"%2.f" ,metr)
-                            //print("Static \(metr)")
+                            
+                            if location.placeType == .Dynamic {
+                                break
+                            }
+                        } else {
+                            postCell.txtPostDistance.text = "N/A"
                         }
                     }
                 }
@@ -213,10 +247,10 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     
     
     //Animation cell
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    /*override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         cell.alpha = 0
         UIView.animateWithDuration(0.2, animations: {cell.alpha = 1}, completion: nil)
-    }
+    }*/
     
     func didApplyFilter() {
         self.closeSearchView()

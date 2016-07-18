@@ -37,7 +37,7 @@ class WhereViewController: UIViewController, LocationHandlerDelegate, StaticLoca
     }
     
     @IBAction func btn_getDynamicLocation(sender: AnyObject) {
-        if !self.locationHandler.getLocationOnce() {
+        if !self.locationHandler.getLocationOnce(true) {
             self.showAlert("Error", message: "Доступ запрещен")
         }
     }

@@ -23,12 +23,33 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
         }
     }
     
+    private var geocodingRequired = false
+    private var monitoring = false
+    
     private lazy var geocoder = CLGeocoder()
     
     public var delegate: LocationHandlerDelegate?
     
-    public func getLocationOnce() -> Bool {
+    public func startMonitoringLocation() -> Bool{
         if self.notDenied {
+            self.locationManager.requestAlwaysAuthorization()
+            self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            self.locationManager.startUpdatingLocation()
+        }
+        
+        return self.notDenied
+    }
+    
+    public func stopMonitoringLocation() {
+        self.monitoring = false
+        self.geocodingRequired = false
+        self.locationManager.stopUpdatingLocation()
+    }
+    
+    public func getLocationOnce(geocodingRequired: Bool) -> Bool {
+        if self.notDenied {
+            self.monitoring = false
+            self.geocodingRequired = geocodingRequired
             self.locationManager.requestAlwaysAuthorization()
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
             self.locationManager.requestLocation()
@@ -39,6 +60,8 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
     
     public func monitorSignificantLocationChanges() -> Bool {
         if self.notDenied {
+            self.monitoring = true
+            self.geocodingRequired = false
             self.locationManager.allowsBackgroundLocationUpdates = true
             self.locationManager.requestAlwaysAuthorization()
             self.locationManager.startMonitoringSignificantLocationChanges()
@@ -49,7 +72,16 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
     
     public func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
-            self.reverseGeocode(location)
+            if self.geocodingRequired{
+                self.reverseGeocode(location)
+            } else {
+                let geocoderInfo = GeocoderInfo()
+                geocoderInfo.coordinate = location.coordinate
+                self.delegate?.locationReported(geocoderInfo)
+            }
+            if self.monitoring {
+                self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+            }
         }
     }
     

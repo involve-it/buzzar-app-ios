@@ -17,6 +17,23 @@ public class PostsProxy{
         }
     }
     
+    public func getNearbyPosts(lat: Double, lng: Double, radius: Double, callback: MeteorMethodCallback? = nil){
+        var dict = Dictionary<String, AnyObject>()
+        dict["lat"] = lat
+        dict["lng"] = lng
+        dict["radius"] = radius
+        dict["skip"] = 0
+        dict["take"] = 50
+        
+        Meteor.call("getNearbyPostsTest", params: [dict]) {result, error in
+            if error == nil {
+                ResponseHelper.callHandlerArray(result, handler: callback) as [Post]?
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
+    
     public func getMyPosts(skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
         dict["type"] = "all"

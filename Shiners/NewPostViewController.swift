@@ -364,7 +364,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     }
     
     func detectLocation(){
-        if !self.locationHandler.getLocationOnce() {
+        if !self.locationHandler.getLocationOnce(true) {
             if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: Section.Location)){
                 cell.detailTextLabel!.text = "Please allow location services in settings"
             }

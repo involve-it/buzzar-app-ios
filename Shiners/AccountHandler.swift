@@ -46,6 +46,20 @@ public class AccountHandler{
         CachingHandler.saveObject(self.myChats!, path: CachingHandler.chats)
     }
     
+    public func getNearbyPosts(lat: Double, lng: Double, radius: Double, callback: MeteorMethodCallback){
+        ConnectionHandler.Instance.posts.getNearbyPosts(lat, lng: lng, radius: radius){ (success, errorId, errorMessage, result) in
+            if success {
+                ThreadHelper.runOnBackgroundThread(){
+                    if !CachingHandler.saveObject(result as! [Post], path: CachingHandler.postsAll){
+                        NSLog("Unable to archive posts")
+                    }
+                }
+            }
+            
+            callback(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
+        }
+    }
+    
     public func subscribeToNearbyPosts(lat: Double, lng: Double, radius: Double){
         if let nearbyPostsId = self.nearbyPostsId {
             Meteor.unsubscribe(withId: nearbyPostsId)
