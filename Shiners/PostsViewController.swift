@@ -145,10 +145,13 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
             ThreadHelper.runOnMainThread({
                 self.refreshControl?.endRefreshing()
                 if success {
+                    self.errorMessage = nil
                     self.posts = result as! [Post]
                     self.tableView.reloadData()
                 } else {
+                    self.errorMessage = errorMessage
                     self.showAlert("Error", message: "Error updating posts")
+                    self.tableView.reloadData()
                 }
                 self.checkPending()
             })

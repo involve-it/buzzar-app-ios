@@ -193,6 +193,9 @@ public class AccountHandler{
                     if (success){
                         self.myChats = result as? [Chat]
                         
+                        //temp
+                        self.myChats = self.myChats?.filter({$0.lastMessage != nil})
+                        
                         CachingHandler.saveObject(self.myChats!, path: CachingHandler.chats)
                         
                         NotificationManager.sendNotification(.MyChatsUpdated, object: nil)
@@ -223,6 +226,9 @@ public class AccountHandler{
         ConnectionHandler.Instance.messages.getChats(0, take: 100, callback: { (success, errorId, errorMessage, result) in
             if success {
                 self.myChats = result as? [Chat]
+                
+                //temp
+                self.myChats = self.myChats?.filter({$0.lastMessage != nil})
                 
                 self.saveMyChats()
                 NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
