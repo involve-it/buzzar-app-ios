@@ -15,6 +15,7 @@ public class MyPostsViewController: UITableViewController{
     var pendingPostId: String?
     
     public override func viewDidLoad() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(myPostsUpdated), name: NotificationManager.Name.MyPostsUpdated.rawValue, object: nil)
         self.myPosts = [Post]()
         if AccountHandler.Instance.status == .Completed {
@@ -46,6 +47,12 @@ public class MyPostsViewController: UITableViewController{
         super.viewWillAppear(animated)
         self.checkPending()
     }*/
+    
+    func appDidBecomeActive(){
+        if self.myPosts.count > 0 && AccountHandler.Instance.status == .Completed{
+            self.checkPending()
+        }
+    }
     
     @IBAction func unwindMyPosts(segue: UIStoryboardSegue){
         

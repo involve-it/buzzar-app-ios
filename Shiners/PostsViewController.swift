@@ -72,6 +72,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     }
     
     override func viewDidLoad() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
         self.locationHandler.delegate = self
         self.searchView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
         
@@ -98,6 +99,12 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self, action: #selector(requestLocation), forControlEvents: .ValueChanged)
+    }
+    
+    func appDidBecomeActive(){
+        if self.posts.count > 0 && AccountHandler.Instance.status == .Completed{
+            self.checkPending()
+        }
     }
     
     func requestLocation(){

@@ -21,6 +21,7 @@ public class MessagesViewController: UITableViewController{
     
     public override func viewDidLoad() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(dialogsUpdated), name: NotificationManager.Name.MyChatsUpdated.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
         if AccountHandler.Instance.status == .Completed {
             self.meteorLoaded = true
             if let dialogs = AccountHandler.Instance.myChats{
@@ -53,6 +54,12 @@ public class MessagesViewController: UITableViewController{
     
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        if self.dialogs.count > 0 && AccountHandler.Instance.status == .Completed{
+            self.checkPending()
+        }
+    }
+    
+    func appDidBecomeActive(){
         if self.dialogs.count > 0 && AccountHandler.Instance.status == .Completed{
             self.checkPending()
         }
