@@ -26,6 +26,10 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     
     var pendingPostId: String?
     
+    @IBAction func unwindPosts(segue: UIStoryboardSegue){
+    
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
             let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
@@ -40,11 +44,19 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     
     func checkPending(){
         if let pendingPostId = self.pendingPostId, postIndex = self.posts.indexOf({$0.id == pendingPostId}){
+            self.navigationController?.popToViewController(self, animated: false)
             let indexPath = NSIndexPath(forRow: postIndex, inSection: 0)
             self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
             self.performSegueWithIdentifier("postDetails", sender: self)
         }
         self.pendingPostId = nil
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if self.posts.count > 0 && ConnectionHandler.Instance.status == .Connected{
+            self.checkPending()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {

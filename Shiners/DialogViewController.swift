@@ -65,7 +65,9 @@ public class DialogViewController : JSQMessagesViewController{
         })
         
         self.chat.messages.forEach { (message) in
-            addMessage(message.userId!, text: message.text!)
+            if let userId = message.userId, text = message.text{
+                addMessage(userId, text: text)
+            }
         }
         
         self.collectionView.reloadData()

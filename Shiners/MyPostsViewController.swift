@@ -24,7 +24,6 @@ public class MyPostsViewController: UITableViewController{
             } else {
                 self.myPosts = [Post]()
             }
-            self.checkPending()
         } else {
             if CachingHandler.Instance.status != .Complete {
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
@@ -48,8 +47,13 @@ public class MyPostsViewController: UITableViewController{
         self.checkPending()
     }*/
     
+    @IBAction func unwindMyPosts(segue: UIStoryboardSegue){
+        
+    }
+    
     func checkPending(){
         if let pendingPostId = self.pendingPostId, postIndex = self.myPosts.indexOf({$0.id == pendingPostId}){
+            self.navigationController?.popToViewController(self, animated: false)
             let indexPath = NSIndexPath(forRow: postIndex, inSection: 0)
             self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
             self.performSegueWithIdentifier("myPostDetails", sender: self)
@@ -66,6 +70,13 @@ public class MyPostsViewController: UITableViewController{
                     self.tableView.reloadData()
                 }
             }
+        }
+    }
+    
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if self.myPosts.count > 0 && AccountHandler.Instance.status == .Completed{
+            self.checkPending()
         }
     }
     

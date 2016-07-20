@@ -84,14 +84,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let token = PushNotificationsHandler.saveToken(deviceToken)
         if UsersProxy.Instance.isLoggedIn(){
-            AccountHandler.Instance.savePushToken({ (success) in
-                if !success {
-                    application.unregisterForRemoteNotifications()
-                    NotificationManager.sendNotification(NotificationManager.Name.PushRegistrationFailed, object: nil)
-                }
-            })
+            if ConnectionHandler.Instance.status == .Connected {
+                self.savePushToken()
+            } else {
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.savePushToken), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            }
         }
         print("Registered for push. Token: \(token)")
+    }
+    
+    func savePushToken(){
+        AccountHandler.Instance.savePushToken({ (success) in
+            if !success {
+                UIApplication.sharedApplication().unregisterForRemoteNotifications()
+                NotificationManager.sendNotification(NotificationManager.Name.PushRegistrationFailed, object: nil)
+            }
+        })
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {

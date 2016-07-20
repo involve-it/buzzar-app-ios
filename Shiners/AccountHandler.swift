@@ -279,8 +279,10 @@ public class AccountHandler{
             Meteor.call("raix:push-update", params: [dict], callback: { (result, error) in
                 if error == nil, let fields = result as? NSDictionary, _ = fields.valueForKey("_id") as? String{
                     callback(success: true)
+                    print("token update success")
                 } else {
                     callback(success: false)
+                    print ("token update failed")
                 }
             })
         } else {
