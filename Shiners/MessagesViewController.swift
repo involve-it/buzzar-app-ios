@@ -63,7 +63,9 @@ public class MessagesViewController: UITableViewController{
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         self.tableView.reloadData()
+        self.navigationItem.title = "Messages"
     }
     
     override public func viewDidAppear(animated: Bool) {
