@@ -53,7 +53,7 @@ class MessagesCollection: AbstractCollection{
         }
     }
     
-    override func documentWasChanged(collection: String, id: String, fields: NSDictionary?, cleared: [String]?) {
+    /*override func documentWasChanged(collection: String, id: String, fields: NSDictionary?, cleared: [String]?) {
         if let index = self.messages.indexOf({message in return message.id == id}){
             let message = self.messages[index];
             message.update(fields);
@@ -68,7 +68,7 @@ class MessagesCollection: AbstractCollection{
                 NSLog("message was changed, chat unknown!")
             }
         }
-    }
+    }*/
     
     func count() -> Int{
         return messages.count;

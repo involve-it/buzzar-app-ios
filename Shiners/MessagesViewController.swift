@@ -22,6 +22,7 @@ public class MessagesViewController: UITableViewController{
     public override func viewDidLoad() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(dialogsUpdated), name: NotificationManager.Name.MyChatsUpdated.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageAdded), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
         if AccountHandler.Instance.status == .Completed {
             self.meteorLoaded = true
             if let dialogs = AccountHandler.Instance.myChats{
@@ -45,6 +46,19 @@ public class MessagesViewController: UITableViewController{
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self, action: #selector(updateDialogs), forControlEvents: .ValueChanged)
+    }
+    
+    func messageAdded(notification: NSNotification){
+        if let message = notification.object as? Message, chatIndex = self.dialogs.indexOf({$0.id == message.chatId}){
+            let chat = self.dialogs[chatIndex]
+            chat.lastMessage = message.text
+            self.dialogs.removeAtIndex(chatIndex)
+            self.dialogs.insert(chat, atIndex: 0)
+            
+            ThreadHelper.runOnMainThread({
+                self.tableView.reloadData()
+            })
+        }
     }
     
     public override func viewWillAppear(animated: Bool) {
