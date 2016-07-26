@@ -9,6 +9,7 @@
 import UIKit
 
 public class PostDetailsViewController: UITableViewController{
+    
     @IBOutlet weak var svImages: UIScrollView!
     
     public var post: Post!;

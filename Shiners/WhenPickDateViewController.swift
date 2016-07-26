@@ -188,11 +188,31 @@ class WhenPickDateViewController: UIViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
      
-        // Передать с объектом дата новую дату. Создать под нее переменную и присваивать значение из вызываемых методов
+     
      
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
     */
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "addPhotos" {
+            if let destination = segue.destinationViewController as? PhotosViewController {
+                
+                var post = Post()
+                
+                //Передаю данные по цепочке с предыдущего view контроллера
+                post = self.post
+                
+                // Передать с объектом дата новую дату. Создать под нее переменную и присваивать значение из вызываемых методов
+                post.endDate = self.datePicker.date
+                
+                //Передаем объект post следующему контроллеру
+                destination.post = post
+            }
+        } 
+    }
+    
+    
 
 }

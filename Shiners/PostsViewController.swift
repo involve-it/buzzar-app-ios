@@ -10,6 +10,7 @@ import UIKit
 import CoreLocation
 
 class PostsViewController: UITableViewController, SearchViewControllerDelegate, LocationHandlerDelegate{
+    
     private var posts = [Post]();
     
     @IBOutlet weak var lcTxtSearchBoxLeft: NSLayoutConstraint!
@@ -28,7 +29,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
-            let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
+            let vc:MyPostDetailsViewController = segue.destinationViewController as! MyPostDetailsViewController;
             let index = self.tableView.indexPathForSelectedRow!.row;
             let post = posts[index];
             vc.post = post;
@@ -129,7 +130,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     }*/
     
     private func getNearby(){
-        AccountHandler.Instance.getNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude, radius: 10) { (success, errorId, errorMessage, result) in
+        AccountHandler.Instance.getNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude, radius: 100000) { (success, errorId, errorMessage, result) in
             ThreadHelper.runOnMainThread({
                 self.refreshControl?.endRefreshing()
                 if success {
@@ -190,7 +191,11 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
             let postCreated = post.timestamp
             let dateFormatter = NSDateFormatter()
             dateFormatter.dateFormat = "dd MMM HH:mm"
-            postCell.txtPostCreated.text = dateFormatter.stringFromDate(postCreated!).uppercaseString
+            let textPostCreated = dateFormatter.stringFromDate(postCreated!)
+            postCell.txtPostCreated.text = textPostCreated
+            
+            //Send to MyPostDetailsViewController
+            post.dateCreatedPost = textPostCreated
             
             //Post disatance
             if let currentLocation = self.currentLocation {
@@ -200,12 +205,15 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
                 let curLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
                 
                 //Post location
-        
                 if let locations = post.locations {
                     for location in locations {
                         if let lat = location.lat, lng = location.lng {
                             metr = curLocation.distanceFromLocation(CLLocation(latitude: lat, longitude: lng))
-                            postCell.txtPostDistance.text = String(format:"%2.f m" ,metr)
+                            let convertResult = getDistanceToPost(metr)
+                            postCell.txtPostDistance.text = convertResult
+                        
+                            //Send to MyPostDetailsViewController
+                            post.outDistancePost = convertResult
                             
                             if location.placeType == .Dynamic {
                                 break
@@ -285,6 +293,21 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
         }) { (_) in
             
         }
+    }
+    
+    //Convert metr to km
+    func getDistanceToPost(distance: Double) -> String {
+        var ret:String
+        
+        if distance < 999 {
+            ret = String(format:"%2.f m", distance)
+        } else if distance > 1_000 && distance < 999_999 {
+            ret = String(format:"%2.1f km", distance / 1000)
+        } else {
+            ret = String(format:"%2.0f km", distance / 1000)
+        }
+        
+        return ret
     }
     
     @IBAction func btnSearchClick(sender: AnyObject) {

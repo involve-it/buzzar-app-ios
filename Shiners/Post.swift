@@ -26,6 +26,10 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
     public var trainingCategory: String?
     public var sectionLearning: String?
     
+    public var dateCreatedPost: String?
+    public var outDistancePost: String?
+    
+    
     public override init(){
         super.init()
     }

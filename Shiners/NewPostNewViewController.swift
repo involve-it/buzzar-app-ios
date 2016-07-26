@@ -34,6 +34,9 @@ class NewPostNewViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //Set focus to textfield
+        titleNewPost.becomeFirstResponder()
 
         //Заполняем начальное значение при инициализации контроллера
         titleTextCount.text = String(titleAllowCount)

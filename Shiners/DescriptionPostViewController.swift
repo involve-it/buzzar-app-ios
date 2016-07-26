@@ -26,6 +26,9 @@ class DescriptionPostViewController: UIViewController, UITextViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        //Set focus to textfield
+        fieldDescriptionOfPost.becomeFirstResponder()
+        
         // Устанавливаем начальное значение в метку счетчика разрешенного кол-во символов
         titleCountOfDescription.text = String(descriptionAllowCount)
         

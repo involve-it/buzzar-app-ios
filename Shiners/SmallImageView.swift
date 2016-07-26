@@ -14,35 +14,52 @@ public class SmallImageView: UIView{
     public weak var btnDelete: UIButton!
     
     public static let width: CGFloat = 100
-    public static let height: CGFloat = 100
+    public static let height: CGFloat = 80
     
     public var id: Int?
     public var delegate: SmallImageViewDelegate?
     
-    public init (x: Float, y: Float, id: Int, delegate: SmallImageViewDelegate?, image: UIImage){
+    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+    
+    public init (x: Float, y : Float, id: Int, delegate: SmallImageViewDelegate?, image: UIImage){
         //todo: fix different aspect ratios
         self.id = id
         self.delegate = delegate
         
-        super.init(frame: CGRectMake(CGFloat(x), CGFloat(y), SmallImageView.width, SmallImageView.height))
+        //extension of the edges + 20
+        super.init(frame: CGRectMake(CGFloat(x), CGFloat(y), SmallImageView.width + 20, SmallImageView.height + 10))
         self.clipsToBounds = true
         
-        let imageView = UIImageView(frame: CGRectMake(0, 0, SmallImageView.width, SmallImageView.height))
-        imageView.contentMode = .ScaleAspectFit
+        let imageView = UIImageView(frame: CGRectMake(0, 10, SmallImageView.width, SmallImageView.height))
+        imageView.contentMode = .ScaleAspectFill
+        
+        imageView.layer.cornerRadius = CGFloat(4)
+        imageView.backgroundColor = UIColor.blackColor()
+        
         imageView.clipsToBounds = true
         imageView.image = image
         self.addSubview(imageView)
         self.imageView = imageView;
         
-        let btnDelete = UIButton(frame: CGRectMake(CGFloat(SmallImageView.width - 22), CGFloat(y + 2), 20, 20))
-        btnDelete.setBackgroundImage(UIImage(named: "cancel.png"), forState: .Normal)
+        //Indicator
+        
+        activityIndicator.center = imageView.center
+        activityIndicator.hidesWhenStopped = true
+        //activityIndicator.startAnimating()
+        self.addSubview(activityIndicator)
+        
+        let btnDelete = UIButton(frame: CGRectMake(CGFloat(SmallImageView.width - 10), CGFloat(y - 5), 20, 20))
+        
+        btnDelete.setBackgroundImage(UIImage(named: "deleteImage"), forState: .Normal)
         btnDelete.addTarget(self, action: #selector(btnDelete_Click), forControlEvents: .TouchUpInside)
-        btnDelete.layer.shadowColor = UIColor.whiteColor().CGColor
-        btnDelete.layer.shadowOpacity = 0.8
-        btnDelete.layer.shadowRadius = 1
-        btnDelete.layer.shadowOffset = CGSizeMake(-2, 2)
+        //btnDelete.layer.shadowColor = UIColor.whiteColor().CGColor
+        //btnDelete.layer.shadowOpacity = 0.8
+        //btnDelete.layer.shadowRadius = 1
+        //btnDelete.layer.shadowOffset = CGSizeMake(-2, 2)
         self.addSubview(btnDelete)
         self.btnDelete = btnDelete
+        
+
     }
     
     required public init?(coder aDecoder: NSCoder) {
