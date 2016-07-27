@@ -17,6 +17,8 @@ public class DialogViewController : JSQMessagesViewController{
     var chat: Chat!
     var pendingMessagesAsyncId: String?
     
+    var isPeeking = false
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,6 +58,7 @@ public class DialogViewController : JSQMessagesViewController{
         if let pendingMessagesAsyncId = self.pendingMessagesAsyncId where pendingMessagesAsyncId == notification.object as! String,
             let messages = MessagesHandler.Instance.getMessagesByRequestId(pendingMessagesAsyncId){
             self.updateMessages(messages)
+            self.scrollToBottomAnimated(true)
         }
     }
     
@@ -107,7 +110,9 @@ public class DialogViewController : JSQMessagesViewController{
     
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        self.keyboardController.textView.becomeFirstResponder()
+        if !self.isPeeking {
+            self.keyboardController.textView.becomeFirstResponder()
+        }
     }
     
     public override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {

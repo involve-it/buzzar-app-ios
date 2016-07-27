@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class MessagesViewController: UITableViewController{
+public class MessagesViewController: UITableViewController, UIViewControllerPreviewingDelegate{
     var dialogs = [Chat]()
     
     private var meteorLoaded = false
@@ -46,6 +46,33 @@ public class MessagesViewController: UITableViewController{
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self, action: #selector(updateDialogs), forControlEvents: .ValueChanged)
+        
+        if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
+            self.registerForPreviewingWithDelegate(self, sourceView: view)
+        }
+    }
+    
+    public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
+        guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? MessagesTableViewCell else {return nil}
+        guard let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("dialog") as? DialogViewController else {return nil}
+        
+        let chat = dialogs[indexPath.row];
+        
+        viewController.navigationItem.title = cell.lblTitle.text
+        viewController.chat = chat
+        viewController.isPeeking = true
+        if !chat.messagesRequested {
+            chat.messagesRequested = true
+            viewController.pendingMessagesAsyncId = MessagesHandler.Instance.getMessagesAsync(chat.id!, skip: 0)
+        }
+        previewingContext.sourceRect = cell.frame
+        
+        return viewController
+    }
+    
+    public func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        self.showViewController(viewControllerToCommit, sender: self)
     }
     
     func messageAdded(notification: NSNotification){
