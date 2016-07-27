@@ -87,7 +87,7 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
         
         
         //Post Created
-        txtPostCreated.text = post.dateCreatedPost
+        txtPostCreated.text = post.timestamp?.toLocalizedString()
         
         //Post Distance
         txtPostDistance.text = post.outDistancePost

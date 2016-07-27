@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import CoreLocation
+
 public class Post: NSObject, DictionaryInitializable, NSCoding{
     public var id: String?
     public var title: String?
@@ -27,7 +29,6 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
     public var sectionLearning: String?
     public var near: Bool?
     
-    public var dateCreatedPost: String?
     public var outDistancePost: String?
     
     
@@ -207,6 +208,24 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         }
         
         aCoder.encodeObject(timestamp, forKey: PropertyKey.timestamp)
+    }
+    
+    func getDistanceFormatted(currentLocation: CLLocation) -> String? {
+        var distanceFormatted: String?
+        //Post location
+        if let locations = self.locations {
+            for location in locations {
+                if let lat = location.lat, lng = location.lng {
+                    distanceFormatted = currentLocation.distanceFromLocationFormatted(CLLocation(latitude: lat, longitude: lng))
+                    
+                    if location.placeType == .Dynamic {
+                        break
+                    }
+                }
+            }
+        }
+        
+        return distanceFormatted
     }
     
     public func toDictionary() -> Dictionary<String, AnyObject>{

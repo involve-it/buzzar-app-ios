@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class PostsViewController: UITableViewController, SearchViewControllerDelegate, LocationHandlerDelegate{
+class PostsViewController: UITableViewController, UIViewControllerPreviewingDelegate, SearchViewControllerDelegate, LocationHandlerDelegate{
     
     private var posts = [Post]();
     
@@ -36,6 +36,13 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
             let vc:MyPostDetailsViewController = segue.destinationViewController as! MyPostDetailsViewController;
             let index = self.tableView.indexPathForSelectedRow!.row;
             let post = posts[index];
+            
+            if let currentLocation = self.currentLocation {
+                //current location
+                let curLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
+                post.outDistancePost = post.getDistanceFormatted(curLocation)
+            }
+            
             vc.post = post;
         } else if (segue.identifier == "searchSegue"){
             self.searchViewController = segue.destinationViewController as? NewSearchViewController
@@ -231,15 +238,13 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
             
             //Additional labels
             if let postCreated = post.timestamp {
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateFormat = "dd MMM HH:mm"
-                postCell.txtPostCreated.text = dateFormatter.stringFromDate(postCreated).uppercaseString
+                postCell.txtPostCreated.text = postCreated.toLocalizedString()
             } else {
                 postCell.txtPostCreated.text = ""
             }
             
             //Send to MyPostDetailsViewController
-            post.dateCreatedPost = textPostCreated
+            //st.dateCreatedPost = textPostCreated
             
             //Post disatance
             if let currentLocation = self.currentLocation {
@@ -247,20 +252,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
                 let curLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
                 
                 //Post location
-                if let locations = post.locations {
-                    for location in locations {
-                        if let lat = location.lat, lng = location.lng {
-                            let distance = curLocation.distanceFromLocationFormatted(CLLocation(latitude: lat, longitude: lng))
-                            postCell.txtPostDistance.text = distance
-                            
-                            if location.placeType == .Dynamic {
-                                break
-                            }
-                        } else {
-                            postCell.txtPostDistance.text = "N/A"
-                        }
-                    }
-                }
+                postCell.txtPostDistance.text = post.getDistanceFormatted(curLocation)
             }
             
             if let price = post.price where post.price != "" {
@@ -335,20 +327,6 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
         }
     }
     
-    //Convert metr to km
-    func getDistanceToPost(distance: Double) -> String {
-        var ret:String
-        
-        if distance < 999 {
-            ret = String(format:"%2.f m", distance)
-        } else if distance > 1_000 && distance < 999_999 {
-            ret = String(format:"%2.1f km", distance / 1000)
-        } else {
-            ret = String(format:"%2.0f km", distance / 1000)
-        }
-        
-        return ret
-    }
     
     @IBAction func btnSearchClick(sender: AnyObject) {
         if (self.segmFilter.alpha == 0){
