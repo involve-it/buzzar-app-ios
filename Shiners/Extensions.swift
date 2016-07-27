@@ -38,6 +38,15 @@ extension NSDate {
         dateFormatter.dateFormat = "MM/dd/yyyy"
         return dateFormatter.stringFromDate(self)
     }
+    
+    func toLocalizedString() -> String{
+        let locale = NSLocale.currentLocale()
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateStyle = .ShortStyle
+        dateFormatter.timeStyle = .NoStyle
+        dateFormatter.locale = locale
+        return dateFormatter.stringFromDate(self)
+    }
 }
 
 extension NSData {
