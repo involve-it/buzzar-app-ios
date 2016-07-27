@@ -210,11 +210,13 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
             postCell.txtDetails.text = post.descr;
             
             //Additional labels
-            let postCreated = post.timestamp
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "dd MMM HH:mm"
-            let textPostCreated = dateFormatter.stringFromDate(postCreated!)
-            postCell.txtPostCreated.text = textPostCreated
+            if let postCreated = post.timestamp {
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "dd MMM HH:mm"
+                postCell.txtPostCreated.text = dateFormatter.stringFromDate(postCreated).uppercaseString
+            } else {
+                postCell.txtPostCreated.text = ""
+            }
             
             //Send to MyPostDetailsViewController
             post.dateCreatedPost = textPostCreated
@@ -228,12 +230,8 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
                 if let locations = post.locations {
                     for location in locations {
                         if let lat = location.lat, lng = location.lng {
-                            metr = curLocation.distanceFromLocation(CLLocation(latitude: lat, longitude: lng))
-                            let convertResult = getDistanceToPost(metr)
-                            postCell.txtPostDistance.text = convertResult
-                        
-                            //Send to MyPostDetailsViewController
-                            post.outDistancePost = convertResult
+                            let distance = curLocation.distanceFromLocationFormatted(CLLocation(latitude: lat, longitude: lng))
+                            postCell.txtPostDistance.text = distance
                             
                             if location.placeType == .Dynamic {
                                 break
