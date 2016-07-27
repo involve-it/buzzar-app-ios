@@ -27,6 +27,10 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     
     var pendingPostId: String?
     
+    @IBAction func unwindPosts(segue: UIStoryboardSegue){
+    
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
             let vc:MyPostDetailsViewController = segue.destinationViewController as! MyPostDetailsViewController;
@@ -41,11 +45,19 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     
     func checkPending(){
         if let pendingPostId = self.pendingPostId, postIndex = self.posts.indexOf({$0.id == pendingPostId}){
+            self.navigationController?.popToViewController(self, animated: false)
             let indexPath = NSIndexPath(forRow: postIndex, inSection: 0)
             self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
             self.performSegueWithIdentifier("postDetails", sender: self)
         }
         self.pendingPostId = nil
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if self.posts.count > 0 && ConnectionHandler.Instance.status == .Connected{
+            self.checkPending()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -61,6 +73,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     }
     
     override func viewDidLoad() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
         self.locationHandler.delegate = self
         self.searchView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
         
@@ -87,6 +100,12 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self, action: #selector(requestLocation), forControlEvents: .ValueChanged)
+    }
+    
+    func appDidBecomeActive(){
+        if self.posts.count > 0 && AccountHandler.Instance.status == .Completed{
+            self.checkPending()
+        }
     }
     
     func requestLocation(){
@@ -134,10 +153,13 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
             ThreadHelper.runOnMainThread({
                 self.refreshControl?.endRefreshing()
                 if success {
+                    self.errorMessage = nil
                     self.posts = result as! [Post]
                     self.tableView.reloadData()
                 } else {
+                    self.errorMessage = errorMessage
                     self.showAlert("Error", message: "Error updating posts")
+                    self.tableView.reloadData()
                 }
                 self.checkPending()
             })
@@ -199,8 +221,6 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
             
             //Post disatance
             if let currentLocation = self.currentLocation {
-                var metr:Double
-                
                 //current location
                 let curLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
                 
@@ -239,9 +259,11 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
                         }
                     })
                 }
+            } else {
+                postCell.imgPhoto.image = ImageCachingHandler.defaultPhoto;
             }
             if loading {
-                postCell.imgPhoto?.image = ImageCachingHandler.defaultPhoto;
+                postCell.imgPhoto.image = ImageCachingHandler.defaultPhoto;
             }
             cell = postCell
         }

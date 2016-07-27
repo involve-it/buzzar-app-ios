@@ -15,8 +15,14 @@ public class MessagesViewController: UITableViewController{
     
     var pendingChatId: String?
     
+    @IBAction func unwindMessages(segue: UIStoryboardSegue) {
+        //self.navigationController?.popViewControllerAnimated(false)
+    }
+    
     public override func viewDidLoad() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(dialogsUpdated), name: NotificationManager.Name.MyChatsUpdated.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageAdded), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
         if AccountHandler.Instance.status == .Completed {
             self.meteorLoaded = true
             if let dialogs = AccountHandler.Instance.myChats{
@@ -24,7 +30,6 @@ public class MessagesViewController: UITableViewController{
             } else {
                 self.dialogs = [Chat]()
             }
-            self.checkPending()
         } else {
             if CachingHandler.Instance.status != .Complete {
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
@@ -43,14 +48,42 @@ public class MessagesViewController: UITableViewController{
         self.refreshControl?.addTarget(self, action: #selector(updateDialogs), forControlEvents: .ValueChanged)
     }
     
+    func messageAdded(notification: NSNotification){
+        if let message = notification.object as? Message, chatIndex = self.dialogs.indexOf({$0.id == message.chatId}){
+            let chat = self.dialogs[chatIndex]
+            chat.lastMessage = message.text
+            self.dialogs.removeAtIndex(chatIndex)
+            self.dialogs.insert(chat, atIndex: 0)
+            
+            ThreadHelper.runOnMainThread({
+                self.tableView.reloadData()
+            })
+        }
+    }
+    
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         self.tableView.reloadData()
-        //self.checkPending()
+        self.navigationItem.title = "Messages"
+    }
+    
+    override public func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if self.dialogs.count > 0 && AccountHandler.Instance.status == .Completed{
+            self.checkPending()
+        }
+    }
+    
+    func appDidBecomeActive(){
+        if self.dialogs.count > 0 && AccountHandler.Instance.status == .Completed{
+            self.checkPending()
+        }
     }
     
     private func checkPending(){
         if let pendingChatId = self.pendingChatId, chatIndex = self.dialogs.indexOf({$0.id == pendingChatId}){
+            self.navigationController?.popToViewController(self, animated: true)
             let indexPath = NSIndexPath(forRow: chatIndex, inSection: 0)
             self.tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: .Bottom)
             self.performSegueWithIdentifier("dialog", sender: self)

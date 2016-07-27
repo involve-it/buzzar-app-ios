@@ -49,7 +49,7 @@ public class DialogViewController : JSQMessagesViewController{
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageAdded), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageRemoved), name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageModified), name: NotificationManager.Name.MessageModified.rawValue, object: nil)
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageModified), name: NotificationManager.Name.MessageModified.rawValue, object: nil)
     }
     
     func messagesPageReceived(notification:NSNotification){
@@ -65,7 +65,9 @@ public class DialogViewController : JSQMessagesViewController{
         })
         
         self.chat.messages.forEach { (message) in
-            addMessage(message.userId!, text: message.text!)
+            if let userId = message.userId, text = message.text{
+                addMessage(userId, text: text)
+            }
         }
         
         self.collectionView.reloadData()
@@ -75,6 +77,12 @@ public class DialogViewController : JSQMessagesViewController{
         if let message = notification.object as? Message where message.chatId == self.chat.id {
             ThreadHelper.runOnMainThread({ 
                 self.addMessage(message.userId!, text: message.text!, callFinish: true)
+            })
+        } else {
+            ThreadHelper.runOnMainThread({ 
+                //let backButton = self.navigationItem.backBarButtonItem
+                //backButton?.title! += "(1)"
+                self.navigationController!.navigationBar.backItem!.title = "Messages(1)";
             })
         }
     }
@@ -93,7 +101,7 @@ public class DialogViewController : JSQMessagesViewController{
     
     public override func viewWillDisappear(animated: Bool) {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageModified.rawValue, object: nil)
+        //NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageModified.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
     }
     

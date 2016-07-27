@@ -50,12 +50,10 @@ public class ResponseHelper{
     
     public class func callHandler<T: DictionaryInitializable>(result: AnyObject?, handler: MeteorMethodCallback?) -> T?{
         if let fields = result as? NSDictionary, success = fields.valueForKey("success") as? Bool{
-            if (success){
-                if let result = fields.valueForKey("result") as? NSDictionary {
-                    let concreteResult = T(fields: result)
-                    handler?(success: true, errorId: nil, errorMessage: nil, result: concreteResult)
-                    return concreteResult
-                }
+            if success, let result = fields.valueForKey("result") as? NSDictionary {
+                let concreteResult = T(fields: result)
+                handler?(success: true, errorId: nil, errorMessage: nil, result: concreteResult)
+                return concreteResult
             } else {
                 let errorId = getErrorId(result)
                 let message = self.getErrorMessage(errorId)
@@ -70,19 +68,17 @@ public class ResponseHelper{
     
     public class func callHandlerArray<T: DictionaryInitializable>(result: AnyObject?, handler: MeteorMethodCallback?) -> [T]?{
         if let fields = result as? NSDictionary, success = fields.valueForKey("success") as? Bool{
-            if (success){
-                if let result = fields.valueForKey("result") as? NSArray {
-                    var concreteResults = [T]()
-                    for value in result {
-                        if let objFields = value as? NSDictionary {
-                            let concreteResult = T(fields: objFields)
-                            concreteResults.append(concreteResult)
-                        }
+            if success, let result = fields.valueForKey("result") as? NSArray {
+                var concreteResults = [T]()
+                for value in result {
+                    if let objFields = value as? NSDictionary {
+                        let concreteResult = T(fields: objFields)
+                        concreteResults.append(concreteResult)
                     }
-                    
-                    handler?(success: true, errorId: nil, errorMessage: nil, result: concreteResults)
-                    return concreteResults
                 }
+                
+                handler?(success: true, errorId: nil, errorMessage: nil, result: concreteResults)
+                return concreteResults
             } else {
                 let errorId = getErrorId(result)
                 let message = self.getErrorMessage(errorId)

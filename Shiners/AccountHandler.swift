@@ -34,7 +34,7 @@ public class AccountHandler{
         } else {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveMyChats), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveMyChats), name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveMyChats), name: NotificationManager.Name.MessageModified.rawValue, object: nil)
+            //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveMyChats), name: NotificationManager.Name.MessageModified.rawValue, object: nil)
         }
         self.messagesId = Meteor.subscribe("messages-new") {
             NSLog("messages-new subscribed");
@@ -193,6 +193,9 @@ public class AccountHandler{
                     if (success){
                         self.myChats = result as? [Chat]
                         
+                        //temp
+                        self.myChats = self.myChats?.filter({$0.lastMessage != nil})
+                        
                         CachingHandler.saveObject(self.myChats!, path: CachingHandler.chats)
                         
                         NotificationManager.sendNotification(.MyChatsUpdated, object: nil)
@@ -223,6 +226,9 @@ public class AccountHandler{
         ConnectionHandler.Instance.messages.getChats(0, take: 100, callback: { (success, errorId, errorMessage, result) in
             if success {
                 self.myChats = result as? [Chat]
+                
+                //temp
+                self.myChats = self.myChats?.filter({$0.lastMessage != nil})
                 
                 self.saveMyChats()
                 NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
@@ -279,8 +285,10 @@ public class AccountHandler{
             Meteor.call("raix:push-update", params: [dict], callback: { (result, error) in
                 if error == nil, let fields = result as? NSDictionary, _ = fields.valueForKey("_id") as? String{
                     callback(success: true)
+                    print("token update success")
                 } else {
                     callback(success: false)
+                    print ("token update failed")
                 }
             })
         } else {

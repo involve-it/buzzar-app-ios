@@ -1294,9 +1294,12 @@
                         <outlet property="svImages" destination="zsa-pu-1tI" id="xvc-BU-wHR"/>
                         <outlet property="txtDetails" destination="eEw-df-ldv" id="0Lb-2s-Lil"/>
                         <outlet property="txtViews" destination="jfO-Ju-ro5" id="I4n-lk-Kwx"/>
+                        <segue destination="rQD-Ad-Xoz" kind="unwind" identifier="unwindMyPosts" unwindAction="unwindMyPosts:" id="06X-xf-hNy"/>
+                        <segue destination="rQD-Ad-Xoz" kind="unwind" identifier="unwindPosts" unwindAction="unwindPosts:" id="ijP-kQ-TMb"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RzK-g6-BRp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="rQD-Ad-Xoz" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="644" y="-823"/>
         </scene>
@@ -2159,8 +2162,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="AUt-pL-0KY"/>
+                    <connections>
+                        <segue destination="t6R-eC-kKI" kind="unwind" identifier="unwindMessages" unwindAction="unwindMessages:" id="3bw-eK-PuH"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iMs-Ip-d7v" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="t6R-eC-kKI" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2402" y="2644"/>
         </scene>

@@ -9,7 +9,9 @@
 import UIKit
 
 class MainViewController: UITabBarController, UITabBarControllerDelegate {
-
+    
+    var popNavigationControllerToRoot: Int?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -46,6 +48,19 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
     //unwind close newPostViewController
     @IBAction func closeNewPostViewControlle(segue: UIStoryboardSegue) {}
 
-
+    /*func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+        if self.popNavigationControllerToRoot == self.selectedIndex, let navController = viewController as? UINavigationController {
+            navController.popToRootViewControllerAnimated(false)
+            self.popNavigationControllerToRoot = nil
+        }
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if self.popNavigationControllerToRoot == self.selectedIndex, let navController = self.selectedViewController as? UINavigationController {
+            navController.popToRootViewControllerAnimated(false)
+            self.popNavigationControllerToRoot = nil
+        }
+    }*/
 }
 

@@ -15,6 +15,7 @@ public class MyPostsViewController: UITableViewController{
     var pendingPostId: String?
     
     public override func viewDidLoad() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(myPostsUpdated), name: NotificationManager.Name.MyPostsUpdated.rawValue, object: nil)
         self.myPosts = [Post]()
         if AccountHandler.Instance.status == .Completed {
@@ -24,7 +25,6 @@ public class MyPostsViewController: UITableViewController{
             } else {
                 self.myPosts = [Post]()
             }
-            self.checkPending()
         } else {
             if CachingHandler.Instance.status != .Complete {
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
@@ -48,8 +48,19 @@ public class MyPostsViewController: UITableViewController{
         self.checkPending()
     }*/
     
+    func appDidBecomeActive(){
+        if self.myPosts.count > 0 && AccountHandler.Instance.status == .Completed{
+            self.checkPending()
+        }
+    }
+    
+    @IBAction func unwindMyPosts(segue: UIStoryboardSegue){
+        
+    }
+    
     func checkPending(){
         if let pendingPostId = self.pendingPostId, postIndex = self.myPosts.indexOf({$0.id == pendingPostId}){
+            self.navigationController?.popToViewController(self, animated: false)
             let indexPath = NSIndexPath(forRow: postIndex, inSection: 0)
             self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
             self.performSegueWithIdentifier("myPostDetails", sender: self)
@@ -66,6 +77,13 @@ public class MyPostsViewController: UITableViewController{
                     self.tableView.reloadData()
                 }
             }
+        }
+    }
+    
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if self.myPosts.count > 0 && AccountHandler.Instance.status == .Completed{
+            self.checkPending()
         }
     }
     
@@ -114,13 +132,17 @@ public class MyPostsViewController: UITableViewController{
         } else {
             cell.txtPrice.text = "";
         }
-        
-        let loading = ImageCachingHandler.Instance.getImageFromUrl(post.getMainPhoto()?.original) { (image) in
-            dispatch_async(dispatch_get_main_queue(), {
-                if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
-                    cellToUpdate.imgPhoto?.image = image;
-                }
-            })
+        var loading = false;
+        if let url = post.getMainPhoto()?.original {
+            loading = ImageCachingHandler.Instance.getImageFromUrl(url) { (image) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
+                        cellToUpdate.imgPhoto?.image = image;
+                    }
+                })
+            }
+        } else {
+            cell.imgPhoto.image = ImageCachingHandler.defaultPhoto;
         }
         if loading {
             cell.imgPhoto?.image = ImageCachingHandler.defaultPhoto;

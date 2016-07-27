@@ -32,7 +32,7 @@ public class NotificationManager{
         case MessagesNewSubscribed = "shiners:MessagesNewSubscribed"
         case MessageAdded = "shiners:MessageAdded"
         case MessageRemoved = "shiners:MessageRemoved"
-        case MessageModified = "shiners:MessageModified"
+        //case MessageModified = "shiners:MessageModified"
         
         case MessagesAsyncRequestCompleted = "shiners:MessagesAsyncRequestCompleted"
         

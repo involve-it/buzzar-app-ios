@@ -35,12 +35,14 @@ class PushNotificationsHandler{
             switch payloadType {
             case CHAT:
                 if let chatId = payload.id{
-                    rootViewController.selectedIndex = 1
                     let messagesNavigationController = rootViewController.viewControllers![1] as! UINavigationController
-                    let messagesViewController = messagesNavigationController.viewControllers[0] as? MessagesViewController
-                    messagesViewController?.pendingChatId = chatId
-                    if let _ = messagesNavigationController.visibleViewController as? DialogViewController{
-                        messagesNavigationController.popViewControllerAnimated(false)
+                    let messagesViewController = messagesNavigationController.viewControllers[0] as! MessagesViewController
+                    messagesViewController.pendingChatId = chatId
+                    
+                    rootViewController.popNavigationControllerToRoot = 1
+                    rootViewController.selectedIndex = 1
+                    if messagesNavigationController.visibleViewController !== messagesViewController {
+                        messagesNavigationController.visibleViewController?.performSegueWithIdentifier("unwindMessages", sender: nil)
                     }
                 }
             case COMMENT:
@@ -50,8 +52,8 @@ class PushNotificationsHandler{
                     let myPostsViewController = navigationController.viewControllers[0] as? MyPostsViewController
                     myPostsViewController?.pendingPostId = postId
                     
-                    if let _ = navigationController.visibleViewController as? PostDetailsViewController{
-                        navigationController.popViewControllerAnimated(false)
+                    if navigationController.visibleViewController !== myPostsViewController {
+                        navigationController.visibleViewController?.performSegueWithIdentifier("unwindMyPosts", sender: nil)
                     }
                 }
             case POST:
@@ -61,8 +63,8 @@ class PushNotificationsHandler{
                     let postsViewController = navigationController.viewControllers[0] as? PostsViewController
                     postsViewController?.pendingPostId = postId
                     
-                    if let _ = navigationController.visibleViewController as? PostDetailsViewController{
-                        navigationController.popViewControllerAnimated(false)
+                    if navigationController.visibleViewController !== postsViewController {
+                        navigationController.visibleViewController?.performSegueWithIdentifier("unwindPosts", sender: nil)
                     }
                 }
             default:
