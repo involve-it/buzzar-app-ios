@@ -109,7 +109,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
         guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
-        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("postDetails") as? PostDetailsViewController
+        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("postDetails") as? MyPostDetailsViewController
         
         let post = posts[indexPath.row];
         viewController?.post = post
