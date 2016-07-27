@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class MyPostsViewController: UITableViewController{
+public class MyPostsViewController: UITableViewController, UIViewControllerPreviewingDelegate{
     var myPosts = [Post]()
     
     var meteorLoaded = false
@@ -41,6 +41,26 @@ public class MyPostsViewController: UITableViewController{
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self, action: #selector(updateMyPosts), forControlEvents: .ValueChanged)
+        
+        if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
+            self.registerForPreviewingWithDelegate(self, sourceView: view)
+        }
+    }
+    
+    public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
+        guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
+        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("postDetails") as? PostDetailsViewController
+        
+        let post = myPosts[indexPath.row];
+        viewController?.post = post
+        previewingContext.sourceRect = cell.frame
+        
+        return viewController
+    }
+    
+    public func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        self.showViewController(viewControllerToCommit, sender: self)
     }
     
     /*public override func viewWillAppear(animated: Bool) {

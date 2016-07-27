@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class PostsViewController: UITableViewController, SearchViewControllerDelegate, LocationHandlerDelegate{
+class PostsViewController: UITableViewController, UIViewControllerPreviewingDelegate, SearchViewControllerDelegate, LocationHandlerDelegate{
     private var posts = [Post]();
     
     @IBOutlet weak var lcTxtSearchBoxLeft: NSLayoutConstraint!
@@ -99,6 +99,26 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self, action: #selector(requestLocation), forControlEvents: .ValueChanged)
+        
+        if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
+            self.registerForPreviewingWithDelegate(self, sourceView: view)
+        }
+    }
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
+        guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
+        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("postDetails") as? PostDetailsViewController
+        
+        let post = posts[indexPath.row];
+        viewController?.post = post
+        previewingContext.sourceRect = cell.frame
+        
+        return viewController
+    }
+    
+    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        self.showViewController(viewControllerToCommit, sender: self)
     }
     
     func appDidBecomeActive(){
