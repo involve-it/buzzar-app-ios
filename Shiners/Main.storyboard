@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VYZ-AR-MXX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VYZ-AR-MXX">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
@@ -1191,7 +1191,7 @@
         <!--Post Details-->
         <scene sceneID="M0r-bE-ECn">
             <objects>
-                <tableViewController storyboardIdentifier="postDetails" hidesBottomBarWhenPushed="YES" id="sbg-z1-jzp" customClass="PostDetailsViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="postDetails_old" hidesBottomBarWhenPushed="YES" id="sbg-z1-jzp" customClass="PostDetailsViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="KxM-8Q-hw3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3182,7 +3182,7 @@
         <!--Post Details-->
         <scene sceneID="nNP-Tv-NNX">
             <objects>
-                <tableViewController hidesBottomBarWhenPushed="YES" id="HQQ-Gg-fmr" customClass="MyPostDetailsViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="postDetails" hidesBottomBarWhenPushed="YES" id="HQQ-Gg-fmr" customClass="MyPostDetailsViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="83m-C7-aBT">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="1000"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
