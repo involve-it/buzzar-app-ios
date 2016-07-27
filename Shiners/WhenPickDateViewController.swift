@@ -28,6 +28,7 @@ class WhenPickDateViewController: UIViewController {
         // Do any additional setup after loading the view.
         //labelDateNotYetSet.text = ""
     
+        datePicker.minimumDate = NSDate()
         datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), forControlEvents: .ValueChanged)
     }
 
@@ -53,12 +54,8 @@ class WhenPickDateViewController: UIViewController {
     }
     
     
-
-    
     //btn action
-    
     @IBAction func pickOneDay(sender: AnyObject) {
-        //Определяем насколько дней изменить текущую дату
         let dayToAdd = 1
         
         //Текущая дата
@@ -75,6 +72,10 @@ class WhenPickDateViewController: UIViewController {
         
         datePicker.date = calculatedDate!
         labelDateNotYetSet.text = formatter.stringFromDate(calculatedDate!)
+        
+        if(!btn_next.enabled) {
+            btn_next.enabled = true
+        }
     }
     
     
@@ -95,6 +96,10 @@ class WhenPickDateViewController: UIViewController {
         
         datePicker.date = calculatedDate!
         labelDateNotYetSet.text = formatter.stringFromDate(calculatedDate!)
+        
+        if(!btn_next.enabled) {
+            btn_next.enabled = true
+        }
 
     }
     
@@ -116,6 +121,10 @@ class WhenPickDateViewController: UIViewController {
         
         datePicker.date = calculatedDate!
         labelDateNotYetSet.text = formatter.stringFromDate(calculatedDate!)
+        
+        if(!btn_next.enabled) {
+            btn_next.enabled = true
+        }
 
     }
     
@@ -137,6 +146,10 @@ class WhenPickDateViewController: UIViewController {
         
         datePicker.date = calculatedDate!
         labelDateNotYetSet.text = formatter.stringFromDate(calculatedDate!)
+        
+        if(!btn_next.enabled) {
+            btn_next.enabled = true
+        }
 
     }
     
@@ -158,6 +171,10 @@ class WhenPickDateViewController: UIViewController {
         
         datePicker.date = calculatedDate!
         labelDateNotYetSet.text = formatter.stringFromDate(calculatedDate!)
+        
+        if(!btn_next.enabled) {
+            btn_next.enabled = true
+        }
     }
     
     
@@ -178,22 +195,12 @@ class WhenPickDateViewController: UIViewController {
         
         datePicker.date = calculatedDate!
         labelDateNotYetSet.text = formatter.stringFromDate(calculatedDate!)
+        
+        if(!btn_next.enabled) {
+            btn_next.enabled = true
+        }
     }
-    
-    
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     
-     
-     
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "addPhotos" {

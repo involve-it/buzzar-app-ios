@@ -101,7 +101,7 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
         if let postCoordinateLocation = post.locations {
             let geoCoder = CLGeocoder()
             
-            // 2 Взять одну из postCoordinateLocation (array) или Динамик или Статик
+            
             var latitude: CLLocationDegrees?
             var longitude: CLLocationDegrees?
             
@@ -112,13 +112,21 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
                     longitude = coordinateLocation.lng
                     
                     self.txtPostStatus.text = "Dynamic"
-                    self.postStatusImage.image = UIImage(named: "PostType_Dynamic")
-                } else if coordinateLocation.placeType! == .Static {
+                    
+                    let typeImage = ( post.isLive() ) ? "PostType_Dynamic_Live" : "PostType_Dynamic"
+                    self.postStatusImage.image = UIImage(named: typeImage)
+                    
+                    break
+                    
+                } else {
+                    //if coordinateLocation.placeType! == .Static
                     latitude = coordinateLocation.lat
                     longitude = coordinateLocation.lng
                     
                     self.txtPostStatus.text = "Static"
-                    self.postStatusImage.image = UIImage(named: "PostType_Static")
+                    
+                    let typeImage = ( post.isLive() ) ? "PostType_Static_Live" : "PostType_Static"
+                    self.postStatusImage.image = UIImage(named: typeImage)
                 }
             }
             

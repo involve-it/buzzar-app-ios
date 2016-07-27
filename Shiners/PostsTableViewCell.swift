@@ -16,4 +16,7 @@ class PostsTableViewCell: UITableViewCell{
     
     @IBOutlet weak var txtPostCreated: UILabel!
     @IBOutlet weak var txtPostDistance: UILabel!
+    @IBOutlet weak var imgPostType: UIImageView!
+    
+    
 }

@@ -17,6 +17,9 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     @IBOutlet var segmFilter: UISegmentedControl!
     @IBOutlet weak var txtSearchBox: UITextField!
     @IBOutlet var searchView: UIView!
+    
+    
+    
     var searchViewController: NewSearchViewController?
     
     private var meteorLoaded = false;
@@ -243,8 +246,21 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
                 postCell.txtPostCreated.text = ""
             }
             
-            //Send to MyPostDetailsViewController
-            //st.dateCreatedPost = textPostCreated
+            //Post type
+            if let locations = post.locations {
+                for location in locations {
+                    if location.placeType! == .Dynamic {
+                        //Post Dynamic
+                        let typeImage = (post.isLive()) ? "PostCell_Dynamic_Live" : "PostCell_Dynamic"
+                        postCell.imgPostType.image = UIImage(named: typeImage)
+                        break
+                    } else {
+                        //Post Static
+                        let typeImage = (post.isLive()) ? "PostCell_Static_Live" : "PostCell_Static"
+                        postCell.imgPostType.image = UIImage(named: typeImage)
+                    }
+                }
+            }
             
             //Post disatance
             if let currentLocation = self.currentLocation {
