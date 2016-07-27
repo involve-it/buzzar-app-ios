@@ -132,13 +132,17 @@ public class MyPostsViewController: UITableViewController{
         } else {
             cell.txtPrice.text = "";
         }
-        
-        let loading = ImageCachingHandler.Instance.getImageFromUrl(post.getMainPhoto()?.original) { (image) in
-            dispatch_async(dispatch_get_main_queue(), {
-                if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
-                    cellToUpdate.imgPhoto?.image = image;
-                }
-            })
+        var loading = false;
+        if let url = post.getMainPhoto()?.original {
+            loading = ImageCachingHandler.Instance.getImageFromUrl(url) { (image) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
+                        cellToUpdate.imgPhoto?.image = image;
+                    }
+                })
+            }
+        } else {
+            cell.imgPhoto.image = ImageCachingHandler.defaultPhoto;
         }
         if loading {
             cell.imgPhoto?.image = ImageCachingHandler.defaultPhoto;

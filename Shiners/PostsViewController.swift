@@ -148,7 +148,7 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
     }*/
     
     private func getNearby(){
-        AccountHandler.Instance.getNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude, radius: 10) { (success, errorId, errorMessage, result) in
+        AccountHandler.Instance.getNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude, radius: 1000) { (success, errorId, errorMessage, result) in
             ThreadHelper.runOnMainThread({
                 self.refreshControl?.endRefreshing()
                 if success {
@@ -209,15 +209,16 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
             postCell.txtDetails.text = post.descr;
             
             //Additional labels
-            let postCreated = post.timestamp
-            let dateFormatter = NSDateFormatter()
-            dateFormatter.dateFormat = "dd MMM HH:mm"
-            postCell.txtPostCreated.text = dateFormatter.stringFromDate(postCreated!).uppercaseString
+            if let postCreated = post.timestamp {
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "dd MMM HH:mm"
+                postCell.txtPostCreated.text = dateFormatter.stringFromDate(postCreated).uppercaseString
+            } else {
+                postCell.txtPostCreated.text = ""
+            }
             
             //Post disatance
             if let currentLocation = self.currentLocation {
-                var metr:Double
-                
                 //current location
                 let curLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
                 
@@ -226,8 +227,8 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
                 if let locations = post.locations {
                     for location in locations {
                         if let lat = location.lat, lng = location.lng {
-                            metr = curLocation.distanceFromLocation(CLLocation(latitude: lat, longitude: lng))
-                            postCell.txtPostDistance.text = String(format:"%2.f m" ,metr)
+                            let distance = curLocation.distanceFromLocationFormatted(CLLocation(latitude: lat, longitude: lng))
+                            postCell.txtPostDistance.text = distance
                             
                             if location.placeType == .Dynamic {
                                 break
@@ -253,9 +254,11 @@ class PostsViewController: UITableViewController, SearchViewControllerDelegate, 
                         }
                     })
                 }
+            } else {
+                postCell.imgPhoto.image = ImageCachingHandler.defaultPhoto;
             }
             if loading {
-                postCell.imgPhoto?.image = ImageCachingHandler.defaultPhoto;
+                postCell.imgPhoto.image = ImageCachingHandler.defaultPhoto;
             }
             cell = postCell
         }

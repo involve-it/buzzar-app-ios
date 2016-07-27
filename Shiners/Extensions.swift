@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreLocation
 
 extension String{
     func heightWithConstrainedWidth(width: CGFloat, font: UIFont) -> CGFloat {
@@ -59,4 +60,37 @@ extension UIImage {
         
         return normalizedImage;
     }
+}
+
+extension CLLocation{
+    func distanceFromLocationFormatted(other: CLLocation) -> String{
+        let distance = self.distanceFromLocation(other)
+        if NSLocale.currentLocale().objectForKey(NSLocaleUsesMetricSystem) as! Bool {
+            if distance < 1000 {
+                return String(format: "%.0f m", distance)
+            } else if distance < 10000 {
+                return String(format: "%.1f km", distance / 1000)
+            } else {
+                return String(format: "%.0f km", distance / 1000)
+            }
+        } else {
+            let miles = distance.mi
+            if miles < 0.5 {
+                return String(format: "%.0f ft", distance.ft)
+            } else if miles < 10 {
+                return String(format: "%.1f mi", miles)
+            } else {
+                return String(format: "%.0f mi", miles)
+            }
+        }
+    }
+}
+
+extension Double {
+    var km: Double { return self * 1_000.0 }
+    var m: Double { return self }
+    var cm: Double { return self / 100.0 }
+    var mm: Double { return self / 1_000.0 }
+    var ft: Double { return self / 3.28084 }
+    var mi: Double { return self * 0.000621371}
 }
