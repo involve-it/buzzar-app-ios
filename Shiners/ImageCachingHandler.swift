@@ -80,7 +80,11 @@ public class ImageCachingHandler{
                 callback(image: defaultImage)
             } else if self.savedImages.keys.contains(url) {
                 ThreadHelper.runOnBackgroundThread({
-                    callback(image: self.loadImageFromLocalCache(url))
+                    if let cachedImage = self.loadImageFromLocalCache(url){
+                        callback(image: cachedImage)
+                    } else {
+                        callback(image: defaultImage)
+                    }
                 })
             } else {
                 let nsUrl = NSURL(string: url);

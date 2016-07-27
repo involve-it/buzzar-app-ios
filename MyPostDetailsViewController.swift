@@ -38,6 +38,35 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
     @IBOutlet weak var postType: UIButton!
     @IBOutlet weak var avatarUser: UIImageView!
     
+    @IBAction func btnSendMessage_Click(sender: AnyObject) {
+        let alertController = UIAlertController(title: "New message", message: nil, preferredStyle: .Alert);
+        
+        alertController.addTextFieldWithConfigurationHandler { (textField) in
+            textField.placeholder = "Message"
+        }
+        
+        alertController.addAction(UIAlertAction(title: "Send", style: .Default, handler: { (action) in
+            if let text = alertController.textFields?[0].text where text != "" {
+                alertController.resignFirstResponder()
+                let message = MessageToSend()
+                message.destinationUserId = self.post.user!.id
+                message.message = alertController.textFields![0].text
+                ConnectionHandler.Instance.messages.sendMessage(message){ success, errorId, errorMessage, result in
+                    if success {
+                        AccountHandler.Instance.updateMyChats()
+                    } else {
+                        self.showAlert("Erorr", message: errorMessage)
+                    }
+                }
+            }
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: {action in
+            alertController.resignFirstResponder()
+        }));
+        self.presentViewController(alertController, animated: true) { 
+            alertController.textFields![0].becomeFirstResponder()
+        }
+    }
     
     @IBAction func btnShare_Click(sender: AnyObject) {
         let activityViewController = UIActivityViewController(activityItems: ["Check out this post: http://msg.webhop.org/post/\(self.post.id!)", NSURL(string: "http://msg.webhop.org/post/\(self.post.id!)")!], applicationActivities: nil)
@@ -101,16 +130,11 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
         if let postCoordinateLocation = post.locations {
             let geoCoder = CLGeocoder()
             
-            
-            var latitude: CLLocationDegrees?
-            var longitude: CLLocationDegrees?
+            var postLocation:Location?
             
             for coordinateLocation in postCoordinateLocation {
-                
                 if coordinateLocation.placeType! == .Dynamic {
-                    latitude = coordinateLocation.lat
-                    longitude = coordinateLocation.lng
-                    
+                    postLocation = coordinateLocation
                     self.txtPostStatus.text = "Dynamic"
                     
                     let typeImage = ( post.isLive() ) ? "PostType_Dynamic_Live" : "PostType_Dynamic"
@@ -120,9 +144,7 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
                     
                 } else {
                     //if coordinateLocation.placeType! == .Static
-                    latitude = coordinateLocation.lat
-                    longitude = coordinateLocation.lng
-                    
+                    postLocation = coordinateLocation
                     self.txtPostStatus.text = "Static"
                     
                     let typeImage = ( post.isLive() ) ? "PostType_Static_Live" : "PostType_Static"
@@ -130,45 +152,43 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
                 }
             }
             
-            // 3 Вытаскиваем координаты
-            //происходит ошибка если нет координат - нужно исправить
-            let location = CLLocation(latitude: latitude!, longitude: longitude!)
-            
-            geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error in
-                if error != nil {
-                    print("Reverse geocoder failed with error" + error!.localizedDescription)
-                    return
-                }
+            if let postLoc = postLocation, lat = postLoc.lat, lng = postLoc.lng {
+                self.postMapLocation.hidden = false
+                let location = CLLocation(latitude: lat, longitude: lng)
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = location.coordinate
+                annotation.title = postLoc.name
+                self.postMapLocation.showAnnotations([annotation], animated: false)
+                self.postMapLocation.selectAnnotation(annotation, animated: false)
                 
-                if let placemarks = placemarks {
-                    let placemark = placemarks[0]
-                    
-                    let anatation = MKPointAnnotation()
-                    
-                    if let name = placemark.name {
-                        anatation.title = name
+                geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error in
+                    if error != nil {
+                        print("Reverse geocoder failed with error" + error!.localizedDescription)
+                        return
                     }
                     
-                    
-                    if let formattedAddress = placemark.addressDictionary!["FormattedAddressLines"] {
-                        let allResults = (formattedAddress as! [String]).joinWithSeparator(", ")
-                        self.txtPostLocationFormattedAddress.text = allResults
-                    } else {
-                        self.txtPostLocationFormattedAddress.text = "Address not defined"
-                    }
-                    
-                    if let pmLocation = placemark.location {
-                        anatation.coordinate = pmLocation.coordinate
+                    if let placemarks = placemarks {
+                        let placemark = placemarks[0]
                         
-                        self.postMapLocation.showAnnotations([anatation], animated: true)
-                        self.postMapLocation.selectAnnotation(anatation, animated: true)
+                        if let name = placemark.name {
+                            ThreadHelper.runOnMainThread({
+                                annotation.title = name
+                            })
+                        }
+                        
+                        ThreadHelper.runOnMainThread({ 
+                            if let formattedAddress = placemark.addressDictionary!["FormattedAddressLines"] {
+                                let allResults = (formattedAddress as! [String]).joinWithSeparator(", ")
+                                self.txtPostLocationFormattedAddress.text = allResults
+                            } else {
+                                self.txtPostLocationFormattedAddress.text = "Address not defined"
+                            }
+                        })
                     }
-                }
-                
-                
-            })
-
-            
+                })
+            } else {
+                self.postMapLocation.hidden = true
+            }
         }
         
         //POST TYPE
