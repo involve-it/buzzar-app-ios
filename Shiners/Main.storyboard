@@ -3228,7 +3228,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="260"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </scrollView>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W9y-Kb-XIH" customClass="GradientView" customModule="Shiners" customModuleProvider="target">
+                                                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W9y-Kb-XIH" customClass="GradientView" customModule="Shiners" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="260"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="startColor">
