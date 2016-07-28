@@ -127,6 +127,7 @@ public class AccountHandler{
         self.currentUser = nil
         self.myPosts = nil
         self.userId = nil
+        self.myChats = nil
         
         NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
     }
