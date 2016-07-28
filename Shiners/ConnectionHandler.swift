@@ -12,7 +12,7 @@ import SwiftDDP
 public class ConnectionHandler{
     //private let baseUrl = "http://192.168.1.61:3000"
     //private let baseUrl = "http://msg.webhop.org"
-    private let baseUrl = "https://www.shiners.mobi"
+    public static let baseUrl = "https://www.shiners.mobi"
     
     //private let url:String = "ws://msg.webhop.org/websocket"
     //private let url:String = "ws://192.168.1.61:3000/websocket"
@@ -35,7 +35,7 @@ public class ConnectionHandler{
             dict["lat"] = lat
             dict["lng"] = lng
             dict["userId"] = userId
-            if let jsonData = try? NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions()), url = NSURL(string: baseUrl + "/api/geolocation"){
+            if let jsonData = try? NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions()), url = NSURL(string: ConnectionHandler.baseUrl + "/api/geolocation"){
                 let request = NSMutableURLRequest(URL: url)
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
                 request.HTTPMethod = "POST"
