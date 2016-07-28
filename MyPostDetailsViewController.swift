@@ -27,6 +27,8 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
     @IBOutlet weak var txtPostStatus: UILabel!
     @IBOutlet weak var postStatusImage: UIImageView!
     
+    //Page control for svImage
+    @IBOutlet weak var pageControl: UIPageControl!
     
     @IBOutlet weak var txtDetails: UILabel!
     @IBOutlet weak var txtTitle: UILabel!
@@ -195,11 +197,16 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
                 postType.setTitle(txtPostType, forState: .Normal)
         }
         
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 140
+       
+        //Page Conrol
+        self.pageControl.numberOfPages = (post?.photos?.count)!
+        self.pageControl.currentPage = 0
+        self.pageControl.userInteractionEnabled = false
+        //Page control becomes invisible when its numberOfPages changes to 1
+        self.pageControl.hidesForSinglePage = true
         
         if (self.imagesScrollViewDelegate == nil){
-            self.imagesScrollViewDelegate = ImagesScrollViewDelegate(mainView: self.view, scrollView: self.svImages, viewController: self);
+            self.imagesScrollViewDelegate = ImagesScrollViewDelegate(mainView: self.view, scrollView: self.svImages, viewController: self, pageControl: self.pageControl);
         }
         
         self.updateScrollView()
@@ -212,6 +219,7 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
             self.navigationItem.rightBarButtonItems?.append(self.btnEdit)
         }
     }
+    
     
     func updateScrollView(){
         let urls = post?.photos?.filter({ $0.original != nil }).map({ $0.original! });

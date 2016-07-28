@@ -1189,10 +1189,10 @@
             </objects>
             <point key="canvasLocation" x="3112" y="-1"/>
         </scene>
-        <!--Post Details-->
+        <!--My Post Details-->
         <scene sceneID="M0r-bE-ECn">
             <objects>
-                <tableViewController storyboardIdentifier="postDetails_old" hidesBottomBarWhenPushed="YES" id="sbg-z1-jzp" customClass="PostDetailsViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="postDetails_old" title="My Post Details" hidesBottomBarWhenPushed="YES" id="sbg-z1-jzp" customClass="PostDetailsViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="KxM-8Q-hw3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1210,6 +1210,9 @@
                                                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zsa-pu-1tI">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="260"/>
                                                 </scrollView>
+                                                <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="4U2-Gc-AGZ">
+                                                    <rect key="frame" x="280" y="202" width="39" height="37"/>
+                                                </pageControl>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottomMargin" secondItem="zsa-pu-1tI" secondAttribute="bottom" constant="-8" id="O8p-9Z-zqp"/>
@@ -1292,6 +1295,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="btnEdit" destination="nJ0-vb-21Z" id="Eb5-Ad-c5z"/>
+                        <outlet property="pageControl" destination="4U2-Gc-AGZ" id="znt-mN-LeX"/>
                         <outlet property="svImages" destination="zsa-pu-1tI" id="xvc-BU-wHR"/>
                         <outlet property="txtDetails" destination="eEw-df-ldv" id="0Lb-2s-Lil"/>
                         <outlet property="txtViews" destination="jfO-Ju-ro5" id="I4n-lk-Kwx"/>
@@ -1302,7 +1306,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RzK-g6-BRp" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="rQD-Ad-Xoz" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="644" y="-823"/>
+            <point key="canvasLocation" x="644" y="-800"/>
         </scene>
         <!--Profile-->
         <scene sceneID="Isz-Bn-QR4">
@@ -1655,7 +1659,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a61-Ka-rq4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3444" y="844"/>
+            <point key="canvasLocation" x="3692" y="911"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="duh-yL-gzI">
@@ -1671,7 +1675,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rvO-B3-rCX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2624" y="844"/>
+            <point key="canvasLocation" x="2996" y="911"/>
         </scene>
         <!--Register-->
         <scene sceneID="0n1-Tl-j2N">
@@ -2054,7 +2058,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Nm-YE-sCC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1609" y="1186"/>
+            <point key="canvasLocation" x="1438" y="1186"/>
         </scene>
         <!--Messages-->
         <scene sceneID="oa4-Uk-vg9">
@@ -2218,7 +2222,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="saC-Yd-A3p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="759" y="1186"/>
+            <point key="canvasLocation" x="712" y="1186"/>
         </scene>
         <!--Posts-->
         <scene sceneID="b5A-8I-g0e">
@@ -2242,7 +2246,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pph-Zz-Hdg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="710" y="104"/>
+            <point key="canvasLocation" x="712" y="447"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="Vcp-2m-IIR">
@@ -2341,7 +2345,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mjr-UZ-y5z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2277" y="104"/>
+            <point key="canvasLocation" x="2204" y="447"/>
         </scene>
         <!--When View Controller-->
         <scene sceneID="LvQ-uj-yo2">
@@ -3224,10 +3228,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="260"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dHu-El-579">
+                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dHu-El-579">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="260"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </scrollView>
+                                                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="GIV-P3-9AH">
+                                                    <rect key="frame" x="281" y="198" width="39" height="37"/>
+                                                </pageControl>
                                                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W9y-Kb-XIH" customClass="GradientView" customModule="Shiners" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="260"/>
                                                     <userDefinedRuntimeAttributes>
@@ -3367,7 +3374,9 @@
                                                 <constraint firstItem="ZJy-px-gaf" firstAttribute="leading" secondItem="WlC-O1-Pwa" secondAttribute="leading" id="Kvi-OA-fde"/>
                                                 <constraint firstAttribute="trailing" secondItem="W9y-Kb-XIH" secondAttribute="trailing" id="MxL-Ze-Ag7"/>
                                                 <constraint firstAttribute="bottom" secondItem="W9y-Kb-XIH" secondAttribute="bottom" id="Nfz-R0-ViA"/>
+                                                <constraint firstAttribute="bottom" secondItem="GIV-P3-9AH" secondAttribute="bottom" constant="25" id="Q1U-PX-T6M"/>
                                                 <constraint firstItem="dHu-El-579" firstAttribute="centerY" secondItem="WlC-O1-Pwa" secondAttribute="centerY" id="WS0-86-f4y"/>
+                                                <constraint firstItem="GIV-P3-9AH" firstAttribute="centerX" secondItem="WlC-O1-Pwa" secondAttribute="centerX" id="dSE-8T-Ckh"/>
                                                 <constraint firstItem="g4r-yk-gfs" firstAttribute="leading" secondItem="WlC-O1-Pwa" secondAttribute="leading" id="eZW-cb-mAN"/>
                                                 <constraint firstAttribute="bottom" secondItem="g4r-yk-gfs" secondAttribute="bottom" id="fWw-yu-mRX"/>
                                                 <constraint firstItem="W9y-Kb-XIH" firstAttribute="leading" secondItem="WlC-O1-Pwa" secondAttribute="leading" id="hQI-nx-dgB"/>
@@ -3664,6 +3673,7 @@
                         <outlet property="avatarUser" destination="Fn4-bw-VM6" id="Ri9-Jw-pOE"/>
                         <outlet property="btnEdit" destination="eaO-Nq-TAg" id="FjZ-FH-bhp"/>
                         <outlet property="gradientView" destination="W9y-Kb-XIH" id="ETv-BC-fsa"/>
+                        <outlet property="pageControl" destination="GIV-P3-9AH" id="qKO-pM-LZh"/>
                         <outlet property="postMapLocation" destination="49m-oO-ClE" id="Sii-XB-SXF"/>
                         <outlet property="postStatusImage" destination="53M-Mr-0C9" id="QmL-FG-Zcp"/>
                         <outlet property="postType" destination="JgC-mB-rLs" id="ttC-hF-Ua2"/>

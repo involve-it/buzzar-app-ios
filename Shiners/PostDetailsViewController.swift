@@ -18,6 +18,9 @@ public class PostDetailsViewController: UITableViewController{
     @IBOutlet weak var txtViews: UILabel!
     @IBOutlet var btnEdit: UIBarButtonItem!
     
+    //Page control for svImage
+    @IBOutlet weak var pageControl: UIPageControl!
+    
     @IBAction func btnShare_Click(sender: AnyObject) {
         let activityViewController = UIActivityViewController(activityItems: ["Check out this post: http://msg.webhop.org/post/\(self.post.id!)", NSURL(string: "http://msg.webhop.org/post/\(self.post.id!)")!], applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivityTypePrint, UIActivityTypeOpenInIBooks, UIActivityTypeSaveToCameraRoll];
@@ -37,7 +40,7 @@ public class PostDetailsViewController: UITableViewController{
         self.txtViews.text = views;
         
         if (self.imagesScrollViewDelegate == nil){
-            self.imagesScrollViewDelegate = ImagesScrollViewDelegate(mainView: self.view, scrollView: self.svImages, viewController: self);
+            self.imagesScrollViewDelegate = ImagesScrollViewDelegate(mainView: self.view, scrollView: self.svImages, viewController: self, pageControl: self.pageControl);
         }
         self.updateScrollView()
         

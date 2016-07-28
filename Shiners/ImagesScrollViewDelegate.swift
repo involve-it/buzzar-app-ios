@@ -13,17 +13,20 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     private let mainView: UIView
     private let scrollView: UIScrollView
     private let viewController: UIViewController
-    
     private var photosViewController: NYTPhotosViewController?
     
     private var photos: [CustomPhoto] = []
     
     private var position = 0
+    private let pageControl: UIPageControl
     
-    public init(mainView: UIView, scrollView: UIScrollView, viewController: UIViewController){
+    
+    public init(mainView: UIView, scrollView: UIScrollView, viewController: UIViewController, pageControl: UIPageControl){
         self.mainView = mainView;
         self.scrollView = scrollView;
         self.viewController = viewController
+        self.pageControl = pageControl
+        
         super.init();
         self.scrollView.delegate = self;
         self.scrollView.decelerationRate = UIScrollViewDecelerationRateFast;
@@ -60,8 +63,12 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
         
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(scrollViewTapped))
         self.scrollView.addGestureRecognizer(gestureRecognizer)
+        
+        
     }
     
+
+
     private func addImageToScrollView(imageUrl: String?, index: Int){
         //add default - it will be updated later
         self.addPhoto(ImageCachingHandler.defaultPhoto!, index: index)
@@ -114,8 +121,10 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
                 position = Int(currentPosition)
             }
         }
-        
         targetContentOffset.memory = CGPointMake(CGFloat(position) * mainView.frame.size.width, 0);
+        
+        //Change currentPosition - pageControl
+        self.pageControl.currentPage = position
     }
     
     func scrollToPosition(position: Int){
