@@ -147,6 +147,10 @@ public class AccountHandler{
         }
     }
     
+    public func isLoggedIn() -> Bool {
+        return Meteor.client.userId() != nil
+    }
+    
     public func loadAccount(){
         self.resolvedDependencies = 0
         self.status = .Loading
@@ -154,7 +158,7 @@ public class AccountHandler{
         self.latestCallId += 1
         let callId = self.latestCallId
         
-        if ConnectionHandler.Instance.users.isLoggedIn(){
+        if self.isLoggedIn(){
             self.userId = Meteor.client.userId()
             self.subscribeToNewMessages()
             ConnectionHandler.Instance.users.getCurrentUser({ (success, errorId, errorMessage, result) in
@@ -254,42 +258,49 @@ public class AccountHandler{
         app.registerUserNotificationSettings(settings)
     }
     
-    /*public func savePushToken(callback: (success: Bool) -> Void){
-        if let token = PushNotificationsHandler.getToken(), deviceId = UIDevice.currentDevice().identifierForVendor?.UUIDString, userId = Meteor.client.userId(){
-            var dict = Dictionary<String, AnyObject>()
-            dict["token"] = token
-            dict["deviceId"] = deviceId
-            dict["platform"] = "apn"
-            dict["userId"] = userId
-            
-            Meteor.call("registerPushToken", params: [dict], callback: { (result, error) in
-                if error == nil, let fields = result as? NSDictionary, success = fields.valueForKey("success") as? Bool{
-                    callback(success: success)
+    public func savePushToken(callback: (success: Bool) -> Void){
+        if let token = PushNotificationsHandler.getToken(), user = self.currentUser{
+            //yes, doing it twice. thanks raix:push!
+            self.savePushTokenRaix({ (success) in
+                if success {
+                    var dict = Dictionary<String, AnyObject>()
+                    dict["token"] = token
+                    dict["deviceId"] = SecurityHandler.getDeviceId()
+                    dict["platform"] = "apn"
+                    dict["userId"] = user.id
+                    Meteor.call("registerPushToken", params: [dict], callback: { (result, error) in
+                        if error == nil, let fields = result as? NSDictionary, success = fields.valueForKey("success") as? Bool{
+                            callback(success: success)
+                        } else {
+                            callback(success: false)
+                        }
+                    })
                 } else {
                     callback(success: false)
                 }
             })
+            
         } else {
             callback(success: false)
         }
-    }*/
+    }
 
-    public func savePushToken(callback: (success: Bool) -> Void){
-        if let token = PushNotificationsHandler.getToken(), userId = Meteor.client.userId(){
+    private func savePushTokenRaix(callback: (success: Bool) -> Void){
+        if let token = PushNotificationsHandler.getToken(), user = self.currentUser{
             var dict = Dictionary<String, AnyObject>()
             var tokenDict = Dictionary<String, AnyObject>()
             tokenDict["apn"] = token
             dict["token"] = tokenDict
             dict["appName"] = "org.buzzar.app"
-            dict["userId"] = userId
+            dict["userId"] = user.id
             
             Meteor.call("raix:push-update", params: [dict], callback: { (result, error) in
                 if error == nil, let fields = result as? NSDictionary, _ = fields.valueForKey("_id") as? String{
                     callback(success: true)
-                    print("token update success")
+                    print("raix token update success")
                 } else {
                     callback(success: false)
-                    print ("token update failed")
+                    print ("raix token update failed")
                 }
             })
         } else {
@@ -299,11 +310,11 @@ public class AccountHandler{
 
     
     public func unregisterToken(callback: (success: Bool) -> Void){
-        /*if let deviceId = UIDevice.currentDevice().identifierForVendor?.UUIDString, userId = Meteor.client.userId(){
+        if let user = self.currentUser{
             var dict = Dictionary<String, AnyObject>()
-            dict["deviceId"] = deviceId
+            dict["deviceId"] = SecurityHandler.getDeviceId()
             dict["platform"] = "apn"
-            dict["userId"] = userId
+            dict["userId"] = user.id
             
             Meteor.call("unregisterPushToken", params: [dict], callback: { (result, error) in
                 if error == nil, let fields = result as? NSDictionary, success = fields.valueForKey("success") as? Bool{
@@ -314,9 +325,9 @@ public class AccountHandler{
             })
         } else {
             callback(success: false)
-        }*/
+        }
         
-        callback(success: true)
+        //callback(success: true)
     }
     
     private init (){}

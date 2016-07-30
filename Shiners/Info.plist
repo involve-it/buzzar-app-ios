@@ -28,7 +28,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>4</string>
 	<key>FacebookAppID</key>
 	<string>1024999790877408</string>
 	<key>FacebookDisplayName</key>
@@ -48,7 +48,7 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<true/>
+	<string>Your location will be used to find posts around you, and update your own live posts with current location.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>

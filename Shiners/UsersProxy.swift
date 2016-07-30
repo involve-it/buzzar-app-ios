@@ -95,8 +95,4 @@ public class UsersProxy{
     @objc private func didLogin(){
         NSLog("LOGGED IN");
     }
-    
-    public func isLoggedIn() -> Bool {
-        return Meteor.client.userId() != nil
-    }
 }

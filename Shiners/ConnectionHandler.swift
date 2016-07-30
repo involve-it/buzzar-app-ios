@@ -10,8 +10,8 @@ import Foundation
 import SwiftDDP
 
 public class ConnectionHandler{
-    //private let baseUrl = "http://192.168.1.61:3000"
-    //private let baseUrl = "http://msg.webhop.org"
+    //public static let baseUrl = "http://192.168.1.61:3000"
+    //public static let baseUrl = "http://msg.webhop.org"
     public static let baseUrl = "https://www.shiners.mobi"
     
     //private let url:String = "ws://msg.webhop.org/websocket"
@@ -35,6 +35,7 @@ public class ConnectionHandler{
             dict["lat"] = lat
             dict["lng"] = lng
             dict["userId"] = userId
+            dict["deviceId"] = SecurityHandler.deviceId
             if let jsonData = try? NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions()), url = NSURL(string: ConnectionHandler.baseUrl + "/api/geolocation"){
                 let request = NSMutableURLRequest(URL: url)
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -75,7 +76,7 @@ public class ConnectionHandler{
             Meteor.connect(url) { (session) in
                 NSLog("Meteor connected")
                 
-                if self.users.isLoggedIn(){
+                if AccountHandler.Instance.isLoggedIn(){
                     AccountHandler.Instance.loadAccount()
                 } else {
                     AccountHandler.Instance.processLogoff()
