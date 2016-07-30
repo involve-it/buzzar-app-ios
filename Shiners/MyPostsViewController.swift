@@ -173,7 +173,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
     
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "myPostDetails"){
-            let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
+            let vc:NEWMyPostDetailsViewController = segue.destinationViewController as! NEWMyPostDetailsViewController;
             let index = self.tableView.indexPathForSelectedRow!.row;
             let post = myPosts[index];
             vc.post = post;
