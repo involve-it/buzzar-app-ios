@@ -19,6 +19,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     
     private var position = 0
     private let pageControl: UIPageControl
+    private var imagesCount = 0
     
     
     public init(mainView: UIView, scrollView: UIScrollView, viewController: UIViewController, pageControl: UIPageControl){
@@ -43,6 +44,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
         //svImages.frame = CGRectMake(0, 0, self.view.frame.size.width, 260)
         var index = 0;
         if let urls = imageUrls{
+            self.imagesCount = urls.count
             if (urls.count > 0){
                 for url in urls{
                     self.addImageToScrollView(url, index: index)
@@ -138,7 +140,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     }
     
     func scrollViewTapped(gestureRecognizer: UIGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.Recognized {
+        if gestureRecognizer.state == UIGestureRecognizerState.Recognized && self.imagesCount > 0 {
             let point = gestureRecognizer.locationInView(self.scrollView)
             let imageIndex = Int(floor(point.x / self.mainView.frame.width))
             
