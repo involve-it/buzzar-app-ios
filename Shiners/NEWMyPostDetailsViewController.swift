@@ -10,8 +10,10 @@ import UIKit
 import MapKit
 import CoreLocation
 
-public class NEWMyPostDetailsViewController: UIViewController, UIWebViewDelegate, MKMapViewDelegate {
+let cssStyle = "<style> h2 {color:red} p {font-size:10pt;}  </style>"
 
+public class NEWMyPostDetailsViewController: UIViewController, UIWebViewDelegate, MKMapViewDelegate {
+    
     
     @IBOutlet weak var webviewHeightConstraint: NSLayoutConstraint!
     
@@ -43,16 +45,11 @@ public class NEWMyPostDetailsViewController: UIViewController, UIWebViewDelegate
     @IBOutlet weak var postType: UIButton!
     @IBOutlet weak var avatarUser: UIImageView!
     
-    
-    
-    
     @IBAction func btnShare_Click(sender: AnyObject) {
         let activityViewController = UIActivityViewController(activityItems: ["Check out this post: \(ConnectionHandler.baseUrl)/post/\(self.post.id!)", NSURL(string: "\(ConnectionHandler.baseUrl)/post/\(self.post.id!)")!], applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivityTypePrint, UIActivityTypeOpenInIBooks, UIActivityTypeSaveToCameraRoll];
         navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
     }
-    
-    
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,8 +63,6 @@ public class NEWMyPostDetailsViewController: UIViewController, UIWebViewDelegate
         self.txtTitle.sizeToFit()
         
         //Description
-        //CSS style for UIWebView - postDescription
-        let cssStyle = "<style> h2 {color:red} p {font-size:10pt;}  </style>"
         self.postDescription.scrollView.scrollEnabled = false
         if let htmlString = post?.descr {
             self.postDescription.loadHTMLString(cssStyle + htmlString, baseURL: nil)
@@ -81,17 +76,22 @@ public class NEWMyPostDetailsViewController: UIViewController, UIWebViewDelegate
         }
         
         //Avatar image
-        let avatarUrlString = post.user?.imageUrl
-        if let checkedUrl = NSURL(string: avatarUrlString!) {
-            avatarUser.contentMode = .ScaleToFill
-            downloadImage(checkedUrl)
+        self.avatarUser.contentMode = .ScaleToFill
+        if let avatarUrlString = post.user?.imageUrl{
+            if ImageCachingHandler.Instance.getImageFromUrl(avatarUrlString, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
+                ThreadHelper.runOnMainThread({
+                    self.avatarUser.image = image
+                })
+            }){
+                self.avatarUser.image = ImageCachingHandler.defaultAccountImage
+            }
+        } else {
+            self.avatarUser.image = ImageCachingHandler.defaultAccountImage
         }
-        
-        var views = ""
         
         //Seen total
         if let seenTotal = post?.seenTotal {
-            views = views + "\(seenTotal)";
+            self.txtViews.text = "\(seenTotal)";
         }
         
         /*
@@ -101,8 +101,6 @@ public class NEWMyPostDetailsViewController: UIViewController, UIWebViewDelegate
          }
          */
         
-        self.txtViews.text = views;
-
         //Post Created
         txtPostCreated.text = post.timestamp?.toLocalizedString()
         
@@ -212,26 +210,6 @@ public class NEWMyPostDetailsViewController: UIViewController, UIWebViewDelegate
     func updateScrollView(){
         let urls = post?.photos?.filter({ $0.original != nil }).map({ $0.original! });
         self.imagesScrollViewDelegate.setupScrollView(urls);
-    }
-    
-    /* LOAD AVATAR FROM URL */
-    func getDataFromUrl(url:NSURL, completion: ((data: NSData?, response: NSURLResponse?, error: NSError? ) -> Void)) {
-        NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
-            completion(data: data, response: response, error: error)
-            }.resume()
-    }
-    
-    func downloadImage(url: NSURL){
-        //print("Download Started")
-        //print("lastPathComponent: " + (url.lastPathComponent ?? ""))
-        getDataFromUrl(url) { (data, response, error)  in
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                guard let data = data where error == nil else { return }
-                //print(response?.suggestedFilename ?? "")
-                //print("Download Finished")
-                self.avatarUser.image = UIImage(data: data)
-            }
-        }
     }
     
     //After load content

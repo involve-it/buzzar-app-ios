@@ -91,12 +91,17 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
         if let username = post.user?.username {
             self.txtUsername.text = username
         }
-        
-        //Avatar image
-        let avatarUrlString = post.user?.imageUrl
-        if let checkedUrl = NSURL(string: avatarUrlString!) {
-            avatarUser.contentMode = .ScaleToFill
-            downloadImage(checkedUrl)
+        avatarUser.contentMode = .ScaleToFill
+        if let avatarUrlString = post.user?.imageUrl{
+            if ImageCachingHandler.Instance.getImageFromUrl(avatarUrlString, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
+                ThreadHelper.runOnMainThread({ 
+                    self.avatarUser.image = image
+                })
+            }){
+                avatarUser.image = ImageCachingHandler.defaultAccountImage
+            }
+        } else {
+            avatarUser.image = ImageCachingHandler.defaultAccountImage
         }
         
         var views = ""
@@ -225,27 +230,6 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
         let urls = post?.photos?.filter({ $0.original != nil }).map({ $0.original! });
         self.imagesScrollViewDelegate.setupScrollView(urls);
     }
-    
-    /* LOAD AVATAR FROM URL */
-    func getDataFromUrl(url:NSURL, completion: ((data: NSData?, response: NSURLResponse?, error: NSError? ) -> Void)) {
-        NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) in
-            completion(data: data, response: response, error: error)
-            }.resume()
-    }
-    
-    func downloadImage(url: NSURL){
-        //print("Download Started")
-        //print("lastPathComponent: " + (url.lastPathComponent ?? ""))
-        getDataFromUrl(url) { (data, response, error)  in
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                guard let data = data where error == nil else { return }
-                //print(response?.suggestedFilename ?? "")
-                //print("Download Finished")
-                self.avatarUser.image = UIImage(data: data)
-            }
-        }
-    }
-    /* END load avatar from url */
     
     /*public override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
