@@ -36,7 +36,7 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
     }
 
     @objc private func pushRegistrationFailed(object: AnyObject?){
-        if UsersProxy.Instance.isLoggedIn() {
+        if AccountHandler.Instance.isLoggedIn() {
             AccountHandler.Instance.currentUser?.enableNearbyNotifications = false
             NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
         }

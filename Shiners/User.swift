@@ -48,9 +48,8 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
             }
         }
         
-        if let statusFields = fields?.valueForKey("status") as? NSDictionary{
-            self.online = statusFields.valueForKey("online") as? Bool
-        }
+        self.online = fields?.valueForKey("online") as? Bool
+        
         if let images = fields?.valueForKey("image") as? NSArray{
             for image in images{
                 self.imageUrl = image.valueForKey("imageUrl") as? String

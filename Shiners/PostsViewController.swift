@@ -109,7 +109,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(forceLayout), name: UIDeviceOrientationDidChangeNotification, object: nil)
         
         self.refreshControl = UIRefreshControl()
-        self.refreshControl?.addTarget(self, action: #selector(requestLocation), forControlEvents: .ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(getNearby), forControlEvents: .ValueChanged)
         
         if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
             self.registerForPreviewingWithDelegate(self, sourceView: view)
@@ -167,10 +167,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
             self.currentLocation = geocoderInfo.coordinate
             self.locationAcquired = true
             
-            if ConnectionHandler.Instance.status == .Connected {
-                //self.subscribeToNearby()
-                self.getNearby()
-            }
+            //self.subscribeToNearby()
+            self.getNearby()
         }
     }
     
@@ -178,21 +176,23 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         AccountHandler.Instance.subscribeToNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude, radius: 100);
     }*/
     
-    private func getNearby(){
-        AccountHandler.Instance.getNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude, radius: 100000) { (success, errorId, errorMessage, result) in
-            ThreadHelper.runOnMainThread({
-                self.refreshControl?.endRefreshing()
-                if success {
-                    self.errorMessage = nil
-                    self.posts = result as! [Post]
-                    self.tableView.reloadData()
-                } else {
-                    self.errorMessage = errorMessage
-                    self.showAlert("Error", message: "Error updating posts")
-                    self.tableView.reloadData()
-                }
-                self.checkPending()
-            })
+    func getNearby(){
+        if ConnectionHandler.Instance.status == .Connected, let currentLocation = self.currentLocation {
+            AccountHandler.Instance.getNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude, radius: 100000) { (success, errorId, errorMessage, result) in
+                ThreadHelper.runOnMainThread({
+                    self.refreshControl?.endRefreshing()
+                    if success {
+                        self.errorMessage = nil
+                        self.posts = result as! [Post]
+                        self.tableView.reloadData()
+                    } else {
+                        self.errorMessage = errorMessage
+                        self.showAlert("Error", message: "Error updating posts")
+                        self.tableView.reloadData()
+                    }
+                    self.checkPending()
+                })
+            }
         }
     }
     
