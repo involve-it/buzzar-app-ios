@@ -36,7 +36,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
-            let vc:MyPostDetailsViewController = segue.destinationViewController as! MyPostDetailsViewController;
+            let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
             let index = self.tableView.indexPathForSelectedRow!.row;
             let post = posts[index];
             
@@ -119,7 +119,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
         guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
-        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("postDetails") as? MyPostDetailsViewController
+        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("postDetails") as? PostDetailsViewController
         
         let post = posts[indexPath.row];
         viewController?.post = post
@@ -236,8 +236,13 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
             let postCell: PostsTableViewCell = tableView.dequeueReusableCellWithIdentifier("post") as! PostsTableViewCell;
             let post: Post = posts[indexPath.row];
             
+            //Post title
             postCell.txtTitle.text = post.title;
-            postCell.txtDetails.text = post.descr;
+            
+            //Post description
+            if let textDescription = post.removedHtmlFromPostDescription(post.descr) {
+                postCell.txtDetails.text = textDescription
+            }
             
             //Additional labels
             if let postCreated = post.timestamp {

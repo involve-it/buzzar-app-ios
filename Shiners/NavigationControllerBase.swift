@@ -16,6 +16,7 @@ public class NavigationControllerBase: UINavigationController{
     private var connected = true
     private var dateDisconnected: NSDate?
     
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.setupNotificationToolbar()
@@ -24,6 +25,8 @@ public class NavigationControllerBase: UINavigationController{
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(networkDisconnected), name: NotificationManager.Name.NetworkUnreachable.rawValue, object: nil)
         
         //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(forceLayout), name: UIDeviceOrientationDidChangeNotification, object: nil)
+        
+        
     }
     
     @objc private func networkConnected(notification: NSNotification){

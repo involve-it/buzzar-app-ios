@@ -19,7 +19,7 @@ public class ImageCachingHandler{
     private var failedUrls: [String] = []
     private let lockQueue = dispatch_queue_create("org.buzzar.app.Shiners.imageCachingHandler", nil);
     private static let MAX_COUNT = 30;
-    public static let defaultPhoto = UIImage(named: "clipping_picture.png");
+    public static let defaultPhoto = UIImage(named: "no-image-placeholder.jpg");
     public static let defaultAccountImage = UIImage(named: "show_offliners.png");
     
     private init(){

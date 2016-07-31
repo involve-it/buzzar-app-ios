@@ -56,6 +56,11 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         return false
     }
     
+    public func removedHtmlFromPostDescription( postDescription: String? ) -> String? {
+        if postDescription == nil { return nil }
+        return postDescription!.stringByReplacingOccurrencesOfString("<[^>]+>", withString: "", options: .RegularExpressionSearch, range: nil)
+    }
+    
     public func update(fields: NSDictionary?){
         if let id = fields?.valueForKey(PropertyKey.id) as? String {
             self.id = id

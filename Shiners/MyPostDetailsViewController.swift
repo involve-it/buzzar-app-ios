@@ -2,7 +2,7 @@
 //  MyPostDetailsViewController.swift
 //  Shiners
 //
-//  Created by Вячеслав on 7/20/16.
+//  Created by Вячеслав on 7/30/16.
 //  Copyright © 2016 Involve IT, Inc. All rights reserved.
 //
 
@@ -10,7 +10,12 @@ import UIKit
 import MapKit
 import CoreLocation
 
-public class MyPostDetailsViewController: UITableViewController, MKMapViewDelegate {
+let cssStyle = "<style> h2 {color:red} p {font-size:10pt;}  </style>"
+
+public class MyPostDetailsViewController: UIViewController, UIWebViewDelegate, MKMapViewDelegate {
+    
+    
+    @IBOutlet weak var webviewHeightConstraint: NSLayoutConstraint!
     
     public var post: Post!
     private var imagesScrollViewDelegate:ImagesScrollViewDelegate!;
@@ -30,7 +35,7 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
     //Page control for svImage
     @IBOutlet weak var pageControl: UIPageControl!
     
-    @IBOutlet weak var txtDetails: UILabel!
+    @IBOutlet weak var postDescription: UIWebView!
     @IBOutlet weak var txtTitle: UILabel!
     @IBOutlet weak var txtViews: UILabel!
     @IBOutlet weak var txtUsername: UILabel!
@@ -40,36 +45,6 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
     @IBOutlet weak var postType: UIButton!
     @IBOutlet weak var avatarUser: UIImageView!
     
-    @IBAction func btnSendMessage_Click(sender: AnyObject) {
-        let alertController = UIAlertController(title: "New message", message: nil, preferredStyle: .Alert);
-        
-        alertController.addTextFieldWithConfigurationHandler { (textField) in
-            textField.placeholder = "Message"
-        }
-        
-        alertController.addAction(UIAlertAction(title: "Send", style: .Default, handler: { (action) in
-            if let text = alertController.textFields?[0].text where text != "" {
-                alertController.resignFirstResponder()
-                let message = MessageToSend()
-                message.destinationUserId = self.post.user!.id
-                message.message = alertController.textFields![0].text
-                ConnectionHandler.Instance.messages.sendMessage(message){ success, errorId, errorMessage, result in
-                    if success {
-                        AccountHandler.Instance.updateMyChats()
-                    } else {
-                        self.showAlert("Erorr", message: errorMessage)
-                    }
-                }
-            }
-        }))
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: {action in
-            alertController.resignFirstResponder()
-        }));
-        self.presentViewController(alertController, animated: true) { 
-            alertController.textFields![0].becomeFirstResponder()
-        }
-    }
-    
     @IBAction func btnShare_Click(sender: AnyObject) {
         let activityViewController = UIActivityViewController(activityItems: ["Check out this post: \(ConnectionHandler.baseUrl)/post/\(self.post.id!)", NSURL(string: "\(ConnectionHandler.baseUrl)/post/\(self.post.id!)")!], applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivityTypePrint, UIActivityTypeOpenInIBooks, UIActivityTypeSaveToCameraRoll];
@@ -77,6 +52,10 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
     }
     
     public override func viewDidLoad() {
+        super.viewDidLoad()
+
+        self.postDescription.delegate = self
+        
         self.navigationItem.title = post?.title
         
         //Title
@@ -84,42 +63,43 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
         self.txtTitle.sizeToFit()
         
         //Description
-        self.txtDetails.text = post?.descr
-        self.txtDetails.sizeToFit()
+        self.postDescription.scrollView.scrollEnabled = false
+        if let htmlString = post?.descr {
+            self.postDescription.loadHTMLString(cssStyle + htmlString, baseURL: nil)
+        } else {
+            self.postDescription.loadHTMLString("", baseURL: nil)
+        }
         
         //Username
         if let username = post.user?.username {
             self.txtUsername.text = username
         }
-        avatarUser.contentMode = .ScaleToFill
+        
+        //Avatar image
+        self.avatarUser.contentMode = .ScaleToFill
         if let avatarUrlString = post.user?.imageUrl{
             if ImageCachingHandler.Instance.getImageFromUrl(avatarUrlString, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
-                ThreadHelper.runOnMainThread({ 
+                ThreadHelper.runOnMainThread({
                     self.avatarUser.image = image
                 })
             }){
-                avatarUser.image = ImageCachingHandler.defaultAccountImage
+                self.avatarUser.image = ImageCachingHandler.defaultAccountImage
             }
         } else {
-            avatarUser.image = ImageCachingHandler.defaultAccountImage
+            self.avatarUser.image = ImageCachingHandler.defaultAccountImage
         }
-        
-        var views = ""
         
         //Seen total
         if let seenTotal = post?.seenTotal {
-            views = views + "\(seenTotal)";
+            self.txtViews.text = "\(seenTotal)";
         }
         
         /*
          //Seen today
-        if let seenToday = post?.seenToday{
-            views+=" Today: \(seenToday)";
-        }
-        */
-        
-        self.txtViews.text = views;
-        
+         if let seenToday = post?.seenToday{
+         views+=" Today: \(seenToday)";
+         }
+         */
         
         //Post Created
         txtPostCreated.text = post.timestamp?.toLocalizedString()
@@ -182,7 +162,7 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
                             })
                         }
                         
-                        ThreadHelper.runOnMainThread({ 
+                        ThreadHelper.runOnMainThread({
                             if let formattedAddress = placemark.addressDictionary!["FormattedAddressLines"] {
                                 let allResults = (formattedAddress as! [String]).joinWithSeparator(", ")
                                 self.txtPostLocationFormattedAddress.text = allResults
@@ -199,10 +179,10 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
         
         //POST TYPE
         if let txtPostType = post.type?.rawValue {
-                postType.setTitle(txtPostType, forState: .Normal)
+            postType.setTitle(txtPostType, forState: .Normal)
         }
         
-       
+        
         //Page Conrol
         self.pageControl.numberOfPages = (post?.photos?.count)!
         self.pageControl.currentPage = 0
@@ -223,37 +203,22 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
         if self.post?.user?.id == AccountHandler.Instance.currentUser?.id {
             self.navigationItem.rightBarButtonItems?.append(self.btnEdit)
         }
+        
+        
     }
-    
-    
+
     func updateScrollView(){
         let urls = post?.photos?.filter({ $0.original != nil }).map({ $0.original! });
         self.imagesScrollViewDelegate.setupScrollView(urls);
     }
     
-    /*public override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
-      
-         if indexPath.row == 0 {
-            return 260;
-        } else if indexPath.row == 1 {
-            if (txtViews.text?.characters.count > 0) {
-                return 52;
-            } else {
-                return 0;
-            }
-        } else if (indexPath.row == 3){
-            if let height = post?.descr?.heightWithConstrainedWidth(self.view.frame.width - 16, font: self.txtDetails.font){
-                return max(height, 60);
-            } else {
-                return 0
-            }
-        } else {
-            return 150;
-        }
-        
-    }*/
- 
+    //After load content
+    public func webViewDidFinishLoad(webView: UIWebView) {
+        let contentSize = self.postDescription.scrollView.contentSize.height
+        self.webviewHeightConstraint.constant = contentSize
+    }
+    
+    
     
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "editPost"{
@@ -263,5 +228,5 @@ public class MyPostDetailsViewController: UITableViewController, MKMapViewDelega
         }
     }
     
-    
+
 }
