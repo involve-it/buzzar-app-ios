@@ -236,6 +236,7 @@
 				61C6F9041D3BED100030CC81 /* TypePostTableViewController.swift */,
 				61C6F9051D3BED100030CC81 /* WhereViewController.swift */,
 				61C6F9061D3BED100030CC81 /* WhenPickDateViewController.swift */,
+				61EA5DA21D47559600083361 /* PhotosViewController.swift */,
 			);
 			name = wizard;
 			sourceTree = "<group>";
@@ -292,7 +293,6 @@
 				7B26B08D1CD564E1000495EE /* MyPostsViewController.swift */,
 				6117A5471D4C03EC009E12DB /* MyPostDetailsViewController.swift */,
 				6105C6ED1D3F970500E83D29 /* PostDetailsViewController.swift */,
-				61EA5DA21D47559600083361 /* PhotosViewController.swift */,
 				7B26B0BA1CD655C2000495EE /* DescriptionViewController.swift */,
 				7B26B1A21CD694A0000495EE /* StaticLocationViewController.swift */,
 				7B26B1A81CD6DDA8000495EE /* SmallImageView.swift */,

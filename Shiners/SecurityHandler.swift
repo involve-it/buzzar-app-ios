@@ -10,7 +10,7 @@ import Foundation
 
 class SecurityHandler{
     private static let DEVICE_ID_KEY = "org.buzzar.app:DEVICE_ID_KEY"
-    static var deviceId: String!
+    private static var deviceId: String!
     
     class func setDeviceId(){
         if let id = KeychainWrapper.stringForKey(DEVICE_ID_KEY){

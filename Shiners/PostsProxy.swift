@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftDDP
+import CoreLocation
 
 public class PostsProxy{
     private static let instance = PostsProxy()
@@ -49,9 +50,18 @@ public class PostsProxy{
         }
     }
     
-    public func addPost(post: Post, callback: MeteorMethodCallback? = nil){
+    public func addPost(post: Post, currentCoordinates: CLLocationCoordinate2D?, callback: MeteorMethodCallback? = nil){
         let postDict = post.toDictionary()
-        Meteor.call("addPost", params: [postDict]) { (result, error) in
+        var parameters = [postDict];
+        if let coordinates = currentCoordinates{
+            var coordinatesDict = Dictionary<String, AnyObject>()
+            coordinatesDict["lat"] = coordinates.latitude
+            coordinatesDict["lng"] = coordinates.longitude
+            coordinatesDict["deviceId"] = SecurityHandler.getDeviceId()
+
+            parameters.append(coordinatesDict)
+        }
+        Meteor.call("addPost", params: parameters) { (result, error) in
             if error == nil {
                 let errorId = ResponseHelper.getErrorId(result);
                 callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)

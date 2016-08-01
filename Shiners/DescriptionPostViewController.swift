@@ -22,9 +22,13 @@ class DescriptionPostViewController: UIViewController, UITextViewDelegate {
     //Создаем объект для приниятия данных с контроллера в предыдущей цепочке
     var post: Post!
     
+    var currentLocationInfo: GeocoderInfo?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if self.currentLocationInfo == nil {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentLocationReported), name: NotificationManager.Name.NewPostLocationReported.rawValue, object: nil)
+        }
 
         //Set focus to textfield
         fieldDescriptionOfPost.becomeFirstResponder()
@@ -38,6 +42,11 @@ class DescriptionPostViewController: UIViewController, UITextViewDelegate {
             titleCountOfDescription.text = String(text.characters.count)
         }
         
+    }
+    
+    func currentLocationReported(notification: NSNotification){
+        let geocoderInfo = notification.object as! GeocoderInfo
+        self.currentLocationInfo = geocoderInfo
     }
 
     override func didReceiveMemoryWarning() {
@@ -97,6 +106,7 @@ class DescriptionPostViewController: UIViewController, UITextViewDelegate {
                 //Передаем объект post следующему контроллеру
                 destination.post = post
                 
+                destination.currentLocationInfo = self.currentLocationInfo
             }
         }
     }

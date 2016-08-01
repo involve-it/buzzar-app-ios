@@ -9,12 +9,13 @@
 import UIKit
 import CoreLocation
 
-class WhereViewController: UIViewController, LocationHandlerDelegate, StaticLocationViewControllerDelegate {
-
-    var locationHandler = LocationHandler()
+class WhereViewController: UIViewController, StaticLocationViewControllerDelegate {
     var post: Post!
     var localLocations = [Location]()
 
+    var currentLocationInfo: GeocoderInfo?
+    
+    private var dynamicLocationRequested = false
     
     @IBOutlet weak var createPostAddiotionalMenu: UIView!
     @IBOutlet weak var btn_next: UIBarButtonItem!
@@ -23,20 +24,28 @@ class WhereViewController: UIViewController, LocationHandlerDelegate, StaticLoca
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.locationHandler.delegate = self;
+        if self.currentLocationInfo == nil {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentLocationReported), name: NotificationManager.Name.NewPostLocationReported.rawValue, object: nil)
+        }
     
         self.labeDetermineLocation.text = "current location not yet defined"
-                
-        
     }
 
     @IBAction func btn_getDynamicLocation(sender: AnyObject) {
-        if !self.locationHandler.getLocationOnce(true) {
-            self.showAlert("Error", message: "Доступ запрещен")
+        if let _ = self.currentLocationInfo{
+            self.setDynamicLocation()
+        } else {
+            self.dynamicLocationRequested = true
         }
     }
     
+    func currentLocationReported(notification: NSNotification){
+        let geocoderInfo = notification.object as! GeocoderInfo
+        self.currentLocationInfo = geocoderInfo
+        if self.dynamicLocationRequested {
+            self.setDynamicLocation()
+        }
+    }
     
     //****************************************************************//
     
@@ -75,7 +84,7 @@ class WhereViewController: UIViewController, LocationHandlerDelegate, StaticLoca
             }
             
             //Add post
-            ConnectionHandler.Instance.posts.addPost(post, callback: callback)
+            ConnectionHandler.Instance.posts.addPost(post, currentCoordinates: self.currentLocationInfo?.coordinate, callback: callback)
             
         }
     }
@@ -83,46 +92,50 @@ class WhereViewController: UIViewController, LocationHandlerDelegate, StaticLoca
     
     
     //from manager
-    func locationReported(geocoderInfo: GeocoderInfo) {
-        NSLog("Location reported: \(geocoderInfo)")
-        //let indexPath = NSIndexPath(forRow: 0, inSection: 3)
-        //let cell = self.tableView.cellForRowAtIndexPath(indexPath)
-        if geocoderInfo.denied {
-            labeDetermineLocation.text = "Please allow location services in settings"
-        } else if geocoderInfo.error {
-            labeDetermineLocation.text = "An error occurred getting your current location"
-        } else {
-            labeDetermineLocation.text = geocoderInfo.address
-            //self.cellDynamicLocation?.accessoryType = UITableViewCellAccessoryType.Checkmark
-            let location = Location()
-            location.lat = geocoderInfo.coordinate?.latitude
-            location.lng = geocoderInfo.coordinate?.longitude
-            location.name = geocoderInfo.address
-            location.placeType = .Dynamic
-            
-            if let index = localLocations.indexOf({return $0.placeType == .Dynamic}) {
-                localLocations.removeAtIndex(index)
+    func setDynamicLocation() {
+        if let geocoderInfo = self.currentLocationInfo {
+            NSLog("Location reported: \(geocoderInfo)")
+            //let indexPath = NSIndexPath(forRow: 0, inSection: 3)
+            //let cell = self.tableView.cellForRowAtIndexPath(indexPath)
+            if geocoderInfo.denied {
+                labeDetermineLocation.text = "Please allow location services in settings"
+            } else if geocoderInfo.error {
+                labeDetermineLocation.text = "An error occurred getting your current location"
+            } else {
+                labeDetermineLocation.text = geocoderInfo.address
+                //self.cellDynamicLocation?.accessoryType = UITableViewCellAccessoryType.Checkmark
+                let location = Location()
+                location.lat = geocoderInfo.coordinate?.latitude
+                location.lng = geocoderInfo.coordinate?.longitude
+                location.name = geocoderInfo.address
+                location.placeType = .Dynamic
+                
+                if let index = localLocations.indexOf({return $0.placeType == .Dynamic}) {
+                    localLocations.removeAtIndex(index)
+                }
+                
+                self.localLocations.append(location)
+                
+                //Проверка на пустой массив locations
+                localLocationsIsEmpty()
+                
+                //self.currentDynamicLocation = location
             }
-            
-            self.localLocations.append(location)
-            
-            //Проверка на пустой массив locations
-            localLocationsIsEmpty()
-            
-            //self.currentDynamicLocation = location
         }
     }
     
     func locationSelected(location: CLLocationCoordinate2D?, address: String?) {
-        let location = Location()
-        location.name = address
-        location.placeType = .Static
+        let loc = Location()
+        loc.name = address
+        loc.placeType = .Static
+        loc.lat = location?.latitude
+        loc.lng = location?.longitude
         
         if let index = localLocations.indexOf({return $0.placeType == .Static}) {
             localLocations.removeAtIndex(index)
         }
         
-        self.localLocations.append(location)
+        self.localLocations.append(loc)
         
         //Устанавлиаваем текстувую метку с адресом
         labeDetermineLocation.text = address
@@ -157,10 +170,15 @@ class WhereViewController: UIViewController, LocationHandlerDelegate, StaticLoca
                 
                 //Передаем объект post следующему контроллеру
                 destination.post = post
+                destination.currentLocationInfo = self.currentLocationInfo
             }
         } else if segue.identifier == "staticSegue" {
             if let destination = segue.destinationViewController as? StaticLocationViewController {
                 destination.delegate = self
+                if let index = localLocations.indexOf({return $0.placeType == .Static}) {
+                    let selectedLocation = self.localLocations[index]
+                    destination.currentCoordinate = CLLocationCoordinate2D(latitude: selectedLocation.lat!, longitude: selectedLocation.lng!)
+                }
             }
         }
     }

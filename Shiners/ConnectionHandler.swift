@@ -35,7 +35,7 @@ public class ConnectionHandler{
             dict["lat"] = lat
             dict["lng"] = lng
             dict["userId"] = userId
-            dict["deviceId"] = SecurityHandler.deviceId
+            dict["deviceId"] = SecurityHandler.getDeviceId()
             if let jsonData = try? NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions()), url = NSURL(string: ConnectionHandler.baseUrl + "/api/geolocation"){
                 let request = NSMutableURLRequest(URL: url)
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")

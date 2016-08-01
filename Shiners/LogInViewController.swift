@@ -36,11 +36,13 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.txtUsername.becomeFirstResponder();
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
     }
     
     override func viewDidLoad() {
@@ -71,8 +73,8 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
         dispatch_async(dispatch_get_main_queue(), {
             self.setLoading(false, rightBarButtonItem: self.registerButton)
             if AccountHandler.Instance.currentUser != nil {
-                self.dismissSelf();
                 AccountHandler.Instance.requestPushNotifications()
+                self.dismissSelf();
             } else {
                 self.showAlert("Log in failed", message: ResponseHelper.getDefaultErrorMessage())
             }
@@ -84,10 +86,8 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
             setLoading(true, rightBarButtonItem: self.registerButton)
             
             AccountHandler.Instance.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in
-                if success {
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-                } else {
-                    ThreadHelper.runOnMainThread({ 
+                if !success {
+                    ThreadHelper.runOnMainThread({
                         self.showAlert("Log in failed", message: errorMessage)
                     })
                 }

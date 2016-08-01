@@ -8,15 +8,17 @@
 
 import UIKit
 
-class NewPostNewViewController: UIViewController, UITextFieldDelegate {
+class NewPostNewViewController: UIViewController, UITextFieldDelegate, LocationHandlerDelegate {
 
     
     @IBOutlet weak var titleTextCount: UILabel!
     @IBOutlet weak var titleNewPost: UITextField!
     @IBOutlet weak var btn_next: UIBarButtonItem!
-    
+    private let locationHandler = LocationHandler()
     //Устанавливаем лимит символов для текстового поля
     var titleAllowCount:String = "75"
+    
+    private var currentLocationInfo: GeocoderInfo?
     
     @IBAction func titleFieldChanged(sender: UITextField) {
         
@@ -30,16 +32,29 @@ class NewPostNewViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    
+    func locationReported(geocoderInfo: GeocoderInfo) {
+        self.currentLocationInfo = geocoderInfo
+        print("New post location reported")
+        NotificationManager.sendNotification(NotificationManager.Name.NewPostLocationReported, object: self.currentLocationInfo)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Set focus to textfield
-        titleNewPost.becomeFirstResponder()
-
+        self.locationHandler.delegate = self
+        if !self.locationHandler.getLocationOnce(true){
+            self.currentLocationInfo = GeocoderInfo()
+            self.currentLocationInfo!.denied = true
+        }
+        
         //Заполняем начальное значение при инициализации контроллера
         titleTextCount.text = String(titleAllowCount)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        //Set focus to textfield
+        titleNewPost.becomeFirstResponder()
     }
 
     override func didReceiveMemoryWarning() {
@@ -72,6 +87,7 @@ class NewPostNewViewController: UIViewController, UITextFieldDelegate {
                 //Передаем объект post следующему контроллеру
                 destination.post = post
                 
+                destination.currentLocationInfo = self.currentLocationInfo
             }
         }
     }

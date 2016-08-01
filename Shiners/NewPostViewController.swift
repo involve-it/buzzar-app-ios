@@ -555,7 +555,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
             if let _ = self.post {
                 ConnectionHandler.Instance.posts.editPost(post, callback:  callback)
             } else {
-                ConnectionHandler.Instance.posts.addPost(post, callback: callback)
+                ConnectionHandler.Instance.posts.addPost(post, currentCoordinates: nil, callback: callback)
             }
         } else {
             self.showAlert("Error occurred", message: "Validation failed")

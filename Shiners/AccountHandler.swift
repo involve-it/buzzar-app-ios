@@ -102,11 +102,13 @@ public class AccountHandler{
     }
     
     public func logoff(callback: (success: Bool)-> Void){
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(processLogoff), name: DDP_USER_DID_LOGOUT, object: nil)
         self.unregisterToken { (success) in
             if success{
                 ConnectionHandler.Instance.users.logoff { (success) in
-                    if success {
-                        self.processLogoff()
+                    if !success {
+                        //self.processLogoff()
+                        NSNotificationCenter.defaultCenter().removeObserver(self, name: DDP_USER_DID_LOGOUT, object: nil)
                     }
                     
                     callback(success: success)
@@ -121,7 +123,8 @@ public class AccountHandler{
         return NSUserDefaults.standardUserDefaults().objectForKey(AccountHandler.USER_ID) as? String
     }
     
-    public func processLogoff(){
+    @objc public func processLogoff(){
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: DDP_USER_DID_LOGOUT, object: nil)
         NSUserDefaults.standardUserDefaults().setObject(nil, forKey: AccountHandler.USER_ID)
         CachingHandler.deleteAllPrivateFiles()
         self.currentUser = nil

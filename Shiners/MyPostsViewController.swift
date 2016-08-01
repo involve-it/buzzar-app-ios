@@ -50,7 +50,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
         guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
-        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("postDetails_old") as? PostDetailsViewController
+        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("myPostDetails") as? MyPostDetailsViewController
         
         let post = myPosts[indexPath.row];
         viewController?.post = post

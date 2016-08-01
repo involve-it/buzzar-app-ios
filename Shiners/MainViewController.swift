@@ -11,13 +11,30 @@ import UIKit
 class MainViewController: UITabBarController, UITabBarControllerDelegate {
     
     var popNavigationControllerToRoot: Int?
+    var allViewControllers: [UIViewController]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.allViewControllers = self.viewControllers
+        
+        self.updateLoggedIn()
+        
         // Do any additional setup after loading the view, typically from a nib.
         self.delegate = self
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pushRegistrationFailed), name: NotificationManager.Name.PushRegistrationFailed.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateLoggedIn), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+    }
+    
+    func updateLoggedIn(){
+        if AccountHandler.Instance.isLoggedIn() {
+            self.viewControllers = self.allViewControllers
+        } else {
+            if self.viewControllers!.count == 5{
+                self.viewControllers?.removeAtIndex(1)
+                self.viewControllers?.removeAtIndex(2)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -28,7 +45,12 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         if viewController.title == "addPostPlaceholder" {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let controller = storyboard.instantiateViewControllerWithIdentifier("addPost");
+            var controller: UIViewController
+            if AccountHandler.Instance.isLoggedIn(){
+                controller = storyboard.instantiateViewControllerWithIdentifier("addPost");
+            } else {
+                controller = storyboard.instantiateViewControllerWithIdentifier("loginNavigationController");
+            }
             self.presentViewController(controller, animated: true, completion: nil)
             return false;
         }

@@ -46,11 +46,13 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
     override public func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
     }
     
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.txtUsername.becomeFirstResponder();
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
     }
     
     @objc private func processLogin(){
@@ -75,9 +77,7 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
                 AccountHandler.Instance.register(user, callback: { (success, errorId, errorMessage, result) in
                     if (success){
                         AccountHandler.Instance.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
-                            if (success){
-                                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-                            } else {
+                            if !success {
                                 self.showAlert("Registration error", message: errorMessage)
                             }
                         })

@@ -21,6 +21,8 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     var imageCount = 0
     
+    var currentLocationInfo: GeocoderInfo?
+    
     override func viewDidLoad() {
      
         
@@ -56,7 +58,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
         
         //Add post
-        ConnectionHandler.Instance.posts.addPost(post, callback: callback)
+        ConnectionHandler.Instance.posts.addPost(post, currentCoordinates: self.currentLocationInfo?.coordinate, callback: callback)
     }
     
     

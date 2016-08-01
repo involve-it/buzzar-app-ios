@@ -39,5 +39,7 @@ public class NotificationManager{
         case ChatAdded = "shiners:ChatAdded"
         
         case PushRegistrationFailed = "shiners:PushRegistrationFailed"
+        
+        case NewPostLocationReported = "shiners:NewPostLocationReported"
     }
 }

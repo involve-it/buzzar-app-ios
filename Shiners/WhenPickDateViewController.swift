@@ -19,11 +19,11 @@ class WhenPickDateViewController: UIViewController {
     
     var post: Post!
     
-    
+    var currentLocationInfo: GeocoderInfo?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         print("\(post)")
         // Do any additional setup after loading the view.
         //labelDateNotYetSet.text = ""
@@ -216,6 +216,7 @@ class WhenPickDateViewController: UIViewController {
                 
                 //Передаем объект post следующему контроллеру
                 destination.post = post
+                destination.currentLocationInfo = self.currentLocationInfo
             }
         } 
     }
