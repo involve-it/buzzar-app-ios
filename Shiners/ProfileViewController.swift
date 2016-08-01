@@ -170,7 +170,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     public func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         picker.dismissViewControllerAnimated(true, completion: nil)
         self.setLoading(true)
-        let rotatedImage = image.correctlyOrientedImage()
+        let rotatedImage = image.correctlyOrientedImage().resizeImage()
         let currentImage = self.imgPhoto.image
         self.imgPhoto.image = rotatedImage
         self.btnSave.enabled = false

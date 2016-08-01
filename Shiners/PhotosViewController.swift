@@ -60,7 +60,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        let rotatedImage = image.correctlyOrientedImage()
+        let rotatedImage = image.correctlyOrientedImage().resizeImage()
         self.images.append(rotatedImage)
         let view = self.addImageToScrollView(rotatedImage, index: self.images.count - 1)
         view.activityIndicator.startAnimating()
