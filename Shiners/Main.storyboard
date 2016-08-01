@@ -3356,31 +3356,30 @@
                                                                                     <action selector="switcher_getDynamicLocation:" destination="iIP-KC-Tq1" eventType="valueChanged" id="DHe-1y-g8t"/>
                                                                                 </connections>
                                                                             </switch>
-                                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="g6g-nd-8VV">
-                                                                                <rect key="frame" x="8" y="19" width="48" height="48"/>
-                                                                                <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PostCell_Dynamic" translatesAutoresizingMaskIntoConstraints="NO" id="g6g-nd-8VV">
+                                                                                <rect key="frame" x="8" y="25" width="36" height="36"/>
                                                                                 <constraints>
-                                                                                    <constraint firstAttribute="width" constant="48" id="0oy-n1-UPV"/>
-                                                                                    <constraint firstAttribute="height" constant="48" id="akZ-yQ-z6o"/>
+                                                                                    <constraint firstAttribute="width" constant="36" id="0oy-n1-UPV"/>
+                                                                                    <constraint firstAttribute="height" constant="36" id="akZ-yQ-z6o"/>
                                                                                 </constraints>
                                                                             </imageView>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="mdi-wc-Goe">
-                                                                                <rect key="frame" x="64" y="16" width="455" height="54"/>
+                                                                                <rect key="frame" x="52" y="16" width="467" height="54"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dynamic post" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VWr-li-ALu">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="455" height="22"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="467" height="22"/>
                                                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="It is connected with your mobile phone." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jXt-P5-sY1">
-                                                                                        <rect key="frame" x="0.0" y="22" width="455" height="16"/>
+                                                                                        <rect key="frame" x="0.0" y="22" width="467" height="16"/>
                                                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                                                                                         <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Moving along with you" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S2D-xB-PjA">
-                                                                                        <rect key="frame" x="0.0" y="38" width="455" height="16"/>
+                                                                                        <rect key="frame" x="0.0" y="38" width="467" height="16"/>
                                                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                                                                                         <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
@@ -3426,25 +3425,24 @@
                                                                                     <action selector="switcher_getStaticLocation:" destination="iIP-KC-Tq1" eventType="touchUpInside" id="8bd-sK-dsF"/>
                                                                                 </connections>
                                                                             </switch>
-                                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DZg-A0-ItQ">
-                                                                                <rect key="frame" x="8" y="19" width="48" height="48"/>
-                                                                                <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PostCell_Static" translatesAutoresizingMaskIntoConstraints="NO" id="DZg-A0-ItQ">
+                                                                                <rect key="frame" x="8" y="25" width="36" height="36"/>
                                                                                 <constraints>
-                                                                                    <constraint firstAttribute="height" constant="48" id="2Zu-K2-GB8"/>
-                                                                                    <constraint firstAttribute="width" constant="48" id="LeE-tY-wkJ"/>
+                                                                                    <constraint firstAttribute="height" constant="36" id="2Zu-K2-GB8"/>
+                                                                                    <constraint firstAttribute="width" constant="36" id="LeE-tY-wkJ"/>
                                                                                 </constraints>
                                                                             </imageView>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="yNm-Ay-K44">
-                                                                                <rect key="frame" x="64" y="24" width="455" height="38"/>
+                                                                                <rect key="frame" x="52" y="24" width="467" height="38"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Static post" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kad-Lr-Pmg">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="455" height="22"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="467" height="22"/>
                                                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="It is connected to the location that you have chosen." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yB-M2-EbN">
-                                                                                        <rect key="frame" x="0.0" y="22" width="455" height="16"/>
+                                                                                        <rect key="frame" x="0.0" y="22" width="467" height="16"/>
                                                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                                                                                         <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                                                                         <nil key="highlightedColor"/>
@@ -4194,7 +4192,9 @@
         <image name="1year" width="256" height="256"/>
         <image name="2day" width="256" height="256"/>
         <image name="2week" width="256" height="256"/>
+        <image name="PostCell_Dynamic" width="38" height="37"/>
         <image name="PostCell_Dynamic_Live" width="38" height="37"/>
+        <image name="PostCell_Static" width="39" height="42"/>
         <image name="PostMore_icon" width="22" height="22"/>
         <image name="add_post" width="22" height="22"/>
         <image name="facebook.png" width="128" height="128"/>
