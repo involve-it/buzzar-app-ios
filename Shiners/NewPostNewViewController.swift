@@ -56,6 +56,11 @@ class NewPostNewViewController: UIViewController, UITextFieldDelegate, LocationH
         //Set focus to textfield
         titleNewPost.becomeFirstResponder()
     }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.view.endEditing(true)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
