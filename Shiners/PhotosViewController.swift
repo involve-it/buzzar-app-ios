@@ -24,9 +24,6 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     var currentLocationInfo: GeocoderInfo?
     
     override func viewDidLoad() {
-     
-        
-        
         self.svImages.hidden = true;
         self.lblNoImages.hidden = false;
         
@@ -66,6 +63,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         let rotatedImage = image.correctlyOrientedImage()
         self.images.append(rotatedImage)
         let view = self.addImageToScrollView(rotatedImage, index: self.images.count - 1)
+        view.activityIndicator.startAnimating()
         imageCount = imageCount + 1
         self.createPost.enabled = false
         
@@ -106,9 +104,8 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         var x = self.calculateImagesWidth(index)
         let view = SmallImageView(x: x, y: 8, id: index, delegate: self, image: image)
-        view.activityIndicator.startAnimating()
-        self.svImages.addSubview(view)
         
+        self.svImages.addSubview(view)
         x = self.calculateImagesWidth(index + 1)
         
         self.svImages.contentSize = CGSizeMake(CGFloat(x), self.svImages.frame.size.height);

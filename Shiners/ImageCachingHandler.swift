@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 import AWSS3
 
+let S3BucketName = "shiners/v1.0/public/images";
+
 public class ImageCachingHandler{
     private static let imagesDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!.URLByAppendingPathComponent("images")
     private static let contentsFile = ImageCachingHandler.imagesDirectory.URLByAppendingPathComponent("contents")
@@ -23,7 +25,7 @@ public class ImageCachingHandler{
     public static let defaultAccountImage = UIImage(named: "show_offliners.png");
     
     private init(){
-        
+        self.configureAws()
     }
     
     private static var instance: ImageCachingHandler = ImageCachingHandler();
@@ -115,14 +117,7 @@ public class ImageCachingHandler{
         return loading;
     }
     
-    private func uploadPhotoToAmazon(url: NSURL, contentType: String, callback: (url: String?)->Void) {
-        // See https://www.codementor.io/tips/5748713276/how-to-upload-images-to-aws-s3-in-swift
-        // Setup a new swift project in Xcode and run pod install. Then open the created Xcode workspace.
-        // Once AWSS3 framework is ready, we need to configure the authentication:
-        
-        // configure S3
-        let S3BucketName = "shiners/v1.0/public/images";
-        
+    func configureAws(){
         // configure authentication with Cognito
         //        let cognitoPoolID = "us-east-1_ckxes1C2W";
         let cognitoPoolID = "us-east-1:611e9556-43f7-465d-a35b-57a31e11af8b";
@@ -131,6 +126,12 @@ public class ImageCachingHandler{
                                                                 identityPoolId:cognitoPoolID)
         let configuration = AWSServiceConfiguration(region:region, credentialsProvider:credentialsProvider)
         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration;
+    }
+    
+    private func uploadPhotoToAmazon(url: NSURL, contentType: String, callback: (url: String?)->Void) {
+        // See https://www.codementor.io/tips/5748713276/how-to-upload-images-to-aws-s3-in-swift
+        // Setup a new swift project in Xcode and run pod install. Then open the created Xcode workspace.
+        // Once AWSS3 framework is ready, we need to configure the authentication:
         
         //Add any image to your project and get its URL like this:
         //let ext = "png"
@@ -142,7 +143,6 @@ public class ImageCachingHandler{
         uploadRequest.key = NSProcessInfo.processInfo().globallyUniqueString //+ "." + ext
         uploadRequest.bucket = S3BucketName
         uploadRequest.contentType = contentType
-            //"image/" + ext
         
         // push img to server:
         let transferManager = AWSS3TransferManager.defaultS3TransferManager();
