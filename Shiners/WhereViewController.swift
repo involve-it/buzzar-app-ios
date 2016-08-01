@@ -11,7 +11,7 @@ import CoreLocation
 
 class WhereViewController: UIViewController, StaticLocationViewControllerDelegate {
     var post: Post!
-    var localLocations = [Location]()
+    //var localLocations = [Location]()
 
     let labeDetermineLocationText = "current location not yet defined"
     var currentLocationInfo: GeocoderInfo?
@@ -34,9 +34,15 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentLocationReported), name: NotificationManager.Name.NewPostLocationReported.rawValue, object: nil)
         }
     
+        self.post.locations = [Location]()
         self.labeDetermineLocation.text = labeDetermineLocationText
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.localLocationsIsEmpty()
+    }
     
     func currentLocationReported(notification: NSNotification){
         let geocoderInfo = notification.object as! GeocoderInfo
@@ -58,21 +64,14 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
                 self.dynamicLocationRequested = true
             }
             
+
         } else {
             
-            if let index = self.localLocations.indexOf({return $0.placeType == .Dynamic}) {
-                self.localLocations.removeAtIndex(index)
-                
-                localLocationsIsEmpty()
+            if let index = self.post.locations!.indexOf({return $0.placeType == .Dynamic}) {
+                self.post.locations!.removeAtIndex(index)
             }
             
-            if self.localLocations.indexOf({return $0.placeType == .Static}) == nil {
-                //Set labeDetermineLocation text in default value
-                self.labeDetermineLocation.text = self.labeDetermineLocationText
-            }
-            
-            
-            
+            localLocationsIsEmpty()
         }
         
     }
@@ -80,24 +79,25 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
     
     @IBAction func switcher_getStaticLocation(sender: UISwitch) {
         //event Touch Up Inside
-        if self.switcherStatic.on {
+        if sender.on {
             
             //Go to staticSegue
             self.performSegueWithIdentifier("staticSegue", sender: self)
-           
             
         } else {
-            if let index = self.localLocations.indexOf({return $0.placeType == .Static}) {
-                self.localLocations.removeAtIndex(index)
-                
-                //Set labeDetermineLocation text in default value
+            if let index = self.post.locations!.indexOf({return $0.placeType == .Static}) {
+                self.post.locations!.removeAtIndex(index)
+                /*
                 self.labeDetermineLocation.text = self.labeDetermineLocationText
-                
-                localLocationsIsEmpty()
+                */
             }
+            
+            localLocationsIsEmpty()
         }
         
     }
+    
+    
     
     
     
@@ -105,23 +105,6 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
     
     @IBAction func createPost(sender: AnyObject) {
         if let post = self.post {
-            
-            post.title = self.post.title
-            post.descr = self.post.descr
-            post.timestamp = NSDate()
-            post.photos = [Photo]()
-            
-            post.locations = [Location]()
-            
-            //Dynamic location
-            if let dynamicLocationIndex = self.localLocations.indexOf({return $0.placeType == .Dynamic}) {
-                post.locations?.append(self.localLocations[dynamicLocationIndex])
-            }
-            
-            //Static location
-            if let staticLocationIndex = self.localLocations.indexOf({return $0.placeType == .Static}) {
-                post.locations?.append(self.localLocations[staticLocationIndex])
-            }
             
             //print("\(post)")
             
@@ -157,7 +140,7 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
                 labeDetermineLocation.text = "An error occurred getting your current location"
             } else {
                 
-                if localLocations.indexOf({return $0.placeType == .Static}) == nil {
+                if post.locations!.indexOf({return $0.placeType == .Static}) == nil {
                     labeDetermineLocation.text = geocoderInfo.address
                 }
                 
@@ -168,78 +151,71 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
                 location.name = geocoderInfo.address
                 location.placeType = .Dynamic
                 
-                if let index = localLocations.indexOf({return $0.placeType == .Dynamic}) {
-                    localLocations.removeAtIndex(index)
+                if let index = post.locations!.indexOf({return $0.placeType == .Dynamic}) {
+                    post.locations!.removeAtIndex(index)
                 }
                 
-                self.localLocations.append(location)
-                
-                //Проверка на пустой массив locations
-                localLocationsIsEmpty()
+                self.post.locations!.append(location)
                 
                 //self.currentDynamicLocation = location
             }
         }
+        
+        localLocationsIsEmpty()
     }
     
     func locationSelected(location: CLLocationCoordinate2D?, address: String?) {
-        let loc = Location()
-        loc.name = address
-        loc.placeType = .Static
-        loc.lat = location?.latitude
-        loc.lng = location?.longitude
         
-        
-        if let index = localLocations.indexOf({return $0.placeType == .Static}) {
-            localLocations.removeAtIndex(index)
+        if let index = post.locations!.indexOf({return $0.placeType == .Static}) {
+            post.locations!.removeAtIndex(index)
         }
         
-        if address != nil && location?.latitude != nil && location?.longitude != nil {
-                self.localLocations.append(loc)
+        if let locLocation = location {
+            let loc = Location()
+            loc.name = address
+            loc.placeType = .Static
+            loc.lat = locLocation.latitude
+            loc.lng = locLocation.longitude
+            
+            self.post.locations!.append(loc)
         }
         
-        
-        
-        
-        
-        //Устанавлиаваем текстувую метку с адресом
-        if address != nil {
-            labeDetermineLocation.text = address
-        } else {
-            labeDetermineLocation.text = labeDetermineLocationText
-        }
-        
-        
-        //Проверка на пустой массив locations
         localLocationsIsEmpty()
-        
-        //print("\(localLocations)")
+
     }
     
     func localLocationsIsEmpty() {
-        if !localLocations.isEmpty {
+        var labelLocation = self.labeDetermineLocationText
+        var hasStaticLocation = false
+        
+        for location in self.post.locations! {
+            labelLocation = location.name!
+            if location.placeType == .Static {
+                hasStaticLocation = true
+                break
+            }
+            
+        }
+
+        labeDetermineLocation.text = labelLocation
+        
+        if !hasStaticLocation {
+            self.switcherStatic.on = false
+        }
+        
+        if self.post.locations?.count > 0 {
             self.btn_next.enabled = true
             self.createPostAddiotionalMenu.hidden = false
         } else {
             self.btn_next.enabled = false
             self.createPostAddiotionalMenu.hidden = true
-            
-            self.switcherStatic.setOn(false, animated: true)
-            self.switcherDynamic.setOn(false, animated: true)
         }
+        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "segueDatePicker" {
             if let destination = segue.destinationViewController as? WhenPickDateViewController {
-                
-                var post = Post()
-                
-                //Передаю данные по цепочке с предыдущего view контроллера
-                post = self.post
-                
-                //Добавляем в объект пост location
-                post.locations = self.localLocations
                 
                 //Передаем объект post следующему контроллеру
                 destination.post = post
@@ -248,8 +224,8 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
         } else if segue.identifier == "staticSegue" {
             if let destination = segue.destinationViewController as? StaticLocationViewController {
                 destination.delegate = self
-                if let index = localLocations.indexOf({return $0.placeType == .Static}) {
-                    let selectedLocation = self.localLocations[index]
+                if let index = post.locations!.indexOf({return $0.placeType == .Static}) {
+                    let selectedLocation = self.post.locations![index]
                     destination.currentCoordinate = CLLocationCoordinate2D(latitude: selectedLocation.lat!, longitude: selectedLocation.lng!)
                 }
             }
