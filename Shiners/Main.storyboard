@@ -1143,10 +1143,7 @@
                                 <segue destination="pxY-TO-wJC" kind="presentation" id="DWx-l0-Aia"/>
                             </connections>
                         </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem systemItem="edit" id="HQu-4q-9XE"/>
-                            <barButtonItem title="Item" id="SqK-NG-RMw"/>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="HQu-4q-9XE"/>
                     </navigationItem>
                     <connections>
                         <segue destination="IKf-YR-aAu" kind="unwind" unwindAction="unwindMyPosts:" id="ZmA-Yc-OW5"/>
@@ -4052,6 +4049,6 @@
         <image name="vk.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ZxZ-0D-TUB"/>
+        <segue reference="DWx-l0-Aia"/>
     </inferredMetricsTieBreakers>
 </document>
