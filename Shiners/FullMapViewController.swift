@@ -16,6 +16,7 @@ class FullMapViewController: UIViewController, MKMapViewDelegate{
     
     var geocoderInfo: GeocoderInfo!
     var currentLocationAnnotation: MKPointAnnotation!
+    var locationUpdated = false
     
     override func viewDidLoad() {
         self.mapView.delegate = self
@@ -24,11 +25,6 @@ class FullMapViewController: UIViewController, MKMapViewDelegate{
         self.currentLocationAnnotation.title = self.geocoderInfo.address
         self.mapView.showAnnotations([self.currentLocationAnnotation], animated: false)
         self.mapView.selectAnnotation(self.currentLocationAnnotation, animated: false)
-        
-        
-        /*let span = MKCoordinateSpanMake(0.075, 0.075)
-        let region = MKCoordinateRegionMake(self.geocoderInfo.coordinate!, span)
-        self.mapView.setRegion(region, animated: false)*/
     }
     @IBAction func btnDone_Click(sender: AnyObject) {
         self.navigationController?.popViewControllerAnimated(true)
@@ -43,11 +39,14 @@ class FullMapViewController: UIViewController, MKMapViewDelegate{
     }
     
     func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = userLocation.coordinate
-        
-        self.mapView.showAnnotations([self.currentLocationAnnotation, annotation], animated: true)
-        self.mapView.selectAnnotation(self.currentLocationAnnotation, animated: false)
-        self.mapView.removeAnnotation(annotation)
+        if !self.locationUpdated {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = userLocation.coordinate
+            
+            self.mapView.showAnnotations([self.currentLocationAnnotation, annotation], animated: true)
+            self.mapView.selectAnnotation(self.currentLocationAnnotation, animated: false)
+            self.mapView.removeAnnotation(annotation)
+            self.locationUpdated = true
+        }
     }
 }
