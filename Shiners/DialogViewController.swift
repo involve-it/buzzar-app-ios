@@ -58,7 +58,7 @@ public class DialogViewController : JSQMessagesViewController{
         if let pendingMessagesAsyncId = self.pendingMessagesAsyncId where pendingMessagesAsyncId == notification.object as! String,
             let messages = MessagesHandler.Instance.getMessagesByRequestId(pendingMessagesAsyncId){
             self.updateMessages(messages)
-            self.scrollToBottomAnimated(true)
+            self.scrollToBottomAnimated(false)
         }
     }
     
@@ -73,7 +73,12 @@ public class DialogViewController : JSQMessagesViewController{
             }
         }
         
-        self.collectionView.reloadData()
+        AccountHandler.Instance.saveMyChats()
+        
+        ThreadHelper.runOnMainThread { 
+            self.collectionView.reloadData()
+            self.scrollToBottomAnimated(true)
+        }
     }
     
     func messageAdded(notification: NSNotification){
@@ -110,6 +115,7 @@ public class DialogViewController : JSQMessagesViewController{
     
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        self.scrollToBottomAnimated(false)
         if !self.isPeeking {
             self.keyboardController.textView.becomeFirstResponder()
         }

@@ -42,8 +42,10 @@ public class AccountHandler{
         }
     }
     
-    @objc private func saveMyChats(){
-        CachingHandler.saveObject(self.myChats!, path: CachingHandler.chats)
+    @objc public func saveMyChats(){
+        if self.status == .Completed {
+            CachingHandler.saveObject(self.myChats!, path: CachingHandler.chats)
+        }
     }
     
     public func getNearbyPosts(lat: Double, lng: Double, radius: Double, callback: MeteorMethodCallback){

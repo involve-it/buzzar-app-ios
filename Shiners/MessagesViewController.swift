@@ -192,6 +192,10 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             viewController.navigationItem.title = selectedCell.lblTitle.text
             viewController.chat = chat
             if !chat.messagesRequested {
+                if CachingHandler.Instance.status == .Complete, let index = CachingHandler.Instance.chats?.indexOf({$0.id == chat.id}) {
+                    let cachedChat = CachingHandler.Instance.chats![index]
+                    chat.messages = cachedChat.messages
+                }
                 chat.messagesRequested = true
                 viewController.pendingMessagesAsyncId = MessagesHandler.Instance.getMessagesAsync(chat.id!, skip: 0)
             }
