@@ -93,6 +93,7 @@
 		7BC0A2431CCC164100DA2824 /* id-card.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BC0A23C1CCC164100DA2824 /* id-card.png */; };
 		7BC1A9C41D4C3D19005B4F62 /* KeyChainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC1A9C31D4C3D19005B4F62 /* KeyChainWrapper.swift */; };
 		7BC1A9C61D4C40B5005B4F62 /* SecurityHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC1A9C51D4C40B5005B4F62 /* SecurityHandler.swift */; };
+		7BC1A9C81D50469B005B4F62 /* FullMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC1A9C71D50469B005B4F62 /* FullMapViewController.swift */; };
 		7BC6BE5C1CFD060500664803 /* ValuePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC6BE5B1CFD060500664803 /* ValuePickerViewController.swift */; };
 		7BFFB1001D2042DA007CCF87 /* MessageToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB0FF1D2042DA007CCF87 /* MessageToSend.swift */; };
 		7BFFB1021D20445A007CCF87 /* MessagesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB1011D20445A007CCF87 /* MessagesHandler.swift */; };
@@ -193,6 +194,7 @@
 		7BC0A23C1CCC164100DA2824 /* id-card.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "id-card.png"; sourceTree = "<group>"; };
 		7BC1A9C31D4C3D19005B4F62 /* KeyChainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChainWrapper.swift; sourceTree = "<group>"; };
 		7BC1A9C51D4C40B5005B4F62 /* SecurityHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityHandler.swift; sourceTree = "<group>"; };
+		7BC1A9C71D50469B005B4F62 /* FullMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullMapViewController.swift; sourceTree = "<group>"; };
 		7BC6BE5B1CFD060500664803 /* ValuePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValuePickerViewController.swift; sourceTree = "<group>"; };
 		7BFFB0FF1D2042DA007CCF87 /* MessageToSend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageToSend.swift; sourceTree = "<group>"; };
 		7BFFB1011D20445A007CCF87 /* MessagesHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesHandler.swift; sourceTree = "<group>"; };
@@ -298,6 +300,7 @@
 				7B26B1A81CD6DDA8000495EE /* SmallImageView.swift */,
 				7B26B1AE1CD99D25000495EE /* NewSearchViewController.swift */,
 				7B1C123F1D0CC19C001355AB /* ErrorCell.swift */,
+				7BC1A9C71D50469B005B4F62 /* FullMapViewController.swift */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -653,6 +656,7 @@
 				7B35655F1CE92C1F00012CA9 /* Reachability.swift in Sources */,
 				7B26B19F1CD688B7000495EE /* LocationHandler.swift in Sources */,
 				7BB2A7E51CCC431700AD636D /* Image.swift in Sources */,
+				7BC1A9C81D50469B005B4F62 /* FullMapViewController.swift in Sources */,
 				7B26B08E1CD564E1000495EE /* MyPostsViewController.swift in Sources */,
 				61C6F9091D3BED100030CC81 /* TypePostTableViewController.swift in Sources */,
 				7BB2A7F81CCD8EC500AD636D /* Extensions.swift in Sources */,

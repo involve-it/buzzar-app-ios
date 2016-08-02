@@ -10,10 +10,11 @@ import UIKit
 import MapKit
 import CoreLocation
 
-public class PostDetailsViewController: UITableViewController, MKMapViewDelegate {
+public class PostDetailsViewController: UITableViewController, MKMapViewDelegate, UIViewControllerPreviewingDelegate {
     
     public var post: Post!
     private var imagesScrollViewDelegate:ImagesScrollViewDelegate!;
+    var postLocationDisplayed: Location?
     
     //GRADIENT VIEW
     @IBOutlet weak var gradientView: GradientView!
@@ -158,6 +159,8 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
                 }
             }
             
+            self.postLocationDisplayed = postLocation
+            
             if let postLoc = postLocation, lat = postLoc.lat, lng = postLoc.lng {
                 self.postMapLocation.hidden = false
                 let location = CLLocation(latitude: lat, longitude: lng)
@@ -177,6 +180,7 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
                         let placemark = placemarks[0]
                         
                         if let name = placemark.name {
+                            self.postLocationDisplayed?.name = name
                             ThreadHelper.runOnMainThread({
                                 annotation.title = name
                             })
@@ -223,8 +227,28 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
         if self.post?.user?.id == AccountHandler.Instance.currentUser?.id {
             self.navigationItem.rightBarButtonItems?.append(self.btnEdit)
         }
+        
+        if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
+            self.registerForPreviewingWithDelegate(self, sourceView: view)
+        }
     }
     
+    public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
+        guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
+        
+        guard let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("fullMap") as? FullMapViewController else {return nil}
+        viewController.geocoderInfo = GeocoderInfo()
+        viewController.geocoderInfo.address = self.postLocationDisplayed!.name
+        viewController.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
+        previewingContext.sourceRect = cell.frame
+        
+        return viewController
+    }
+    
+    public func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
+        self.showViewController(viewControllerToCommit, sender: self)
+    }
     
     func updateScrollView(){
         let urls = post?.photos?.filter({ $0.original != nil }).map({ $0.original! });
@@ -254,14 +278,25 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
         
     }*/
  
+    public override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        if identifier == "fullMapSegue"{
+            return self.postLocationDisplayed != nil && self.postLocationDisplayed!.lat != nil && self.postLocationDisplayed!.lng != nil
+        } else {
+            return true
+        }
+    }
+    
     
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "editPost"{
             let vc = segue.destinationViewController as! UINavigationController
             let createVc = vc.viewControllers[0] as! NewPostViewController
             createVc.post = self.post
+        } else if segue.identifier == "fullMapSegue"{
+            let vc = segue.destinationViewController as! FullMapViewController
+            vc.geocoderInfo = GeocoderInfo()
+            vc.geocoderInfo.address = self.postLocationDisplayed!.name
+            vc.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
         }
     }
-    
-    
 }
