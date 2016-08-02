@@ -41,6 +41,7 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
     @IBOutlet weak var postType: UIButton!
     @IBOutlet weak var avatarUser: UIImageView!
     
+    @IBOutlet weak var cellMap: UITableViewCell!
     @IBAction func btnSendMessage_Click(sender: AnyObject) {
         let alertController = UIAlertController(title: "New message", message: nil, preferredStyle: .Alert);
         
@@ -78,6 +79,7 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
     }
     
     public override func viewDidLoad() {
+        self.cellMap.selectionStyle = .None
         self.navigationItem.title = post?.title
         
         //Title

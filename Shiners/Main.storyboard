@@ -4211,6 +4211,7 @@
                         <outlet property="GradientView" destination="W9y-Kb-XIH" id="qxf-jv-54k"/>
                         <outlet property="avatarUser" destination="Fn4-bw-VM6" id="Ri9-Jw-pOE"/>
                         <outlet property="btnEdit" destination="eaO-Nq-TAg" id="FjZ-FH-bhp"/>
+                        <outlet property="cellMap" destination="LBX-2W-7Vb" id="adx-pI-Xk8"/>
                         <outlet property="gradientView" destination="W9y-Kb-XIH" id="ETv-BC-fsa"/>
                         <outlet property="pageControl" destination="GIV-P3-9AH" id="qKO-pM-LZh"/>
                         <outlet property="postMapLocation" destination="49m-oO-ClE" id="Sii-XB-SXF"/>
