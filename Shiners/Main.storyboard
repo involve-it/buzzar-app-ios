@@ -1206,6 +1206,11 @@
                                 <action selector="btnDone_Click:" destination="9qC-0K-l1W" id="8KR-8n-2Pb"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Get Directions" id="blN-sg-Dbd">
+                            <connections>
+                                <action selector="btnDirections_Click:" destination="9qC-0K-l1W" id="fA1-vu-JvU"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="cl8-Jy-4gJ" id="NUe-sH-OhS"/>

@@ -30,4 +30,12 @@ class FullMapViewController: UIViewController{
     @IBAction func btnDone_Click(sender: AnyObject) {
         self.navigationController?.popViewControllerAnimated(true)
     }
+    
+    @IBAction func btnDirections_Click(sender: AnyObject) {
+        let pm = MKPlacemark(coordinate: self.geocoderInfo.coordinate!, addressDictionary: nil)
+        let mapItem = MKMapItem(placemark: pm)
+        mapItem.name = self.geocoderInfo.address
+        let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
+        mapItem.openInMapsWithLaunchOptions(launchOptions)
+    }
 }
