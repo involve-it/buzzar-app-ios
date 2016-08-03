@@ -18,5 +18,16 @@ class PostsTableViewCell: UITableViewCell{
     @IBOutlet weak var txtPostDistance: UILabel!
     @IBOutlet weak var imgPostType: UIImageView!
     
+    //my posts
+    @IBOutlet weak var imgViewCountPost: UIImageView!
+    @IBOutlet weak var txtViewCountPost: UILabel!
+    @IBOutlet weak var imgPostTypeLocation: UIImageView!
+    @IBOutlet weak var viewUIPostcategory: UIView!
+    @IBOutlet weak var txtPostCategory: UILabel!
+    @IBOutlet weak var txtExpiresPostLabel: UILabel!
+    @IBOutlet weak var txtExpiresPostCount: UILabel!
     
+    @IBOutlet weak var imgSeparatorFromViewCount: UIImageView!
+    @IBOutlet weak var imgSeparatorFromViewUI: UIImageView!
+    @IBOutlet weak var imgSeparatorFromExpiresPostLabel: UIImageView!
 }

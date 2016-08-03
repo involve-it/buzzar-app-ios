@@ -40,7 +40,7 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
     @IBOutlet weak var txtPostLocationFormattedAddress: UILabel!
     @IBOutlet weak var postType: UIButton!
     @IBOutlet weak var avatarUser: UIImageView!
-    
+    @IBOutlet weak var txtPostDateExpires: UILabel!
     @IBOutlet weak var cellMap: UITableViewCell!
     @IBAction func btnSendMessage_Click(sender: AnyObject) {
         let alertController = UIAlertController(title: "New message", message: nil, preferredStyle: .Alert);
@@ -126,6 +126,9 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
         
         //Post Created
         txtPostCreated.text = post.timestamp?.toLocalizedString()
+        
+        //Post Date Expires
+        txtPostDateExpires.text = post.endDate?.toLeftExpiresDatePost(innerPost: true)
         
         //Post Distance
         txtPostDistance.text = post.outDistancePost

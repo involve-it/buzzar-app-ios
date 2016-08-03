@@ -147,6 +147,37 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         
         cell.txtTitle.text = post.title;
         cell.txtDetails.text = post.descr;
+        
+        //Post views
+        if let txtViewCountPost = post.seenTotal {
+            cell.txtViewCountPost.text = String(txtViewCountPost)
+            cell.imgViewCountPost.hidden = false
+            cell.imgSeparatorFromViewCount.hidden = false
+        } else {
+            cell.txtViewCountPost.text = ""
+            cell.imgViewCountPost.hidden = true
+            cell.imgSeparatorFromViewCount.hidden = true
+        }
+        
+        //Post type location
+        if let locations = post.locations {
+            for location in locations {
+                if location.placeType! == .Dynamic {
+                    //Post Dynamic
+                    let typeImage = (post.isLive()) ? "PostCell_Dynamic_Live" : "PostCell_Dynamic"
+                    cell.imgPostTypeLocation.image = UIImage(named: typeImage)
+                    break
+                } else {
+                    //Post Static
+                    let typeImage = (post.isLive()) ? "PostCell_Static_Live" : "PostCell_Static"
+                    cell.imgPostTypeLocation.image = UIImage(named: typeImage)
+                }
+            }
+        }
+        
+        //Post expires
+        cell.txtExpiresPostCount.text = post.endDate?.toLeftExpiresDatePost(innerPost: false)
+        
         if let price = post.price where post.price != "" {
             cell.txtPrice.text = "$\(price)";
         } else {

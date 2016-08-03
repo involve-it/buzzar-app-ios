@@ -41,7 +41,7 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.localLocationsIsEmpty()
+        self.updateUiElementsInLocation()
     }
     
     func currentLocationReported(notification: NSNotification){
@@ -71,7 +71,7 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
                 self.post.locations!.removeAtIndex(index)
             }
             
-            localLocationsIsEmpty()
+            updateUiElementsInLocation()
         }
         
     }
@@ -92,7 +92,7 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
                 */
             }
             
-            localLocationsIsEmpty()
+            updateUiElementsInLocation()
         }
         
     }
@@ -161,7 +161,7 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
             }
         }
         
-        localLocationsIsEmpty()
+        updateUiElementsInLocation()
     }
     
     func locationSelected(location: CLLocationCoordinate2D?, address: String?) {
@@ -180,11 +180,11 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
             self.post.locations!.append(loc)
         }
         
-        localLocationsIsEmpty()
+        updateUiElementsInLocation()
 
     }
     
-    func localLocationsIsEmpty() {
+    func updateUiElementsInLocation() {
         var labelLocation = self.labeDetermineLocationText
         var hasStaticLocation = false
         

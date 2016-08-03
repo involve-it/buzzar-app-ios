@@ -24,6 +24,36 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pushRegistrationFailed), name: NotificationManager.Name.PushRegistrationFailed.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateLoggedIn), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        
+        //buttonCreatePost()
+        
+    }
+    
+    
+    
+    //Custom button CreatePost
+    func buttonCreatePost() {
+        let createPostItemWidth = self.view.frame.size.width / 5
+        let createPostItemHeight = self.tabBar.frame.size.height
+        let createPostButton = UIButton(frame: CGRectMake(createPostItemWidth * 2, self.view.frame.size.height - createPostItemHeight, createPostItemWidth, createPostItemHeight))
+        createPostButton.setBackgroundImage(UIImage(named: "createPostButton.png"), forState: .Normal)
+        createPostButton.adjustsImageWhenHighlighted = false
+        createPostButton.addTarget(self, action: #selector(createPostAdd), forControlEvents: .TouchUpInside)
+        self.view.addSubview(createPostButton)
+    }
+    
+    func createPostAdd(sender: UIButton) {
+        //self.selectedIndex = 2
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        var controller: UIViewController
+        if AccountHandler.Instance.isLoggedIn(){
+            controller = storyboard.instantiateViewControllerWithIdentifier("addPost");
+        } else {
+            controller = storyboard.instantiateViewControllerWithIdentifier("loginNavigationController");
+        }
+        self.presentViewController(controller, animated: true, completion: nil)
+        
     }
     
     func updateLoggedIn(){
@@ -42,7 +72,11 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    
+    
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+
+        
         if viewController.title == "addPostPlaceholder" {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             var controller: UIViewController

@@ -47,6 +47,40 @@ extension NSDate {
         dateFormatter.locale = locale
         return dateFormatter.stringFromDate(self)
     }
+    
+    func toLeftExpiresDatePost(innerPost inner: Bool) -> String {
+        let output: String?
+        let dateFormatter = NSDateFormatter()
+        let locale = NSLocale.currentLocale()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ssZZZZ"
+        dateFormatter.locale = locale
+        
+        let dateToday = NSDate()
+        let endDate = self
+        
+        let dateComponentsFormatter = NSDateComponentsFormatter()
+        dateComponentsFormatter.unitsStyle = .Full
+    
+        dateComponentsFormatter.allowedUnits = [
+            NSCalendarUnit.Year,
+            NSCalendarUnit.Month,
+            NSCalendarUnit.Day,
+            NSCalendarUnit.Hour,
+            NSCalendarUnit.Minute
+        ]
+        
+        let date = dateComponentsFormatter.stringFromDate(dateToday, toDate: endDate)!
+        let formatterArrayWithDate = date.componentsSeparatedByString(",")
+        
+        if inner {
+            output = formatterArrayWithDate[0]
+        } else {
+            output = (formatterArrayWithDate.count > 2) ? formatterArrayWithDate[0...1].joinWithSeparator(", ") : formatterArrayWithDate[0]
+        }
+        
+        return output!
+    }
+    
 }
 
 extension NSData {
