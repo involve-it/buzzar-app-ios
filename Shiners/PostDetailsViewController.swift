@@ -2,7 +2,7 @@
 //  PostDetailsViewController.swift
 //  Shiners
 //
-//  Created by Вячеслав on 7/20/16.
+//  Created by Вячеслав on 7/30/16.
 //  Copyright © 2016 Involve IT, Inc. All rights reserved.
 //
 
@@ -10,7 +10,12 @@ import UIKit
 import MapKit
 import CoreLocation
 
-public class PostDetailsViewController: UITableViewController, MKMapViewDelegate, UIViewControllerPreviewingDelegate {
+let cssStyle = "<style> h2 {color:red} p {font-size:10pt;}  </style>"
+
+public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMapViewDelegate, UIViewControllerPreviewingDelegate {
+    
+    
+    @IBOutlet weak var webviewHeightConstraint: NSLayoutConstraint!
     
     public var post: Post!
     private var imagesScrollViewDelegate:ImagesScrollViewDelegate!;
@@ -31,8 +36,9 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
     //Page control for svImage
     @IBOutlet weak var pageControl: UIPageControl!
     
-    @IBOutlet weak var txtDetails: UILabel!
+    @IBOutlet weak var postDescription: UIWebView!
     @IBOutlet weak var txtTitle: UILabel!
+    @IBOutlet weak var txtPostDateExpires: UILabel!
     @IBOutlet weak var txtViews: UILabel!
     @IBOutlet weak var txtUsername: UILabel!
     @IBOutlet weak var txtPostCreated: UILabel!
@@ -40,8 +46,7 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
     @IBOutlet weak var txtPostLocationFormattedAddress: UILabel!
     @IBOutlet weak var postType: UIButton!
     @IBOutlet weak var avatarUser: UIImageView!
-    @IBOutlet weak var txtPostDateExpires: UILabel!
-    @IBOutlet weak var cellMap: UITableViewCell!
+    
     @IBAction func btnSendMessage_Click(sender: AnyObject) {
         let alertController = UIAlertController(title: "New message", message: nil, preferredStyle: .Alert);
         
@@ -67,7 +72,7 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
         alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: {action in
             alertController.resignFirstResponder()
         }));
-        self.presentViewController(alertController, animated: true) { 
+        self.presentViewController(alertController, animated: true) {
             alertController.textFields![0].becomeFirstResponder()
         }
     }
@@ -79,7 +84,10 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
     }
     
     public override func viewDidLoad() {
-        self.cellMap.selectionStyle = .None
+        super.viewDidLoad()
+
+        self.postDescription.delegate = self
+        
         self.navigationItem.title = post?.title
         
         //Title
@@ -87,42 +95,47 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
         self.txtTitle.sizeToFit()
         
         //Description
-        self.txtDetails.text = post?.descr
-        self.txtDetails.sizeToFit()
+        self.postDescription.scrollView.scrollEnabled = false
+        if let htmlString = post?.descr {
+            self.postDescription.loadHTMLString(cssStyle + htmlString, baseURL: nil)
+        } else {
+            self.postDescription.loadHTMLString("", baseURL: nil)
+        }
         
         //Username
         if let username = post.user?.username {
             self.txtUsername.text = username
         }
-        avatarUser.contentMode = .ScaleToFill
+        
+        //Avatar image
+        self.avatarUser.contentMode = .ScaleToFill
         if let avatarUrlString = post.user?.imageUrl{
             if ImageCachingHandler.Instance.getImageFromUrl(avatarUrlString, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
-                ThreadHelper.runOnMainThread({ 
+                ThreadHelper.runOnMainThread({
                     self.avatarUser.image = image
                 })
             }){
-                avatarUser.image = ImageCachingHandler.defaultAccountImage
+                self.avatarUser.image = ImageCachingHandler.defaultAccountImage
             }
         } else {
-            avatarUser.image = ImageCachingHandler.defaultAccountImage
+            self.avatarUser.image = ImageCachingHandler.defaultAccountImage
         }
         
+        //Seen total
         var views = ""
         
-        //Seen total
         if let seenTotal = post?.seenTotal {
             views = views + "\(seenTotal)";
         }
         
-        /*
-         //Seen today
-        if let seenToday = post?.seenToday{
-            views+=" Today: \(seenToday)";
-        }
-        */
-        
         self.txtViews.text = views;
         
+        /*
+         //Seen today
+         if let seenToday = post?.seenToday{
+         views+=" Today: \(seenToday)";
+         }
+         */
         
         //Post Created
         txtPostCreated.text = post.timestamp?.toLocalizedString()
@@ -191,7 +204,7 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
                             })
                         }
                         
-                        ThreadHelper.runOnMainThread({ 
+                        ThreadHelper.runOnMainThread({
                             if let formattedAddress = placemark.addressDictionary!["FormattedAddressLines"] {
                                 let allResults = (formattedAddress as! [String]).joinWithSeparator(", ")
                                 self.txtPostLocationFormattedAddress.text = allResults
@@ -208,10 +221,10 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
         
         //POST TYPE
         if let txtPostType = post.type?.rawValue {
-                postType.setTitle(txtPostType, forState: .Normal)
+            postType.setTitle(txtPostType, forState: .Normal)
         }
         
-       
+        
         //Page Conrol
         self.pageControl.numberOfPages = (post?.photos?.count)!
         self.pageControl.currentPage = 0
@@ -236,17 +249,19 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
         if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
+        
+        
     }
     
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
-        guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
+        //guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
+        //guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
         
         guard let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("fullMap") as? FullMapViewController else {return nil}
         viewController.geocoderInfo = GeocoderInfo()
         viewController.geocoderInfo.address = self.postLocationDisplayed!.name
         viewController.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
-        previewingContext.sourceRect = cell.frame
+        previewingContext.sourceRect = self.postMapLocation.frame
         
         return viewController
     }
@@ -254,35 +269,12 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
     public func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
         self.showViewController(viewControllerToCommit, sender: self)
     }
-    
+
     func updateScrollView(){
         let urls = post?.photos?.filter({ $0.original != nil }).map({ $0.original! });
         self.imagesScrollViewDelegate.setupScrollView(urls);
     }
     
-    /*public override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        
-      
-         if indexPath.row == 0 {
-            return 260;
-        } else if indexPath.row == 1 {
-            if (txtViews.text?.characters.count > 0) {
-                return 52;
-            } else {
-                return 0;
-            }
-        } else if (indexPath.row == 3){
-            if let height = post?.descr?.heightWithConstrainedWidth(self.view.frame.width - 16, font: self.txtDetails.font){
-                return max(height, 60);
-            } else {
-                return 0
-            }
-        } else {
-            return 150;
-        }
-        
-    }*/
- 
     public override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
         if identifier == "fullMapSegue"{
             return self.postLocationDisplayed != nil && self.postLocationDisplayed!.lat != nil && self.postLocationDisplayed!.lng != nil
@@ -291,6 +283,13 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
         }
     }
     
+    //After load content
+    public func webViewDidFinishLoad(webView: UIWebView) {
+        let contentSize = self.postDescription.scrollView.contentSize.height
+        self.webviewHeightConstraint.constant = contentSize
+    }
+    
+    //fullMapSegue
     
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "editPost"{
@@ -304,4 +303,6 @@ public class PostDetailsViewController: UITableViewController, MKMapViewDelegate
             vc.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
         }
     }
+    
+
 }

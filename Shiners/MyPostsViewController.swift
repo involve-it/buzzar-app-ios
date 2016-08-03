@@ -50,7 +50,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
         guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
-        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("myPostDetails") as? MyPostDetailsViewController
+        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("myPostDetails") as? PostDetailsViewController
         
         let post = myPosts[indexPath.row];
         viewController?.post = post
@@ -204,7 +204,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
     
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "myPostDetails"){
-            let vc:MyPostDetailsViewController = segue.destinationViewController as! MyPostDetailsViewController;
+            let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
             let index = self.tableView.indexPathForSelectedRow!.row;
             let post = myPosts[index];
             vc.post = post;
