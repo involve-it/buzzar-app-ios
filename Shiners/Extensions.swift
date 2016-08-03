@@ -48,7 +48,7 @@ extension NSDate {
         return dateFormatter.stringFromDate(self)
     }
     
-    func toLeftExpiresDatePost(innerPost inner: Bool) -> String {
+    func toLeftExpiresDatePost() -> String {
         let output: String?
         let dateFormatter = NSDateFormatter()
         let locale = NSLocale.currentLocale()
@@ -72,11 +72,7 @@ extension NSDate {
         let date = dateComponentsFormatter.stringFromDate(dateToday, toDate: endDate)!
         let formatterArrayWithDate = date.componentsSeparatedByString(",")
         
-        if inner {
-            output = formatterArrayWithDate[0]
-        } else {
-            output = (formatterArrayWithDate.count > 2) ? formatterArrayWithDate[0...1].joinWithSeparator(", ") : formatterArrayWithDate[0]
-        }
+        output = formatterArrayWithDate[0]
         
         return output!
     }

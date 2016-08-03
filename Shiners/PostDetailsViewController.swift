@@ -18,6 +18,8 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     @IBOutlet weak var webviewHeightConstraint: NSLayoutConstraint!
     
     public var post: Post!
+    public var isOwnPost:Bool!
+    
     private var imagesScrollViewDelegate:ImagesScrollViewDelegate!;
     var postLocationDisplayed: Location?
     
@@ -46,6 +48,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     @IBOutlet weak var txtPostLocationFormattedAddress: UILabel!
     @IBOutlet weak var postType: UIButton!
     @IBOutlet weak var avatarUser: UIImageView!
+    @IBOutlet weak var btnSendMessage: UIButton!
     
     @IBAction func btnSendMessage_Click(sender: AnyObject) {
         let alertController = UIAlertController(title: "New message", message: nil, preferredStyle: .Alert);
@@ -89,6 +92,12 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         self.postDescription.delegate = self
         
         self.navigationItem.title = post?.title
+        
+        //Check UserId & Post's user id
+        if self.post.user?.id != nil && AccountHandler.Instance.currentUser?.id != nil && (self.post.user?.id)! != (AccountHandler.Instance.currentUser?.id)! {
+            self.isOwnPost = true
+        }
+        self.btnSendMessage.hidden = (self.isOwnPost == true) ? false : true
         
         //Title
         self.txtTitle.text = post?.title
@@ -141,7 +150,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         txtPostCreated.text = post.timestamp?.toLocalizedString()
         
         //Post Date Expires
-        txtPostDateExpires.text = post.endDate?.toLeftExpiresDatePost(innerPost: true)
+        txtPostDateExpires.text = post.endDate?.toLeftExpiresDatePost()
         
         //Post Distance
         txtPostDistance.text = post.outDistancePost

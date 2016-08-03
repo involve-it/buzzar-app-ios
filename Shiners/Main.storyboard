@@ -2729,6 +2729,7 @@
                     <connections>
                         <outlet property="avatarUser" destination="mLP-KT-8za" id="7my-qM-bo4"/>
                         <outlet property="btnEdit" destination="WFp-JO-tJy" id="NUX-c4-qnf"/>
+                        <outlet property="btnSendMessage" destination="FGm-Rk-EmS" id="Su7-ie-VOd"/>
                         <outlet property="gradientView" destination="REm-Uk-WRJ" id="vmc-eq-KxN"/>
                         <outlet property="pageControl" destination="h3g-dN-zvx" id="fHc-ey-W7c"/>
                         <outlet property="postDescription" destination="Jsc-SN-pA4" id="gJc-OY-meQ"/>
@@ -3925,6 +3926,6 @@
         <image name="vk.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="EKW-F4-b1d"/>
+        <segue reference="gVm-sN-Epi"/>
     </inferredMetricsTieBreakers>
 </document>

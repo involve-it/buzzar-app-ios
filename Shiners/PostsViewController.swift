@@ -46,6 +46,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
                 post.outDistancePost = post.getDistanceFormatted(curLocation)
             }
             
+            vc.isOwnPost = false
             vc.post = post;
         } else if (segue.identifier == "searchSegue"){
             self.searchViewController = segue.destinationViewController as? NewSearchViewController

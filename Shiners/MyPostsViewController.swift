@@ -151,12 +151,8 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         //Post views
         if let txtViewCountPost = post.seenTotal {
             cell.txtViewCountPost.text = String(txtViewCountPost)
-            cell.imgViewCountPost.hidden = false
-            cell.imgSeparatorFromViewCount.hidden = false
         } else {
-            cell.txtViewCountPost.text = ""
-            cell.imgViewCountPost.hidden = true
-            cell.imgSeparatorFromViewCount.hidden = true
+            cell.txtViewCountPost.text = "0"
         }
         
         //Post type location
@@ -176,7 +172,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         }
         
         //Post expires
-        cell.txtExpiresPostCount.text = post.endDate?.toLeftExpiresDatePost(innerPost: false)
+        cell.txtExpiresPostCount.text = post.endDate?.toLeftExpiresDatePost()
         
         if let price = post.price where post.price != "" {
             cell.txtPrice.text = "$\(price)";
@@ -207,6 +203,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
             let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
             let index = self.tableView.indexPathForSelectedRow!.row;
             let post = myPosts[index];
+            vc.isOwnPost = false
             vc.post = post;
         }
     }
