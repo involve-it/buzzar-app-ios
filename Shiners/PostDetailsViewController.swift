@@ -279,15 +279,18 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         //guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
         //guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
-        
-        guard let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("fullMap") as? FullMapViewController else {return nil}
-        
-        viewController.geocoderInfo = GeocoderInfo()
-        viewController.geocoderInfo.address = self.postLocationDisplayed!.name
-        viewController.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
-        previewingContext.sourceRect = self.postMapLocation.frame
-        
-        return viewController
+        if CGRectContainsPoint(self.postMapLocation.superview!.frame, location){
+            guard let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("fullMap") as? FullMapViewController else {return nil}
+            
+            viewController.geocoderInfo = GeocoderInfo()
+            viewController.geocoderInfo.address = self.postLocationDisplayed!.name
+            viewController.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
+            previewingContext.sourceRect = self.postMapLocation.frame
+            
+            return viewController
+        } else {
+            return nil
+        }
     }
     
     public override func viewWillAppear(animated: Bool) {
