@@ -107,7 +107,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         self.navigationItem.title = post?.title
         
         //Check UserId & Post's user id
-        self.btnSendMessage.hidden = !self.isOwnPost
+        self.btnSendMessage.hidden = self.isOwnPost
         
         //Title
         self.txtTitle.text = post?.title
