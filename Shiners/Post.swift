@@ -131,6 +131,14 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
             }
         }
         
+        if let statusFields = fields?.valueForKey(PropertyKey.status) as? NSDictionary{
+            if let visible = statusFields.valueForKey(PropertyKey.visible) as? String where visible == PropertyKey.visible {
+                self.visible = true
+            } else {
+                self.visible = false
+            }
+        }
+        
         if let userFields = fields?.valueForKey(PropertyKey.user) as? NSDictionary {
             self.user = User(fields: userFields)
         }
@@ -266,7 +274,7 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
             details[PropertyKey.photos] = photosArray
         }
         dict[PropertyKey.details] = details
-        if let _ = self.visible {
+        if let visible = self.visible where visible {
             dict[PropertyKey.status] = [PropertyKey.visible: PropertyKey.visible]
         }
         

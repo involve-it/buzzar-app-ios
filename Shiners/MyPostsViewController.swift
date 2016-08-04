@@ -221,12 +221,31 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         return true
     }
     
-    public override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
-        return .Delete
-    }
-    
-    override public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    public override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        var actions = [UITableViewRowAction]()
+        
+        let post = self.myPosts[indexPath.row]
+        let title = (post.visible ?? false) ? "Hide" : "Show"
+        
+        var button = UITableViewRowAction(style: .Normal, title: title) { (action, indexPath) in
+            print(title)
+            let post = self.myPosts[indexPath.row]
+            post.visible = !(post.visible ?? false)
+            self.tableView.editing = false
+            ConnectionHandler.Instance.posts.editPost(post, callback: { (success, errorId, errorMessage, result) in
+                if success {
+                    self.tableView.rectForRowAtIndexPath(indexPath)
+                } else {
+                    self.showAlert("Error", message: errorMessage)
+                }
+            })
+        }
+        
+        actions.append(button)
+        
+        button = UITableViewRowAction(style: .Destructive, title: "Delete") { (action, indexPath) in
+            print("delete")
+            //self.tableView.editing = false
             let post = self.myPosts[indexPath.row]
             ConnectionHandler.Instance.posts.deletePost(post.id!) { success, errorId, errorMessage, result in
                 if success {
@@ -242,5 +261,9 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
                 }
             }
         }
+        
+        actions.append(button)
+        
+        return actions
     }
 }
