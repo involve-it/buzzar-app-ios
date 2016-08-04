@@ -1023,7 +1023,7 @@
         <scene sceneID="M19-Uq-xoM">
             <objects>
                 <tableViewController id="aTM-NK-Z2c" customClass="MyPostsViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="94" sectionHeaderHeight="28" sectionFooterHeight="28" id="bOL-eo-rwW">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="94" sectionHeaderHeight="28" sectionFooterHeight="28" id="bOL-eo-rwW">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1263,7 +1263,6 @@
                                 <segue destination="pxY-TO-wJC" kind="presentation" id="DWx-l0-Aia"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="HQu-4q-9XE"/>
                     </navigationItem>
                     <connections>
                         <segue destination="IKf-YR-aAu" kind="unwind" unwindAction="unwindMyPosts:" id="ZmA-Yc-OW5"/>
@@ -3929,6 +3928,6 @@
         <image name="vk.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="EKW-F4-b1d"/>
+        <segue reference="gVm-sN-Epi"/>
     </inferredMetricsTieBreakers>
 </document>

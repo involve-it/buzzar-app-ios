@@ -45,6 +45,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
+        self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
@@ -76,6 +77,10 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
     
     @IBAction func unwindMyPosts(segue: UIStoryboardSegue){
         
+    }
+    
+    @IBAction func btnEdit_Click(sender: AnyObject) {
+        self.tableView.setEditing(true, animated: true)
     }
     
     func checkPending(){
@@ -198,6 +203,10 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         return cell
     }
     
+    public override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        return !self.tableView.editing
+    }
+    
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "myPostDetails"){
             let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
@@ -210,6 +219,10 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
    
     public override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
+    }
+    
+    public override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        return .Delete
     }
     
     override public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
