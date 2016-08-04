@@ -28,6 +28,7 @@ class FullMapViewController: UIViewController, MKMapViewDelegate{
     }
     @IBAction func btnDone_Click(sender: AnyObject) {
         self.navigationController?.popViewControllerAnimated(true)
+        //self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func btnDirections_Click(sender: AnyObject) {

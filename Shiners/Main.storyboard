@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VYZ-AR-MXX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VYZ-AR-MXX">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -784,7 +784,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8dx-4z-YU8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7206" y="-548"/>
+            <point key="canvasLocation" x="8018" y="-548"/>
         </scene>
         <!--Post Description-->
         <scene sceneID="Rfs-SL-8aU">
@@ -803,7 +803,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Xv-1g-U2p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8658" y="-1033"/>
+            <point key="canvasLocation" x="9470" y="-1033"/>
         </scene>
         <!--Choose Static Location-->
         <scene sceneID="0Km-HZ-4Hk">
@@ -842,7 +842,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wx1-RW-oJS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7928" y="-528"/>
+            <point key="canvasLocation" x="8740" y="-528"/>
         </scene>
         <!--Select-->
         <scene sceneID="4X6-Xs-CA6">
@@ -1300,7 +1300,7 @@
         <!--Full Map View Controller-->
         <scene sceneID="cts-EM-56q">
             <objects>
-                <viewController storyboardIdentifier="fullMap" id="9qC-0K-l1W" customClass="FullMapViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="fullMap" hidesBottomBarWhenPushed="YES" id="9qC-0K-l1W" customClass="FullMapViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5hm-cU-o7t"/>
                         <viewControllerLayoutGuide type="bottom" id="JhK-st-TpC"/>
@@ -2276,7 +2276,7 @@
         <!--My Post Details-->
         <scene sceneID="zDa-HI-iVV">
             <objects>
-                <viewController storyboardIdentifier="myPostDetails" title="My Post Details" id="Qd9-Zx-awU" customClass="PostDetailsViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="postDetails" title="My Post Details" hidesBottomBarWhenPushed="YES" id="Qd9-Zx-awU" customClass="PostDetailsViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SuK-eh-Ug1"/>
                         <viewControllerLayoutGuide type="bottom" id="rCk-Fz-E0i"/>
@@ -2518,10 +2518,12 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GpT-k4-fsM" userLabel="Map View">
                                                 <rect key="frame" x="0.0" y="485" width="600" height="180"/>
                                                 <subviews>
-                                                    <mapView clipsSubviews="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m0y-pb-GOa">
+                                                    <mapView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m0y-pb-GOa">
                                                         <rect key="frame" x="0.0" y="0.0" width="600" height="180"/>
+                                                        <gestureRecognizers/>
                                                         <connections>
                                                             <outlet property="delegate" destination="Qd9-Zx-awU" id="2Yc-oU-6WR"/>
+                                                            <outletCollection property="gestureRecognizers" destination="P7E-82-Xr3" appends="YES" id="xoy-7z-KOp"/>
                                                         </connections>
                                                     </mapView>
                                                 </subviews>
@@ -2750,6 +2752,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xmu-6d-iTJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="IKf-YR-aAu" userLabel="Exit" sceneMemberID="exit"/>
+                <tapGestureRecognizer id="P7E-82-Xr3"/>
             </objects>
             <point key="canvasLocation" x="1438" y="-733"/>
         </scene>
@@ -3790,7 +3793,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Idr-vb-Vuy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6353" y="-682"/>
+            <point key="canvasLocation" x="7165" y="-682"/>
         </scene>
         <!--Choose Static Location-->
         <scene sceneID="E8x-K9-neD">
@@ -3829,7 +3832,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X9S-gx-Cyw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4729" y="-643"/>
+            <point key="canvasLocation" x="5541" y="-643"/>
         </scene>
         <!--Post Description-->
         <scene sceneID="0Fd-KA-ZUC">
@@ -3926,6 +3929,6 @@
         <image name="vk.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gVm-sN-Epi"/>
+        <segue reference="EKW-F4-b1d"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -18,7 +18,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     @IBOutlet weak var webviewHeightConstraint: NSLayoutConstraint!
     
     public var post: Post!
-    public var isOwnPost:Bool!
+    public var isOwnPost = false
     
     private var imagesScrollViewDelegate:ImagesScrollViewDelegate!;
     var postLocationDisplayed: Location?
@@ -50,6 +50,16 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     @IBOutlet weak var avatarUser: UIImageView!
     @IBOutlet weak var btnSendMessage: UIButton!
     
+    func map_Clicked(sender: AnyObject) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let vc = storyboard.instantiateViewControllerWithIdentifier("fullMap") as? FullMapViewController else { return }
+        
+        vc.geocoderInfo = GeocoderInfo()
+        vc.geocoderInfo.address = self.postLocationDisplayed!.name
+        vc.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
+        
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     @IBAction func btnSendMessage_Click(sender: AnyObject) {
         let alertController = UIAlertController(title: "New message", message: nil, preferredStyle: .Alert);
         
@@ -88,16 +98,16 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let gestureRecognizer = self.postMapLocation.gestureRecognizers![0]
+        gestureRecognizer.addTarget(self, action: #selector(map_Clicked))
 
         self.postDescription.delegate = self
         
         self.navigationItem.title = post?.title
         
         //Check UserId & Post's user id
-        if self.post.user?.id != nil && AccountHandler.Instance.currentUser?.id != nil && (self.post.user?.id)! != (AccountHandler.Instance.currentUser?.id)! {
-            self.isOwnPost = true
-        }
-        self.btnSendMessage.hidden = (self.isOwnPost == true) ? false : true
+        self.btnSendMessage.hidden = !self.isOwnPost
         
         //Title
         self.txtTitle.text = post?.title
@@ -158,7 +168,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         //MAP
         self.postMapLocation.zoomEnabled = false;
         self.postMapLocation.scrollEnabled = false;
-        self.postMapLocation.userInteractionEnabled = false;
+        //self.postMapLocation.userInteractionEnabled = false;
         
         //POST LOCATION
         if let postCoordinateLocation = post.locations {
@@ -191,11 +201,11 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             if let postLoc = postLocation, lat = postLoc.lat, lng = postLoc.lng {
                 self.postMapLocation.hidden = false
                 let location = CLLocation(latitude: lat, longitude: lng)
-                let annotation = MKPointAnnotation()
-                annotation.coordinate = location.coordinate
-                annotation.title = postLoc.name
-                self.postMapLocation.showAnnotations([annotation], animated: false)
-                self.postMapLocation.selectAnnotation(annotation, animated: false)
+                self.annotation = MKPointAnnotation()
+                self.annotation!.coordinate = location.coordinate
+                self.annotation!.title = postLoc.name
+                self.postMapLocation.showAnnotations([self.annotation!], animated: false)
+                self.postMapLocation.selectAnnotation(self.annotation!, animated: false)
                 
                 geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error in
                     if error != nil {
@@ -209,7 +219,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                         if let name = placemark.name {
                             self.postLocationDisplayed?.name = name
                             ThreadHelper.runOnMainThread({
-                                annotation.title = name
+                                self.annotation!.title = name
                             })
                         }
                         
@@ -225,7 +235,11 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                 })
             } else {
                 self.postMapLocation.hidden = true
+                self.txtPostLocationFormattedAddress.text = "Address is not defined"
             }
+        } else {
+            self.postMapLocation.hidden = true
+            self.txtPostLocationFormattedAddress.text = "Address is not defined"
         }
         
         //POST TYPE
@@ -267,6 +281,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         //guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
         
         guard let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("fullMap") as? FullMapViewController else {return nil}
+        
         viewController.geocoderInfo = GeocoderInfo()
         viewController.geocoderInfo.address = self.postLocationDisplayed!.name
         viewController.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
@@ -275,8 +290,17 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         return viewController
     }
     
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if let annotation = self.annotation{
+            self.postMapLocation.selectAnnotation(annotation, animated: false)
+        }
+    }
+    
     public func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
-        self.showViewController(viewControllerToCommit, sender: self)
+        //self.presentViewController(viewControllerToCommit.navigationController!, animated: true, completion: nil)
+        //self.showViewController(viewControllerToCommit, sender: self)
+        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
     }
 
     func updateScrollView(){
@@ -306,7 +330,8 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             let createVc = vc.viewControllers[0] as! NewPostViewController
             createVc.post = self.post
         } else if segue.identifier == "fullMapSegue"{
-            let vc = segue.destinationViewController as! FullMapViewController
+            let nc = segue.destinationViewController as! UINavigationController
+            let vc = nc.viewControllers[0] as! FullMapViewController
             vc.geocoderInfo = GeocoderInfo()
             vc.geocoderInfo.address = self.postLocationDisplayed!.name
             vc.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
