@@ -269,7 +269,7 @@ extension SearchPostsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if isLoading {
-            45
+            
             let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.loadingCell, forIndexPath: indexPath) as! LoadingCell
             let spinner = cell.loadingSpinner
             spinner.startAnimating()
