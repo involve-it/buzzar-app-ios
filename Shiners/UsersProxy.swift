@@ -44,7 +44,7 @@ public class UsersProxy{
             if (error == nil){
                 ResponseHelper.callHandler(result, handler: callback) as User?
             } else {
-                callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback(success: false, errorId: nil, errorMessage: error?.reason, result: nil)
             }
         };
     }
@@ -55,7 +55,7 @@ public class UsersProxy{
                 let errorId = ResponseHelper.getErrorId(result)
                 callback(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: user)
             } else {
-                callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback(success: false, errorId: nil, errorMessage: error?.reason, result: nil)
             }
         }
     }
@@ -66,7 +66,7 @@ public class UsersProxy{
                 let errorId = ResponseHelper.getErrorId(result);
                 callback(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
             } else {
-                callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback(success: false, errorId: nil, errorMessage: error?.reason, result: nil)
             }
         }
     }
