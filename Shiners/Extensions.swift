@@ -69,6 +69,12 @@ extension NSDate {
             NSCalendarUnit.Minute
         ]
         
+        //If endDate < Now -> return
+        if (endDate.timeIntervalSinceReferenceDate < dateToday.timeIntervalSinceReferenceDate) {
+            // postClosed()
+            return "post closed"
+        }
+        
         let date = dateComponentsFormatter.stringFromDate(dateToday, toDate: endDate)!
         let formatterArrayWithDate = date.componentsSeparatedByString(",")
         

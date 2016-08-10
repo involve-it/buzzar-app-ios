@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		6105C6EA1D3F958700E83D29 /* GradientViewPostDetailsScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6105C6E91D3F958700E83D29 /* GradientViewPostDetailsScrollView.swift */; };
+		6106710F1D54B40F007828BA /* SearchPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6106710E1D54B40F007828BA /* SearchPostsViewController.swift */; };
+		610671141D55FDED007828BA /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 610671131D55FDED007828BA /* SearchResultCell.xib */; };
+		610671161D560487007828BA /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610671151D560487007828BA /* SearchResultCell.swift */; };
+		610671181D565AA2007828BA /* NothingFoundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 610671171D565AA2007828BA /* NothingFoundCell.xib */; };
+		6106711C1D566DB3007828BA /* NothingFoundCellSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6106711B1D566DB3007828BA /* NothingFoundCellSettings.swift */; };
+		610671421D577312007828BA /* MoreFiltersSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610671411D577312007828BA /* MoreFiltersSearchViewController.swift */; };
+		610671541D588B48007828BA /* LoadingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 610671531D588B48007828BA /* LoadingCell.xib */; };
+		610671561D588B7A007828BA /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610671551D588B7A007828BA /* LoadingCell.swift */; };
+		610671A61D5A0927007828BA /* CVCellNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610671A41D5A0927007828BA /* CVCellNib.swift */; };
+		610671A71D5A0927007828BA /* CVCellNib.xib in Resources */ = {isa = PBXBuildFile; fileRef = 610671A51D5A0927007828BA /* CVCellNib.xib */; };
 		6117A5481D4C03EC009E12DB /* PostDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6117A5471D4C03EC009E12DB /* PostDetailsViewController.swift */; };
 		61C6F9071D3BED100030CC81 /* NewPostNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9021D3BED100030CC81 /* NewPostNewViewController.swift */; };
 		61C6F9081D3BED100030CC81 /* DescriptionPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9031D3BED100030CC81 /* DescriptionPostViewController.swift */; };
@@ -105,6 +115,16 @@
 /* Begin PBXFileReference section */
 		1F147896ADC1A887A2D48487 /* Pods-Shiners.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shiners.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Shiners/Pods-Shiners.debug.xcconfig"; sourceTree = "<group>"; };
 		6105C6E91D3F958700E83D29 /* GradientViewPostDetailsScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientViewPostDetailsScrollView.swift; sourceTree = "<group>"; };
+		6106710E1D54B40F007828BA /* SearchPostsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchPostsViewController.swift; sourceTree = "<group>"; };
+		610671131D55FDED007828BA /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
+		610671151D560487007828BA /* SearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
+		610671171D565AA2007828BA /* NothingFoundCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NothingFoundCell.xib; sourceTree = "<group>"; };
+		6106711B1D566DB3007828BA /* NothingFoundCellSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NothingFoundCellSettings.swift; sourceTree = "<group>"; };
+		610671411D577312007828BA /* MoreFiltersSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreFiltersSearchViewController.swift; sourceTree = "<group>"; };
+		610671531D588B48007828BA /* LoadingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCell.xib; sourceTree = "<group>"; };
+		610671551D588B7A007828BA /* LoadingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
+		610671A41D5A0927007828BA /* CVCellNib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCellNib.swift; sourceTree = "<group>"; };
+		610671A51D5A0927007828BA /* CVCellNib.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CVCellNib.xib; sourceTree = "<group>"; };
 		6117A5471D4C03EC009E12DB /* PostDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDetailsViewController.swift; sourceTree = "<group>"; };
 		61C6F9021D3BED100030CC81 /* NewPostNewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPostNewViewController.swift; sourceTree = "<group>"; };
 		61C6F9031D3BED100030CC81 /* DescriptionPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionPostViewController.swift; sourceTree = "<group>"; };
@@ -228,6 +248,31 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		610671101D54D834007828BA /* SearchPosts */ = {
+			isa = PBXGroup;
+			children = (
+				6106717B1D58F49A007828BA /* CollecationView */,
+				6106710E1D54B40F007828BA /* SearchPostsViewController.swift */,
+				610671411D577312007828BA /* MoreFiltersSearchViewController.swift */,
+				610671171D565AA2007828BA /* NothingFoundCell.xib */,
+				6106711B1D566DB3007828BA /* NothingFoundCellSettings.swift */,
+				610671131D55FDED007828BA /* SearchResultCell.xib */,
+				610671151D560487007828BA /* SearchResultCell.swift */,
+				610671531D588B48007828BA /* LoadingCell.xib */,
+				610671551D588B7A007828BA /* LoadingCell.swift */,
+			);
+			name = SearchPosts;
+			sourceTree = "<group>";
+		};
+		6106717B1D58F49A007828BA /* CollecationView */ = {
+			isa = PBXGroup;
+			children = (
+				610671A41D5A0927007828BA /* CVCellNib.swift */,
+				610671A51D5A0927007828BA /* CVCellNib.xib */,
+			);
+			name = CollecationView;
+			sourceTree = "<group>";
+		};
 		61C6F9011D3BEC150030CC81 /* wizard */ = {
 			isa = PBXGroup;
 			children = (
@@ -266,6 +311,7 @@
 			children = (
 				7B3565571CE922C500012CA9 /* Common */,
 				7BB2A7D71CCC18B000AD636D /* Posts */,
+				610671101D54D834007828BA /* SearchPosts */,
 				7BB2A7FF1CCD967300AD636D /* Settings */,
 				7B26B0931CD568B5000495EE /* Messages */,
 			);
@@ -524,16 +570,20 @@
 				7BC0A23D1CCC164100DA2824 /* lock_open.png in Resources */,
 				7BC0A23E1CCC164100DA2824 /* lock_closed.png in Resources */,
 				7BC0A2341CCC161A00DA2824 /* Main.storyboard in Resources */,
+				610671A71D5A0927007828BA /* CVCellNib.xib in Resources */,
 				7B26B1AB1CD6DE52000495EE /* cancel.png in Resources */,
 				7BC0A2431CCC164100DA2824 /* id-card.png in Resources */,
 				7BC0A2401CCC164100DA2824 /* 4e8d07ec-1f6d-a5d6-31d0-cc32f7305464.png in Resources */,
 				7BB2A8171CD53B9600AD636D /* facebook.png in Resources */,
+				610671181D565AA2007828BA /* NothingFoundCell.xib in Resources */,
 				7BC0A2411CCC164100DA2824 /* fdd6dfea-3666-5d7f-10ca-9dcac031634f.png in Resources */,
+				610671141D55FDED007828BA /* SearchResultCell.xib in Resources */,
 				7BC0A23F1CCC164100DA2824 /* 0cc95ddb-5d08-bb5b-4ab3-73ad6ca7eef4.png in Resources */,
 				7BB2A7F21CCD125800AD636D /* message.png in Resources */,
 				7BB2A7FA1CCD91CD00AD636D /* eye.png in Resources */,
 				7BB2A8191CD53BC200AD636D /* twitter.png in Resources */,
 				7BB2A81B1CD53BF500AD636D /* vk.png in Resources */,
+				610671541D588B48007828BA /* LoadingCell.xib in Resources */,
 				7BB2A7FE1CCD953B00AD636D /* show_offliners.png in Resources */,
 				7B26B0921CD567D9000495EE /* list_32.png in Resources */,
 			);
@@ -598,6 +648,7 @@
 				6105C6EA1D3F958700E83D29 /* GradientViewPostDetailsScrollView.swift in Sources */,
 				7B0B316D1CF10A8200029458 /* Photo.swift in Sources */,
 				7BB2A7E11CCC217C00AD636D /* PostsCollection.swift in Sources */,
+				610671161D560487007828BA /* SearchResultCell.swift in Sources */,
 				7B1C12421D0CCCE9001355AB /* MessagesProxy.swift in Sources */,
 				7BB2A7F41CCD17A000AD636D /* ImagesScrollViewDelegate.swift in Sources */,
 				7B3565611CE93E0800012CA9 /* CachingHandler.swift in Sources */,
@@ -626,6 +677,8 @@
 				7B3565501CE7D74400012CA9 /* NotificationManager.swift in Sources */,
 				7B26B0BD1CD65652000495EE /* KeyboardManager.swift in Sources */,
 				7BB2A7EC1CCC58D600AD636D /* ImageCachingHandler.swift in Sources */,
+				610671421D577312007828BA /* MoreFiltersSearchViewController.swift in Sources */,
+				6106711C1D566DB3007828BA /* NothingFoundCellSettings.swift in Sources */,
 				7B3565341CE18A5E00012CA9 /* RegisterUser.swift in Sources */,
 				7B3565521CE7DF5A00012CA9 /* PostsProxy.swift in Sources */,
 				7BB2A8011CCD96C000AD636D /* LogInViewController.swift in Sources */,
@@ -639,6 +692,7 @@
 				7B86FFD91D3BFAB7008343B3 /* PushNotificationsHandler.swift in Sources */,
 				7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */,
 				7B26B0951CD568CB000495EE /* MessagesViewController.swift in Sources */,
+				6106710F1D54B40F007828BA /* SearchPostsViewController.swift in Sources */,
 				7BB2A8031CCDA15500AD636D /* RegisterViewController.swift in Sources */,
 				7B35654E1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift in Sources */,
 				6117A5481D4C03EC009E12DB /* PostDetailsViewController.swift in Sources */,
@@ -649,8 +703,10 @@
 				7BC6BE5C1CFD060500664803 /* ValuePickerViewController.swift in Sources */,
 				7B3565591CE922DE00012CA9 /* NavigationControllerBase.swift in Sources */,
 				7BC0A2321CCC160C00DA2824 /* PostsViewController.swift in Sources */,
+				610671561D588B7A007828BA /* LoadingCell.swift in Sources */,
 				7B35655F1CE92C1F00012CA9 /* Reachability.swift in Sources */,
 				7B26B19F1CD688B7000495EE /* LocationHandler.swift in Sources */,
+				610671A61D5A0927007828BA /* CVCellNib.swift in Sources */,
 				7BB2A7E51CCC431700AD636D /* Image.swift in Sources */,
 				7BC1A9C81D50469B005B4F62 /* FullMapViewController.swift in Sources */,
 				7B26B08E1CD564E1000495EE /* MyPostsViewController.swift in Sources */,
@@ -777,7 +833,7 @@
 				INFOPLIST_FILE = Shiners/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app;
+				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -796,7 +852,7 @@
 				INFOPLIST_FILE = Shiners/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app;
+				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};

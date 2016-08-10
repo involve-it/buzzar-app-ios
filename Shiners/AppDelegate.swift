@@ -54,6 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
             self.handlePushNotification(notification)
         }
         
+        customizeApperance()
+        
         return true
     }
     
@@ -154,6 +156,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
     }
 
     
+    
+    func customizeApperance() {
+        
+        let barTintColor = UIColor(red: 0/255, green: 118/255, blue: 255/255, alpha: 1)
+        
+        //UISearchBar.appearance().tintColor = barTintColor
+        UISearchBar.appearance().barTintColor = barTintColor
+        window!.tintColor = UIColor(red: 0/255, green: 118/255, blue: 255/255, alpha: 1)
+    }
     
 }
 

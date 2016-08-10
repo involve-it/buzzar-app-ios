@@ -13,6 +13,7 @@ public class NewSearchViewController: UIViewController, UITableViewDelegate, UIT
     public var delegate: SearchViewControllerDelegate?
     
     @IBOutlet weak var tblSearchResults: UITableView!
+    
     public override func viewDidLoad() {
         self.tblSearchResults.delegate = self
         self.tblSearchResults.dataSource = self

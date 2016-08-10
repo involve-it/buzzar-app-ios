@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SearchResultCell" id="0xZ-XF-dWo" customClass="SearchResultCell" customModule="Shiners" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0xZ-XF-dWo" id="MO2-xL-8ga">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="searchResultPost" translatesAutoresizingMaskIntoConstraints="NO" id="5Uk-HR-Nd1">
+                        <rect key="frame" x="8" y="13" width="18" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="18" id="Adg-PI-ng1"/>
+                            <constraint firstAttribute="width" constant="18" id="ZE2-j0-M3j"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.Corenr.radius">
+                                <integer key="value" value="4"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item result" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="un3-E4-P55">
+                        <rect key="frame" x="34" y="11" width="278" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="5Uk-HR-Nd1" firstAttribute="top" secondItem="MO2-xL-8ga" secondAttribute="top" constant="2" id="4yI-nu-aDm"/>
+                    <constraint firstItem="5Uk-HR-Nd1" firstAttribute="centerY" secondItem="MO2-xL-8ga" secondAttribute="centerY" id="FuK-RI-MSQ"/>
+                    <constraint firstAttribute="trailing" secondItem="un3-E4-P55" secondAttribute="trailing" constant="8" id="G8n-5B-Ip3"/>
+                    <constraint firstItem="5Uk-HR-Nd1" firstAttribute="leading" secondItem="MO2-xL-8ga" secondAttribute="leading" constant="8" id="IBA-Ad-7OP"/>
+                    <constraint firstItem="5Uk-HR-Nd1" firstAttribute="centerY" secondItem="MO2-xL-8ga" secondAttribute="centerY" id="RaQ-zp-1nl"/>
+                    <constraint firstAttribute="bottom" secondItem="5Uk-HR-Nd1" secondAttribute="bottom" constant="2" id="jBw-e2-wsX"/>
+                    <constraint firstItem="un3-E4-P55" firstAttribute="leading" secondItem="5Uk-HR-Nd1" secondAttribute="trailing" constant="8" id="lj9-Lc-GgJ"/>
+                    <constraint firstItem="un3-E4-P55" firstAttribute="centerY" secondItem="MO2-xL-8ga" secondAttribute="centerY" id="pzv-mw-FKG"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="4yI-nu-aDm"/>
+                        <exclude reference="FuK-RI-MSQ"/>
+                        <exclude reference="jBw-e2-wsX"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="imgAtPost" destination="5Uk-HR-Nd1" id="ccb-nN-Ev2"/>
+                <outlet property="txtTitlePost" destination="un3-E4-P55" id="kWG-Ms-JNc"/>
+            </connections>
+            <point key="canvasLocation" x="32" y="521"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="searchResultPost" width="18" height="18"/>
+    </resources>
+</document>

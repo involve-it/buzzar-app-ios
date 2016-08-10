@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="290" id="TOi-hY-8D1" customClass="NothingFoundCellSettings" customModule="Shiners" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="290"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TOi-hY-8D1" id="SfQ-IO-ooJ">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="289"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconSearchNothingPosts" translatesAutoresizingMaskIntoConstraints="NO" id="V6L-dJ-RJl">
+                        <rect key="frame" x="124" y="25" width="72" height="72"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="72" id="2M3-zx-FAD"/>
+                            <constraint firstAttribute="width" constant="72" id="9jH-tz-KXU"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorry, we couldn't find any matching posts." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Ac-gj-UPp">
+                        <rect key="frame" x="28" y="117" width="264" height="39"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Try searching for something more general or expanding your search area." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="whq-k1-eEf">
+                        <rect key="frame" x="28" y="176" width="264" height="34"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tZm-ix-Cif">
+                        <rect key="frame" x="28" y="230" width="264" height="34"/>
+                        <attributedString key="attributedText">
+                            <fragment content="Don't see what you'r looking for?">
+                                <attributes>
+                                    <color key="NSColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                </attributes>
+                            </fragment>
+                            <fragment content=" ">
+                                <attributes>
+                                    <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                </attributes>
+                            </fragment>
+                            <fragment content="You can always add a new post.">
+                                <attributes>
+                                    <color key="NSColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                    <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                </attributes>
+                            </fragment>
+                        </attributedString>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HN1-MK-w7U" userLabel="Press - You can always add a new post">
+                        <rect key="frame" x="28" y="230" width="264" height="34"/>
+                        <connections>
+                            <action selector="pressTextYouCanAlways:" destination="TOi-hY-8D1" eventType="touchUpInside" id="Jth-aO-LbQ"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="tZm-ix-Cif" firstAttribute="centerX" secondItem="SfQ-IO-ooJ" secondAttribute="centerX" id="0Zo-H1-jMN"/>
+                    <constraint firstItem="whq-k1-eEf" firstAttribute="centerX" secondItem="SfQ-IO-ooJ" secondAttribute="centerX" id="534-wI-ABm"/>
+                    <constraint firstAttribute="trailing" secondItem="whq-k1-eEf" secondAttribute="trailing" constant="28" id="HIY-v2-ekm"/>
+                    <constraint firstItem="tZm-ix-Cif" firstAttribute="top" secondItem="whq-k1-eEf" secondAttribute="bottom" constant="20" id="Hxd-lQ-NIL"/>
+                    <constraint firstItem="HN1-MK-w7U" firstAttribute="top" secondItem="whq-k1-eEf" secondAttribute="bottom" constant="20" id="MtM-Cz-nwx"/>
+                    <constraint firstItem="7Ac-gj-UPp" firstAttribute="top" secondItem="V6L-dJ-RJl" secondAttribute="bottom" constant="20" id="NZp-Jb-hBe"/>
+                    <constraint firstItem="7Ac-gj-UPp" firstAttribute="centerX" secondItem="SfQ-IO-ooJ" secondAttribute="centerX" id="PQS-tv-amo"/>
+                    <constraint firstItem="V6L-dJ-RJl" firstAttribute="centerX" secondItem="SfQ-IO-ooJ" secondAttribute="centerX" id="PcY-KG-gxP"/>
+                    <constraint firstItem="V6L-dJ-RJl" firstAttribute="top" secondItem="SfQ-IO-ooJ" secondAttribute="top" constant="25" id="UJC-la-ZfB"/>
+                    <constraint firstItem="7Ac-gj-UPp" firstAttribute="leading" secondItem="SfQ-IO-ooJ" secondAttribute="leading" constant="28" id="WYC-xj-PmW"/>
+                    <constraint firstItem="tZm-ix-Cif" firstAttribute="leading" secondItem="SfQ-IO-ooJ" secondAttribute="leading" constant="28" id="Wvg-Fa-Qcm"/>
+                    <constraint firstItem="whq-k1-eEf" firstAttribute="leading" secondItem="SfQ-IO-ooJ" secondAttribute="leading" constant="28" id="j2s-0L-oDA"/>
+                    <constraint firstItem="HN1-MK-w7U" firstAttribute="leading" secondItem="SfQ-IO-ooJ" secondAttribute="leading" constant="28" id="p0x-Qg-cno"/>
+                    <constraint firstAttribute="trailing" secondItem="7Ac-gj-UPp" secondAttribute="trailing" constant="28" id="qcO-bH-0Qh"/>
+                    <constraint firstAttribute="trailing" secondItem="tZm-ix-Cif" secondAttribute="trailing" constant="28" id="rkr-kR-H6x"/>
+                    <constraint firstAttribute="trailing" secondItem="HN1-MK-w7U" secondAttribute="trailing" constant="28" id="te5-2J-pxm"/>
+                    <constraint firstAttribute="bottom" secondItem="tZm-ix-Cif" secondAttribute="bottom" constant="25" id="vwU-Di-Sgo"/>
+                    <constraint firstAttribute="bottom" secondItem="HN1-MK-w7U" secondAttribute="bottom" constant="25" id="w2C-wQ-1VK"/>
+                    <constraint firstItem="whq-k1-eEf" firstAttribute="top" secondItem="7Ac-gj-UPp" secondAttribute="bottom" constant="20" id="xNy-AK-8b8"/>
+                </constraints>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="-50" y="658"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="iconSearchNothingPosts" width="52" height="52"/>
+    </resources>
+</document>

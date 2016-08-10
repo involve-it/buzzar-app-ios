@@ -74,6 +74,12 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         super.viewWillAppear(animated)
         
         self.locationHandler.monitorSignificantLocationChanges()
+        
+        //Set background collor to default value
+        self.navigationController?.navigationBar.barTintColor = UIColor(white: 249/255, alpha: 1)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        self.navigationController?.navigationBar.shadowImage = nil
+        self.navigationController?.navigationBar.translucent = false
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -319,7 +325,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     func closeSearchView(){
         self.txtSearchBox.resignFirstResponder()
-        UIView.animateWithDuration(0.4, animations: {
+        UIView.animateWithDuration(0.25, animations: {
             self.segmFilter.alpha = 1
             self.txtSearchBox.alpha = 0
             self.searchView.alpha = 0
@@ -338,7 +344,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         self.view.addSubview(self.searchView)
         
         self.txtSearchBox.becomeFirstResponder()
-        UIView.animateWithDuration(0.4, animations: {
+        UIView.animateWithDuration(0.25, animations: {
             self.segmFilter.alpha = 0
             self.txtSearchBox.alpha = 1
             self.searchView.alpha = 1
@@ -350,10 +356,14 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     
     @IBAction func btnSearchClick(sender: AnyObject) {
+        
+        
+        
         if (self.segmFilter.alpha == 0){
             self.closeSearchView()
         } else {
             self.openSearchView()
         }
+        
     }
 }
