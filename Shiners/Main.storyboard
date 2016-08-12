@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VYZ-AR-MXX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VYZ-AR-MXX">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -203,7 +203,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="P4a-8e-ECL">
                             <connections>
                                 <action selector="btnSearchClick:" destination="4Vm-bU-Wpd" id="EHg-ZU-CvW"/>
-                                <segue destination="7n0-ct-Jvm" kind="show" identifier="searchSegue" id="lnY-n1-SvB"/>
+                                <segue destination="Pgw-1i-ZtI" kind="presentation" identifier="searchSegue" id="lnY-n1-SvB"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -783,7 +783,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8dx-4z-YU8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8830" y="-548"/>
+            <point key="canvasLocation" x="9642" y="-548"/>
         </scene>
         <!--Post Description-->
         <scene sceneID="Rfs-SL-8aU">
@@ -841,7 +841,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wx1-RW-oJS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9552" y="-528"/>
+            <point key="canvasLocation" x="10364" y="-528"/>
         </scene>
         <!--Select-->
         <scene sceneID="4X6-Xs-CA6">
@@ -1016,7 +1016,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rvE-sr-73J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5751" y="39"/>
+            <point key="canvasLocation" x="6563" y="39"/>
         </scene>
         <!--My Posts-->
         <scene sceneID="M19-Uq-xoM">
@@ -1353,7 +1353,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VxU-Bh-t8D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5088" y="39"/>
+            <point key="canvasLocation" x="5900" y="39"/>
         </scene>
         <!--Profile-->
         <scene sceneID="Isz-Bn-QR4">
@@ -2876,7 +2876,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Paq-t0-GL0">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Paq-t0-GL0">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -3015,7 +3015,7 @@
                     </connections>
                 </containerView>
             </objects>
-            <point key="canvasLocation" x="1763" y="193"/>
+            <point key="canvasLocation" x="2575" y="193"/>
         </scene>
         <!--More Filters Search View Controller-->
         <scene sceneID="0kz-cH-kNT">
@@ -3087,7 +3087,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0TP-dS-Jnq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2395" y="193"/>
+            <point key="canvasLocation" x="3207" y="193"/>
         </scene>
         <!--When View Controller-->
         <scene sceneID="LvQ-uj-yo2">
@@ -4121,6 +4121,10 @@
         <scene sceneID="LeJ-ff-xX8">
             <objects>
                 <viewController id="Y8g-B7-MDG" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bfS-c9-h84"/>
+                        <viewControllerLayoutGuide type="bottom" id="hYm-JN-Nv6"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="nXr-zG-sXx">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -4130,6 +4134,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8iN-40-MOz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="170" y="856"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="wSS-ic-Iks">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Pgw-1i-ZtI" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Har-o1-iJm">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="7n0-ct-Jvm" kind="relationship" relationship="rootViewController" id="5JE-bZ-c7F"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="shh-ev-tcW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1763" y="193"/>
         </scene>
     </scenes>
     <resources>

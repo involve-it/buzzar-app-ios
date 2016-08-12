@@ -84,7 +84,7 @@ class SearchPostsViewController: UIViewController {
         //Set background color
         self.navigationController?.navigationBar.barTintColor = blueColor
         
-        setBackBarButtonCustom()
+        //setBackBarButtonCustom()
     }
     
     //Тут можно менять размеры сабвью и т.д.
@@ -98,9 +98,11 @@ class SearchPostsViewController: UIViewController {
     }
     
     func createSearchBar() {
-        searchBar.showsCancelButton = false
+        searchBar.barTintColor = UIColor.whiteColor()
+        searchBar.showsCancelButton = true
         searchBar.placeholder = "Search posts"
         searchBar.delegate = self
+        
         self.navigationItem.titleView = searchBar
     }
     
@@ -193,6 +195,10 @@ class SearchPostsViewController: UIViewController {
 //MARK: EXTENSION - searchBar, tabelView
 
 extension SearchPostsViewController: UISearchBarDelegate {
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    }
     
     //User tap search button
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
