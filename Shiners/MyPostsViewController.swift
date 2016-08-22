@@ -151,8 +151,11 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         let post: Post = self.myPosts[indexPath.row];
         
         cell.txtTitle.text = post.title;
-        cell.txtDetails.text = post.descr;
         
+        if let textDescription = post.removedHtmlFromPostDescription(post.descr) {
+            cell.txtDetails.text = textDescription
+        }
+    
         //Post views
         if let txtViewCountPost = post.seenTotal {
             cell.txtViewCountPost.text = String(txtViewCountPost)

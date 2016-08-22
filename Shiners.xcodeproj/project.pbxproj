@@ -19,6 +19,14 @@
 		610671A61D5A0927007828BA /* CVCellNib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610671A41D5A0927007828BA /* CVCellNib.swift */; };
 		610671A71D5A0927007828BA /* CVCellNib.xib in Resources */ = {isa = PBXBuildFile; fileRef = 610671A51D5A0927007828BA /* CVCellNib.xib */; };
 		6117A5481D4C03EC009E12DB /* PostDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6117A5471D4C03EC009E12DB /* PostDetailsViewController.swift */; };
+		6120F40A1D6A336E000D4FE8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6120F4091D6A336E000D4FE8 /* SettingsViewController.swift */; };
+		6120F40C1D6AFC6D000D4FE8 /* NEWLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6120F40B1D6AFC6D000D4FE8 /* NEWLoginViewController.swift */; };
+		613C6A471D633C8300744076 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A451D633C8300744076 /* ProfileTableViewController.swift */; };
+		613C6A481D633C8300744076 /* cellUserProfile.xib in Resources */ = {isa = PBXBuildFile; fileRef = 613C6A461D633C8300744076 /* cellUserProfile.xib */; };
+		613C6A4A1D63419400744076 /* cellUserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A491D63419400744076 /* cellUserProfile.swift */; };
+		613C6A4C1D645D5A00744076 /* SettingsProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A4B1D645D5A00744076 /* SettingsProfileTableViewController.swift */; };
+		613C6A701D660A0000744076 /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */; };
+		617378A21D6B290D00F10ABA /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */; };
 		61C6F9071D3BED100030CC81 /* NewPostNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9021D3BED100030CC81 /* NewPostNewViewController.swift */; };
 		61C6F9081D3BED100030CC81 /* DescriptionPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9031D3BED100030CC81 /* DescriptionPostViewController.swift */; };
 		61C6F9091D3BED100030CC81 /* TypePostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9041D3BED100030CC81 /* TypePostTableViewController.swift */; };
@@ -126,6 +134,14 @@
 		610671A41D5A0927007828BA /* CVCellNib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CVCellNib.swift; sourceTree = "<group>"; };
 		610671A51D5A0927007828BA /* CVCellNib.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CVCellNib.xib; sourceTree = "<group>"; };
 		6117A5471D4C03EC009E12DB /* PostDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDetailsViewController.swift; sourceTree = "<group>"; };
+		6120F4091D6A336E000D4FE8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		6120F40B1D6AFC6D000D4FE8 /* NEWLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEWLoginViewController.swift; sourceTree = "<group>"; };
+		613C6A451D633C8300744076 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
+		613C6A461D633C8300744076 /* cellUserProfile.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = cellUserProfile.xib; sourceTree = "<group>"; };
+		613C6A491D63419400744076 /* cellUserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = cellUserProfile.swift; sourceTree = "<group>"; };
+		613C6A4B1D645D5A00744076 /* SettingsProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsProfileTableViewController.swift; sourceTree = "<group>"; };
+		613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewController.swift; sourceTree = "<group>"; };
+		617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		61C6F9021D3BED100030CC81 /* NewPostNewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPostNewViewController.swift; sourceTree = "<group>"; };
 		61C6F9031D3BED100030CC81 /* DescriptionPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionPostViewController.swift; sourceTree = "<group>"; };
 		61C6F9041D3BED100030CC81 /* TypePostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypePostTableViewController.swift; sourceTree = "<group>"; };
@@ -273,6 +289,18 @@
 			name = CollecationView;
 			sourceTree = "<group>";
 		};
+		613C6A441D633C7600744076 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				613C6A451D633C8300744076 /* ProfileTableViewController.swift */,
+				613C6A461D633C8300744076 /* cellUserProfile.xib */,
+				613C6A491D63419400744076 /* cellUserProfile.swift */,
+				613C6A4B1D645D5A00744076 /* SettingsProfileTableViewController.swift */,
+				613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
 		61C6F9011D3BEC150030CC81 /* wizard */ = {
 			isa = PBXGroup;
 			children = (
@@ -408,10 +436,14 @@
 		7BB2A7FF1CCD967300AD636D /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				613C6A441D633C7600744076 /* Profile */,
+				6120F4091D6A336E000D4FE8 /* SettingsViewController.swift */,
 				7BC0A22D1CCC160C00DA2824 /* SettingsTableViewController.swift */,
 				7BB2A8001CCD96C000AD636D /* LogInViewController.swift */,
 				7BB2A8021CCDA15500AD636D /* RegisterViewController.swift */,
 				7BB2A8121CD30AD700AD636D /* ProfileViewController.swift */,
+				6120F40B1D6AFC6D000D4FE8 /* NEWLoginViewController.swift */,
+				617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -571,6 +603,7 @@
 				7BC0A23E1CCC164100DA2824 /* lock_closed.png in Resources */,
 				7BC0A2341CCC161A00DA2824 /* Main.storyboard in Resources */,
 				610671A71D5A0927007828BA /* CVCellNib.xib in Resources */,
+				613C6A481D633C8300744076 /* cellUserProfile.xib in Resources */,
 				7B26B1AB1CD6DE52000495EE /* cancel.png in Resources */,
 				7BC0A2431CCC164100DA2824 /* id-card.png in Resources */,
 				7BC0A2401CCC164100DA2824 /* 4e8d07ec-1f6d-a5d6-31d0-cc32f7305464.png in Resources */,
@@ -655,6 +688,7 @@
 				7B35655B1CE9259E00012CA9 /* MessagesProvider.swift in Sources */,
 				7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */,
 				7B3565451CE7B99C00012CA9 /* MessagesTableViewCell.swift in Sources */,
+				613C6A701D660A0000744076 /* EditProfileTableViewController.swift in Sources */,
 				7BC0A21E1CCC15E700DA2824 /* MainViewController.swift in Sources */,
 				7B3565301CDD95F900012CA9 /* CustomPhoto.swift in Sources */,
 				7B26B1AF1CD99D25000495EE /* NewSearchViewController.swift in Sources */,
@@ -668,6 +702,7 @@
 				7B1C12461D0CCEA0001355AB /* Message.swift in Sources */,
 				7B1C12401D0CC19C001355AB /* ErrorCell.swift in Sources */,
 				7B3565541CE8311100012CA9 /* DictionaryInitilizable.swift in Sources */,
+				6120F40C1D6AFC6D000D4FE8 /* NEWLoginViewController.swift in Sources */,
 				61C6F90B1D3BED100030CC81 /* WhenPickDateViewController.swift in Sources */,
 				7BC0A21C1CCC15E700DA2824 /* AppDelegate.swift in Sources */,
 				7BB2A8071CCF0EBC00AD636D /* ThreadHelper.swift in Sources */,
@@ -695,6 +730,7 @@
 				6106710F1D54B40F007828BA /* SearchPostsViewController.swift in Sources */,
 				7BB2A8031CCDA15500AD636D /* RegisterViewController.swift in Sources */,
 				7B35654E1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift in Sources */,
+				613C6A471D633C8300744076 /* ProfileTableViewController.swift in Sources */,
 				6117A5481D4C03EC009E12DB /* PostDetailsViewController.swift in Sources */,
 				61EA5DA31D47559700083361 /* PhotosViewController.swift in Sources */,
 				7B1C12481D0CD1CA001355AB /* MessagesCollection.swift in Sources */,
@@ -703,18 +739,22 @@
 				7BC6BE5C1CFD060500664803 /* ValuePickerViewController.swift in Sources */,
 				7B3565591CE922DE00012CA9 /* NavigationControllerBase.swift in Sources */,
 				7BC0A2321CCC160C00DA2824 /* PostsViewController.swift in Sources */,
+				613C6A4C1D645D5A00744076 /* SettingsProfileTableViewController.swift in Sources */,
 				610671561D588B7A007828BA /* LoadingCell.swift in Sources */,
 				7B35655F1CE92C1F00012CA9 /* Reachability.swift in Sources */,
 				7B26B19F1CD688B7000495EE /* LocationHandler.swift in Sources */,
 				610671A61D5A0927007828BA /* CVCellNib.swift in Sources */,
+				6120F40A1D6A336E000D4FE8 /* SettingsViewController.swift in Sources */,
 				7BB2A7E51CCC431700AD636D /* Image.swift in Sources */,
 				7BC1A9C81D50469B005B4F62 /* FullMapViewController.swift in Sources */,
 				7B26B08E1CD564E1000495EE /* MyPostsViewController.swift in Sources */,
 				61C6F9091D3BED100030CC81 /* TypePostTableViewController.swift in Sources */,
+				617378A21D6B290D00F10ABA /* ResetPasswordViewController.swift in Sources */,
 				7BB2A7F81CCD8EC500AD636D /* Extensions.swift in Sources */,
 				7BB2A8051CCDA58C00AD636D /* NewPostViewController.swift in Sources */,
 				7B1C12441D0CCDD7001355AB /* Chat.swift in Sources */,
 				61C6F90A1D3BED100030CC81 /* WhereViewController.swift in Sources */,
+				613C6A4A1D63419400744076 /* cellUserProfile.swift in Sources */,
 				7B0B31711CF127A800029458 /* AccountHandler.swift in Sources */,
 				7BB2A80B1CCF15D000AD636D /* User.swift in Sources */,
 				7B26B1A31CD694A0000495EE /* StaticLocationViewController.swift in Sources */,
@@ -833,7 +873,7 @@
 				INFOPLIST_FILE = Shiners/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app;
+				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -852,7 +892,7 @@
 				INFOPLIST_FILE = Shiners/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app;
+				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
