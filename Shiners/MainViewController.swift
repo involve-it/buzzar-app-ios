@@ -58,15 +58,14 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
     
     func updateLoggedIn(){
         if AccountHandler.Instance.isLoggedIn() {
-            if self.allViewControllers.count == 6 {
-                self.allViewControllers.removeAtIndex(4)
-                self.viewControllers = self.allViewControllers
+            if self.viewControllers!.count != 5 {
+                self.viewControllers = [self.allViewControllers[0], self.allViewControllers[1], self.allViewControllers[2], self.allViewControllers[3], self.allViewControllers[5]]
+                self.selectedIndex = 0
             }
         } else {
-            if self.viewControllers!.count == 6 {
-                self.viewControllers?.removeAtIndex(1)
-                self.viewControllers?.removeAtIndex(2)
-                self.viewControllers?.removeAtIndex(3)
+            if self.viewControllers!.count != 3 {
+                self.viewControllers = [self.allViewControllers[0], self.allViewControllers[2], self.allViewControllers[4]]
+                self.selectedIndex = 0
             }
         }
     }

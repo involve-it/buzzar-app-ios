@@ -148,9 +148,12 @@ class SettingsProfileTableViewController: UITableViewController {
                     if (success){
                         self.currentUser = nil;
                         //self.refreshUser();
-                        dispatch_async(dispatch_get_main_queue(), {
+                        /*dispatch_async(dispatch_get_main_queue(), {
                             self.tableView.reloadData();
-                        })
+                        })*/
+                        self.navigationController?.popViewControllerAnimated(true)
+                    } else {
+                        self.showAlert("Error", message: "An error occurred")
                     }
                 };
             }))
