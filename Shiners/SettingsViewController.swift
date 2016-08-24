@@ -38,8 +38,15 @@ class SettingsViewController: UIViewController {
     @IBAction func clickToLogin(sender: UIButton) {
         //loginNavigationController
         let vc = storyboardMain.instantiateViewControllerWithIdentifier("NEWloginNavigationController")
-        self.presentViewController(vc, animated: true, completion: nil);
+        self.presentViewController(vc, animated: true, completion: nil)
     }
+
+    @IBAction func clickToRegister(sender: UIButton) {
+        let vc = storyboard?.instantiateViewControllerWithIdentifier("SignUpViewController")
+        self.navigationController?.pushViewController(vc!, animated: true)
+    }
+    
+    
     /*
     // MARK: - Navigation
 

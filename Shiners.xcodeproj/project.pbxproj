@@ -27,6 +27,7 @@
 		613C6A4C1D645D5A00744076 /* SettingsProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A4B1D645D5A00744076 /* SettingsProfileTableViewController.swift */; };
 		613C6A701D660A0000744076 /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */; };
 		617378A21D6B290D00F10ABA /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */; };
+		617378C21D6DC5E100F10ABA /* NEWRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */; };
 		61C6F9071D3BED100030CC81 /* NewPostNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9021D3BED100030CC81 /* NewPostNewViewController.swift */; };
 		61C6F9081D3BED100030CC81 /* DescriptionPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9031D3BED100030CC81 /* DescriptionPostViewController.swift */; };
 		61C6F9091D3BED100030CC81 /* TypePostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9041D3BED100030CC81 /* TypePostTableViewController.swift */; };
@@ -142,6 +143,7 @@
 		613C6A4B1D645D5A00744076 /* SettingsProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsProfileTableViewController.swift; sourceTree = "<group>"; };
 		613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewController.swift; sourceTree = "<group>"; };
 		617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
+		617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEWRegisterViewController.swift; sourceTree = "<group>"; };
 		61C6F9021D3BED100030CC81 /* NewPostNewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPostNewViewController.swift; sourceTree = "<group>"; };
 		61C6F9031D3BED100030CC81 /* DescriptionPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionPostViewController.swift; sourceTree = "<group>"; };
 		61C6F9041D3BED100030CC81 /* TypePostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypePostTableViewController.swift; sourceTree = "<group>"; };
@@ -443,6 +445,7 @@
 				7BB2A8021CCDA15500AD636D /* RegisterViewController.swift */,
 				7BB2A8121CD30AD700AD636D /* ProfileViewController.swift */,
 				6120F40B1D6AFC6D000D4FE8 /* NEWLoginViewController.swift */,
+				617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */,
 				617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */,
 			);
 			name = Settings;
@@ -721,6 +724,7 @@
 				7BC0A2301CCC160C00DA2824 /* SettingsTableViewController.swift in Sources */,
 				61C6F9081D3BED100030CC81 /* DescriptionPostViewController.swift in Sources */,
 				7BC1A9C61D4C40B5005B4F62 /* SecurityHandler.swift in Sources */,
+				617378C21D6DC5E100F10ABA /* NEWRegisterViewController.swift in Sources */,
 				7B3564911CDAFDCE00012CA9 /* UsersProxy.swift in Sources */,
 				7B3565321CE1747500012CA9 /* ResponseHelper.swift in Sources */,
 				7B26B0BB1CD655C2000495EE /* DescriptionViewController.swift in Sources */,
@@ -873,7 +877,7 @@
 				INFOPLIST_FILE = Shiners/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app;
+				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -892,7 +896,7 @@
 				INFOPLIST_FILE = Shiners/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app;
+				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
