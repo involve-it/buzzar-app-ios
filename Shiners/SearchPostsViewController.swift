@@ -325,7 +325,11 @@ extension SearchPostsViewController: UITableViewDelegate {
 //Statusbar LightContent
 extension UINavigationController {
     override public func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return self.topViewController!.preferredStatusBarStyle()
+        if self.topViewController != nil {
+            return self.topViewController!.preferredStatusBarStyle()
+        } else {
+            return UIStatusBarStyle.Default
+        }
     }
 }
 

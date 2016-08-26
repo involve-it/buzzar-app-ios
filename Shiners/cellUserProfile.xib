@@ -20,7 +20,7 @@
                             <constraint firstAttribute="height" constant="99" id="nmI-Ma-uAB"/>
                         </constraints>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lua-3M-G7o">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Lua-3M-G7o">
                         <rect key="frame" x="8" y="17" width="66" height="66"/>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -113,14 +113,15 @@
                             <constraint firstAttribute="trailing" secondItem="bBU-Dd-pNL" secondAttribute="trailing" id="fak-IX-Qgu"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rd1-0U-Hft">
-                        <rect key="frame" x="378" y="28" width="44" height="44"/>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rd1-0U-Hft">
+                        <rect key="frame" x="382" y="34" width="32" height="32"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="44" id="0na-yG-bSB"/>
-                            <constraint firstAttribute="width" constant="44" id="3cG-a7-5R9"/>
+                            <constraint firstAttribute="height" constant="32" id="0na-yG-bSB"/>
+                            <constraint firstAttribute="width" constant="32" id="3cG-a7-5R9"/>
                         </constraints>
-                        <state key="normal" title="i"/>
+                        <state key="normal" image="userInfo"/>
+                        <state key="selected" image="userInfo_filled"/>
+                        <state key="highlighted" image="userInfo_filled"/>
                     </button>
                 </subviews>
                 <constraints>
@@ -137,14 +138,25 @@
                     <constraint firstItem="EBy-Si-j0S" firstAttribute="top" secondItem="Lk5-Bu-Khi" secondAttribute="bottom" id="aCw-UA-sFO"/>
                     <constraint firstItem="Lk5-Bu-Khi" firstAttribute="top" secondItem="SKY-WJ-yvH" secondAttribute="top" constant="16" id="bok-ig-C1d"/>
                     <constraint firstItem="EBy-Si-j0S" firstAttribute="width" secondItem="Lk5-Bu-Khi" secondAttribute="width" id="eFs-jG-r0D"/>
-                    <constraint firstAttribute="trailing" secondItem="Rd1-0U-Hft" secondAttribute="trailing" constant="8" id="eG5-Vk-KGV"/>
+                    <constraint firstAttribute="trailing" secondItem="Rd1-0U-Hft" secondAttribute="trailing" constant="16" id="eG5-Vk-KGV"/>
                     <constraint firstItem="Lua-3M-G7o" firstAttribute="leading" secondItem="SKY-WJ-yvH" secondAttribute="leading" constant="8" id="jWb-zd-NjD"/>
                     <constraint firstAttribute="trailing" secondItem="Lk5-Bu-Khi" secondAttribute="trailing" constant="60" id="mB8-Uk-E6K"/>
                     <constraint firstItem="V4c-7R-20r" firstAttribute="leading" secondItem="Lua-3M-G7o" secondAttribute="trailing" constant="8" id="rKP-wG-g6q"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.95294117647058818" green="0.95294117647058818" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
+            <connections>
+                <outlet property="imgUserAvatar" destination="Lua-3M-G7o" id="Ssr-jV-GuV"/>
+                <outlet property="txtUserCommentsCount" destination="P7d-Lr-gVG" id="kcg-uK-mwh"/>
+                <outlet property="txtUserLocation" destination="EBy-Si-j0S" id="uX4-zG-niA"/>
+                <outlet property="txtUserName" destination="Lk5-Bu-Khi" id="cfL-lR-cOF"/>
+                <outlet property="txtUserPostsCount" destination="yyY-lo-7Hs" id="lSj-AE-AVc"/>
+            </connections>
             <point key="canvasLocation" x="359" y="460"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="userInfo" width="32" height="26"/>
+        <image name="userInfo_filled" width="32" height="26"/>
+    </resources>
 </document>

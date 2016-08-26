@@ -7,13 +7,27 @@
 //
 
 import UIKit
+import FBSDKLoginKit
+import FBSDKCoreKit
+import AWSS3
 
-class EditProfileTableViewController: UITableViewController, UITextViewDelegate {
+public class EditProfileTableViewController: UITableViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate{
 
     
     @IBOutlet weak var fNameView: UIView!
     @IBOutlet weak var firstNameLabel: UITextField!
     @IBOutlet weak var lastNameLabel: UITextField!
+    @IBOutlet weak var imgUserAvatar: UIImageView!
+    @IBOutlet weak var txtPhoneLabel: UITextField!
+    @IBOutlet weak var txtEmailLabel: UITextField!
+    @IBOutlet weak var txtAddressLocationLabel: UITextField!
+    
+    private var imagePickerHandler: ImagePickerHandler?
+    
+    @IBOutlet weak var btnSave: UIBarButtonItem!
+    @IBOutlet weak var cancelButton: UIBarButtonItem!
+    
+    var currentUser: User?;
     
     
     @IBOutlet weak var txtBioPlaceholder: UITextView!
@@ -21,10 +35,12 @@ class EditProfileTableViewController: UITableViewController, UITextViewDelegate 
     let txtPlaceHolderColor = UIColor.lightGrayColor()
     
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         txtBioPlaceholder.delegate = self
+        
+        self.imagePickerHandler = ImagePickerHandler(viewController: self, delegate: self)
         
         //Placeholder
         txtBioPlaceholder.text = txtBioPlaceholderText
@@ -35,14 +51,59 @@ class EditProfileTableViewController: UITableViewController, UITextViewDelegate 
         
         txtPlaceholderSelectedTextRange(txtBioPlaceholder)
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        if self.currentUser == nil || self.currentUser! !== AccountHandler.Instance.currentUser{
+            self.currentUser = AccountHandler.Instance.currentUser
+            self.refreshUserData()
+        }
     }
     
-    override func viewDidLayoutSubviews() {
+    @IBAction func btnSave_Click(sender: AnyObject) {
+        self.setLoading(true)
+        let user = self.getUser();
+        AccountHandler.Instance.saveUser(user) { (success, errorMessage) in
+            ThreadHelper.runOnMainThread({
+                self.setLoading(false, rightBarButtonItem: self.btnSave)
+                if (success){
+                    self.dismissSelf()
+                } else {
+                    self.showAlert("Error", message: "An error occurred while saving.")
+                }
+            })
+        }
+    }
+    
+    private func getUser() -> User{
+        let user = AccountHandler.Instance.currentUser!;
+        user.setProfileDetail(.FirstName, value: self.firstNameLabel.text)
+        user.setProfileDetail(.LastName, value: self.lastNameLabel.text)
+        user.setProfileDetail(.City, value: self.txtAddressLocationLabel.text)
+        user.setProfileDetail(.Phone, value: self.txtPhoneLabel.text)
+        //user.setProfileDetail(.Skype, value: self.txtSkype.text)
+        
+        user.imageUrl = self.currentUser?.imageUrl
+        return user;
+    }
+    
+    private func refreshUserData(){
+        self.firstNameLabel.text = self.currentUser?.getProfileDetailValue(.FirstName)
+        self.lastNameLabel.text = self.currentUser?.getProfileDetailValue(.LastName)
+        self.txtAddressLocationLabel.text = self.currentUser?.getProfileDetailValue(.City)
+        self.txtPhoneLabel.text = self.currentUser?.getProfileDetailValue(.Phone)
+        //self.txtEmailLabel.text = self.currentUser?.getProfileDetail()
+        //self.txtSkype.text = self.currentUser?.getProfileDetailValue(.Skype)
+        
+        if let imageUrl = self.currentUser?.imageUrl{
+            ImageCachingHandler.Instance.getImageFromUrl(imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.imgUserAvatar.image = image;
+                })
+            })
+        } else {
+            self.imgUserAvatar.image = ImageCachingHandler.defaultAccountImage
+        }
+    }
+    
+    override public func viewDidLayoutSubviews() {
         // Creates the bottom border
         //TODO: Make a function
         let borderBottom = CALayer()
@@ -56,6 +117,14 @@ class EditProfileTableViewController: UITableViewController, UITextViewDelegate 
         fNameView.layer.addSublayer(borderBottom)
         fNameView.layer.masksToBounds = true
     }
+    
+    @IBAction func btnChangeImage_Click(sender: AnyObject) {
+        self.imagePickerHandler?.displayImagePicker()
+    }
+    
+    private func dismissSelf(){
+        self.navigationController?.popViewControllerAnimated(true)
+    }
 
     // MARK: Cancel action
     @IBAction func btn_Cancel(sender: UIBarButtonItem) {
@@ -65,11 +134,10 @@ class EditProfileTableViewController: UITableViewController, UITextViewDelegate 
         self.navigationController?.pushViewController(vc, animated: true)
          */
         
-        self.navigationController?.popViewControllerAnimated(true)
-        
+        self.dismissSelf()
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         let currentText: NSString = txtBioPlaceholder.text
         let updateText = currentText.stringByReplacingCharactersInRange(range, withString: text)
         
@@ -89,7 +157,7 @@ class EditProfileTableViewController: UITableViewController, UITextViewDelegate 
         return true
     }
     
-    func textViewDidChangeSelection(textView: UITextView) {
+    public func textViewDidChangeSelection(textView: UITextView) {
         if self.view.window != nil {
             if txtBioPlaceholder.textColor == txtPlaceHolderColor {
                 txtPlaceholderSelectedTextRange(txtBioPlaceholder)
@@ -101,80 +169,36 @@ class EditProfileTableViewController: UITableViewController, UITextViewDelegate 
         placeholder.selectedTextRange = placeholder.textRangeFromPosition(placeholder.beginningOfDocument, toPosition: placeholder.beginningOfDocument)
     }
     
-
-    // MARK: - Table view data source
-
-    /*
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    public func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        picker.dismissViewControllerAnimated(true, completion: nil)
+        self.setLoading(true)
+        let rotatedImage = image.correctlyOrientedImage().resizeImage()
+        let currentImage = self.imgUserAvatar.image
+        self.imgUserAvatar.image = rotatedImage
+        self.btnSave.enabled = false
+        ImageCachingHandler.Instance.saveImage(rotatedImage) { (success, imageUrl) in
+            ThreadHelper.runOnMainThread({
+                self.setLoading(false, rightBarButtonItem: self.cancelButton)
+                self.btnSave.enabled = true
+                if success {
+                    self.currentUser?.imageUrl = imageUrl
+                } else {
+                    self.imgUserAvatar.image = currentImage
+                    self.showAlert("Error", message: "Error uploading photo");
+                }
+            })
+        }
     }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-     */
-
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    public func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder();
+        return false;
+    }
     
+    override public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.reloadData()
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 

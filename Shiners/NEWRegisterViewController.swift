@@ -88,7 +88,7 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
 
     
     // TODO: - duplication code
-    func leftPaddingToTextField(array: [UITextField]) {
+    public func leftPaddingToTextField(array: [UITextField]) {
         
         for textField in array {
             let paddingView = UIView(frame: CGRectMake(0, 0, 15, textField.frame.height))

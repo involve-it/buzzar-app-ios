@@ -11,13 +11,14 @@ import UIKit
 class ProfileTableViewController: UITableViewController {
     
     
+    
+    
     struct TableViewIdentifierCell {
         static let cellUserProfileNib = "cellUserProfile"
         static let cellAboutMe = "cellAboutMe"
     }
     
     
-        
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,55 +29,51 @@ class ProfileTableViewController: UITableViewController {
 
         tableView.registerNib(UINib(nibName: TableViewIdentifierCell.cellUserProfileNib, bundle: nil), forCellReuseIdentifier: TableViewIdentifierCell.cellUserProfileNib)
         
+        tableView.registerNib(UINib(nibName: TableViewIdentifierCell.cellAboutMe, bundle: nil), forCellReuseIdentifier: TableViewIdentifierCell.cellAboutMe)
+        
+        
         tabelViewEstimatedRowHeight()
     }
 
-
-    // MARK: - Table view data source
-
-    /*
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-*/
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 2
-    }
-    
-
-    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        //let cell = tableView.dequeueReusableCellWithIdentifier(TableViewIdentifierCell.cellUserProfileNib, forIndexPath: indexPath) as! cellUserProfile
-        
+
         if (indexPath.row == 0) {
-            print("\(tableView.tag == 1)")
-            
 
            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewIdentifierCell.cellUserProfileNib, forIndexPath: indexPath) as! cellUserProfile
             
-            
             return cell
-            
+        
         } else {
             
-            
-            
-            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewIdentifierCell.cellAboutMe)!
+            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewIdentifierCell.cellAboutMe, forIndexPath: indexPath) as! cellAboutMe
+
             return cell
         }
-        
-        
     }
     
-    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
 
     func tabelViewEstimatedRowHeight() {
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
     }
+    
+    
+    // MARK: - Table view data source
+    
+    /*
+     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+     // #warning Incomplete implementation, return the number of sections
+     return 0
+     }
+     
+     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+     // #warning Incomplete implementation, return the number of rows
+     return 2
+     }
+     */
     
     /*
     // Override to support conditional editing of the table view.

@@ -28,6 +28,10 @@
 		613C6A701D660A0000744076 /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */; };
 		617378A21D6B290D00F10ABA /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */; };
 		617378C21D6DC5E100F10ABA /* NEWRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */; };
+		617378C71D6ECFC700F10ABA /* cellAboutMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378C51D6ECFC700F10ABA /* cellAboutMe.swift */; };
+		617378C81D6ECFC700F10ABA /* cellAboutMe.xib in Resources */ = {isa = PBXBuildFile; fileRef = 617378C61D6ECFC700F10ABA /* cellAboutMe.xib */; };
+		61A089291D70602700CABB8D /* ChangePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A089281D70602700CABB8D /* ChangePasswordTableViewController.swift */; };
+		61A0892B1D706EB400CABB8D /* NotificationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A0892A1D706EB400CABB8D /* NotificationsTableViewController.swift */; };
 		61C6F9071D3BED100030CC81 /* NewPostNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9021D3BED100030CC81 /* NewPostNewViewController.swift */; };
 		61C6F9081D3BED100030CC81 /* DescriptionPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9031D3BED100030CC81 /* DescriptionPostViewController.swift */; };
 		61C6F9091D3BED100030CC81 /* TypePostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9041D3BED100030CC81 /* TypePostTableViewController.swift */; };
@@ -144,6 +148,10 @@
 		613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewController.swift; sourceTree = "<group>"; };
 		617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEWRegisterViewController.swift; sourceTree = "<group>"; };
+		617378C51D6ECFC700F10ABA /* cellAboutMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = cellAboutMe.swift; sourceTree = "<group>"; };
+		617378C61D6ECFC700F10ABA /* cellAboutMe.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = cellAboutMe.xib; sourceTree = "<group>"; };
+		61A089281D70602700CABB8D /* ChangePasswordTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordTableViewController.swift; sourceTree = "<group>"; };
+		61A0892A1D706EB400CABB8D /* NotificationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewController.swift; sourceTree = "<group>"; };
 		61C6F9021D3BED100030CC81 /* NewPostNewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPostNewViewController.swift; sourceTree = "<group>"; };
 		61C6F9031D3BED100030CC81 /* DescriptionPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionPostViewController.swift; sourceTree = "<group>"; };
 		61C6F9041D3BED100030CC81 /* TypePostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypePostTableViewController.swift; sourceTree = "<group>"; };
@@ -297,8 +305,12 @@
 				613C6A451D633C8300744076 /* ProfileTableViewController.swift */,
 				613C6A461D633C8300744076 /* cellUserProfile.xib */,
 				613C6A491D63419400744076 /* cellUserProfile.swift */,
+				617378C51D6ECFC700F10ABA /* cellAboutMe.swift */,
+				617378C61D6ECFC700F10ABA /* cellAboutMe.xib */,
 				613C6A4B1D645D5A00744076 /* SettingsProfileTableViewController.swift */,
 				613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */,
+				61A089281D70602700CABB8D /* ChangePasswordTableViewController.swift */,
+				61A0892A1D706EB400CABB8D /* NotificationsTableViewController.swift */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -622,6 +634,7 @@
 				610671541D588B48007828BA /* LoadingCell.xib in Resources */,
 				7BB2A7FE1CCD953B00AD636D /* show_offliners.png in Resources */,
 				7B26B0921CD567D9000495EE /* list_32.png in Resources */,
+				617378C81D6ECFC700F10ABA /* cellAboutMe.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -708,6 +721,7 @@
 				6120F40C1D6AFC6D000D4FE8 /* NEWLoginViewController.swift in Sources */,
 				61C6F90B1D3BED100030CC81 /* WhenPickDateViewController.swift in Sources */,
 				7BC0A21C1CCC15E700DA2824 /* AppDelegate.swift in Sources */,
+				617378C71D6ECFC700F10ABA /* cellAboutMe.swift in Sources */,
 				7BB2A8071CCF0EBC00AD636D /* ThreadHelper.swift in Sources */,
 				7BC0A2311CCC160C00DA2824 /* SearchViewController.swift in Sources */,
 				7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */,
@@ -741,6 +755,8 @@
 				61C6F9071D3BED100030CC81 /* NewPostNewViewController.swift in Sources */,
 				7BB2A8131CD30AD700AD636D /* ProfileViewController.swift in Sources */,
 				7BC6BE5C1CFD060500664803 /* ValuePickerViewController.swift in Sources */,
+				61A0892B1D706EB400CABB8D /* NotificationsTableViewController.swift in Sources */,
+				61A089291D70602700CABB8D /* ChangePasswordTableViewController.swift in Sources */,
 				7B3565591CE922DE00012CA9 /* NavigationControllerBase.swift in Sources */,
 				7BC0A2321CCC160C00DA2824 /* PostsViewController.swift in Sources */,
 				613C6A4C1D645D5A00744076 /* SettingsProfileTableViewController.swift in Sources */,
