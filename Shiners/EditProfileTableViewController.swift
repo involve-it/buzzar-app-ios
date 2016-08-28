@@ -24,7 +24,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     
     private var imagePickerHandler: ImagePickerHandler?
     
-    @IBOutlet weak var btnSave: UIBarButtonItem!
+    @IBOutlet var btnSave: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     var currentUser: User?;
@@ -175,11 +175,11 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
         let rotatedImage = image.correctlyOrientedImage().resizeImage()
         let currentImage = self.imgUserAvatar.image
         self.imgUserAvatar.image = rotatedImage
-        self.btnSave.enabled = false
+        self.cancelButton.enabled = false
         ImageCachingHandler.Instance.saveImage(rotatedImage) { (success, imageUrl) in
             ThreadHelper.runOnMainThread({
-                self.setLoading(false, rightBarButtonItem: self.cancelButton)
-                self.btnSave.enabled = true
+                self.setLoading(false, rightBarButtonItem: self.btnSave)
+                self.cancelButton.enabled = true
                 if success {
                     self.currentUser?.imageUrl = imageUrl
                 } else {
