@@ -95,9 +95,11 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         
         //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showPostsFromCollection), name: NotificationManager.Name.NearbyPostsSubscribed.rawValue, object: nil)
         
-        //self.locationHandler.getLocationOnce()
+        self.locationHandler.getLocationOnce(false)
         
-        if CachingHandler.Instance.status != .Complete {
+        if ConnectionHandler.Instance.status == .Connected{
+            self.getNearby()
+        } else if CachingHandler.Instance.status != .Complete {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
         } else if let posts = CachingHandler.Instance.postsAll {
             self.posts = posts
@@ -199,6 +201,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
                     self.checkPending()
                 })
             }
+        } else {
+            self.refreshControl?.endRefreshing()
         }
     }
     

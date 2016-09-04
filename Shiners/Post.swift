@@ -49,7 +49,7 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
     }
     
     public func isLive() -> Bool{
-        if let online = self.user?.online where online, let near = self.near where near {
+        if let online = self.user?.isOnline() where online, let near = self.near where near {
             return true
         }
         

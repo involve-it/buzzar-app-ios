@@ -78,6 +78,7 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
             setLoading(true, rightBarButtonItem: self.loginBtn)
             
             AccountHandler.Instance.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in
+                self.setLoading(false, rightBarButtonItem: self.loginBtn)
                 if !success {
                     ThreadHelper.runOnMainThread({
                         self.showAlert("Log in failed", message: errorMessage)

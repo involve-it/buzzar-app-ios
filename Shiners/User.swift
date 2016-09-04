@@ -19,6 +19,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
     public var profileDetails: [ProfileDetail]?
     public var language: String?
     public var enableNearbyNotifications: Bool?
+    public var lastMobileLocationReport: NSDate?
     
     override init(){
         super.init()
@@ -39,7 +40,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
     
     public func update(fields: NSDictionary?){
         self.id = fields?.valueForKey("_id") as? String
-        self.createdAt = fields?.valueForKey("createdAt") as? NSDate
+        self.createdAt = (fields?.valueForKey("createdAt") as? NSDictionary)?.javaScriptDateFromFirstElement()
         self.username = fields?.valueForKey("username") as? String
         
         if let emails = fields?.valueForKey("emails") as? NSArray{
@@ -49,6 +50,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         }
         
         self.online = fields?.valueForKey("online") as? Bool
+        self.lastMobileLocationReport = (fields?.valueForKey(PropertyKeys.lastMobileLocationReport) as? NSDictionary)?.javaScriptDateFromFirstElement()
         
         if let images = fields?.valueForKey("image") as? NSArray{
             for image in images{
@@ -79,6 +81,17 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         }
         self.language = fields?.valueForKey("language") as? String
         self.enableNearbyNotifications = fields?.valueForKey(PropertyKeys.enableNearbyNotifications) as? Bool
+    }
+    
+    public func isOnline() -> Bool{
+        if let online = self.online{
+            if let lastMobileLocationReport = self.lastMobileLocationReport{
+                return online || NSDate().timeIntervalSinceDate(lastMobileLocationReport) <= 20 * 60
+            } else {
+                return online
+            }
+        }
+        return false
     }
     
     public func getProfileDetailValue(key: ProfileDetail.Key) -> String? {
@@ -144,6 +157,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         self.locations = aDecoder.decodeObjectForKey(PropertyKeys.locations) as? [Location]
         self.profileDetails = aDecoder.decodeObjectForKey(PropertyKeys.profileDetails) as? [ProfileDetail]
         self.language = aDecoder.decodeObjectForKey(PropertyKeys.language) as? String
+        self.lastMobileLocationReport = aDecoder.decodeObjectForKey(PropertyKeys.lastMobileLocationReport) as? NSDate
     }
     
     public func encodeWithCoder(aCoder: NSCoder) {
@@ -161,6 +175,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         if let enableNearbyNotifications = self.enableNearbyNotifications{
             aCoder.encodeBool(enableNearbyNotifications, forKey: PropertyKeys.enableNearbyNotifications)
         }
+        aCoder.encodeObject(self.lastMobileLocationReport, forKey: PropertyKeys.lastMobileLocationReport)
     }
     
     private struct PropertyKeys{
@@ -174,5 +189,6 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         static let profileDetails = "profileDetails"
         static let language = "language"
         static let enableNearbyNotifications = "enableNearbyNotifications"
+        static let lastMobileLocationReport = "lastMobileLocationReport"
     }
 }

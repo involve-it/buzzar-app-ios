@@ -176,3 +176,14 @@ extension Double {
     var ft: Double { return self / 3.28084 }
     var mi: Double { return self * 0.000621371}
 }
+
+extension NSDictionary{
+    func javaScriptDateFromFirstElement() -> NSDate?{
+        if self.count == 1 {
+            if let dateNumber = self.allValues[0] as? Int {
+                return NSDate(timeIntervalSince1970: Double(dateNumber) / 1000)
+            }
+        }
+        return nil
+    }
+}
