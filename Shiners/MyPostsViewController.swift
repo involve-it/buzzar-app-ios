@@ -46,6 +46,10 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        
+        //conf. LeftMenu
+        self.configureOfLeftMenu()
+        self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
     }
     
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {

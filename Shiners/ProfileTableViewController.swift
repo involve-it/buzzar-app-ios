@@ -31,8 +31,11 @@ class ProfileTableViewController: UITableViewController {
         
         tableView.registerNib(UINib(nibName: TableViewIdentifierCell.cellAboutMe, bundle: nil), forCellReuseIdentifier: TableViewIdentifierCell.cellAboutMe)
         
-        
         tabelViewEstimatedRowHeight()
+        
+        //conf. LeftMenu
+        self.configureOfLeftMenu()
+        self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

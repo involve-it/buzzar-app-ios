@@ -50,6 +50,11 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
+        
+        
+        //conf. LeftMenu
+        self.configureOfLeftMenu()
+        self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
     }
     
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {

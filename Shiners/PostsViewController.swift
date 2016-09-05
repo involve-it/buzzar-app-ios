@@ -30,9 +30,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     var pendingPostId: String?
     
-    @IBAction func unwindPosts(segue: UIStoryboardSegue){
-    
-    }
+    @IBAction func unwindPosts(segue: UIStoryboardSegue){}
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
@@ -89,6 +87,9 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     }
     
     override func viewDidLoad() {
+        
+        self.navigationItem.title = "Posts"
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
         self.locationHandler.delegate = self
         self.searchView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
@@ -120,6 +121,10 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
+        
+        //conf. LeftMenu
+        self.configureOfLeftMenu()
+        self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
     }
     
     func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
@@ -313,6 +318,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     }
     
     
+    
+    
     //Animation cell
     /*override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         cell.alpha = 0
@@ -367,3 +374,65 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         
     }
 }
+
+
+// MARK: extension
+extension UIViewController: SWRevealViewControllerDelegate {
+    
+    public func configureOfLeftMenu() {
+        if self.revealViewController() != nil {
+            
+            self.revealViewController().delegate = self
+            
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+            self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+            
+            //Defines a width on the border of the view attached to the panGesturRecognizer where the gesture is allowed
+            self.revealViewController().draggableBorderWidth = CGFloat(80.0)
+            
+            self.revealViewController().rearViewRevealWidth = self.view.frame.width - 60
+            
+            
+        }
+    }
+    
+    public func addLeftBarButtonWithImage(buttonImage: UIImage) {
+        let leftButton: UIBarButtonItem = UIBarButtonItem(image: buttonImage, style: UIBarButtonItemStyle.Plain, target: self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)))
+        
+        if navigationItem.leftBarButtonItems?.count > 0 {
+            navigationItem.leftBarButtonItems?.insert(leftButton, atIndex: 0)
+        } else {
+            navigationItem.leftBarButtonItem = leftButton
+        }
+        
+    }
+    
+    public func removeNavigationBarItem() {
+        self.navigationItem.leftBarButtonItem = nil
+        self.navigationItem.rightBarButtonItem = nil
+    }
+    
+    // MARK: - SWRevealViewController delegare
+    public func revealController(revealController: SWRevealViewController!, willMoveToPosition position: FrontViewPosition) {
+        //print("position: \(position.hashValue)")
+        if position == .Right {
+            //print("menu will open")
+        } else {
+            //print("menu did close")
+        }
+
+    }
+    
+    public func revealController(revealController: SWRevealViewController!, didMoveToPosition position: FrontViewPosition) {
+        //print("didMove")
+    }
+    
+}
+
+
+
+
+
+
+
+
