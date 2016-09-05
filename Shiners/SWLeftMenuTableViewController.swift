@@ -37,7 +37,7 @@ class SWLeftMenuTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
-        if self.currentUser == nil || self.currentUser! !== AccountHandler.Instance.currentUser{
+        if self.currentUser == nil || self.currentUser! !== AccountHandler.Instance.currentUser {
             self.currentUser = AccountHandler.Instance.currentUser
             self.refreshUserData()
         }
@@ -51,12 +51,15 @@ class SWLeftMenuTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         createGradientLayer()
+        
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     
     func refreshUserData() {
         
@@ -128,7 +131,7 @@ class SWLeftMenuTableViewController: UITableViewController {
         cell.textLabel?.textColor = textColorCell
         
         let selectedView = UIView(frame: CGRect.zero)
-        selectedView.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.1)
+        selectedView.backgroundColor = UIColor(red: 87/255, green: 87/255, blue: 110/255, alpha: 1)
         cell.selectedBackgroundView = selectedView
         
         //Disabled cell
@@ -138,64 +141,6 @@ class SWLeftMenuTableViewController: UITableViewController {
         
     }
     
-    // MARK: - Table view data source
-
-    /*
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
-    }
-    */
-
-    /*
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
     
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -235,6 +180,10 @@ class SWLeftMenuTableViewController: UITableViewController {
         
         //My posts
         if indexPath.item == 4 {
+            
+            /*let cell = tableView.cellForRowAtIndexPath(indexPath)
+            cell?.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.1)*/
+            
             let vc = storyBoard.instantiateViewControllerWithIdentifier(InitialNameViewControllers.myPosts)
             self.pushSelectFrontViewController(vc)
         }
@@ -259,7 +208,12 @@ class SWLeftMenuTableViewController: UITableViewController {
             //s.perform()
         }
 
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.reloadData()
+        
+        let cell = tableView.cellForRowAtIndexPath(indexPath)
+        cell?.backgroundColor = UIColor(red: 87/255, green: 87/255, blue: 110/255, alpha: 1)
+        
+        //tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 
     func pushSelectFrontViewController(viewController: UIViewController?) {
