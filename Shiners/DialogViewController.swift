@@ -22,7 +22,7 @@ public class DialogViewController : JSQMessagesViewController{
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.senderId = AccountHandler.Instance.userId
+        self.senderId = AccountHandler.Instance.userId ?? CachingHandler.Instance.currentUser?.id
         self.senderDisplayName = chat.otherParty?.username
         
         collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
