@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MapKit
 
-class FullMapViewController: UIViewController, MKMapViewDelegate{
+class FullMapViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     

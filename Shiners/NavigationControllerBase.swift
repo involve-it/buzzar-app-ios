@@ -62,7 +62,7 @@ public class NavigationControllerBase: UINavigationController{
         //label
         self.notificationLabel = UILabel(frame: CGRectMake(8, 0, toolbar!.bounds.width - 16, 14))
         self.notificationLabel!.font = UIFont.systemFontOfSize(8)
-        self.notificationLabel!.text = "Connecting message..."
+        self.notificationLabel!.text = NSLocalizedString("Connecting message...", comment: "Label, Connecting message...")
         notificationToolbar?.addSubview(self.notificationLabel!)
         
         //bottom separator

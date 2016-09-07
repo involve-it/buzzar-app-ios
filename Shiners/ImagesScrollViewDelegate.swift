@@ -21,6 +21,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     private let pageControl: UIPageControl
     private var imagesCount = 0
     
+    let addPhotoTitle = NSLocalizedString("Photo", comment: "Title, Photo")
     
     public init(mainView: UIView, scrollView: UIScrollView, viewController: UIViewController, pageControl: UIPageControl){
         self.mainView = mainView;
@@ -93,7 +94,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     }
     
     private func addPhoto(image: UIImage, index: Int){
-        let title = NSAttributedString(string: "Photo \(index + 1)", attributes: [NSForegroundColorAttributeName: UIColor.whiteColor()])
+        let title = NSAttributedString(string: "\(addPhotoTitle) \(index + 1)", attributes: [NSForegroundColorAttributeName: UIColor.whiteColor()])
         self.photos.append(CustomPhoto(image: image, attributedCaptionTitle: title))
     }
     

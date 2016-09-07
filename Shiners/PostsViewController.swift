@@ -167,12 +167,12 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     func locationReported(geocoderInfo: GeocoderInfo) {
         if geocoderInfo.denied {
-            self.errorMessage = "Please allow location services in settings"
+            self.errorMessage = NSLocalizedString("Please allow location services in settings", comment: "Alert denied, Please allow location services in settings")
             ThreadHelper.runOnMainThread {
                 self.tableView.reloadData()
             }
         } else if geocoderInfo.error {
-            self.errorMessage = "An error occurred getting your current location"
+            self.errorMessage = NSLocalizedString("An error occurred getting your current location", comment: "Alert error, An error occurred getting your current location")
             ThreadHelper.runOnMainThread {
                 self.tableView.reloadData()
             }
@@ -200,7 +200,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
                         self.tableView.reloadData()
                     } else {
                         self.errorMessage = errorMessage
-                        self.showAlert("Error", message: "Error updating posts")
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert error, Error"), message: NSLocalizedString("Error updating posts", comment: "Alert message, Error updating posts"))
                         self.tableView.reloadData()
                     }
                     self.checkPending()
@@ -242,7 +242,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         if posts.count == 0 {
             if (self.errorMessage != nil || (self.meteorLoaded && self.locationAcquired)){
                 let errorCell = tableView.dequeueReusableCellWithIdentifier("postsError") as! ErrorCell
-                errorCell.lblMessage.text = self.errorMessage ?? "There are no posts around you"
+                errorCell.lblMessage.text = self.errorMessage ?? NSLocalizedString("There are no posts around you", comment: "There are no posts around you")
                 cell = errorCell
             } else {
                 cell = tableView.dequeueReusableCellWithIdentifier("waitingPosts")

@@ -31,7 +31,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     
     
     @IBOutlet weak var txtBioPlaceholder: UITextView!
-    let txtBioPlaceholderText = "Bio (optional)"
+    let txtBioPlaceholderText = NSLocalizedString("Bio (optional)", comment: "Placeholder, Bio (optional)")
     let txtPlaceHolderColor = UIColor.lightGrayColor()
     
     
@@ -66,7 +66,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
                 if (success){
                     self.dismissSelf()
                 } else {
-                    self.showAlert("Error", message: "An error occurred while saving.")
+                    self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: NSLocalizedString("An error occurred while saving.", comment: "Alert message, An error occurred while saving."))
                 }
             })
         }
@@ -184,7 +184,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
                     self.currentUser?.imageUrl = imageUrl
                 } else {
                     self.imgUserAvatar.image = currentImage
-                    self.showAlert("Error", message: "Error uploading photo");
+                    self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: NSLocalizedString("Error uploading photo", comment: "Alert message, Error uploading photo"))
                 }
             })
         }

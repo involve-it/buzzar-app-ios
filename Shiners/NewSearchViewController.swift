@@ -17,8 +17,6 @@ public class NewSearchViewController: UIViewController, UITableViewDelegate, UIT
     public override func viewDidLoad() {
         self.tblSearchResults.delegate = self
         self.tblSearchResults.dataSource = self
-        
-        
     }
     
     func forceLayout(){

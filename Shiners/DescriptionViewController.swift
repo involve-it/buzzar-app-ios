@@ -60,5 +60,5 @@ public class DescriptionViewController: UIViewController{
 }
 
 protocol DescriptionViewControllerDelegate {
-    func htmlUpdated(html: String?, text: String?) ->Void
+    func htmlUpdated(html: String?, text: String?) -> Void
 }

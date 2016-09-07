@@ -13,7 +13,7 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
     var post: Post!
     //var localLocations = [Location]()
 
-    let labeDetermineLocationText = "current location not yet defined"
+    let labeDetermineLocationText = NSLocalizedString("current location not yet defined", comment: "Location, current location not yet defined")
     var currentLocationInfo: GeocoderInfo?
     
     private var dynamicLocationRequested = false
@@ -135,9 +135,9 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
             //let indexPath = NSIndexPath(forRow: 0, inSection: 3)
             //let cell = self.tableView.cellForRowAtIndexPath(indexPath)
             if geocoderInfo.denied {
-                labeDetermineLocation.text = "Please allow location services in settings"
+                labeDetermineLocation.text = NSLocalizedString("Please allow location services in settings", comment: "Please allow location services in settings")
             } else if geocoderInfo.error {
-                labeDetermineLocation.text = "An error occurred getting your current location"
+                labeDetermineLocation.text = NSLocalizedString("An error occurred getting your current location", comment: "Error getting current location")
             } else {
                 
                 if post.locations!.indexOf({return $0.placeType == .Static}) == nil {

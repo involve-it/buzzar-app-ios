@@ -72,7 +72,7 @@ extension NSDate {
         //If endDate < Now -> return
         if (endDate.timeIntervalSinceReferenceDate < dateToday.timeIntervalSinceReferenceDate) {
             // postClosed()
-            return "post closed"
+            return NSLocalizedString("post closed", comment: "Post info, post closed")
         }
         
         let date = dateComponentsFormatter.stringFromDate(dateToday, toDate: endDate)!

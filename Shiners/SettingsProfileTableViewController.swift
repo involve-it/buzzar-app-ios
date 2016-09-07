@@ -130,8 +130,8 @@ class SettingsProfileTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 4 {
-            let alertViewController = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: .ActionSheet)
-            alertViewController.addAction(UIAlertAction(title: "Log out", style: .Destructive, handler: { (_) in
+            let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .ActionSheet)
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
                 AccountHandler.Instance.logoff(){ success in
                     if (success){
                         self.currentUser = nil;
@@ -141,12 +141,12 @@ class SettingsProfileTableViewController: UITableViewController {
                         })
                         self.navigationController?.popViewControllerAnimated(true)
                     } else {
-                        self.showAlert("Error", message: "An error occurred")
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("An error occurred", comment: "Alert message, An error occurred"))
                     }
                 };
             }))
             
-            alertViewController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Cancel, handler: nil))
             
             self.presentViewController(alertViewController, animated: true, completion: nil)
         }

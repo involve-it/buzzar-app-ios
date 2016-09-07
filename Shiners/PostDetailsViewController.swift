@@ -61,13 +61,13 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         self.navigationController?.pushViewController(vc, animated: true)
     }
     @IBAction func btnSendMessage_Click(sender: AnyObject) {
-        let alertController = UIAlertController(title: "New message", message: nil, preferredStyle: .Alert);
+        let alertController = UIAlertController(title: NSLocalizedString("New message", comment: "Alert title, New message"), message: nil, preferredStyle: .Alert);
         
         alertController.addTextFieldWithConfigurationHandler { (textField) in
-            textField.placeholder = "Message"
+            textField.placeholder = NSLocalizedString("Message", comment: "Placeholder, Message")
         }
         
-        alertController.addAction(UIAlertAction(title: "Send", style: .Default, handler: { (action) in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Send", comment: "Alert title, Send"), style: .Default, handler: { (action) in
             if let text = alertController.textFields?[0].text where text != "" {
                 alertController.resignFirstResponder()
                 let message = MessageToSend()
@@ -77,12 +77,12 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                     if success {
                         AccountHandler.Instance.updateMyChats()
                     } else {
-                        self.showAlert("Erorr", message: errorMessage)
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
                     }
                 }
             }
         }))
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: {action in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert, title, Cancel"), style: .Cancel, handler: {action in
             alertController.resignFirstResponder()
         }));
         self.presentViewController(alertController, animated: true) {
@@ -179,7 +179,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             for coordinateLocation in postCoordinateLocation {
                 if coordinateLocation.placeType! == .Dynamic {
                     postLocation = coordinateLocation
-                    self.txtPostStatus.text = "Dynamic"
+                    self.txtPostStatus.text = NSLocalizedString("Dynamic", comment: "Post status, Dynamic")
                     
                     let typeImage = ( post.isLive() ) ? "PostType_Dynamic_Live" : "PostType_Dynamic"
                     self.postStatusImage.image = UIImage(named: typeImage)
@@ -189,7 +189,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                 } else {
                     //if coordinateLocation.placeType! == .Static
                     postLocation = coordinateLocation
-                    self.txtPostStatus.text = "Static"
+                    self.txtPostStatus.text = NSLocalizedString("Static", comment: "Post status, Static")
                     
                     let typeImage = ( post.isLive() ) ? "PostType_Static_Live" : "PostType_Static"
                     self.postStatusImage.image = UIImage(named: typeImage)
@@ -228,18 +228,18 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                                 let allResults = (formattedAddress as! [String]).joinWithSeparator(", ")
                                 self.txtPostLocationFormattedAddress.text = allResults
                             } else {
-                                self.txtPostLocationFormattedAddress.text = "Address is not defined"
+                                self.txtPostLocationFormattedAddress.text = NSLocalizedString("Address is not defined", comment: "Location, Address is not defined")
                             }
                         })
                     }
                 })
             } else {
                 self.postMapLocation.hidden = true
-                self.txtPostLocationFormattedAddress.text = "Address is not defined"
+                self.txtPostLocationFormattedAddress.text = NSLocalizedString("Address is not defined", comment: "Location, Address is not defined")
             }
         } else {
             self.postMapLocation.hidden = true
-            self.txtPostLocationFormattedAddress.text = "Address is not defined"
+            self.txtPostLocationFormattedAddress.text = NSLocalizedString("Address is not defined", comment: "Location, Address is not defined")
         }
         
         //POST TYPE

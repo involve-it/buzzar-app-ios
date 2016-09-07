@@ -62,13 +62,11 @@ class cellUserProfile: UITableViewCell {
             if let userLocation = currentUser.locations?.first {
                 txtUserLocation.text = userLocation.name
             } else {
-                txtUserLocation.text = "Location is hidden"
+                txtUserLocation.text = NSLocalizedString("Location is hidden", comment: "Text, Location is hidden")
             }
             
             //UserStatus: online/ofline
-            if let online = currentUser.online {
-                // -> Bool
-            }
+            
             
             //Posts count
             txtUserPostsCount.text = "0"

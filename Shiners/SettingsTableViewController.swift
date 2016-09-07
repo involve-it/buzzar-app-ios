@@ -27,7 +27,7 @@ class SettingsTableViewController: UITableViewController{
     @IBAction func cbNotifications_Changed(sender: UISwitch) {
         if let currentUser = self.currentUser {
             if sender.on && !UIApplication.sharedApplication().isRegisteredForRemoteNotifications(){
-                self.showAlert("Notifications", message: "To receive notifications, please allow this in device Settings.");
+                self.showAlert(NSLocalizedString("Notifications", comment: "Alert title, Notifications"), message: NSLocalizedString("To receive notifications, please allow this in device Settings.", comment: "Alert message, to receive notifications, please allow this in device Settings."));
                 sender.on = false
             } else {
                 let initialState = currentUser.enableNearbyNotifications
@@ -36,7 +36,7 @@ class SettingsTableViewController: UITableViewController{
                 AccountHandler.Instance.saveUser(currentUser) { (success, errorMessage) in
                     if (!success){
                         ThreadHelper.runOnMainThread({ 
-                            self.showAlert("Error", message: "An error occurred while saving.")
+                            self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: NSLocalizedString("An error occurred while saving.", comment: "Title message, an error occurred while saving."))
                             self.currentUser?.enableNearbyNotifications = initialState
                             sender.on = initialState ?? false
                         })
@@ -186,8 +186,8 @@ class SettingsTableViewController: UITableViewController{
             }
         }
         else if (indexPath.section == Section.logOut){
-            let alertViewController = UIAlertController(title: "Are you sure?", message: nil, preferredStyle: .ActionSheet)
-            alertViewController.addAction(UIAlertAction(title: "Log out", style: .Destructive, handler: { (_) in
+            let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .ActionSheet)
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
                 AccountHandler.Instance.logoff(){ success in
                     if (success){
                         self.currentUser = nil;
@@ -199,7 +199,7 @@ class SettingsTableViewController: UITableViewController{
                 };
             }))
             
-            alertViewController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Cancel, handler: nil))
             
             self.presentViewController(alertViewController, animated: true, completion: nil)
         } else if indexPath.section == Section.social{
@@ -256,7 +256,7 @@ class SettingsTableViewController: UITableViewController{
     }
     
     private func showAlertErrorLoginFacebook(){
-        self.showAlert("Facebook Login", message: "Error occurred while logging in with Facebook")
+        self.showAlert(NSLocalizedString("Facebook Login", comment: "Alert title, Facebook Login"), message: NSLocalizedString("Error occurred while logging in with Facebook", comment: "Alert message, Error occurred while logging in with Facebook"))
     }
     
     @objc private func processLogin(notification: NSNotification){

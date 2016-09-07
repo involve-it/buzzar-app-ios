@@ -12,11 +12,11 @@ class MessagesProvider{
     class func getMessage(messageId: ShinersMessage) -> String{
         switch messageId {
             case .ConnectionBroken:
-                return "Connection to server lost. Working offline."
+                return NSLocalizedString("Connection to server lost. Working offline.", comment: "Connection Broken, Connection to server lost. Working offline.")
             case .ConnectionConnecting:
-                return "Attempting to recover broken connection..."
+                return NSLocalizedString("Attempting to recover broken connection...", comment: "Connection Connecting, Attempting to recover broken connection...")
             case .ConnectionEstablished:
-                return "Connected!"
+                return NSLocalizedString("Connected!", comment: "Connection Established, Connected!")
         }
     }
 }

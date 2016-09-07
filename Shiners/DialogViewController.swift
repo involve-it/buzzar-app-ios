@@ -17,6 +17,8 @@ public class DialogViewController : JSQMessagesViewController{
     var chat: Chat!
     var pendingMessagesAsyncId: String?
     
+    let navigationBarBackItemTitle = NSLocalizedString("Messages(1)", comment: "NavigationBar Item, Messages")
+    
     var isPeeking = false
     
     public override func viewDidLoad() {
@@ -90,7 +92,7 @@ public class DialogViewController : JSQMessagesViewController{
             ThreadHelper.runOnMainThread({ 
                 //let backButton = self.navigationItem.backBarButtonItem
                 //backButton?.title! += "(1)"
-                self.navigationController!.navigationBar.backItem!.title = "Messages(1)";
+                self.navigationController!.navigationBar.backItem!.title = self.navigationBarBackItemTitle
             })
         }
     }
@@ -184,7 +186,7 @@ public class DialogViewController : JSQMessagesViewController{
             if success {
                 self.chat.lastMessage = text
             } else {
-                self.showAlert("Erorr", message: errorMessage)
+                self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
             }
         };
     }

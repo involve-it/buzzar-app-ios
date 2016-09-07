@@ -22,7 +22,7 @@ class ProfileTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "Profile"
+        self.navigationItem.title = NSLocalizedString("Profile", comment: "Navigation title, Profile")
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

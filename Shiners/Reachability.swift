@@ -56,11 +56,11 @@ public class Reachability: NSObject {
         public var description: String {
             switch self {
             case .ReachableViaWWAN:
-                return "Cellular"
+                return NSLocalizedString("Cellular", comment: "Cellular")
             case .ReachableViaWiFi:
-                return "WiFi"
+                return NSLocalizedString("WiFi", comment: "WiFi")
             case .NotReachable:
-                return "No Connection"
+                return NSLocalizedString("No Connection", comment: "No Connection")
             }
         }
     }

@@ -232,7 +232,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         var actions = [UITableViewRowAction]()
         
         let post = self.myPosts[indexPath.row]
-        let title = (post.visible ?? false) ? "Hide" : "Show"
+        let title = (post.visible ?? false) ? NSLocalizedString("Hide", comment: "Title, Hide") : NSLocalizedString("Show", comment: "Title, Show")
         
         var button = UITableViewRowAction(style: .Normal, title: title) { (action, indexPath) in
             print(title)
@@ -250,7 +250,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         
         actions.append(button)
         
-        button = UITableViewRowAction(style: .Destructive, title: "Delete") { (action, indexPath) in
+        button = UITableViewRowAction(style: .Destructive, title: NSLocalizedString("Delete", comment: "Title, Delete")) { (action, indexPath) in
             print("delete")
             //self.tableView.editing = false
             let post = self.myPosts[indexPath.row]
@@ -264,7 +264,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
                     //AccountHandler.Instance.updateMyPosts()
                     
                 } else {
-                    self.showAlert("Error", message: errorMessage)
+                    self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
                 }
             }
         }

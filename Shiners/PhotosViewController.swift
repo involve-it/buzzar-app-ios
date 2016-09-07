@@ -49,7 +49,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                 })
             } else {
                 ThreadHelper.runOnMainThread({
-                    self.showAlert("Error occurred", message: errorMessage)
+                    self.showAlert(NSLocalizedString("Error occurred", comment: "Alert, error occurred"), message: errorMessage)
                 })
             }
         }
@@ -77,7 +77,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                     photo.original = imageUrl
                     self.post.photos!.append(photo)
                 } else {
-                    self.showAlert("Error", message: "Error uploading photo");
+                    self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("Error uploading photo", comment: "Alert, error message uploading photo"));
                     self.deleteClicked(view)
                 }
                 

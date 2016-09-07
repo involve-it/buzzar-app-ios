@@ -10,6 +10,7 @@ import UIKit
 
 class NEWLoginViewController: UIViewController, UITextFieldDelegate {
 
+    let txtTitleLogInFaild = NSLocalizedString("Log in failed", comment: "Alert title, Log in failed")
     
     @IBOutlet weak var textFieldUsername: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
@@ -81,7 +82,7 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
                 self.setLoading(false, rightBarButtonItem: self.loginBtn)
                 if !success {
                     ThreadHelper.runOnMainThread({
-                        self.showAlert("Log in failed", message: errorMessage)
+                        self.showAlert(self.txtTitleLogInFaild, message: errorMessage)
                     })
                 }
             })
@@ -95,7 +96,7 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
                 AccountHandler.Instance.requestPushNotifications()
                 self.dismissSelf();
             } else {
-                self.showAlert("Log in failed", message: ResponseHelper.getDefaultErrorMessage())
+                self.showAlert(self.txtTitleLogInFaild, message: ResponseHelper.getDefaultErrorMessage())
             }
         })
     }

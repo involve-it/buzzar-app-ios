@@ -16,6 +16,8 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
     @IBOutlet weak var textFieldPassword: UITextField!
     @IBOutlet weak var textFieldConfirmPassword: UITextField!
     
+    let txtTitleRegistrationError = NSLocalizedString("Registration error", comment: "Alert title, registration error")
+    
     @IBOutlet weak var btnDone: UIBarButtonItem!
 
     override public func viewDidLoad() {
@@ -53,7 +55,7 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
             if AccountHandler.Instance.currentUser != nil {
                 self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
             } else {
-                self.showAlert("Registration error", message: ResponseHelper.getDefaultErrorMessage())
+                self.showAlert(self.txtTitleRegistrationError, message: ResponseHelper.getDefaultErrorMessage())
             }
         })
         
@@ -69,12 +71,12 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
                     if (success){
                         AccountHandler.Instance.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
                             if !success {
-                                self.showAlert("Registration error", message: errorMessage)
+                                self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
                             }
                         })
                     } else {
                         self.setLoading(false)
-                        self.showAlert("Registration error", message: errorMessage)
+                        self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
                     }
                 })
                 
@@ -83,7 +85,7 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
         }
         
         //todo: add validation messages
-        self.showAlert("Validation failed", message: "Form validation valied")
+        self.showAlert(NSLocalizedString("Validation failed", comment: "Alert title, Validation failed"), message: NSLocalizedString("Form validation valied", comment: "Alert message, Form validation valied"))
     }
 
     

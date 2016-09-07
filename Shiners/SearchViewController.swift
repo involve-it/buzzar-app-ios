@@ -25,7 +25,7 @@ class SearchViewController: UITableViewController{
         if (value < 50){
             self.txtRadius.text = "\(Int(value)) mi";
         } else  {
-            self.txtRadius.text = "Everywhere";
+            self.txtRadius.text = NSLocalizedString("Everywhere", comment: "Everywhere");
         }
     }
 }

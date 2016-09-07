@@ -15,6 +15,8 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
     @IBOutlet weak var txtPassword: UITextField!
     @IBOutlet weak var txtConfirmPassword: UITextField!
     
+    let txtTitleRegistrationError = NSLocalizedString("Registration error", comment: "Alert title, registration error")
+    
     @IBAction func btnCancel_Click(sender: AnyObject) {
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -78,12 +80,12 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
                     if (success){
                         AccountHandler.Instance.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
                             if !success {
-                                self.showAlert("Registration error", message: errorMessage)
+                                self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
                             }
                         })
                     } else {
                         self.setLoading(false)
-                        self.showAlert("Registration error", message: errorMessage)
+                        self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
                     }
                 })
                 
@@ -92,7 +94,7 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
         }
         
         //todo: add validation messages
-        self.showAlert("Validation failed", message: "Form validation valied")
+        self.showAlert(NSLocalizedString("Validation failed", comment: "Alert title, Validation failed"), message: NSLocalizedString("Form validation valied", comment: "Alert message, Form validation valied"))
     }
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {

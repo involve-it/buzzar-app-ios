@@ -100,7 +100,7 @@ class SearchPostsViewController: UIViewController {
     func createSearchBar() {
         searchBar.barTintColor = UIColor.whiteColor()
         searchBar.showsCancelButton = true
-        searchBar.placeholder = "Search posts"
+        searchBar.placeholder = NSLocalizedString("Search posts", comment: "Search placeholder, Search posts")
         searchBar.delegate = self
         
         self.navigationItem.titleView = searchBar

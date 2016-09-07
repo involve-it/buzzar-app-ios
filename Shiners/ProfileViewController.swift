@@ -22,6 +22,8 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     
     private var imagePickerHandler: ImagePickerHandler?
     
+    let txtTitleLogOut = NSLocalizedString("Log out", comment: "Alert title, Log out")
+    
     var currentUser: User?;
     
     @IBOutlet weak var btnSave: UIBarButtonItem!
@@ -53,7 +55,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
                 if (success){
                     self.dismissSelf()
                 } else {
-                    self.showAlert("Error", message: "An error occurred while saving.")
+                    self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: NSLocalizedString("An error occurred while saving.", comment: "Alert message, An error occurred while saving."))
                 }
             })
         }
@@ -77,7 +79,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     
     override public func viewDidLoad() {
         super.viewDidLoad()
-        self.cancelButton = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: #selector(btnCancel_Click));
+        self.cancelButton = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Plain, target: self, action: #selector(btnCancel_Click));
         
         self.setLoading(false, rightBarButtonItem: self.cancelButton)
         
@@ -99,7 +101,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     private func refreshSocialState(){
         if let _ = FBSDKAccessToken.currentAccessToken() {
             cellFacebook.accessoryType = UITableViewCellAccessoryType.None
-            cellFacebook.detailTextLabel?.text = "Connected"
+            cellFacebook.detailTextLabel?.text = NSLocalizedString("Connected", comment: "Label text, Connected")
         } else {
             cellFacebook.detailTextLabel?.text = ""
         }
@@ -139,20 +141,20 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     
     private func loginFacebook(){
         if let _ = FBSDKAccessToken.currentAccessToken() {
-            let alertController = UIAlertController(title: "Facebook", message: "Do you wish to log out?", preferredStyle: .Alert);
-            alertController.addAction(UIAlertAction(title: "Log out", style: .Destructive, handler: { (action) in
+            let alertController = UIAlertController(title: NSLocalizedString("Facebook", comment: "Facebook"), message: NSLocalizedString("Do you wish to log out?", comment: "Alert message, Do you wish to log out?"), preferredStyle: .Alert);
+            alertController.addAction(UIAlertAction(title: self.txtTitleLogOut, style: .Destructive, handler: { (action) in
                 FBSDKLoginManager().logOut()
                 ThreadHelper.runOnMainThread({ 
                     self.refreshSocialState()
                 })
             }))
-            alertController.addAction(UIAlertAction(title: "Log out", style: .Cancel, handler: nil));
+            alertController.addAction(UIAlertAction(title: self.txtTitleLogOut, style: .Cancel, handler: nil));
             
             self.presentViewController(alertController, animated: true, completion: nil)
         } else {
             FBSDKLoginManager().logInWithPublishPermissions(["publish_actions"], fromViewController: self) { (loginResult, error) in
                 if error != nil || loginResult.isCancelled {
-                    self.showAlert("Error", message: "Error logginig in to Facebook")
+                    self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: NSLocalizedString("Error logginig in to Facebook", comment: "Alert message, Error logginig in to Facebook"))
                 }
             }
         }
@@ -182,7 +184,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
                     self.currentUser?.imageUrl = imageUrl
                 } else {
                     self.imgPhoto.image = currentImage
-                    self.showAlert("Error", message: "Error uploading photo");
+                    self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: NSLocalizedString("Error uploading photo", comment: "Alert message, Error uploading photo"));
                 }
             })
         }

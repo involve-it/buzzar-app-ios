@@ -34,7 +34,7 @@ class NewPostNewViewController: UIViewController, UITextFieldDelegate, LocationH
     
     func locationReported(geocoderInfo: GeocoderInfo) {
         self.currentLocationInfo = geocoderInfo
-        print("New post location reported")
+        //print("New post location reported")
         NotificationManager.sendNotification(NotificationManager.Name.NewPostLocationReported, object: self.currentLocationInfo)
     }
     

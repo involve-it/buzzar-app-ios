@@ -87,9 +87,9 @@ public class StaticLocationViewController: UIViewController, MKMapViewDelegate, 
             self.mapView.removeAnnotation(annotation)
         }
         self.annotation = MKPointAnnotation()
-        self.annotation?.title = "Selected Locataion"
+        self.annotation?.title = NSLocalizedString("Selected locataion", comment: "Annotation title, Selected Locataion")
         if first {
-            self.annotation?.subtitle = "Tap and hold anywhere on the map to select location"
+            self.annotation?.subtitle = NSLocalizedString("Tap and hold anywhere on the map to select location", comment: "Annotation subTitle, Tap and hold anywhere on the map to select location")
         } else {
             self.annotation?.subtitle = ""
         }

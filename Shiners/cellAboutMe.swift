@@ -19,7 +19,7 @@ class cellAboutMe: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        txtAboutMeTitle.text = "About Me"
+        txtAboutMeTitle.text = NSLocalizedString("About Me", comment: "Title, About Me")
         
     }
 

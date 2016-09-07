@@ -140,9 +140,9 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         
         if let _ = self.post {
             self.restorePost()
-            self.createButton.title = "Save"
+            self.createButton.title = NSLocalizedString("Save", comment: "Title, Save")
         } else {
-            self.createButton.title = "Create"
+            self.createButton.title = NSLocalizedString("Create", comment: "Title, Create")
         }
     }
     
@@ -323,10 +323,10 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
                 let cell = self.tableView.cellForRowAtIndexPath(indexPath)
                 if cell?.accessoryType == UITableViewCellAccessoryType.None {
                     self.detectLocation()
-                    cell?.detailTextLabel?.text = "Attempting to get your location..."
+                    cell?.detailTextLabel?.text = NSLocalizedString("Attempting to get your location...", comment: "Text, Attempting to get your location...")
                 } else {
                     cell?.accessoryType = UITableViewCellAccessoryType.None
-                    cell?.detailTextLabel?.text = "Moving with your ad"
+                    cell?.detailTextLabel?.text = NSLocalizedString("Moving with your ad", comment: "Text, Moving with your ad")
                 }
             }
         } else if indexPath.section == Section.Photos && indexPath.row == 1 {
@@ -366,7 +366,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
     func detectLocation(){
         if !self.locationHandler.getLocationOnce(true) {
             if let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 0, inSection: Section.Location)){
-                cell.detailTextLabel!.text = "Please allow location services in settings"
+                cell.detailTextLabel!.text = NSLocalizedString("Please allow location services in settings", comment: "Text, Please allow location services in settings")
             }
         }
     }
@@ -377,9 +377,9 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
         //let indexPath = NSIndexPath(forRow: 0, inSection: 3)
         //let cell = self.tableView.cellForRowAtIndexPath(indexPath)
         if geocoderInfo.denied {
-            self.cellDynamicLocation?.detailTextLabel?.text = "Please allow location services in settings"
+            self.cellDynamicLocation?.detailTextLabel?.text = NSLocalizedString("Please allow location services in settings", comment: "Text, Please allow location services in settings")
         } else if geocoderInfo.error {
-            self.cellDynamicLocation?.detailTextLabel?.text = "An error occurred getting your current location"
+            self.cellDynamicLocation?.detailTextLabel?.text = NSLocalizedString("An error occurred getting your current location", comment: "Text, An error occurred getting your current location")
         } else {
             self.cellDynamicLocation?.detailTextLabel?.text = geocoderInfo.address
             self.cellDynamicLocation?.accessoryType = UITableViewCellAccessoryType.Checkmark
@@ -399,7 +399,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
             self.cellStaticLocation?.accessoryType = .Checkmark
         } else {
             self.cellStaticLocation?.accessoryType = .DisclosureIndicator
-            self.cellStaticLocation?.detailTextLabel?.text = "Pinned to static location"
+            self.cellStaticLocation?.detailTextLabel?.text = NSLocalizedString("Pinned to static location", comment: "Text, Pinned to static location")
         }
         let loc = Location()
         loc.lat = location?.latitude
@@ -549,7 +549,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
                         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                     })
                 } else {
-                    self.showAlert("Error occurred", message: errorMessage)
+                    self.showAlert(NSLocalizedString("Error occurred", comment: "Alert title, Error occurred"), message: errorMessage)
                 }
             }
             if let _ = self.post {
@@ -558,7 +558,7 @@ class NewPostViewController: UITableViewController, UIPickerViewDelegate, UIPick
                 ConnectionHandler.Instance.posts.addPost(post, currentCoordinates: nil, callback: callback)
             }
         } else {
-            self.showAlert("Error occurred", message: "Validation failed")
+            self.showAlert(NSLocalizedString("Error occurred", comment: "Alert title, Error occurred"), message: NSLocalizedString("Validation failed", comment: "Alert message, Validation failed"))
         }
     }
     

@@ -14,8 +14,9 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
     @IBOutlet weak var txtUsername: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     
-    private let registerButton = UIBarButtonItem(title: "Register", style: .Plain, target: nil, action: #selector(btnRegister_Click));
+    private let registerButton = UIBarButtonItem(title: NSLocalizedString("Register", comment: "Button title, Register"), style: .Plain, target: nil, action: #selector(btnRegister_Click));
     
+    let txtTitleLogInFaild = NSLocalizedString("Log in failed", comment: "Alert title, Log in failed")
     
     @IBAction func btnRegister_Click(sender: AnyObject) {
         let presentingViewController = self.presentingViewController;
@@ -76,7 +77,7 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
                 AccountHandler.Instance.requestPushNotifications()
                 self.dismissSelf();
             } else {
-                self.showAlert("Log in failed", message: ResponseHelper.getDefaultErrorMessage())
+                self.showAlert(self.txtTitleLogInFaild, message: ResponseHelper.getDefaultErrorMessage())
             }
         })
     }
@@ -88,7 +89,7 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
             AccountHandler.Instance.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in
                 if !success {
                     ThreadHelper.runOnMainThread({
-                        self.showAlert("Log in failed", message: errorMessage)
+                        self.showAlert(self.txtTitleLogInFaild, message: errorMessage)
                     })
                 }
             })

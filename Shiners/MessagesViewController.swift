@@ -97,7 +97,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         super.viewWillAppear(animated)
         
         self.tableView.reloadData()
-        self.navigationItem.title = "Messages"
+        self.navigationItem.title = NSLocalizedString("Messages", comment: "NavigationItem title, Messages")
     }
     
     override public func viewDidAppear(animated: Bool) {
@@ -220,7 +220,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
                     self.dialogs.removeAtIndex(indexPath.row)
                     self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
                 } else {
-                    self.showAlert("Error", message: errorMessage)
+                    self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
                 }
                 
             }
