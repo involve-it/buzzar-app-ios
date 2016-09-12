@@ -139,7 +139,12 @@ class SettingsProfileTableViewController: UITableViewController {
                         dispatch_async(dispatch_get_main_queue(), {
                             self.tableView.reloadData();
                         })
+                        
+                        
+                        //Segue to postViewController
                         self.navigationController?.popViewControllerAnimated(true)
+                        
+                        
                     } else {
                         self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("An error occurred", comment: "Alert message, An error occurred"))
                     }

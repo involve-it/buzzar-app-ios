@@ -38,12 +38,19 @@ class SWLeftMenuTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
         if self.currentUser == nil || self.currentUser! !== AccountHandler.Instance.currentUser {
-            self.currentUser = AccountHandler.Instance.currentUser
-            self.refreshUserData()
+            if let currentUser = AccountHandler.Instance.currentUser {
+                self.currentUser = currentUser
+                self.refreshUserData()
+            } else {
+                //Что если нет логина
+                showAlert("НЕТ ЛОГИНА", message: "Чувак нужно зарегиться")
+            }
+            
         }
         
         configLeftNavigationCell()
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(eventTableView), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
     }
     
     
@@ -51,7 +58,6 @@ class SWLeftMenuTableViewController: UITableViewController {
         super.viewWillAppear(animated)
         
         createGradientLayer()
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -122,11 +128,37 @@ class SWLeftMenuTableViewController: UITableViewController {
         
     }
     
-    func changeViewControllers() {
+    func changeViewControllers() {}
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
+        if currentUser != nil {
+            
+            switch indexPath.item {
+            case 0: return 0.0
+            case 1: return 65.0
+            case 2...8: return 44.0
+            default: break
+            }
+            
+        } else {
+            
+            switch indexPath.item {
+            case 0: return 65.0
+            case 1: return 0
+            case 2: return 44.0
+            case 3...8: return 0.0
+            default: break
+            }
+            
+        }
+        
+        tableView.reloadData()
+        return tableView.estimatedRowHeight
     }
 
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        
         cell.backgroundColor = UIColor.clearColor()
         cell.textLabel?.textColor = textColorCell
         
@@ -135,22 +167,36 @@ class SWLeftMenuTableViewController: UITableViewController {
         cell.selectedBackgroundView = selectedView
         
         //Disabled cell
-        if indexPath.item == 2 || indexPath.item == 3 || indexPath.item == 6 {
+        if indexPath.item == 3 || indexPath.item == 4 || indexPath.item == 7 {
             cell.textLabel?.enabled = false
         }
         
     }
     
-    
+    func eventTableView(event: NSNotification) {
+        self.tableView.reloadData()
+    }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+        var vc: UIViewController?
         
-        //Profile
         if indexPath.item == 0 {
             
-            var vc: UIViewController?
+            
+            if currentUser == nil {
+                vc = storyBoard.instantiateViewControllerWithIdentifier(InitialNameViewControllers.settingsLogOutUser)
+                self.pushSelectFrontViewController(vc)
+            }
+            
+        }
+        
+        
+        //Profile
+        if indexPath.item == 1 {
+            
+            //var vc: UIViewController?
             if currentUser != nil {
                 vc = storyBoard.instantiateViewControllerWithIdentifier(InitialNameViewControllers.settingsLogInUser)
             } else {
@@ -161,7 +207,7 @@ class SWLeftMenuTableViewController: UITableViewController {
         }
         
         //Main
-        if indexPath.item == 1 {
+        if indexPath.item == 2 {
             let vc = storyBoard.instantiateViewControllerWithIdentifier(InitialNameViewControllers.postsViewController)
             
             //let navigationController:UINavigationController = UINavigationController(rootViewController: vc)
@@ -171,15 +217,15 @@ class SWLeftMenuTableViewController: UITableViewController {
         }
         
         //Map
-        if indexPath.item == 2 {
+        if indexPath.item == 3 {
             
         }
         
         //Favorites
-        if indexPath.item == 3 {}
+        if indexPath.item == 4 {}
         
         //My posts
-        if indexPath.item == 4 {
+        if indexPath.item == 5 {
             
             /*let cell = tableView.cellForRowAtIndexPath(indexPath)
             cell?.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.1)*/
@@ -189,16 +235,16 @@ class SWLeftMenuTableViewController: UITableViewController {
         }
         
         //My messages
-        if indexPath.item == 5 {
+        if indexPath.item == 6 {
             let vc = storyBoard.instantiateViewControllerWithIdentifier(InitialNameViewControllers.myMessages)
             self.pushSelectFrontViewController(vc)
         }
         
         //Feddback
-        if indexPath.item == 6 {}
+        if indexPath.item == 7 {}
         
         //Settings UserProfile
-        if indexPath.item == 7 {
+        if indexPath.item == 8 {
             let vc = storyBoard.instantiateViewControllerWithIdentifier(InitialNameViewControllers.settingsUserProfile)
             
             let navigationController:UINavigationController = UINavigationController(rootViewController: vc)

@@ -41,6 +41,9 @@
 		61C6F90B1D3BED100030CC81 /* WhenPickDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9061D3BED100030CC81 /* WhenPickDateViewController.swift */; };
 		61EA5DA31D47559700083361 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EA5DA21D47559600083361 /* PhotosViewController.swift */; };
 		61F91F231D8046CD00B9DF3C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 61F91F251D8046CD00B9DF3C /* Localizable.strings */; };
+		61F91F321D82B81900B9DF3C /* MapTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F91F311D82B81900B9DF3C /* MapTypeViewController.swift */; };
+		61F91F561D830A1900B9DF3C /* BeginnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F91F551D830A1900B9DF3C /* BeginnerViewController.swift */; };
+		61F91F5C1D869A5600B9DF3C /* CustomPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F91F5B1D869A5600B9DF3C /* CustomPointAnnotation.swift */; };
 		61F960891D8021DB002FBAED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61F9608B1D8021DB002FBAED /* Main.storyboard */; };
 		7B0B316D1CF10A8200029458 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0B316C1CF10A8200029458 /* Photo.swift */; };
 		7B0B31711CF127A800029458 /* AccountHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0B31701CF127A700029458 /* AccountHandler.swift */; };
@@ -167,9 +170,11 @@
 		61EA5DA21D47559600083361 /* PhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
 		61F91F1B1D8044FF00B9DF3C /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		61F91F241D8046CD00B9DF3C /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		61F91F261D80470500B9DF3C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		61F91F281D80472C00B9DF3C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		61F91F2D1D8049D600B9DF3C /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
+		61F91F311D82B81900B9DF3C /* MapTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTypeViewController.swift; sourceTree = "<group>"; };
+		61F91F551D830A1900B9DF3C /* BeginnerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeginnerViewController.swift; sourceTree = "<group>"; };
+		61F91F5B1D869A5600B9DF3C /* CustomPointAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPointAnnotation.swift; sourceTree = "<group>"; };
 		61F9608F1D80227B002FBAED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		643ABEB340B81A6AB08AFEC7 /* Pods_Shiners.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shiners.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B0B316C1CF10A8200029458 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
@@ -419,12 +424,12 @@
 				7BB2A7F31CCD17A000AD636D /* ImagesScrollViewDelegate.swift */,
 				7BB2A8041CCDA58C00AD636D /* NewPostViewController.swift */,
 				7B26B08D1CD564E1000495EE /* MyPostsViewController.swift */,
-				6117A5471D4C03EC009E12DB /* PostDetailsViewController.swift */,
 				7B26B0BA1CD655C2000495EE /* DescriptionViewController.swift */,
 				7B26B1A21CD694A0000495EE /* StaticLocationViewController.swift */,
 				7B26B1A81CD6DDA8000495EE /* SmallImageView.swift */,
 				7B26B1AE1CD99D25000495EE /* NewSearchViewController.swift */,
 				7B1C123F1D0CC19C001355AB /* ErrorCell.swift */,
+				6117A5471D4C03EC009E12DB /* PostDetailsViewController.swift */,
 				7BC1A9C71D50469B005B4F62 /* FullMapViewController.swift */,
 			);
 			name = Posts;
@@ -530,6 +535,9 @@
 				7BB2A7E31CCC2B3800AD636D /* Core */,
 				7BB2A7DD1CCC1BDD00AD636D /* Data */,
 				61F9608B1D8021DB002FBAED /* Main.storyboard */,
+				61F91F311D82B81900B9DF3C /* MapTypeViewController.swift */,
+				61F91F5B1D869A5600B9DF3C /* CustomPointAnnotation.swift */,
+				61F91F551D830A1900B9DF3C /* BeginnerViewController.swift */,
 				6105C6E91D3F958700E83D29 /* GradientViewPostDetailsScrollView.swift */,
 				7BC0A21B1CCC15E700DA2824 /* AppDelegate.swift */,
 				7BC0A21D1CCC15E700DA2824 /* MainViewController.swift */,
@@ -740,6 +748,7 @@
 				7B0B316D1CF10A8200029458 /* Photo.swift in Sources */,
 				7BB2A7E11CCC217C00AD636D /* PostsCollection.swift in Sources */,
 				610671161D560487007828BA /* SearchResultCell.swift in Sources */,
+				61F91F321D82B81900B9DF3C /* MapTypeViewController.swift in Sources */,
 				7B1C12421D0CCCE9001355AB /* MessagesProxy.swift in Sources */,
 				7BB2A7F41CCD17A000AD636D /* ImagesScrollViewDelegate.swift in Sources */,
 				7B3565611CE93E0800012CA9 /* CachingHandler.swift in Sources */,
@@ -750,6 +759,7 @@
 				7BC0A21E1CCC15E700DA2824 /* MainViewController.swift in Sources */,
 				7B3565301CDD95F900012CA9 /* CustomPhoto.swift in Sources */,
 				7B26B1AF1CD99D25000495EE /* NewSearchViewController.swift in Sources */,
+				61F91F5C1D869A5600B9DF3C /* CustomPointAnnotation.swift in Sources */,
 				7BFFB1021D20445A007CCF87 /* MessagesHandler.swift in Sources */,
 				7BB2A80F1CCF199D00AD636D /* ProfileDetail.swift in Sources */,
 				7B26B1A91CD6DDA8000495EE /* SmallImageView.swift in Sources */,
@@ -788,6 +798,7 @@
 				7B86FFD91D3BFAB7008343B3 /* PushNotificationsHandler.swift in Sources */,
 				7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */,
 				7B26B0951CD568CB000495EE /* MessagesViewController.swift in Sources */,
+				61F91F561D830A1900B9DF3C /* BeginnerViewController.swift in Sources */,
 				6106710F1D54B40F007828BA /* SearchPostsViewController.swift in Sources */,
 				616B133B1D7863D200F0E480 /* SWLeftMenuTableViewController.swift in Sources */,
 				7BB2A8031CCDA15500AD636D /* RegisterViewController.swift in Sources */,
@@ -832,7 +843,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				61F91F241D8046CD00B9DF3C /* ru */,
-				61F91F261D80470500B9DF3C /* en */,
 			);
 			name = Localizable.strings;
 			path = Shiners;

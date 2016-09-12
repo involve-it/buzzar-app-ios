@@ -39,6 +39,9 @@ class FullMapViewController: UIViewController, MKMapViewDelegate {
         mapItem.openInMapsWithLaunchOptions(launchOptions)
     }
     
+    
+    
+    
     func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {
         if !self.locationUpdated {
             let annotation = MKPointAnnotation()

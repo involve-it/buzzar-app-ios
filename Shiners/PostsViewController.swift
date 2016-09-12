@@ -13,12 +13,16 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     private var posts = [Post]();
     
-    @IBOutlet weak var lcTxtSearchBoxLeft: NSLayoutConstraint!
+    //@IBOutlet weak var lcTxtSearchBoxLeft: NSLayoutConstraint!
     @IBOutlet var segmFilter: UISegmentedControl!
     @IBOutlet weak var txtSearchBox: UITextField!
     @IBOutlet var searchView: UIView!
     
     
+    
+    
+    @IBOutlet weak var btnCreatePost: UIButton!
+    var currentUser: User?
     
     var searchViewController: NewSearchViewController?
     
@@ -30,7 +34,13 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     var pendingPostId: String?
     
-    @IBAction func unwindPosts(segue: UIStoryboardSegue){}
+    enum PostTypeView: Int {
+        case List = 0
+        case Map
+    }
+    
+    
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
@@ -78,6 +88,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.translucent = false
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -125,9 +136,12 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         }
         
         //conf. LeftMenu
-        self.configureOfLeftMenu()
-        self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
+        //self.configureOfLeftMenu()
+        //self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
+        
     }
+    
+    
     
     func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
@@ -337,7 +351,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     func closeSearchView(){
         self.txtSearchBox.resignFirstResponder()
         UIView.animateWithDuration(0.25, animations: {
-            self.segmFilter.alpha = 1
+           // self.segmFilter.alpha = 1
             self.txtSearchBox.alpha = 0
             self.searchView.alpha = 0
         }) { (_) in
@@ -356,7 +370,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         
         self.txtSearchBox.becomeFirstResponder()
         UIView.animateWithDuration(0.25, animations: {
-            self.segmFilter.alpha = 0
+            //self.segmFilter.alpha = 0
             self.txtSearchBox.alpha = 1
             self.searchView.alpha = 1
             
@@ -366,9 +380,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     }
     
     
+    // MARK: action
     @IBAction func btnSearchClick(sender: AnyObject) {
-        
-        
         
         if (self.segmFilter.alpha == 0){
             self.closeSearchView()
@@ -377,6 +390,17 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         }
         
     }
+    
+    @IBAction func btnCreatePost(sender: UIButton) {
+        if currentUser != nil {
+            
+        }
+    }
+    
+    @IBAction func unwindPosts(segue: UIStoryboardSegue){}
+    
+    
+    
 }
 
 

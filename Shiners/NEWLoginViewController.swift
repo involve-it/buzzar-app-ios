@@ -113,7 +113,8 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func dismissSelf(){
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil);
+       self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        
     }
     
     /*

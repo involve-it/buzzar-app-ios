@@ -12,7 +12,6 @@ import FBSDKCoreKit
 
 class SettingsViewController: UIViewController {
 
-
     let storyboardMain = UIStoryboard(name: "Main", bundle: nil)
     
     
@@ -21,16 +20,38 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        configNavigationToolBar()
+        
+        //conf. LeftMenu
+        self.configureOfLeftMenu()
+        self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+       
+        
+        if AccountHandler.Instance.isLoggedIn() {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyBoard.instantiateViewControllerWithIdentifier("postsViewController")
+            self.revealViewController().pushFrontViewController(vc, animated: false)
+            
+           self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
 
-    
+    func configNavigationToolBar() {
+        self.navigationController!.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        self.navigationController!.navigationBar.shadowImage = UIImage()
+        self.navigationController!.navigationBar.backgroundColor = UIColor.whiteColor()
+        self.navigationController!.navigationBar.translucent = false
+    }
     
     
     
