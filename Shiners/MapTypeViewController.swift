@@ -11,13 +11,11 @@ import MapKit
 
 class MapTypeViewController: UIViewController, MKMapViewDelegate {
 
-    
     @IBOutlet weak var mapView: MKMapView!
     var posts = [Post]()
 
     var currentLocationAnnotation: CustomPointAnnotation!
     var locationUpdated = false
-    
     
     var postsLocationAnnotation: [CustomPointAnnotation]!
     var postsPlaceMarks: [CLPlacemark]!
@@ -39,12 +37,6 @@ class MapTypeViewController: UIViewController, MKMapViewDelegate {
         
         //Location's of post
         locationsOfPost(posts)
-        
-        
-        
-        
-        
-        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -61,8 +53,6 @@ class MapTypeViewController: UIViewController, MKMapViewDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    
     
     func locationsOfPost(posts: [Post]) {
         
@@ -180,7 +170,8 @@ class MapTypeViewController: UIViewController, MKMapViewDelegate {
             
             let leftIconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 53, height: 53))
             leftIconView.image = customPointAnnotation.image
-            //leftIconView.contentMode = .ScaleAspectFit
+            leftIconView.contentMode = .ScaleAspectFill
+            leftIconView.clipsToBounds = true
             view?.leftCalloutAccessoryView = leftIconView
             
             return view

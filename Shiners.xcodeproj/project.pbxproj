@@ -371,6 +371,15 @@
 			name = Localization;
 			sourceTree = "<group>";
 		};
+		61F91F5D1D88293900B9DF3C /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				61F91F311D82B81900B9DF3C /* MapTypeViewController.swift */,
+				61F91F5B1D869A5600B9DF3C /* CustomPointAnnotation.swift */,
+			);
+			name = Map;
+			sourceTree = "<group>";
+		};
 		7B26B0931CD568B5000495EE /* Messages */ = {
 			isa = PBXGroup;
 			children = (
@@ -394,6 +403,7 @@
 		7B3565461CE7B9A100012CA9 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				61F91F5D1D88293900B9DF3C /* Map */,
 				616B133C1D7863DE00F0E480 /* SWLeftMenu */,
 				616B13351D78632500F0E480 /* SWRevealMenu */,
 				7B3565571CE922C500012CA9 /* Common */,
@@ -535,8 +545,6 @@
 				7BB2A7E31CCC2B3800AD636D /* Core */,
 				7BB2A7DD1CCC1BDD00AD636D /* Data */,
 				61F9608B1D8021DB002FBAED /* Main.storyboard */,
-				61F91F311D82B81900B9DF3C /* MapTypeViewController.swift */,
-				61F91F5B1D869A5600B9DF3C /* CustomPointAnnotation.swift */,
 				61F91F551D830A1900B9DF3C /* BeginnerViewController.swift */,
 				6105C6E91D3F958700E83D29 /* GradientViewPostDetailsScrollView.swift */,
 				7BC0A21B1CCC15E700DA2824 /* AppDelegate.swift */,

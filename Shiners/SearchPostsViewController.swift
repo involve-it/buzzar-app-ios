@@ -34,6 +34,7 @@ class SearchPostsViewController: UIViewController {
     var heightViewNavBars: CGFloat = 0.0
     
     var searchResults = [Post]()
+    var postsAllLoad = [Post]()
     
     var hasSearched = false
     var isLoading = false
@@ -51,12 +52,13 @@ class SearchPostsViewController: UIViewController {
         
         createSearchBar()
         
-        
-        //heightViewNavBars = UIApplication.sharedApplication().statusBarFrame.size.height + searchBar.frame.height + stackViewBtnMore.frame.height
         heightViewNavBars = stackViewBtnMore.frame.height
         
         //Add some point margin at the top
-        tableView.contentInset = UIEdgeInsets(top: heightViewNavBars, left: 0, bottom: 0, right: 0)
+        if !stackViewBtnMore.hidden {
+            tableView.contentInset = UIEdgeInsetsMake(heightViewNavBars, 0, 0, 0)
+            tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightViewNavBars, 0, 0, 0)
+        }
     
         var cellNib = UINib(nibName: TableViewCellIdentifiers.searchResultCell, bundle: nil)
         tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.searchResultCell)
@@ -69,7 +71,12 @@ class SearchPostsViewController: UIViewController {
         
         searchBar.becomeFirstResponder()
         
-        //print("viewDidLoad size: w:\(self.view.bounds.size.width), h: \(self.view.bounds.size.height)")
+        //Получаем первичный неотсортированный массив posts
+        if CachingHandler.Instance.status != .Complete {
+            print("ERROR LOAD POST")
+        } else if let posts = CachingHandler.Instance.postsAll {
+            postsAllLoad = posts
+        }
     }
     
     //Тут можно поменять стили вью или статус бара и т.д.
@@ -203,63 +210,56 @@ extension SearchPostsViewController: UISearchBarDelegate {
     //User tap search button
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         
+        
+        //Когда пользователь нажимает на кнопку поиска
         if !searchBar.text!.isEmpty {
             searchBar.resignFirstResponder()
             
             isLoading = true
+            hasSearched = true
             tableView.reloadData()
             
-            hasSearched = true
-            //searchResults = [SearchResult]()
-            
-            //MARK: LOAD POSTS
-            if CachingHandler.Instance.status != .Complete {
-                print("ERROR LOAD POST")
-            } else if let posts = CachingHandler.Instance.postsAll {
-                searchResults = posts
-                
-                isLoading = false
-                tableView.reloadData()
-            }
-     
             if searchResults.count != 0 {}
         }
-        
-        
-        
-        
         
         //If search text != Shiners
         isLoading = false
         tableView.reloadData()
+    }
+
+    //Текст в поле поиска меняется
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.characters.count == 0 {
+            self.tabelViewStyleDefault()
+            hasSearched = false
+            tableView.reloadData()
+        } else {
+            isLoading = false
+            hasSearched = true
+            filterContentForSearchText(searchText)
+            tableView.reloadData()
+        }
+    }
+    
+    //Простая функция для поиска
+    func filterContentForSearchText(searchText: String) {
+        searchResults = postsAllLoad.filter({ (post) -> Bool in
+            let nameMatch = post.title?.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
+            return nameMatch != nil
+        })
     }
     
     //Top position for Bar
     func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
         return .TopAttached
     }
-    
-    //Text changed
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.characters.count == 0 {
-            
-            self.tabelViewStyleDefault()
- 
-            hasSearched = false
-            tableView.reloadData()
-        }
-    }
-    
-    
-    
-    
 }
 
 
 extension SearchPostsViewController: UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+
         if isLoading {
             return 1
         } else if !hasSearched {
@@ -275,15 +275,11 @@ extension SearchPostsViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if isLoading {
-            
             let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.loadingCell, forIndexPath: indexPath) as! LoadingCell
             let spinner = cell.loadingSpinner
             spinner.startAnimating()
             return cell
-            
         } else if searchResults.count == 0 {
-            
-            //if need img
             tableView.estimatedRowHeight = 44.0
             tableView.rowHeight = UITableViewAutomaticDimension
             
@@ -293,11 +289,11 @@ extension SearchPostsViewController: UITableViewDataSource {
         } else {
             
             let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
+            
             let searchResult = searchResults[indexPath.row]
             
             cell.txtTitlePost.text = searchResult.title
-            //if need img
-            
+
             return cell
         }
     }

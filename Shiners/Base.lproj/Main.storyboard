@@ -8,6 +8,53 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="HelveticaNeue.ttc">
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
+        </mutableArray>
+    </customFonts>
     <scenes>
         <!--Posts View Controller-->
         <scene sceneID="Pz5-dL-S2j">
@@ -219,7 +266,6 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="P4a-8e-ECL">
                             <connections>
                                 <action selector="btnSearchClick:" destination="4Vm-bU-Wpd" id="EHg-ZU-CvW"/>
-                                <segue destination="Pgw-1i-ZtI" kind="presentation" identifier="searchSegue" id="lnY-n1-SvB"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -4170,6 +4216,12 @@
                                 <action selector="postsViewTypeChanged:" destination="24b-NI-Og3" eventType="valueChanged" id="cYn-eM-rtT"/>
                             </connections>
                         </segmentedControl>
+                        <barButtonItem key="rightBarButtonItem" systemItem="search" id="Q7f-nv-ztc">
+                            <connections>
+                                <action selector="btnSearchPosts:" destination="24b-NI-Og3" id="TJc-K8-7F2"/>
+                                <segue destination="Pgw-1i-ZtI" kind="presentation" identifier="searchSegue" id="aL2-r5-nFI"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="contentView" destination="Qi4-c3-hG6" id="Y7q-nd-Pk4"/>
@@ -4443,7 +4495,7 @@
                     </connections>
                 </containerView>
             </objects>
-            <point key="canvasLocation" x="3538" y="625"/>
+            <point key="canvasLocation" x="3382" y="625"/>
         </scene>
         <!--More Filters Search View Controller-->
         <scene sceneID="0kz-cH-kNT">

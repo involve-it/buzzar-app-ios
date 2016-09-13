@@ -103,7 +103,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
         self.locationHandler.delegate = self
-        self.searchView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
+        //self.searchView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
         
         //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showPostsFromCollection), name: NotificationManager.Name.NearbyPostsSubscribed.rawValue, object: nil)
         

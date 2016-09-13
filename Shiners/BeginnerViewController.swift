@@ -13,7 +13,9 @@ class BeginnerViewController: UIViewController {
     @IBOutlet weak var typeSwitch: UISegmentedControl!
     @IBOutlet var contentView: UIView!
     
+    var searchViewController: NewSearchViewController?
     var currentViewController: UIViewController?
+    
     let storyBoard = UIStoryboard(name: "Main", bundle: nil)
     //Identifier postStyle
     lazy var listIdentifier: UIViewController? = {
@@ -79,12 +81,45 @@ class BeginnerViewController: UIViewController {
         return vc
     }
     
+    /*func closeSearchView(){
+        self.txtSearchBox.resignFirstResponder()
+        UIView.animateWithDuration(0.25, animations: {
+            // self.segmFilter.alpha = 1
+            self.txtSearchBox.alpha = 0
+            self.searchView.alpha = 0
+        }) { (_) in
+            self.searchView.removeFromSuperview()
+            self.tableView.scrollEnabled = true
+        }
+    }
+    
+    func openSearchView(){
+        self.searchView.frame = self.view.bounds;
+        self.tableView.scrollEnabled = false
+        
+        self.searchViewController?.setContentInset(self.navigationController!, tabBarController: self.tabBarController!)
+        self.searchView.alpha = 0
+        self.view.addSubview(self.searchView)
+        
+        self.txtSearchBox.becomeFirstResponder()
+        UIView.animateWithDuration(0.25, animations: {
+            //self.segmFilter.alpha = 0
+            self.txtSearchBox.alpha = 1
+            self.searchView.alpha = 1
+            
+        }) { (_) in
+            
+        }
+    }*/
+    
     @IBAction func postsViewTypeChanged(sender: UISegmentedControl) {
         self.currentViewController!.view.removeFromSuperview()
         self.currentViewController!.removeFromParentViewController()
         loadCurrentViewController(sender.selectedSegmentIndex)
     }
     
+    @IBAction func btnSearchPosts(sender: UIBarButtonItem) {
+    }
     
     
     
@@ -95,9 +130,11 @@ class BeginnerViewController: UIViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+        if (segue.identifier == "searchSegue"){
+            self.searchViewController = segue.destinationViewController as? NewSearchViewController
+            self.searchViewController?.delegate = self
+        }
+    }*/
+    
 
 }
