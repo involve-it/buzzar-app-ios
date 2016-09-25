@@ -17,14 +17,12 @@ class MapTypeViewController: UIViewController, MKMapViewDelegate {
     var currentLocationAnnotation: CustomPointAnnotation!
     var locationUpdated = false
     
-    var postsLocationAnnotation: [CustomPointAnnotation]!
+    var postsLocationAnnotations = [CustomPointAnnotation]()
     var postsPlaceMarks: [CLPlacemark]!
     var geoCoder: CLGeocoder!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        postsLocationAnnotation = [CustomPointAnnotation]()
         
         
         //MARK: LOAD POSTS
@@ -107,7 +105,7 @@ class MapTypeViewController: UIViewController, MKMapViewDelegate {
                         
                         anatation.pinCustomImageName = "dynamic_annotation"
                         
-                        postsLocationAnnotation.append(anatation)
+                        postsLocationAnnotations.append(anatation)
  
 
                         geoCoder = CLGeocoder()
@@ -143,7 +141,7 @@ class MapTypeViewController: UIViewController, MKMapViewDelegate {
             }
             
             //Show all annotations
-            self.mapView.showAnnotations(self.postsLocationAnnotation, animated: false)
+            self.mapView.showAnnotations(self.postsLocationAnnotations, animated: false)
         }
     }
     
@@ -184,7 +182,7 @@ class MapTypeViewController: UIViewController, MKMapViewDelegate {
             self.currentLocationAnnotation = CustomPointAnnotation(coordinate: userLocation.coordinate)
             
         
-            self.mapView.showAnnotations([self.currentLocationAnnotation] + self.postsLocationAnnotation, animated: true)
+            self.mapView.showAnnotations([self.currentLocationAnnotation] + self.postsLocationAnnotations, animated: true)
             self.mapView.selectAnnotation(self.currentLocationAnnotation, animated: false)
             self.mapView.removeAnnotation(self.currentLocationAnnotation)
             

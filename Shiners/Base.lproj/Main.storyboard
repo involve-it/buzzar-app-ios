@@ -2816,7 +2816,7 @@
                             <tableViewSection id="h46-zu-Qo4">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="OIz-Zh-zDL">
-                                        <rect key="frame" x="0.0" y="519" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="521" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OIz-Zh-zDL" id="cww-Gt-Rpb">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -2837,7 +2837,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="2pt-uD-zZS">
-                                        <rect key="frame" x="0.0" y="563" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="565" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2pt-uD-zZS" id="hdJ-cW-M1j">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -2862,7 +2862,7 @@
                             <tableViewSection id="ZZB-Q1-bXF">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Dxo-u9-vFC">
-                                        <rect key="frame" x="0.0" y="643" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="645" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dxo-u9-vFC" id="djo-Eo-j1n">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -4193,7 +4193,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8as-IE-ARw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-43" y="659"/>
+            <point key="canvasLocation" x="-103" y="357"/>
         </scene>
         <!--Posts-->
         <scene sceneID="b5A-8I-g0e">
@@ -4229,7 +4229,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="BaB-5i-kws" kind="relationship" relationship="viewControllers" id="xyj-at-CPx"/>
+                        <segue destination="aiz-QK-Qlc" kind="relationship" relationship="viewControllers" id="nUa-ep-UGd"/>
                         <segue destination="ew7-Q2-eca" kind="relationship" relationship="viewControllers" id="po3-kz-K73"/>
                         <segue destination="C4g-CZ-eOj" kind="relationship" relationship="viewControllers" id="BOE-Vs-xts"/>
                         <segue destination="xfT-hV-GHx" kind="relationship" relationship="viewControllers" id="yNT-qX-Y1L"/>
@@ -6037,10 +6037,11 @@
             </objects>
             <point key="canvasLocation" x="4834" y="2893"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Posts-->
         <scene sceneID="e4U-vk-97U">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="aiz-QK-Qlc" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Posts" image="posts" id="Jpr-SI-6Ib"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ry8-0V-orx">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -6053,7 +6054,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UIk-jE-pmW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1597" y="625"/>
+            <point key="canvasLocation" x="-1107" y="349"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="8bu-gd-N2T">
