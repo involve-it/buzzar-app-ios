@@ -63,7 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
     
     func locationReported(geocoderInfo: GeocoderInfo) {
         if UIApplication.sharedApplication().applicationState == .Background, let coords = geocoderInfo.coordinate {
-            ConnectionHandler.Instance.reportLocation(coords.latitude, lng: coords.longitude)
+            ConnectionHandler.Instance.reportLocation(coords.latitude, lng: coords.longitude, notify: true)
         }
     }
     

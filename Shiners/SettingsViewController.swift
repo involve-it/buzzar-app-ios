@@ -23,11 +23,11 @@ class SettingsViewController: UIViewController {
         configNavigationToolBar()
         
         //conf. LeftMenu
-        self.configureOfLeftMenu()
-        self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
+        //self.configureOfLeftMenu()
+        //self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    /*override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
        
@@ -39,7 +39,7 @@ class SettingsViewController: UIViewController {
             
            self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
         }
-    }
+    }*/
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

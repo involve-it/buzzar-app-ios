@@ -34,8 +34,8 @@ class ProfileTableViewController: UITableViewController {
         tabelViewEstimatedRowHeight()
         
         //conf. LeftMenu
-        self.configureOfLeftMenu()
-        self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
+        //self.configureOfLeftMenu()
+        //self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

@@ -42,8 +42,8 @@ class BeginnerViewController: UIViewController {
         self.loadCurrentViewController(self.typeSwitch.selectedSegmentIndex)
         
         //conf. LeftMenu
-        self.configureOfLeftMenu()
-        self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
+        //self.configureOfLeftMenu()
+        //self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
     }
     
     override func viewWillDisappear(animated: Bool) {

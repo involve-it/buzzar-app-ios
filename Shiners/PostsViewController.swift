@@ -13,15 +13,12 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     private var posts = [Post]();
     
-    //@IBOutlet weak var lcTxtSearchBoxLeft: NSLayoutConstraint!
+    @IBOutlet weak var lcTxtSearchBoxLeft: NSLayoutConstraint!
     @IBOutlet var segmFilter: UISegmentedControl!
     @IBOutlet weak var txtSearchBox: UITextField!
     @IBOutlet var searchView: UIView!
     
-    
-    
-    
-    @IBOutlet weak var btnCreatePost: UIButton!
+    @IBOutlet var btnAddNewPost: UIBarButtonItem!
     var currentUser: User?
     
     var searchViewController: NewSearchViewController?
@@ -61,20 +58,23 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         }
     }
     
-    func checkPending(){
+    func checkPending(stopAfter: Bool){
         if let pendingPostId = self.pendingPostId, postIndex = self.posts.indexOf({$0.id == pendingPostId}){
             self.navigationController?.popToViewController(self, animated: false)
             let indexPath = NSIndexPath(forRow: postIndex, inSection: 0)
             self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
             self.performSegueWithIdentifier("postDetails", sender: self)
+            self.pendingPostId = nil
         }
-        self.pendingPostId = nil
+        if stopAfter {
+            self.pendingPostId = nil
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if self.posts.count > 0 && ConnectionHandler.Instance.status == .Connected{
-            self.checkPending()
+            self.checkPending(false)
         }
     }
     
@@ -89,7 +89,14 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.translucent = false
         
+        if AccountHandler.Instance.isLoggedIn(){
+            self.navigationItem.leftBarButtonItem = self.btnAddNewPost
+        } else {
+            self.navigationItem.leftBarButtonItem = nil
+        }
     }
+    
+    
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
@@ -161,7 +168,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     func appDidBecomeActive(){
         if self.posts.count > 0 && AccountHandler.Instance.status == .Completed{
-            self.checkPending()
+            self.getNearby()
+            self.checkPending(false)
         }
     }
     
@@ -196,6 +204,9 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
             
             //self.subscribeToNearby()
             self.getNearby()
+            ThreadHelper.runOnBackgroundThread({ 
+                ConnectionHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude, notify: false)
+            })
         }
     }
     
@@ -212,12 +223,13 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
                         self.errorMessage = nil
                         self.posts = result as! [Post]
                         self.tableView.reloadData()
+                        self.checkPending(true)
                     } else {
                         self.errorMessage = errorMessage
                         self.showAlert(NSLocalizedString("Error", comment: "Alert error, Error"), message: NSLocalizedString("Error updating posts", comment: "Alert message, Error updating posts"))
                         self.tableView.reloadData()
                     }
-                    self.checkPending()
+                    
                 })
             }
         } else {
@@ -391,73 +403,65 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         
     }
     
-    @IBAction func btnCreatePost(sender: UIButton) {
-        if currentUser != nil {
-            
-        }
-    }
-    
     @IBAction func unwindPosts(segue: UIStoryboardSegue){}
     
-    
-    
 }
-
-
-// MARK: extension
-extension UIViewController: SWRevealViewControllerDelegate {
-    
-    public func configureOfLeftMenu() {
-        if self.revealViewController() != nil {
-            
-            self.revealViewController().delegate = self
-            
-            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
-            
-            //Defines a width on the border of the view attached to the panGesturRecognizer where the gesture is allowed
-            self.revealViewController().draggableBorderWidth = CGFloat(80.0)
-            
-            self.revealViewController().rearViewRevealWidth = self.view.frame.width - 60
-            
-            
-        }
-    }
-    
-    public func addLeftBarButtonWithImage(buttonImage: UIImage) {
-        let leftButton: UIBarButtonItem = UIBarButtonItem(image: buttonImage, style: UIBarButtonItemStyle.Plain, target: self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)))
-        
-        if navigationItem.leftBarButtonItems?.count > 0 {
-            navigationItem.leftBarButtonItems?.insert(leftButton, atIndex: 0)
-        } else {
-            navigationItem.leftBarButtonItem = leftButton
-        }
-        
-    }
-    
-    public func removeNavigationBarItem() {
-        self.navigationItem.leftBarButtonItem = nil
-        self.navigationItem.rightBarButtonItem = nil
-    }
-    
-    // MARK: - SWRevealViewController delegare
-    public func revealController(revealController: SWRevealViewController!, willMoveToPosition position: FrontViewPosition) {
-        //print("position: \(position.hashValue)")
-        if position == .Right {
-            //print("menu will open")
-        } else {
-            //print("menu did close")
-        }
-
-    }
-    
-    public func revealController(revealController: SWRevealViewController!, didMoveToPosition position: FrontViewPosition) {
-        //print("didMove")
-    }
-    
-}
-
-
+//
+//
+//// MARK: extension
+//extension UIViewController: SWRevealViewControllerDelegate {
+//    
+//    /*public func configureOfLeftMenu() {
+//        if self.revealViewController() != nil {
+//            
+//            self.revealViewController().delegate = self
+//            
+//            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+//            self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
+//            
+//            //Defines a width on the border of the view attached to the panGesturRecognizer where the gesture is allowed
+//            self.revealViewController().draggableBorderWidth = CGFloat(80.0)
+//            
+//            self.revealViewController().rearViewRevealWidth = self.view.frame.width - 60
+//            
+//            
+//        }
+//    }
+//    
+//    public func addLeftBarButtonWithImage(buttonImage: UIImage) {
+//        let leftButton: UIBarButtonItem = UIBarButtonItem(image: buttonImage, style: UIBarButtonItemStyle.Plain, target: self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)))
+//        
+//        if navigationItem.leftBarButtonItems?.count > 0 {
+//            navigationItem.leftBarButtonItems?.insert(leftButton, atIndex: 0)
+//        } else {
+//            navigationItem.leftBarButtonItem = leftButton
+//        }
+//        
+//    }*/
+//    
+//    public func removeNavigationBarItem() {
+//        self.navigationItem.leftBarButtonItem = nil
+//        self.navigationItem.rightBarButtonItem = nil
+//    }
+//    
+//    // MARK: - SWRevealViewController delegare
+//    /*public func revealController(revealController: SWRevealViewController!, willMoveToPosition position: FrontViewPosition) {
+//        //print("position: \(position.hashValue)")
+//        if position == .Right {
+//            //print("menu will open")
+//        } else {
+//            //print("menu did close")
+//        }
+//
+//    }
+//    
+//    public func revealController(revealController: SWRevealViewController!, didMoveToPosition position: FrontViewPosition) {
+//        //print("didMove")
+//    }*/
+//    
+//}
+//
+//
 
 
 

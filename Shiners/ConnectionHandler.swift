@@ -10,13 +10,13 @@ import Foundation
 import SwiftDDP
 
 public class ConnectionHandler{
-    //public static let baseUrl = "http://192.168.1.61:3000"
+    public static let baseUrl = "http://192.168.1.61:3000"
     //public static let baseUrl = "http://msg.webhop.org"
-    public static let baseUrl = "https://www.shiners.mobi"
+    //public static let baseUrl = "https://www.shiners.mobi"
     
     //private let url:String = "ws://msg.webhop.org/websocket"
-    //private let url:String = "ws://192.168.1.61:3000/websocket"
-    private let url:String = "wss://www.shiners.mobi/websocket"
+    private let url:String = "ws://192.168.1.61:3000/websocket"
+    //private let url:String = "wss://www.shiners.mobi/websocket"
     
     public private(set) var status: ConnectionStatus = .NotInitialized
     
@@ -29,13 +29,14 @@ public class ConnectionHandler{
     
     private var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
-    public func reportLocation(lat: Double, lng: Double){
+    public func reportLocation(lat: Double, lng: Double, notify: Bool){
         if let userId = AccountHandler.Instance.getSavedUserId() {
             var dict = Dictionary<String, AnyObject>()
             dict["lat"] = lat
             dict["lng"] = lng
             dict["userId"] = userId
             dict["deviceId"] = SecurityHandler.getDeviceId()
+            dict["notify"] = notify
             if let jsonData = try? NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions()), url = NSURL(string: ConnectionHandler.baseUrl + "/api/geolocation"){
                 let request = NSMutableURLRequest(URL: url)
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -70,7 +71,7 @@ public class ConnectionHandler{
             self.status = ConnectionStatus.Connecting
             //Meteor.client.logLevel = .Debug;
             
-            Meteor.client.allowSelfSignedSSL = true
+            //Meteor.client.allowSelfSignedSSL = true
             
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.accountLoaded), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
             

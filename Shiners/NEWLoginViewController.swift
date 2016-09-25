@@ -15,7 +15,7 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var textFieldUsername: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
     
-    @IBOutlet weak var loginBtn: UIBarButtonItem!
+    @IBOutlet var loginBtn: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -26,8 +26,6 @@
 		613C6A4A1D63419400744076 /* cellUserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A491D63419400744076 /* cellUserProfile.swift */; };
 		613C6A4C1D645D5A00744076 /* SettingsProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A4B1D645D5A00744076 /* SettingsProfileTableViewController.swift */; };
 		613C6A701D660A0000744076 /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */; };
-		616B13391D78636200F0E480 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 616B13381D78636200F0E480 /* SWRevealViewController.m */; };
-		616B133B1D7863D200F0E480 /* SWLeftMenuTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 616B133A1D7863D200F0E480 /* SWLeftMenuTableViewController.swift */; };
 		617378A21D6B290D00F10ABA /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */; };
 		617378C21D6DC5E100F10ABA /* NEWRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */; };
 		617378C71D6ECFC700F10ABA /* cellAboutMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378C51D6ECFC700F10ABA /* cellAboutMe.swift */; };
@@ -152,10 +150,6 @@
 		613C6A491D63419400744076 /* cellUserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = cellUserProfile.swift; sourceTree = "<group>"; };
 		613C6A4B1D645D5A00744076 /* SettingsProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsProfileTableViewController.swift; sourceTree = "<group>"; };
 		613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewController.swift; sourceTree = "<group>"; };
-		616B13361D78636100F0E480 /* Shiners-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Shiners-Bridging-Header.h"; sourceTree = "<group>"; };
-		616B13371D78636200F0E480 /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
-		616B13381D78636200F0E480 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
-		616B133A1D7863D200F0E480 /* SWLeftMenuTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWLeftMenuTableViewController.swift; sourceTree = "<group>"; };
 		617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEWRegisterViewController.swift; sourceTree = "<group>"; };
 		617378C51D6ECFC700F10ABA /* cellAboutMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = cellAboutMe.swift; sourceTree = "<group>"; };
@@ -332,24 +326,6 @@
 			name = Profile;
 			sourceTree = "<group>";
 		};
-		616B13351D78632500F0E480 /* SWRevealMenu */ = {
-			isa = PBXGroup;
-			children = (
-				616B13371D78636200F0E480 /* SWRevealViewController.h */,
-				616B13381D78636200F0E480 /* SWRevealViewController.m */,
-				616B13361D78636100F0E480 /* Shiners-Bridging-Header.h */,
-			);
-			name = SWRevealMenu;
-			sourceTree = "<group>";
-		};
-		616B133C1D7863DE00F0E480 /* SWLeftMenu */ = {
-			isa = PBXGroup;
-			children = (
-				616B133A1D7863D200F0E480 /* SWLeftMenuTableViewController.swift */,
-			);
-			name = SWLeftMenu;
-			sourceTree = "<group>";
-		};
 		61C6F9011D3BEC150030CC81 /* wizard */ = {
 			isa = PBXGroup;
 			children = (
@@ -404,8 +380,6 @@
 			isa = PBXGroup;
 			children = (
 				61F91F5D1D88293900B9DF3C /* Map */,
-				616B133C1D7863DE00F0E480 /* SWLeftMenu */,
-				616B13351D78632500F0E480 /* SWRevealMenu */,
 				7B3565571CE922C500012CA9 /* Common */,
 				7BB2A7D71CCC18B000AD636D /* Posts */,
 				610671101D54D834007828BA /* SearchPosts */,
@@ -794,7 +768,6 @@
 				7B3565341CE18A5E00012CA9 /* RegisterUser.swift in Sources */,
 				7B3565521CE7DF5A00012CA9 /* PostsProxy.swift in Sources */,
 				7BB2A8011CCD96C000AD636D /* LogInViewController.swift in Sources */,
-				616B13391D78636200F0E480 /* SWRevealViewController.m in Sources */,
 				7BC1A9C41D4C3D19005B4F62 /* KeyChainWrapper.swift in Sources */,
 				7BC0A2301CCC160C00DA2824 /* SettingsTableViewController.swift in Sources */,
 				61C6F9081D3BED100030CC81 /* DescriptionPostViewController.swift in Sources */,
@@ -808,7 +781,6 @@
 				7B26B0951CD568CB000495EE /* MessagesViewController.swift in Sources */,
 				61F91F561D830A1900B9DF3C /* BeginnerViewController.swift in Sources */,
 				6106710F1D54B40F007828BA /* SearchPostsViewController.swift in Sources */,
-				616B133B1D7863D200F0E480 /* SWLeftMenuTableViewController.swift in Sources */,
 				7BB2A8031CCDA15500AD636D /* RegisterViewController.swift in Sources */,
 				7B35654E1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift in Sources */,
 				613C6A471D633C8300744076 /* ProfileTableViewController.swift in Sources */,
@@ -979,7 +951,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Shiners/Shiners-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -1001,7 +973,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = org.buzzar.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "Shiners/Shiners-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

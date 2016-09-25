@@ -45,8 +45,8 @@ class SettingsProfileTableViewController: UITableViewController {
         getUserData()
         
         //conf. LeftMenu
-        self.configureOfLeftMenu()
-        self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
+        //self.configureOfLeftMenu()
+        //self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
     }
 
     override func didReceiveMemoryWarning() {
@@ -134,11 +134,11 @@ class SettingsProfileTableViewController: UITableViewController {
             alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
                 AccountHandler.Instance.logoff(){ success in
                     if (success){
-                        self.currentUser = nil;
+                        /*self.currentUser = nil;
                         self.refreshUser();
                         dispatch_async(dispatch_get_main_queue(), {
                             self.tableView.reloadData();
-                        })
+                        })*/
                         
                         
                         //Segue to postViewController

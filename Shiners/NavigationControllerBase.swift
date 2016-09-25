@@ -19,14 +19,12 @@ public class NavigationControllerBase: UINavigationController{
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupNotificationToolbar()
+        //self.setupNotificationToolbar()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(networkConnected), name: NotificationManager.Name.NetworkReachable.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(networkDisconnected), name: NotificationManager.Name.NetworkUnreachable.rawValue, object: nil)
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(networkConnected), name: NotificationManager.Name.NetworkReachable.rawValue, object: nil)
+        //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(networkDisconnected), name: NotificationManager.Name.NetworkUnreachable.rawValue, object: nil)
         
         //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(forceLayout), name: UIDeviceOrientationDidChangeNotification, object: nil)
-        
-        
     }
     
     @objc private func networkConnected(notification: NSNotification){
