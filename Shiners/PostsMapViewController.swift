@@ -9,10 +9,9 @@
 import UIKit
 import MapKit
 
-class MapTypeViewController: UIViewController, MKMapViewDelegate {
+class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewControllerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
-    var posts = [Post]()
 
     var currentLocationAnnotation: CustomPointAnnotation!
     var locationUpdated = false
@@ -21,20 +20,31 @@ class MapTypeViewController: UIViewController, MKMapViewDelegate {
     var postsPlaceMarks: [CLPlacemark]!
     var geoCoder: CLGeocoder!
     
+    weak var mainViewController: PostsMainViewController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        //MARK: LOAD POSTS
-        if CachingHandler.Instance.status != .Complete {
-            print("ERROR LOAD POST")
-        } else if let posts = CachingHandler.Instance.postsAll {
-            self.posts = posts
-        }
-        
+        self.mainViewController = self.parentViewController as! PostsMainViewController
         
         //Location's of post
-        locationsOfPost(posts)
+        self.postsUpdated()
+    }
+    
+    func postsUpdated() {
+        self.updateMap(self.mainViewController.posts)
+    }
+    
+    func showPostDetails(index: Int) {
+        let detailsViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("postDetails") as! PostDetailsViewController
+        let post = self.mainViewController.posts[index]
+        if let currentLocation = self.mainViewController.currentLocation {
+            //current location
+            let curLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
+            post.outDistancePost = post.getDistanceFormatted(curLocation)
+        }
+        detailsViewController.post = post
+        self.mainViewController.navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -52,8 +62,11 @@ class MapTypeViewController: UIViewController, MKMapViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func locationsOfPost(posts: [Post]) {
-        
+    
+    
+    func updateMap(posts: [Post]) {
+        self.mapView.removeAnnotations(self.postsLocationAnnotations)
+        self.postsLocationAnnotations = [CustomPointAnnotation]()
         if posts.count > 0 {
             
             for post in posts {
@@ -83,65 +96,67 @@ class MapTypeViewController: UIViewController, MKMapViewDelegate {
                             return loc
                         }()
                         
-                        let anatation = CustomPointAnnotation(coordinate: location.coordinate)
-                        anatation.title = post.title
+                        let annotation = CustomPointAnnotation(coordinate: location.coordinate)
+                        annotation.id = post.id
+                        annotation.title = post.title
                         if let subTitle = post.descr {
-                            anatation.subtitle = subTitle
+                            annotation.subtitle = subTitle
                         }
                         
                         if post.photos?.count > 0 {
                             if let postImage = post.photos?[0].thumbnail ?? post.photos?[0].original {
                                 if ImageCachingHandler.Instance.getImageFromUrl(postImage, defaultImage: ImageCachingHandler.defaultPhoto, callback: { (image) in
                                     ThreadHelper.runOnMainThread({
-                                        anatation.image = image
+                                        annotation.image = image
                                     })
                                 }){
-                                    anatation.image = ImageCachingHandler.defaultPhoto
+                                    annotation.image = ImageCachingHandler.defaultPhoto
                                 }
                             }
                         } else {
-                            anatation.image = ImageCachingHandler.defaultPhoto
+                            annotation.image = ImageCachingHandler.defaultPhoto
                         }
                         
-                        anatation.pinCustomImageName = "dynamic_annotation"
+                        annotation.pinCustomImageName = "dynamic_annotation"
                         
-                        postsLocationAnnotations.append(anatation)
+                        postsLocationAnnotations.append(annotation)
  
 
-                        geoCoder = CLGeocoder()
-                        postsPlaceMarks = [CLPlacemark]()
+//                        geoCoder = CLGeocoder()
+//                        postsPlaceMarks = [CLPlacemark]()
                         
-                        geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error in
-                        
-                            if error != nil {
-                                print("Reverse geocoder failed with error: \(error!.localizedDescription)")
-                            }
-                    
-                            /*if placemarks != nil {
-                                //self.postsPlaceMarks.append(placemarks[0])
-                                if let placemark = placemarks?.first {
-                                    let name = placemark.name
-                                    print("PlaceMark name: \(name)")
-                                    
-                                    //Add annotation
-                                    //let anatation = MKPointAnnotation()
-                                    //anatation.coordinate = location.coordinate
-                                    
-                                    //let anatation = CustomPointAnnotation()
-                                    //anatation.coordinate = placemark.location!.coordinate
-                                    //anatation.title = name
-                                    //anatation.pinCustomImageName = "dynamic_annotation"
-                                    //self.postsPlaceMarks.append(placemark)
-         
-                                }
-                            }*/
-                        })
+//                        geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error in
+//                        
+//                            if error != nil {
+//                                print("Reverse geocoder failed with error: \(error!.localizedDescription)")
+//                            }
+//                    
+//                            /*if placemarks != nil {
+//                                //self.postsPlaceMarks.append(placemarks[0])
+//                                if let placemark = placemarks?.first {
+//                                    let name = placemark.name
+//                                    print("PlaceMark name: \(name)")
+//                                    
+//                                    //Add annotation
+//                                    //let anatation = MKPointAnnotation()
+//                                    //anatation.coordinate = location.coordinate
+//                                    
+//                                    //let anatation = CustomPointAnnotation()
+//                                    //anatation.coordinate = placemark.location!.coordinate
+//                                    //anatation.title = name
+//                                    //anatation.pinCustomImageName = "dynamic_annotation"
+//                                    //self.postsPlaceMarks.append(placemark)
+//         
+//                                }
+//                            }*/
+//                        })
                     }
                 }
             }
-            
+            let currentVisibleMapRectangle = self.mapView.visibleMapRect
             //Show all annotations
             self.mapView.showAnnotations(self.postsLocationAnnotations, animated: false)
+            self.mapView.setVisibleMapRect(currentVisibleMapRectangle, animated: false)
         }
     }
     
@@ -171,10 +186,18 @@ class MapTypeViewController: UIViewController, MKMapViewDelegate {
             leftIconView.contentMode = .ScaleAspectFill
             leftIconView.clipsToBounds = true
             view?.leftCalloutAccessoryView = leftIconView
+            let btn = UIButton(type: .DetailDisclosure)
+            view?.rightCalloutAccessoryView = btn
             
             return view
         }
         return nil
+    }
+    
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if let annotation = view.annotation as? CustomPointAnnotation, postIndex = self.mainViewController!.posts.indexOf({$0.id == annotation.id}){
+            self.showPostDetails(postIndex)
+        }
     }
     
     func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {

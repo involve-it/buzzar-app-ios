@@ -221,11 +221,6 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="aqs-6P-qrC">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="add" id="h4S-Za-iUT">
-                            <connections>
-                                <segue destination="pxY-TO-wJC" kind="presentation" id="u8h-7I-vXp"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="P4a-8e-ECL">
                             <connections>
                                 <action selector="btnSearchClick:" destination="4Vm-bU-Wpd" id="EHg-ZU-CvW"/>
@@ -234,7 +229,6 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="btnAddNewPost" destination="h4S-Za-iUT" id="we5-vn-lNz"/>
                         <outlet property="searchView" destination="vZm-1i-HRw" id="2Dq-uR-Rnn"/>
                         <segue destination="IKf-YR-aAu" kind="unwind" unwindAction="unwindPosts:" id="g3q-LL-Nt4"/>
                     </connections>
@@ -945,7 +939,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ObY-Wo-AkA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1152" y="-1574"/>
+            <point key="canvasLocation" x="1981" y="-1591"/>
         </scene>
         <!--Search-->
         <scene sceneID="AMV-3e-nyN">
@@ -1914,10 +1908,10 @@
             </objects>
             <point key="canvasLocation" x="4194" y="2893"/>
         </scene>
-        <!--Map Type View Controller-->
+        <!--Posts Map View Controller-->
         <scene sceneID="ROo-0T-EA8">
             <objects>
-                <viewController id="6GW-nN-6js" customClass="MapTypeViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="mapViewControllerForPosts" id="6GW-nN-6js" customClass="PostsMapViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="6tH-sa-jHU"/>
                         <viewControllerLayoutGuide type="bottom" id="InS-eD-kyJ"/>
@@ -4153,10 +4147,10 @@
             </objects>
             <point key="canvasLocation" x="450" y="-645"/>
         </scene>
-        <!--Beginner View Controller-->
+        <!--Posts Main View Controller-->
         <scene sceneID="Iu8-5h-2r4">
             <objects>
-                <viewController id="24b-NI-Og3" customClass="BeginnerViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="24b-NI-Og3" customClass="PostsMainViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="edb-Ew-5sz"/>
                         <viewControllerLayoutGuide type="bottom" id="yc6-b9-BSh"/>
@@ -4168,6 +4162,11 @@
                     </view>
                     <navigationItem key="navigationItem" id="JKp-4u-uij">
                         <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="add" id="cFf-ve-goU">
+                            <connections>
+                                <segue destination="pxY-TO-wJC" kind="presentation" id="TcT-8i-Eq0"/>
+                            </connections>
+                        </barButtonItem>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" id="jQc-a5-ojv">
                             <rect key="frame" x="180" y="7" width="240" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -4187,6 +4186,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="btnAddPost" destination="cFf-ve-goU" id="Ty3-cd-ymb"/>
                         <outlet property="contentView" destination="Qi4-c3-hG6" id="Y7q-nd-Pk4"/>
                         <outlet property="typeSwitch" destination="jQc-a5-ojv" id="MYi-3a-Ymg"/>
                     </connections>
@@ -6059,7 +6059,7 @@
         <!--Navigation Controller-->
         <scene sceneID="8bu-gd-N2T">
             <objects>
-                <navigationController storyboardIdentifier="mapViewControllerForPosts" automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="KFf-ss-Ham" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="KFf-ss-Ham" sceneMemberID="viewController">
                     <toolbarItems/>
                     <nil key="simulatedTopBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pHg-wQ-00w">
@@ -6112,7 +6112,7 @@
         <image name="vk.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="TcT-8i-Eq0"/>
         <segue reference="EKW-F4-b1d"/>
-        <segue reference="u8h-7I-vXp"/>
     </inferredMetricsTieBreakers>
 </document>

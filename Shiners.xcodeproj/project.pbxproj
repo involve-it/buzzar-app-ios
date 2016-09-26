@@ -39,8 +39,8 @@
 		61C6F90B1D3BED100030CC81 /* WhenPickDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9061D3BED100030CC81 /* WhenPickDateViewController.swift */; };
 		61EA5DA31D47559700083361 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61EA5DA21D47559600083361 /* PhotosViewController.swift */; };
 		61F91F231D8046CD00B9DF3C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 61F91F251D8046CD00B9DF3C /* Localizable.strings */; };
-		61F91F321D82B81900B9DF3C /* MapTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F91F311D82B81900B9DF3C /* MapTypeViewController.swift */; };
-		61F91F561D830A1900B9DF3C /* BeginnerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F91F551D830A1900B9DF3C /* BeginnerViewController.swift */; };
+		61F91F321D82B81900B9DF3C /* PostsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F91F311D82B81900B9DF3C /* PostsMapViewController.swift */; };
+		61F91F561D830A1900B9DF3C /* PostsMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F91F551D830A1900B9DF3C /* PostsMainViewController.swift */; };
 		61F91F5C1D869A5600B9DF3C /* CustomPointAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F91F5B1D869A5600B9DF3C /* CustomPointAnnotation.swift */; };
 		61F960891D8021DB002FBAED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 61F9608B1D8021DB002FBAED /* Main.storyboard */; };
 		7B0B316D1CF10A8200029458 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0B316C1CF10A8200029458 /* Photo.swift */; };
@@ -121,7 +121,7 @@
 		7BC1A9C61D4C40B5005B4F62 /* SecurityHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC1A9C51D4C40B5005B4F62 /* SecurityHandler.swift */; };
 		7BC1A9C81D50469B005B4F62 /* FullMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC1A9C71D50469B005B4F62 /* FullMapViewController.swift */; };
 		7BC6BE5C1CFD060500664803 /* ValuePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC6BE5B1CFD060500664803 /* ValuePickerViewController.swift */; };
-		7BFDC6741D987C5800DE66A6 /* PostsViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFDC6731D987C5800DE66A6 /* PostsViewControllerBase.swift */; };
+		7BFDC6761D9881B500DE66A6 /* PostsViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFDC6751D9881B500DE66A6 /* PostsViewControllerDelegate.swift */; };
 		7BFFB1001D2042DA007CCF87 /* MessageToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB0FF1D2042DA007CCF87 /* MessageToSend.swift */; };
 		7BFFB1021D20445A007CCF87 /* MessagesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB1011D20445A007CCF87 /* MessagesHandler.swift */; };
 		7BFFB1061D2081CE007CCF87 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BFFB1031D2081CE007CCF87 /* FBSDKCoreKit.framework */; };
@@ -167,8 +167,8 @@
 		61F91F241D8046CD00B9DF3C /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		61F91F281D80472C00B9DF3C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Main.strings; sourceTree = "<group>"; };
 		61F91F2D1D8049D600B9DF3C /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
-		61F91F311D82B81900B9DF3C /* MapTypeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTypeViewController.swift; sourceTree = "<group>"; };
-		61F91F551D830A1900B9DF3C /* BeginnerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeginnerViewController.swift; sourceTree = "<group>"; };
+		61F91F311D82B81900B9DF3C /* PostsMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsMapViewController.swift; sourceTree = "<group>"; };
+		61F91F551D830A1900B9DF3C /* PostsMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsMainViewController.swift; sourceTree = "<group>"; };
 		61F91F5B1D869A5600B9DF3C /* CustomPointAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPointAnnotation.swift; sourceTree = "<group>"; };
 		61F9608F1D80227B002FBAED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		643ABEB340B81A6AB08AFEC7 /* Pods_Shiners.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Shiners.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -252,7 +252,7 @@
 		7BC1A9C51D4C40B5005B4F62 /* SecurityHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityHandler.swift; sourceTree = "<group>"; };
 		7BC1A9C71D50469B005B4F62 /* FullMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullMapViewController.swift; sourceTree = "<group>"; };
 		7BC6BE5B1CFD060500664803 /* ValuePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValuePickerViewController.swift; sourceTree = "<group>"; };
-		7BFDC6731D987C5800DE66A6 /* PostsViewControllerBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewControllerBase.swift; sourceTree = "<group>"; };
+		7BFDC6751D9881B500DE66A6 /* PostsViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewControllerDelegate.swift; sourceTree = "<group>"; };
 		7BFFB0FF1D2042DA007CCF87 /* MessageToSend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageToSend.swift; sourceTree = "<group>"; };
 		7BFFB1011D20445A007CCF87 /* MessagesHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesHandler.swift; sourceTree = "<group>"; };
 		7BFFB1031D2081CE007CCF87 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -349,15 +349,6 @@
 			name = Localization;
 			sourceTree = "<group>";
 		};
-		61F91F5D1D88293900B9DF3C /* Map */ = {
-			isa = PBXGroup;
-			children = (
-				61F91F311D82B81900B9DF3C /* MapTypeViewController.swift */,
-				61F91F5B1D869A5600B9DF3C /* CustomPointAnnotation.swift */,
-			);
-			name = Map;
-			sourceTree = "<group>";
-		};
 		7B26B0931CD568B5000495EE /* Messages */ = {
 			isa = PBXGroup;
 			children = (
@@ -381,7 +372,6 @@
 		7B3565461CE7B9A100012CA9 /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				61F91F5D1D88293900B9DF3C /* Map */,
 				7B3565571CE922C500012CA9 /* Common */,
 				7BB2A7D71CCC18B000AD636D /* Posts */,
 				610671101D54D834007828BA /* SearchPosts */,
@@ -396,7 +386,7 @@
 			children = (
 				7B3565581CE922DE00012CA9 /* NavigationControllerBase.swift */,
 				7BC6BE5B1CFD060500664803 /* ValuePickerViewController.swift */,
-				7BFDC6731D987C5800DE66A6 /* PostsViewControllerBase.swift */,
+				7BFDC6751D9881B500DE66A6 /* PostsViewControllerDelegate.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -406,6 +396,9 @@
 			children = (
 				61C6F9011D3BEC150030CC81 /* wizard */,
 				7BC0A22E1CCC160C00DA2824 /* SearchViewController.swift */,
+				61F91F551D830A1900B9DF3C /* PostsMainViewController.swift */,
+				61F91F311D82B81900B9DF3C /* PostsMapViewController.swift */,
+				61F91F5B1D869A5600B9DF3C /* CustomPointAnnotation.swift */,
 				7BC0A22F1CCC160C00DA2824 /* PostsViewController.swift */,
 				7BB2A7D81CCC18D200AD636D /* PostsTableViewCell.swift */,
 				7BB2A7F31CCD17A000AD636D /* ImagesScrollViewDelegate.swift */,
@@ -522,7 +515,6 @@
 				7BB2A7E31CCC2B3800AD636D /* Core */,
 				7BB2A7DD1CCC1BDD00AD636D /* Data */,
 				61F9608B1D8021DB002FBAED /* Main.storyboard */,
-				61F91F551D830A1900B9DF3C /* BeginnerViewController.swift */,
 				6105C6E91D3F958700E83D29 /* GradientViewPostDetailsScrollView.swift */,
 				7BC0A21B1CCC15E700DA2824 /* AppDelegate.swift */,
 				7BC0A21D1CCC15E700DA2824 /* MainViewController.swift */,
@@ -733,7 +725,7 @@
 				7B0B316D1CF10A8200029458 /* Photo.swift in Sources */,
 				7BB2A7E11CCC217C00AD636D /* PostsCollection.swift in Sources */,
 				610671161D560487007828BA /* SearchResultCell.swift in Sources */,
-				61F91F321D82B81900B9DF3C /* MapTypeViewController.swift in Sources */,
+				61F91F321D82B81900B9DF3C /* PostsMapViewController.swift in Sources */,
 				7B1C12421D0CCCE9001355AB /* MessagesProxy.swift in Sources */,
 				7BB2A7F41CCD17A000AD636D /* ImagesScrollViewDelegate.swift in Sources */,
 				7B3565611CE93E0800012CA9 /* CachingHandler.swift in Sources */,
@@ -782,7 +774,8 @@
 				7B86FFD91D3BFAB7008343B3 /* PushNotificationsHandler.swift in Sources */,
 				7BB2A7DC1CCC19DE00AD636D /* Post.swift in Sources */,
 				7B26B0951CD568CB000495EE /* MessagesViewController.swift in Sources */,
-				61F91F561D830A1900B9DF3C /* BeginnerViewController.swift in Sources */,
+				61F91F561D830A1900B9DF3C /* PostsMainViewController.swift in Sources */,
+				7BFDC6761D9881B500DE66A6 /* PostsViewControllerDelegate.swift in Sources */,
 				6106710F1D54B40F007828BA /* SearchPostsViewController.swift in Sources */,
 				7BB2A8031CCDA15500AD636D /* RegisterViewController.swift in Sources */,
 				7B35654E1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift in Sources */,
@@ -815,7 +808,6 @@
 				613C6A4A1D63419400744076 /* cellUserProfile.swift in Sources */,
 				7B0B31711CF127A800029458 /* AccountHandler.swift in Sources */,
 				7BB2A80B1CCF15D000AD636D /* User.swift in Sources */,
-				7BFDC6741D987C5800DE66A6 /* PostsViewControllerBase.swift in Sources */,
 				7B26B1A31CD694A0000495EE /* StaticLocationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

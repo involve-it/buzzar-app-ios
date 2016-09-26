@@ -60,7 +60,7 @@ class PushNotificationsHandler{
                 if let postId = payload.id{
                     rootViewController.selectedIndex = 0
                     let navigationController = rootViewController.viewControllers![0] as! UINavigationController
-                    let postsViewController = navigationController.viewControllers[0] as? PostsViewController
+                    let postsViewController = navigationController.viewControllers[0] as? PostsMainViewController
                     postsViewController?.pendingPostId = postId
                     
                     if navigationController.visibleViewController !== postsViewController {

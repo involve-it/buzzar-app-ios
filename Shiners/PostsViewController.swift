@@ -9,43 +9,52 @@
 import UIKit
 import CoreLocation
 
-class PostsViewController: UITableViewController, UIViewControllerPreviewingDelegate, SearchViewControllerDelegate, LocationHandlerDelegate{
-    
-    private var posts = [Post]();
+class PostsViewController: UITableViewController, UIViewControllerPreviewingDelegate, SearchViewControllerDelegate, PostsViewControllerDelegate{
     
     @IBOutlet weak var lcTxtSearchBoxLeft: NSLayoutConstraint!
     @IBOutlet var segmFilter: UISegmentedControl!
     @IBOutlet weak var txtSearchBox: UITextField!
     @IBOutlet var searchView: UIView!
     
-    @IBOutlet var btnAddNewPost: UIBarButtonItem!
     var currentUser: User?
     
     var searchViewController: NewSearchViewController?
     
-    private var meteorLoaded = false;
-    private var locationAcquired = false;
-    private let locationHandler = LocationHandler()
-    private var currentLocation: CLLocationCoordinate2D?
-    private var errorMessage: String?
-    
-    var pendingPostId: String?
+    internal weak var mainViewController: PostsMainViewController!
     
     enum PostTypeView: Int {
         case List = 0
         case Map
     }
     
+    func showPostDetails(index: Int) {
+        let indexPath = NSIndexPath(forRow: index, inSection: 0)
+        self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
+        self.performSegueWithIdentifier("postDetails", sender: self)
+    }
     
-    
+    func postsUpdated() {
+        ThreadHelper.runOnMainThread {
+            if (self.mainViewController.posts.count == 0){
+                //self.tableView.scrollEnabled = false;
+                self.tableView.separatorStyle = .None;
+            } else {
+                //self.tableView.scrollEnabled = true;
+                self.tableView.separatorStyle = .SingleLine;
+            }
+            
+            self.refreshControl?.endRefreshing()
+            self.tableView.reloadData()
+        }
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
             let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
             let index = self.tableView.indexPathForSelectedRow!.row;
-            let post = posts[index];
+            let post = self.mainViewController.posts[index];
             
-            if let currentLocation = self.currentLocation {
+            if let currentLocation = self.mainViewController.currentLocation {
                 //current location
                 let curLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
                 post.outDistancePost = post.getDistanceFormatted(curLocation)
@@ -58,73 +67,22 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         }
     }
     
-    func checkPending(stopAfter: Bool){
-        if let pendingPostId = self.pendingPostId, postIndex = self.posts.indexOf({$0.id == pendingPostId}){
-            self.navigationController?.popToViewController(self, animated: false)
-            let indexPath = NSIndexPath(forRow: postIndex, inSection: 0)
-            self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
-            self.performSegueWithIdentifier("postDetails", sender: self)
-            self.pendingPostId = nil
-        }
-        if stopAfter {
-            self.pendingPostId = nil
-        }
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        if self.posts.count > 0 && ConnectionHandler.Instance.status == .Connected{
-            self.checkPending(false)
-        }
-    }
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        self.locationHandler.monitorSignificantLocationChanges()
         
         //Set background collor to default value
         self.navigationController?.navigationBar.barTintColor = UIColor(white: 249/255, alpha: 1)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.translucent = false
-        
-        if AccountHandler.Instance.isLoggedIn(){
-            self.navigationItem.leftBarButtonItem = self.btnAddNewPost
-        } else {
-            self.navigationItem.leftBarButtonItem = nil
-        }
-    }
-    
-    
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        self.locationHandler.stopMonitoringLocation()
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         
-        self.navigationItem.title = "Posts"
+        self.mainViewController = self.parentViewController as! PostsMainViewController
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
-        self.locationHandler.delegate = self
-        //self.searchView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.6)
-        
-        //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showPostsFromCollection), name: NotificationManager.Name.NearbyPostsSubscribed.rawValue, object: nil)
-        
-        self.locationHandler.getLocationOnce(false)
-        
-        if ConnectionHandler.Instance.status == .Connected{
-            self.getNearby()
-        } else if CachingHandler.Instance.status != .Complete {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
-        } else if let posts = CachingHandler.Instance.postsAll {
-            self.posts = posts
-        }
-        
-        if (self.posts.count == 0){
+        if (self.mainViewController.posts.count == 0){
             //self.tableView.scrollEnabled = false;
             self.tableView.separatorStyle = .None;
         } else {
@@ -132,7 +90,6 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
             self.tableView.separatorStyle = .SingleLine;
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorConnected), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(forceLayout), name: UIDeviceOrientationDidChangeNotification, object: nil)
         
         self.refreshControl = UIRefreshControl()
@@ -145,17 +102,18 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         //conf. LeftMenu
         //self.configureOfLeftMenu()
         //self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
-        
     }
     
-    
+    func getNearby(){
+        self.mainViewController.getNearby();
+    }
     
     func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
         guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
         let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("postDetails") as? PostDetailsViewController
         
-        let post = posts[indexPath.row];
+        let post = self.mainViewController.posts[indexPath.row];
         viewController?.post = post
         previewingContext.sourceRect = cell.frame
         
@@ -164,96 +122,6 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
         self.showViewController(viewControllerToCommit, sender: self)
-    }
-    
-    func appDidBecomeActive(){
-        if self.posts.count > 0 && AccountHandler.Instance.status == .Completed{
-            self.getNearby()
-            self.checkPending(false)
-        }
-    }
-    
-    func requestLocation(){
-        self.locationHandler.getLocationOnce(false)
-    }
-    
-    /*func showPostsFromCollection(){
-        self.meteorLoaded = true
-        self.posts = AccountHandler.Instance.postsCollection.posts
-        self.tableView.separatorStyle = .SingleLine;
-        ThreadHelper.runOnMainThread {
-            self.tableView.reloadData()
-            self.checkPending()
-        }
-    }*/
-    
-    func locationReported(geocoderInfo: GeocoderInfo) {
-        if geocoderInfo.denied {
-            self.errorMessage = NSLocalizedString("Please allow location services in settings", comment: "Alert denied, Please allow location services in settings")
-            ThreadHelper.runOnMainThread {
-                self.tableView.reloadData()
-            }
-        } else if geocoderInfo.error {
-            self.errorMessage = NSLocalizedString("An error occurred getting your current location", comment: "Alert error, An error occurred getting your current location")
-            ThreadHelper.runOnMainThread {
-                self.tableView.reloadData()
-            }
-        } else {
-            self.currentLocation = geocoderInfo.coordinate
-            self.locationAcquired = true
-            
-            //self.subscribeToNearby()
-            self.getNearby()
-            ThreadHelper.runOnBackgroundThread({ 
-                ConnectionHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude, notify: false)
-            })
-        }
-    }
-    
-    /*private func subscribeToNearby(){
-        AccountHandler.Instance.subscribeToNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude, radius: 100);
-    }*/
-    
-    func getNearby(){
-        if ConnectionHandler.Instance.status == .Connected, let currentLocation = self.currentLocation {
-            AccountHandler.Instance.getNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude, radius: 100000) { (success, errorId, errorMessage, result) in
-                ThreadHelper.runOnMainThread({
-                    self.refreshControl?.endRefreshing()
-                    if success {
-                        self.errorMessage = nil
-                        self.posts = result as! [Post]
-                        self.tableView.reloadData()
-                        self.checkPending(true)
-                    } else {
-                        self.errorMessage = errorMessage
-                        self.showAlert(NSLocalizedString("Error", comment: "Alert error, Error"), message: NSLocalizedString("Error updating posts", comment: "Alert message, Error updating posts"))
-                        self.tableView.reloadData()
-                    }
-                    
-                })
-            }
-        } else {
-            self.refreshControl?.endRefreshing()
-        }
-    }
-    
-    @objc private func meteorConnected(notification: NSNotification){
-        if self.locationAcquired {
-            //self.subscribeToNearby()
-            self.getNearby()
-        }
-    }
-    
-    func showOfflineData(){
-        if !self.meteorLoaded {
-            if let posts = CachingHandler.Instance.postsAll {
-                self.posts = posts
-                ThreadHelper.runOnMainThread {
-                    self.tableView.separatorStyle = .SingleLine;
-                    self.tableView.reloadData()
-                }
-            }
-        }
     }
     
     func forceLayout(){
@@ -265,17 +133,17 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell: UITableViewCell!
-        if posts.count == 0 {
-            if (self.errorMessage != nil || (self.meteorLoaded && self.locationAcquired)){
+        if self.mainViewController.posts.count == 0 {
+            if (self.mainViewController.errorMessage != nil || (self.mainViewController.meteorLoaded && self.self.mainViewController.locationAcquired)){
                 let errorCell = tableView.dequeueReusableCellWithIdentifier("postsError") as! ErrorCell
-                errorCell.lblMessage.text = self.errorMessage ?? NSLocalizedString("There are no posts around you", comment: "There are no posts around you")
+                errorCell.lblMessage.text = self.mainViewController.errorMessage ?? NSLocalizedString("There are no posts around you", comment: "There are no posts around you")
                 cell = errorCell
             } else {
                 cell = tableView.dequeueReusableCellWithIdentifier("waitingPosts")
             }
         } else {
             let postCell: PostsTableViewCell = tableView.dequeueReusableCellWithIdentifier("post") as! PostsTableViewCell;
-            let post: Post = posts[indexPath.row];
+            let post: Post = self.mainViewController.posts[indexPath.row];
             
             //Post title
             postCell.txtTitle.text = post.title;
@@ -309,7 +177,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
             }
             
             //Post disatance
-            if let currentLocation = self.currentLocation {
+            if let currentLocation = self.mainViewController.currentLocation {
                 //current location
                 let curLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
                 
@@ -344,7 +212,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return max(1, posts.count);
+        return max(1, self.mainViewController.posts.count);
     }
     
     
