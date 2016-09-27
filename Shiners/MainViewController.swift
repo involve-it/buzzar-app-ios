@@ -89,11 +89,11 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
                 self.viewControllers = [self.allViewControllers[0], self.allViewControllers[1], self.allViewControllers[2], self.allViewControllers[3], self.allViewControllers[5]]
                 self.selectedIndex = 0
             }
-        } else {
+            
             self.setBadgeValue(0, count: 0)
             self.setBadgeValue(1, count: 0)
             self.setBadgeValue(3, count: 0)
-            
+        } else {
             if self.viewControllers!.count != 3 {
                 self.viewControllers = [self.allViewControllers[0], self.allViewControllers[2], self.allViewControllers[4]]
                 self.selectedIndex = 0

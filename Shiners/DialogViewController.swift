@@ -58,10 +58,6 @@ public class DialogViewController : JSQMessagesViewController{
         }
     }
     
-    func mergeMessages(){
-        
-    }
-    
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -122,8 +118,10 @@ public class DialogViewController : JSQMessagesViewController{
             ThreadHelper.runOnMainThread({ 
                 self.addMessage(message.userId!, text: message.text!, callFinish: true)
             })
-            if UIApplication.sharedApplication().applicationState == .Active && message.toUserId == AccountHandler.Instance.userId && message.id != nil {
-                self.notifyUnseen()
+            if UIApplication.sharedApplication().applicationState == .Active {
+                if message.toUserId == AccountHandler.Instance.userId {
+                    self.notifyUnseen()
+                }
                 LocalNotificationsHandler.Instance.reportEventSeen(.Messages, id: self.chat.id)
             }
         } else {
