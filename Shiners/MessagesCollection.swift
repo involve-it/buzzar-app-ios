@@ -23,6 +23,7 @@ class MessagesCollection: AbstractCollection{
         if let chatIndex = AccountHandler.Instance.myChats?.indexOf({return $0.id == message.chatId}), chat = AccountHandler.Instance.myChats?[chatIndex] {
             chat.messages.append(message)
             
+            LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id)
             NotificationManager.sendNotification(NotificationManager.Name.MessageAdded, object: message)
         } else {
             ConnectionHandler.Instance.messages.getChat(message.chatId!){ success, errorId, errorMessage, result in
@@ -30,6 +31,7 @@ class MessagesCollection: AbstractCollection{
                     chat.messages.append(message)
                     AccountHandler.Instance.myChats?.append(chat)
                     
+                    LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id)
                     NotificationManager.sendNotification(.ChatAdded, object: chat)
                 } else {
                     NSLog("error loading chat")

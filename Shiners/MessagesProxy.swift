@@ -17,6 +17,18 @@ public class MessagesProxy {
         }
     }
     
+    func messagesSetSeen(messageIds: [String], callback: MeteorMethodCallback? = nil){
+        var dict = Dictionary<String, AnyObject>()
+        dict["messageIds"] = messageIds
+        Meteor.call("messagesSetSeen", params: [dict]){ (result, error) in
+            if error == nil {
+                callback?(success: ResponseHelper.isSuccessful(result), errorId: 1, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
+    
     func getChat(id: String, callback: MeteorMethodCallback? = nil){
         Meteor.call("getChat", params: [id]) { (result, error) in
             if error == nil {

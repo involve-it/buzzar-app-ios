@@ -24,14 +24,39 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pushRegistrationFailed), name: NotificationManager.Name.PushRegistrationFailed.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateLoggedIn), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-        
-       
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedLocalNotification), name: NotificationManager.Name.ServerEventNotification.rawValue, object: nil)
         //buttonCreatePost()
-        
     }
     
+    func receivedLocalNotification(notification: NSNotification){
+        if AccountHandler.Instance.isLoggedIn() {
+            let notificaionEvent = notification.object as! LocalNotificationEvent
+            var index: Int
+            switch notificaionEvent.view {
+            case .Posts:
+                index = 0
+            case .Messages:
+                index = 1
+            case .MyPosts:
+                index = 3
+            default:
+                index = -1
+            }
+            if index > -1 {
+                self.setBadgeValue(index, count: notificaionEvent.count)
+            }
+        }
+    }
     
+    private func setBadgeValue(index: Int, count: Int){
+        ThreadHelper.runOnMainThread { 
+            if count == 0 {
+                self.tabBar.items![index].badgeValue = nil
+            } else {
+                self.tabBar.items![index].badgeValue = "\(count)"
+            }
+        }
+    }
     
     //Custom button CreatePost
     func buttonCreatePost() {
@@ -65,6 +90,10 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
                 self.selectedIndex = 0
             }
         } else {
+            self.setBadgeValue(0, count: 0)
+            self.setBadgeValue(1, count: 0)
+            self.setBadgeValue(3, count: 0)
+            
             if self.viewControllers!.count != 3 {
                 self.viewControllers = [self.allViewControllers[0], self.allViewControllers[2], self.allViewControllers[4]]
                 self.selectedIndex = 0
@@ -79,8 +108,6 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
     
     
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
-
-        
         if viewController.title == "addPostPlaceholder" {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             var controller: UIViewController
@@ -122,5 +149,22 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
             self.popNavigationControllerToRoot = nil
         }
     }*/
+    
+    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+        if AccountHandler.Instance.isLoggedIn(){
+            let index = self.allViewControllers.indexOf(viewController)!
+            switch index {
+            case 0:
+                LocalNotificationsHandler.Instance.reportActiveView(.Posts)
+                self.setBadgeValue(0, count: 0)
+            case 1:
+                LocalNotificationsHandler.Instance.reportActiveView(.Messages)
+            case 3:
+                LocalNotificationsHandler.Instance.reportActiveView(.MyPosts)
+            default:
+                LocalNotificationsHandler.Instance.reportActiveView(.Other)
+            }
+        }
+    }
 }
 

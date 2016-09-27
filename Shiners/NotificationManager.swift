@@ -41,5 +41,7 @@ public class NotificationManager{
         case PushRegistrationFailed = "shiners:PushRegistrationFailed"
         
         case NewPostLocationReported = "shiners:NewPostLocationReported"
+        
+        case ServerEventNotification = "shiners:ServerEventNotification"
     }
 }

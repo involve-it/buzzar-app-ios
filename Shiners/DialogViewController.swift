@@ -24,6 +24,8 @@ public class DialogViewController : JSQMessagesViewController{
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        
         self.senderId = AccountHandler.Instance.userId ?? CachingHandler.Instance.currentUser?.id
         self.senderDisplayName = chat.otherParty?.username
         
@@ -37,6 +39,7 @@ public class DialogViewController : JSQMessagesViewController{
             if isCompleted {
                 if let messages = MessagesHandler.Instance.getMessagesByRequestId(pendingMessagesAsyncId){
                     chat.messages = messages
+                    self.notifyUnseen()
                 }
             } else {
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messagesPageReceived), name: NotificationManager.Name.MessagesAsyncRequestCompleted.rawValue, object: nil)
@@ -46,6 +49,17 @@ public class DialogViewController : JSQMessagesViewController{
         if self.chat.messages.count > 0{
             self.updateMessages(self.chat.messages)
         }
+        LocalNotificationsHandler.Instance.reportEventSeen(.Messages, id: self.chat.id)
+    }
+    
+    func appDidBecomeActive(){
+        if self.chat.messages.count > 0 {
+            self.updateMessages(self.chat.messages)
+        }
+    }
+    
+    func mergeMessages(){
+        
     }
     
     public override func viewWillAppear(animated: Bool) {
@@ -59,8 +73,28 @@ public class DialogViewController : JSQMessagesViewController{
     func messagesPageReceived(notification:NSNotification){
         if let pendingMessagesAsyncId = self.pendingMessagesAsyncId where pendingMessagesAsyncId == notification.object as! String,
             let messages = MessagesHandler.Instance.getMessagesByRequestId(pendingMessagesAsyncId){
+            
             self.updateMessages(messages)
             self.scrollToBottomAnimated(false)
+            self.notifyUnseen()
+        }
+    }
+    
+    private func notifyUnseen(){
+        let unseen = self.chat.messages.filter({!($0.seen ?? false) && $0.id != nil && $0.toUserId == AccountHandler.Instance.userId}).map({$0.id!})
+        if unseen.count > 0 && UIApplication.sharedApplication().applicationState == .Active {
+            ConnectionHandler.Instance.messages.messagesSetSeen(unseen, callback: { (success, errorId, errorMessage, result) in
+                if success {
+                    self.chat.messages.filter({unseen.contains($0.id ?? "")}).forEach({ (message) in
+                        message.seen = true
+                    })
+                    ThreadHelper.runOnBackgroundThread({ 
+                        AccountHandler.Instance.saveMyChats()
+                    })
+                } else {
+                    print("Error marking messages page seen: " + (errorMessage ?? "(null)"))
+                }
+            })
         }
     }
     
@@ -79,7 +113,7 @@ public class DialogViewController : JSQMessagesViewController{
         
         ThreadHelper.runOnMainThread { 
             self.collectionView.reloadData()
-            self.scrollToBottomAnimated(true)
+            self.scrollToBottomAnimated(false)
         }
     }
     
@@ -88,6 +122,10 @@ public class DialogViewController : JSQMessagesViewController{
             ThreadHelper.runOnMainThread({ 
                 self.addMessage(message.userId!, text: message.text!, callFinish: true)
             })
+            if UIApplication.sharedApplication().applicationState == .Active && message.toUserId == AccountHandler.Instance.userId && message.id != nil {
+                self.notifyUnseen()
+                LocalNotificationsHandler.Instance.reportEventSeen(.Messages, id: self.chat.id)
+            }
         } else {
             ThreadHelper.runOnMainThread({ 
                 //let backButton = self.navigationItem.backBarButtonItem
