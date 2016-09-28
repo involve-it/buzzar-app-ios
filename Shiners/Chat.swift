@@ -17,6 +17,7 @@ public class Chat: NSObject, DictionaryInitializable, NSCoding {
     var activated: Bool?
     var lastMessage: String?
     var otherParty: User?
+    var seen: Bool?
     
     var messages = [Message]()
     var messagesRequested = false
@@ -53,6 +54,7 @@ public class Chat: NSObject, DictionaryInitializable, NSCoding {
         }
         if let lastMessageFields = fields?.valueForKey(PropertyKeys.lastMessage) as? NSDictionary{
             self.lastMessage = lastMessageFields.valueForKey("text") as? String
+            self.seen = lastMessageFields.valueForKey("seen") as? Bool
         }
         
         if let otherUsers = fields?.valueForKey(PropertyKeys.otherParty) as? NSArray {
@@ -93,6 +95,7 @@ public class Chat: NSObject, DictionaryInitializable, NSCoding {
     func addMessage(message: Message){
         self.messages.append(message)
         self.lastMessage = message.text
+        self.lastMessageTimestamp = message.timestamp
     }
     
     private struct PropertyKeys {

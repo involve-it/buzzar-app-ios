@@ -35,6 +35,7 @@ class PushNotificationsHandler{
             switch payloadType {
             case CHAT:
                 if let chatId = payload.id{
+                    AccountHandler.Instance.updateMyChats()
                     let messagesNavigationController = rootViewController.viewControllers![1] as! UINavigationController
                     let messagesViewController = messagesNavigationController.viewControllers[0] as! MessagesViewController
                     messagesViewController.pendingChatId = chatId
@@ -47,6 +48,7 @@ class PushNotificationsHandler{
                 }
             case COMMENT:
                 if let postId = payload.id{
+                    AccountHandler.Instance.updateMyPosts()
                     rootViewController.selectedIndex = 3
                     let navigationController = rootViewController.viewControllers![3] as! UINavigationController
                     let myPostsViewController = navigationController.viewControllers[0] as? MyPostsViewController

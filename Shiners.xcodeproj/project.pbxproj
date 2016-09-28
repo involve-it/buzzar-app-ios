@@ -123,6 +123,8 @@
 		7BC6BE5C1CFD060500664803 /* ValuePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC6BE5B1CFD060500664803 /* ValuePickerViewController.swift */; };
 		7BFDC6761D9881B500DE66A6 /* PostsViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFDC6751D9881B500DE66A6 /* PostsViewControllerDelegate.swift */; };
 		7BFDC6781D99F4E400DE66A6 /* LocalNotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFDC6771D99F4E400DE66A6 /* LocalNotificationsHandler.swift */; };
+		7BFDC67C1D9B5AFB00DE66A6 /* CWStatusBarNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFDC67A1D9B5AFB00DE66A6 /* CWStatusBarNotification.swift */; };
+		7BFDC67D1D9B5AFB00DE66A6 /* CWStatusBarNotificationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFDC67B1D9B5AFB00DE66A6 /* CWStatusBarNotificationUtils.swift */; };
 		7BFFB1001D2042DA007CCF87 /* MessageToSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB0FF1D2042DA007CCF87 /* MessageToSend.swift */; };
 		7BFFB1021D20445A007CCF87 /* MessagesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFFB1011D20445A007CCF87 /* MessagesHandler.swift */; };
 		7BFFB1061D2081CE007CCF87 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BFFB1031D2081CE007CCF87 /* FBSDKCoreKit.framework */; };
@@ -255,6 +257,8 @@
 		7BC6BE5B1CFD060500664803 /* ValuePickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValuePickerViewController.swift; sourceTree = "<group>"; };
 		7BFDC6751D9881B500DE66A6 /* PostsViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewControllerDelegate.swift; sourceTree = "<group>"; };
 		7BFDC6771D99F4E400DE66A6 /* LocalNotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNotificationsHandler.swift; sourceTree = "<group>"; };
+		7BFDC67A1D9B5AFB00DE66A6 /* CWStatusBarNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWStatusBarNotification.swift; sourceTree = "<group>"; };
+		7BFDC67B1D9B5AFB00DE66A6 /* CWStatusBarNotificationUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWStatusBarNotificationUtils.swift; sourceTree = "<group>"; };
 		7BFFB0FF1D2042DA007CCF87 /* MessageToSend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageToSend.swift; sourceTree = "<group>"; };
 		7BFFB1011D20445A007CCF87 /* MessagesHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesHandler.swift; sourceTree = "<group>"; };
 		7BFFB1031D2081CE007CCF87 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
@@ -452,6 +456,7 @@
 		7BB2A7E31CCC2B3800AD636D /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				7BFDC6791D9B5ACF00DE66A6 /* CWStatusBarNotification */,
 				7B3565531CE8311100012CA9 /* DictionaryInitilizable.swift */,
 				7BB2A7EB1CCC58D600AD636D /* ImageCachingHandler.swift */,
 				7BB2A7F71CCD8EC500AD636D /* Extensions.swift */,
@@ -550,6 +555,15 @@
 				7BC0A23C1CCC164100DA2824 /* id-card.png */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		7BFDC6791D9B5ACF00DE66A6 /* CWStatusBarNotification */ = {
+			isa = PBXGroup;
+			children = (
+				7BFDC67A1D9B5AFB00DE66A6 /* CWStatusBarNotification.swift */,
+				7BFDC67B1D9B5AFB00DE66A6 /* CWStatusBarNotificationUtils.swift */,
+			);
+			name = CWStatusBarNotification;
 			sourceTree = "<group>";
 		};
 		FDC5E51674789C2348BFABE5 /* Frameworks */ = {
@@ -768,6 +782,7 @@
 				7BB2A8011CCD96C000AD636D /* LogInViewController.swift in Sources */,
 				7BC1A9C41D4C3D19005B4F62 /* KeyChainWrapper.swift in Sources */,
 				7BC0A2301CCC160C00DA2824 /* SettingsTableViewController.swift in Sources */,
+				7BFDC67C1D9B5AFB00DE66A6 /* CWStatusBarNotification.swift in Sources */,
 				61C6F9081D3BED100030CC81 /* DescriptionPostViewController.swift in Sources */,
 				7BC1A9C61D4C40B5005B4F62 /* SecurityHandler.swift in Sources */,
 				617378C21D6DC5E100F10ABA /* NEWRegisterViewController.swift in Sources */,
@@ -790,6 +805,7 @@
 				61C6F9071D3BED100030CC81 /* NewPostNewViewController.swift in Sources */,
 				7BB2A8131CD30AD700AD636D /* ProfileViewController.swift in Sources */,
 				7BC6BE5C1CFD060500664803 /* ValuePickerViewController.swift in Sources */,
+				7BFDC67D1D9B5AFB00DE66A6 /* CWStatusBarNotificationUtils.swift in Sources */,
 				61A0892B1D706EB400CABB8D /* NotificationsTableViewController.swift in Sources */,
 				61A089291D70602700CABB8D /* ChangePasswordTableViewController.swift in Sources */,
 				7B3565591CE922DE00012CA9 /* NavigationControllerBase.swift in Sources */,

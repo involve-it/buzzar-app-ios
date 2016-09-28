@@ -17,8 +17,6 @@ public class DialogViewController : JSQMessagesViewController{
     var chat: Chat!
     var pendingMessagesAsyncId: String?
     
-    let navigationBarBackItemTitle = NSLocalizedString("Messages(1)", comment: "NavigationBar Item, Messages")
-    
     var isPeeking = false
     
     public override func viewDidLoad() {
@@ -48,6 +46,7 @@ public class DialogViewController : JSQMessagesViewController{
         
         if self.chat.messages.count > 0{
             self.updateMessages(self.chat.messages)
+            self.notifyUnseen()
         }
         LocalNotificationsHandler.Instance.reportEventSeen(.Messages, id: self.chat.id)
     }
@@ -60,6 +59,8 @@ public class DialogViewController : JSQMessagesViewController{
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        LocalNotificationsHandler.Instance.reportActiveView(.Messages, id: self.chat.id)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageAdded), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageRemoved), name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
@@ -77,6 +78,8 @@ public class DialogViewController : JSQMessagesViewController{
     }
     
     private func notifyUnseen(){
+        self.chat.seen = true
+        NotificationManager.sendNotification(.MyChatsUpdated, object: chat)
         let unseen = self.chat.messages.filter({!($0.seen ?? false) && $0.id != nil && $0.toUserId == AccountHandler.Instance.userId}).map({$0.id!})
         if unseen.count > 0 && UIApplication.sharedApplication().applicationState == .Active {
             ConnectionHandler.Instance.messages.messagesSetSeen(unseen, callback: { (success, errorId, errorMessage, result) in
@@ -128,7 +131,10 @@ public class DialogViewController : JSQMessagesViewController{
             ThreadHelper.runOnMainThread({ 
                 //let backButton = self.navigationItem.backBarButtonItem
                 //backButton?.title! += "(1)"
-                self.navigationController!.navigationBar.backItem!.title = self.navigationBarBackItemTitle
+                let count = LocalNotificationsHandler.Instance.getNewEventCount(.Messages)
+                if count > 0 {
+                    self.navigationController!.navigationBar.backItem!.title = NSLocalizedString("Messages(\(count))", comment: "NavigationBar Item, Messages")
+                }
             })
         }
     }
@@ -149,6 +155,7 @@ public class DialogViewController : JSQMessagesViewController{
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
         //NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageModified.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
+        LocalNotificationsHandler.Instance.reportActiveView(.Messages, id: nil)
     }
     
     public override func viewDidAppear(animated: Bool) {
@@ -156,6 +163,11 @@ public class DialogViewController : JSQMessagesViewController{
         self.scrollToBottomAnimated(false)
         if !self.isPeeking {
             self.keyboardController.textView.becomeFirstResponder()
+        }
+        
+        let count = LocalNotificationsHandler.Instance.getNewEventCount(.Messages)
+        if count > 0 {
+            self.navigationController!.navigationBar.backItem!.title = NSLocalizedString("Messages(\(count))", comment: "NavigationBar Item, Messages")
         }
     }
     
@@ -219,9 +231,7 @@ public class DialogViewController : JSQMessagesViewController{
         message.destinationUserId = self.chat.otherParty?.id
         message.message = text
         ConnectionHandler.Instance.messages.sendMessage(message){ success, errorId, errorMessage, result in
-            if success {
-                self.chat.lastMessage = text
-            } else {
+            if !success {
                 self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
             }
         };

@@ -8,9 +8,11 @@
 
 import Foundation
 import SwiftDDP
+import BRYXBanner
 
 class MessagesCollection: AbstractCollection{
     var messages = [Message]()
+    let bannerBackgroundColor = UIColor(red: 0, green: 122/255.0, blue: 1, alpha: 1)
     
     init() {
         super.init(name: "bz.messages");
@@ -21,18 +23,32 @@ class MessagesCollection: AbstractCollection{
         self.messages.append(message)
         
         if let chatIndex = AccountHandler.Instance.myChats?.indexOf({return $0.id == message.chatId}), chat = AccountHandler.Instance.myChats?[chatIndex] {
-            chat.messages.append(message)
+            chat.addMessage(message)
+            if message.toUserId == AccountHandler.Instance.userId {
+                chat.seen = message.seen
+            }
+            
+            if !LocalNotificationsHandler.Instance.isActive(.Messages, id: chat.id) && !LocalNotificationsHandler.Instance.isActive(.Messages, id: nil){
+                let banner = Banner(title: "New message from \(chat.otherParty?.username ?? "Unknown")", subtitle: message.shortMessage(), image: nil, backgroundColor: self.bannerBackgroundColor, didTapBlock: nil)
+                banner.dismissesOnTap = true
+                ThreadHelper.runOnMainThread({
+                    banner.show(duration: 1.0)
+                })
+            }
             
             LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id)
             NotificationManager.sendNotification(NotificationManager.Name.MessageAdded, object: message)
         } else {
             ConnectionHandler.Instance.messages.getChat(message.chatId!){ success, errorId, errorMessage, result in
                 if let chat = result as? Chat where success {
-                    chat.messages.append(message)
+                    chat.addMessage(message)
+                    if message.toUserId == AccountHandler.Instance.userId {
+                        chat.seen = message.seen
+                    }
                     AccountHandler.Instance.myChats?.append(chat)
                     
                     LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id)
-                    NotificationManager.sendNotification(.ChatAdded, object: chat)
+                    NotificationManager.sendNotification(.MyChatsUpdated, object: chat)
                 } else {
                     NSLog("error loading chat")
                 }

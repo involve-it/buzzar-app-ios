@@ -11,7 +11,13 @@ import UIKit
 
 class LocalNotificationsHandler{
     var activeView: AppView = .Posts
+    var activeViewId: String?
     private var newEvents = Dictionary<AppView, NotificationCounter>()
+    
+    func getNewEventCount(view: AppView) -> Int {
+        let event = self.newEvents[view]!
+        return event.totalCount
+    }
     
     func reportNewEvent(view: AppView, count: Int = 1, id: String? = nil){
         let event = self.newEvents[view]!
@@ -31,8 +37,13 @@ class LocalNotificationsHandler{
         self.sendLocalNotification(view, count: event.totalCount)
     }
     
-    func reportActiveView(view: AppView){
+    func reportActiveView(view: AppView, id: String? = nil){
         self.activeView = view
+        self.activeViewId = id
+    }
+    
+    func isActive(view: AppView, id: String? = nil) -> Bool{
+        return self.activeView == view && self.activeViewId == id
     }
     
     private func sendLocalNotification(view: AppView, count: Int){

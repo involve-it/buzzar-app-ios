@@ -39,6 +39,12 @@ extension NSDate {
         return dateFormatter.stringFromDate(self)
     }
     
+    func toShortTimeString() -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        return dateFormatter.stringFromDate(self)
+    }
+    
     func toLocalizedString() -> String{
         let locale = NSLocale.currentLocale()
         let dateFormatter = NSDateFormatter()
@@ -81,6 +87,14 @@ extension NSDate {
         output = formatterArrayWithDate[0]
         
         return output!
+    }
+    
+    func toFriendlyDateTimeString() -> String{
+        if NSCalendar.currentCalendar().isDateInToday(self){
+            return self.toShortTimeString()
+        } else {
+            return self.toShortDateString()
+        }
     }
     
 }

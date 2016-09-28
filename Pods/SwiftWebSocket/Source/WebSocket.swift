@@ -992,7 +992,10 @@ private class InnerWebSocket: Hashable {
         } else {
             req.setValue("\(req.URL!.host!):\(req.URL!.port!.integerValue)", forHTTPHeaderField: "Host")
         }
-        req.setValue(req.URL!.absoluteString, forHTTPHeaderField: "Origin")
+        let origin = req.valueForHTTPHeaderField("Origin")
+        if origin == nil || origin! == ""{
+            req.setValue(req.URL!.absoluteString, forHTTPHeaderField: "Origin")
+        }
         if subProtocols.count > 0 {
             req.setValue(subProtocols.joinWithSeparator(","), forHTTPHeaderField: "Sec-WebSocket-Protocol")
         }
@@ -1670,11 +1673,12 @@ public class WebSocket: NSObject {
         opened = hasURL
         ws = InnerWebSocket(request: request, subProtocols: subProtocols, stub: !hasURL)
         super.init()
-        var outer : WebSocket? = self
-        ws.eclose = { [unowned self] in
-            self.opened = false
-            if outer != nil{
-                outer = nil
+        // weak/strong pattern from:
+        // http://stackoverflow.com/a/17105368/424124
+        // https://dhoerl.wordpress.com/2013/04/23/i-finally-figured-out-weakself-and-strongself/
+        ws.eclose = { [weak self] in
+            if let strongSelf = self {
+                strongSelf.opened = false
             }
         }
     }

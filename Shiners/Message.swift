@@ -8,6 +8,8 @@
 
 import Foundation
 
+let MAX_SHORT_MESSAGE_LENGTH = 43
+
 public class Message: NSObject, DictionaryInitializable, NSCoding {
     var id: String?
     var userId: String?
@@ -20,6 +22,17 @@ public class Message: NSObject, DictionaryInitializable, NSCoding {
     
     override init() {
         super.init()
+    }
+    
+    public func shortMessage() -> String{
+        if let text = self.text {
+            if text.characters.count > MAX_SHORT_MESSAGE_LENGTH {
+                return text.substringToIndex(text.startIndex.advancedBy(MAX_SHORT_MESSAGE_LENGTH)) + "..."
+            } else {
+                return text
+            }
+        }
+        return ""
     }
     
     convenience init(id: String, fields: NSDictionary?){

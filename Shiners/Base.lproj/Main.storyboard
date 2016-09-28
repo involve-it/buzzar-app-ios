@@ -3111,8 +3111,8 @@
                                             <color key="textColor" red="0.22650114530000001" green="0.22650114530000001" blue="0.22650114530000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5 Feb" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lMr-fT-aGZ">
-                                            <rect key="frame" x="553" y="14" width="31" height="14"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="5 Feb" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lMr-fT-aGZ">
+                                            <rect key="frame" x="553" y="13" width="31" height="14"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
@@ -3134,6 +3134,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="imgPhoto" destination="pqe-Gj-i9S" id="aJR-tq-2EB"/>
+                                    <outlet property="lblDate" destination="lMr-fT-aGZ" id="JOq-b7-RnO"/>
                                     <outlet property="lblLastMessage" destination="dBt-Nc-d6t" id="tnG-cg-TW8"/>
                                     <outlet property="lblTitle" destination="kRs-ZG-5Kd" id="eGd-8v-OtM"/>
                                     <segue destination="1O3-Va-j30" kind="show" identifier="dialog" id="iWZ-ck-nPQ"/>

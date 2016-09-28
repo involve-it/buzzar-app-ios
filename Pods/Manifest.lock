@@ -1,10 +1,11 @@
 PODS:
-  - AWSCore (2.4.5)
-  - AWSS3 (2.4.5):
-    - AWSCore (= 2.4.5)
-  - CryptoSwift (0.5.1)
+  - AWSCore (2.4.9)
+  - AWSS3 (2.4.9):
+    - AWSCore (= 2.4.9)
+  - BRYXBanner (0.6.3)
+  - CryptoSwift (0.5.2)
   - FLAnimatedImage (1.0.12)
-  - JSQMessagesViewController (7.3.3):
+  - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
   - NYTPhotoViewer (1.1.0):
@@ -19,29 +20,33 @@ PODS:
     - CryptoSwift (~> 0.3)
     - SwiftWebSocket (~> 2.6.0)
     - XCGLogger
-  - SwiftWebSocket (2.6.2)
-  - XCGLogger (3.3)
+  - SwiftWebSocket (2.6.4)
+  - XCGLogger (3.5.3)
 
 DEPENDENCIES:
-  - AWSS3
+  - AWSS3 (~> 2.4.5)
+  - BRYXBanner (~> 0.6.1)
+  - CryptoSwift (~> 0.5.1)
   - JSQMessagesViewController
   - NYTPhotoViewer (~> 1.1.0)
   - RichEditorView
   - SwiftDDP (~> 0.3.2)
+  - XCGLogger (~> 3.5.3)
 
 SPEC CHECKSUMS:
-  AWSCore: 2f356385bcea9b81ea47f9be0228c71697d9597d
-  AWSS3: 8f73b439f12c4aaaea39fbec87f67a1f1e15bd42
-  CryptoSwift: df42dda18baf6c76347a94e227dbcc0a341304bd
+  AWSCore: 175208358b95492e0ebe0337df2ab415300bddac
+  AWSS3: e4959b48db48d5f3dcd5cdf9e24a07f60a313611
+  BRYXBanner: f116d4457e0ee380e44c2d0ff1d859e75bf96517
+  CryptoSwift: c1ef79f901b86099a6fe8b3c7524cf9f3f3c8c40
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
-  JSQMessagesViewController: 0ee3f80237268192a3e8337fd0d787f1a1bf5a7a
+  JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   NYTPhotoViewer: e80e8767f3780d2df37c6f72cbab15d6c7232911
   RichEditorView: b4ee60a4f5301cbe8f3fcb1f065cdd7de74ddd10
   SwiftDDP: 6b4083f5f7b787cc5732a4da1cc0192d862a5112
-  SwiftWebSocket: 2bb9dda75c87f64eaf9768131141857ca8611aac
-  XCGLogger: d6e196e78940ff6daab17d6917107876f973fa31
+  SwiftWebSocket: fdb5b4393cede304d44befbaeb0c8ef14c28d3bb
+  XCGLogger: dbe4a9c7bbaac73717a34e0b94c64fd151c74d6c
 
-PODFILE CHECKSUM: 982cdc3824f7d1eacf5ca1c76a4f8a90383a04fa
+PODFILE CHECKSUM: 4bcab21901df6cd36e9b44e7094eb642f15edcb5
 
 COCOAPODS: 1.0.1

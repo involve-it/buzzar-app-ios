@@ -83,7 +83,6 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
     func messageAdded(notification: NSNotification){
         if let message = notification.object as? Message, chatIndex = self.dialogs.indexOf({$0.id == message.chatId}){
             let chat = self.dialogs[chatIndex]
-            chat.lastMessage = message.text
             self.dialogs.removeAtIndex(chatIndex)
             self.dialogs.insert(chat, atIndex: 0)
             
@@ -103,24 +102,27 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
     override public func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         if self.dialogs.count > 0 && AccountHandler.Instance.status == .Completed{
-            self.checkPending()
+            self.checkPending(false)
         }
     }
     
     func appDidBecomeActive(){
         if self.dialogs.count > 0 && AccountHandler.Instance.status == .Completed{
-            self.checkPending()
+            self.checkPending(false)
         }
     }
     
-    private func checkPending(){
+    private func checkPending(stopAfter: Bool){
         if let pendingChatId = self.pendingChatId, chatIndex = self.dialogs.indexOf({$0.id == pendingChatId}){
             self.navigationController?.popToViewController(self, animated: true)
             let indexPath = NSIndexPath(forRow: chatIndex, inSection: 0)
             self.tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: .Bottom)
             self.performSegueWithIdentifier("dialog", sender: self)
+            self.pendingChatId = nil
         }
-        self.pendingChatId = nil
+        if stopAfter {
+            self.pendingChatId = nil
+        }
     }
     
     func showOfflineData(){
@@ -136,9 +138,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
     }
     
     func updateDialogs(){
-        AccountHandler.Instance.updateMyChats { (success, errorId, errorMessage, result) in
-            self.dialogsUpdated()
-        }
+        AccountHandler.Instance.updateMyChats()
     }
     
     func dialogsUpdated(){
@@ -152,7 +152,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             self.refreshControl?.endRefreshing()
             self.tableView.separatorStyle = .SingleLine;
             self.tableView.reloadData()
-            self.checkPending()
+            self.checkPending(true)
         }
     }
     
@@ -173,6 +173,17 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         
         cell.lblTitle.text = dialog.otherParty?.username
         cell.lblLastMessage.text = dialog.lastMessage
+        if let lastMessageTimeStamp = dialog.lastMessageTimestamp {
+            cell.lblDate.text = lastMessageTimeStamp.toFriendlyDateTimeString()
+        } else {
+            cell.lblDate.text = nil
+        }
+        
+        if (dialog.seen ?? true) {
+            cell.backgroundColor = UIColor.whiteColor()
+        } else {
+            cell.backgroundColor = self.tableView.separatorColor
+        }
         
         let loading = ImageCachingHandler.Instance.getImageFromUrl(dialog.otherParty?.imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage) { (image) in
             ThreadHelper.runOnMainThread({ 

@@ -240,10 +240,20 @@ public class AccountHandler{
                 //temp
                 self.myChats = self.myChats?.filter({$0.lastMessage != nil})
                 
+                self.processLocalNotifications()
+                
                 self.saveMyChats()
                 NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
             }
             callback?(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
+        })
+    }
+    
+    private func processLocalNotifications(){
+        self.myChats?.forEach({ (chat) in
+            if !(chat.seen ?? true) {
+                LocalNotificationsHandler.Instance.reportNewEvent(.Messages, id: chat.id)
+            }
         })
     }
     
@@ -253,6 +263,8 @@ public class AccountHandler{
             self.status = .Completed
             
             NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
+            
+            self.processLocalNotifications()
         }
     }
     
