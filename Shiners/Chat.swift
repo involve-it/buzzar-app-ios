@@ -18,6 +18,7 @@ public class Chat: NSObject, DictionaryInitializable, NSCoding {
     var lastMessage: String?
     var otherParty: User?
     var seen: Bool?
+    var toUserId: String?
     
     var messages = [Message]()
     var messagesRequested = false
@@ -54,7 +55,8 @@ public class Chat: NSObject, DictionaryInitializable, NSCoding {
         }
         if let lastMessageFields = fields?.valueForKey(PropertyKeys.lastMessage) as? NSDictionary{
             self.lastMessage = lastMessageFields.valueForKey("text") as? String
-            self.seen = lastMessageFields.valueForKey("seen") as? Bool
+            self.seen = lastMessageFields.valueForKey(PropertyKeys.seen) as? Bool
+            self.toUserId = lastMessageFields.valueForKey(PropertyKeys.toUserId) as? String
         }
         
         if let otherUsers = fields?.valueForKey(PropertyKeys.otherParty) as? NSArray {
@@ -76,6 +78,10 @@ public class Chat: NSObject, DictionaryInitializable, NSCoding {
         self.messages = aDecoder.decodeObjectForKey(PropertyKeys.messages) as! [Message]
         self.lastMessage = aDecoder.decodeObjectForKey(PropertyKeys.lastMessage) as? String
         self.otherParty = aDecoder.decodeObjectForKey(PropertyKeys.otherParty) as? User
+        if aDecoder.containsValueForKey(PropertyKeys.seen){
+            self.seen = aDecoder.decodeBoolForKey(PropertyKeys.seen)
+        }
+        self.toUserId = aDecoder.decodeObjectForKey(PropertyKeys.toUserId) as? String
     }
     
     public func encodeWithCoder(aCoder: NSCoder) {
@@ -90,12 +96,17 @@ public class Chat: NSObject, DictionaryInitializable, NSCoding {
         aCoder.encodeObject(self.messages, forKey: PropertyKeys.messages)
         aCoder.encodeObject(self.lastMessage, forKey: PropertyKeys.lastMessage)
         aCoder.encodeObject(self.otherParty, forKey: PropertyKeys.otherParty)
+        if let seen = self.seen {
+            aCoder.encodeBool(seen, forKey: PropertyKeys.seen)
+        }
+        aCoder.encodeObject(self.toUserId, forKey: PropertyKeys.toUserId)
     }
     
     func addMessage(message: Message){
         self.messages.append(message)
         self.lastMessage = message.text
         self.lastMessageTimestamp = message.timestamp
+        self.toUserId = message.toUserId
     }
     
     private struct PropertyKeys {
@@ -109,5 +120,7 @@ public class Chat: NSObject, DictionaryInitializable, NSCoding {
         static let otherParty = "otherParty"
         
         static let messages = "messages"
+        static let seen = "seen"
+        static let toUserId = "toUserId"
     }
 }

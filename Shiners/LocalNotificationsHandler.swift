@@ -14,6 +14,12 @@ class LocalNotificationsHandler{
     var activeViewId: String?
     private var newEvents = Dictionary<AppView, NotificationCounter>()
     
+    func getTotalEventCount() -> Int {
+        return newEvents.values.reduce(0, combine: { (i, counter) -> Int in
+            return i + counter.totalCount
+        })
+    }
+    
     func getNewEventCount(view: AppView) -> Int {
         let event = self.newEvents[view]!
         return event.totalCount
@@ -48,6 +54,7 @@ class LocalNotificationsHandler{
     
     private func sendLocalNotification(view: AppView, count: Int){
         if LocalNotificationsHandler.isAppInForeground(){
+            UIApplication.sharedApplication().applicationIconBadgeNumber = self.getTotalEventCount()
             let notificationEvent = LocalNotificationEvent(view: view, count: count)
             NotificationManager.sendNotification(NotificationManager.Name.ServerEventNotification, object: notificationEvent)
         }

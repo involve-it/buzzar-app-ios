@@ -251,7 +251,7 @@ public class AccountHandler{
     
     private func processLocalNotifications(){
         self.myChats?.forEach({ (chat) in
-            if !(chat.seen ?? true) {
+            if !(chat.seen ?? true) && chat.toUserId == self.userId{
                 LocalNotificationsHandler.Instance.reportNewEvent(.Messages, id: chat.id)
             }
         })
