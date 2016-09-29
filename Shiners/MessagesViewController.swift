@@ -179,7 +179,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             cell.lblDate.text = nil
         }
         
-        if (dialog.seen ?? true) {
+        if (dialog.seen ?? true) || dialog.toUserId == AccountHandler.Instance.userId {
             cell.backgroundColor = UIColor.whiteColor()
         } else {
             cell.backgroundColor = self.tableView.separatorColor
