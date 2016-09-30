@@ -14,9 +14,58 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
     var meteorLoaded = false
     var pendingPostId: String?
     
+    @IBOutlet var btnAdd: UIBarButtonItem!
+    var btnDelete: UIBarButtonItem!
+    
+    func deletePosts(){
+        if let indexPaths = self.tableView.indexPathsForSelectedRows {
+            let count = indexPaths.count
+            if count > 0 {
+                let alertController = UIAlertController(title: NSLocalizedString("Delete Posts", comment: "Delete Posts"), message: NSLocalizedString("Are you sure you want to delete your \(count > 1 ? "\(count) ":"")post\(count > 1 ?"s":"")?", comment: "Alert message, Are you sure you want to delete your \(count > 1 ? "\(count) ":"")post\(count > 1 ?"s":"")?"), preferredStyle: .ActionSheet);
+                alertController.addAction(UIAlertAction(title: "Delete", style: .Destructive, handler: { (action) in
+                    //self.showAlert("Deleted", message: "Deleted")
+                    var processedCount = 0
+                    var successfulIndexPaths = [NSIndexPath]()
+                    indexPaths.forEach({ (indexPath) in
+                        self.deletePost(indexPath, callback: { (success) in
+                            processedCount += 1
+                            if success {
+                                successfulIndexPaths.append(indexPath)
+                            }
+                            self.endEditIfDone(count, processedCount: processedCount, allIndexPaths: successfulIndexPaths)
+                        })
+                    })
+                }))
+                alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil));
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func endEditIfDone(count: Int, processedCount: Int, allIndexPaths: [NSIndexPath]){
+        if count == processedCount {
+            if self.tableView.editing {
+                ThreadHelper.runOnMainThread({ 
+                    self.editAction(self.editButtonItem())
+                })
+            }
+            ThreadHelper.runOnMainThread({
+                if self.myPosts.count == 0{
+                    let allExceptFirst = allIndexPaths.filter({$0.row != 0})
+                    self.tableView.deleteRowsAtIndexPaths(allExceptFirst, withRowAnimation: .None)
+                    self.tableView.reloadData()
+                } else {
+                    self.tableView.deleteRowsAtIndexPaths(allIndexPaths, withRowAnimation: .Automatic)
+                }
+            })
+        }
+    }
+    
     public override func viewDidLoad() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(myPostsUpdated), name: NotificationManager.Name.MyPostsUpdated.rawValue, object: nil)
+        self.btnDelete = UIBarButtonItem(title: "Delete", style: UIBarButtonItemStyle.Done, target: self, action: #selector(deletePosts))
         self.myPosts = [Post]()
         if AccountHandler.Instance.status == .Completed {
             self.meteorLoaded = true
@@ -46,10 +95,23 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        self.editButtonItem().action = #selector(editAction)
         
         //conf. LeftMenu
         //self.configureOfLeftMenu()
         //self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
+    }
+    
+    func editAction(sender: UIBarButtonItem){
+        if self.tableView.editing{
+            self.tableView.setEditing(false, animated: true)
+            self.navigationItem.leftBarButtonItem = self.btnAdd
+            sender.title = "Edit"
+        } else {
+            self.tableView.setEditing(true, animated: true)
+            self.navigationItem.leftBarButtonItem = self.btnDelete
+            sender.title = "Done"
+        }
     }
     
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
@@ -228,6 +290,20 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         return true
     }
     
+    func deletePost(indexPath: NSIndexPath, callback: ((success: Bool) -> Void)? = nil) {
+        let post = self.myPosts[indexPath.row]
+        ConnectionHandler.Instance.posts.deletePost(post.id!) { success, errorId, errorMessage, result in
+            if success {
+                self.myPosts.removeAtIndex(self.myPosts.indexOf({ (p) -> Bool in
+                    return p.id == post.id
+                })!)
+            } else {
+                self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
+            }
+            callback?(success: success)
+        }
+    }
+    
     public override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         var actions = [UITableViewRowAction]()
         
@@ -253,18 +329,14 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         button = UITableViewRowAction(style: .Destructive, title: NSLocalizedString("Delete", comment: "Title, Delete")) { (action, indexPath) in
             print("delete")
             //self.tableView.editing = false
-            let post = self.myPosts[indexPath.row]
-            ConnectionHandler.Instance.posts.deletePost(post.id!) { success, errorId, errorMessage, result in
+            
+            self.deletePost(indexPath) { success in
                 if success {
-                    self.myPosts.removeAtIndex(self.myPosts.indexOf({ (p) -> Bool in
-                        return p.id == post.id
-                    })!)
-                    self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-                    
-                    //AccountHandler.Instance.updateMyPosts()
-                    
-                } else {
-                    self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
+                    if self.myPosts.count == 0{
+                        self.tableView.reloadData()
+                    } else {
+                        self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                    }
                 }
             }
         }

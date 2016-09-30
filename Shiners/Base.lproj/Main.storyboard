@@ -1281,6 +1281,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="btnAdd" destination="PLz-p1-uL3" id="QEf-Qh-Paz"/>
                         <segue destination="IKf-YR-aAu" kind="unwind" unwindAction="unwindMyPosts:" id="ZmA-Yc-OW5"/>
                     </connections>
                 </tableViewController>
@@ -6113,7 +6114,7 @@
         <image name="vk.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="TcT-8i-Eq0"/>
-        <segue reference="EKW-F4-b1d"/>
+        <segue reference="gVm-sN-Epi"/>
+        <segue reference="DWx-l0-Aia"/>
     </inferredMetricsTieBreakers>
 </document>
