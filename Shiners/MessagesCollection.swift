@@ -28,15 +28,17 @@ class MessagesCollection: AbstractCollection{
                 chat.seen = message.seen
             }
             
-            if !LocalNotificationsHandler.Instance.isActive(.Messages, id: chat.id) && !LocalNotificationsHandler.Instance.isActive(.Messages, id: nil){
-                let banner = Banner(title: "New message from \(chat.otherParty?.username ?? "Unknown")", subtitle: message.shortMessage(), image: nil, backgroundColor: self.bannerBackgroundColor, didTapBlock: nil)
-                banner.dismissesOnTap = true
-                ThreadHelper.runOnMainThread({
-                    banner.show(duration: 1.0)
-                })
+            if message.toUserId == AccountHandler.Instance.userId{
+                if !LocalNotificationsHandler.Instance.isActive(.Messages, id: chat.id) && !LocalNotificationsHandler.Instance.isActive(.Messages, id: nil){
+                    let banner = Banner(title: "New message from \(chat.otherParty?.username ?? "Unknown")", subtitle: message.shortMessage(), image: nil, backgroundColor: self.bannerBackgroundColor, didTapBlock: nil)
+                    banner.dismissesOnTap = true
+                    ThreadHelper.runOnMainThread({
+                        banner.show(duration: 1.0)
+                    })
+                }
+                
+                LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id)
             }
-            
-            LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id)
             NotificationManager.sendNotification(NotificationManager.Name.MessageAdded, object: message)
         } else {
             ConnectionHandler.Instance.messages.getChat(message.chatId!){ success, errorId, errorMessage, result in
