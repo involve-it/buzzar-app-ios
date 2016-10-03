@@ -9,7 +9,7 @@
 import Foundation
 
 class MessagesHandler {
-    static let DEFAULT_PAGE_SIZE = 20
+    static let DEFAULT_PAGE_SIZE = 40
     private var data = Dictionary<String, MessagesResponse>()
     
     func getMessagesByRequestId(id: String) -> Array<Message>?{

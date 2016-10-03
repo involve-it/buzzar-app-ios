@@ -198,7 +198,7 @@ public class AccountHandler{
                 }
             })
             
-            ConnectionHandler.Instance.messages.getChats(0, take: 100, callback: { (success, errorId, errorMessage, result) in
+            ConnectionHandler.Instance.messages.getChats(0, take: MessagesHandler.DEFAULT_PAGE_SIZE, callback: { (success, errorId, errorMessage, result) in
                 if self.latestCallId == callId {
                     if (success){
                         self.myChats = result as? [Chat]
@@ -233,7 +233,7 @@ public class AccountHandler{
     }
     
     public func updateMyChats(callback: MeteorMethodCallback? = nil){
-        ConnectionHandler.Instance.messages.getChats(0, take: 100, callback: { (success, errorId, errorMessage, result) in
+        ConnectionHandler.Instance.messages.getChats(0, take: MessagesHandler.DEFAULT_PAGE_SIZE, callback: { (success, errorId, errorMessage, result) in
             if success {
                 self.myChats = result as? [Chat]
                 

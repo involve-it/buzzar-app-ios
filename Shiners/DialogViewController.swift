@@ -18,6 +18,8 @@ public class DialogViewController : JSQMessagesViewController{
     var pendingMessagesAsyncId: String?
     
     var isPeeking = false
+    var initialPage = false
+    var dataFromCache: Bool!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,14 +35,15 @@ public class DialogViewController : JSQMessagesViewController{
         
         self.setupBubbles()
         
-        if let pendingMessagesAsyncId = self.pendingMessagesAsyncId, isCompleted = MessagesHandler.Instance.isCompleted(pendingMessagesAsyncId) {
-            if isCompleted {
+        self.initialPage = true
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messagesPageReceived), name: NotificationManager.Name.MessagesAsyncRequestCompleted.rawValue, object: nil)
+        if let pendingMessagesAsyncId = self.pendingMessagesAsyncId {
+            if let isCompleted = MessagesHandler.Instance.isCompleted(pendingMessagesAsyncId) where isCompleted {
+                self.pendingMessagesAsyncId = nil
                 if let messages = MessagesHandler.Instance.getMessagesByRequestId(pendingMessagesAsyncId){
                     chat.messages = messages
                     self.notifyUnseen()
                 }
-            } else {
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messagesPageReceived), name: NotificationManager.Name.MessagesAsyncRequestCompleted.rawValue, object: nil)
             }
         }
         
@@ -57,6 +60,13 @@ public class DialogViewController : JSQMessagesViewController{
         }
     }
     
+    public override func collectionView(collectionView: JSQMessagesCollectionView!, header headerView: JSQMessagesLoadEarlierHeaderView!, didTapLoadEarlierMessagesButton sender: UIButton!) {
+        self.view.endEditing(true)
+        self.showLoadEarlierMessagesHeader = false
+        
+        self.pendingMessagesAsyncId = MessagesHandler.Instance.getMessagesAsync(self.chat.id!, skip: self.messages.count)
+    }
+    
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -71,9 +81,12 @@ public class DialogViewController : JSQMessagesViewController{
         if let pendingMessagesAsyncId = self.pendingMessagesAsyncId where pendingMessagesAsyncId == notification.object as! String,
             let messages = MessagesHandler.Instance.getMessagesByRequestId(pendingMessagesAsyncId){
             
+            self.dataFromCache = false
             self.updateMessages(messages)
-            self.scrollToBottomAnimated(false)
-            self.notifyUnseen()
+            if self.initialPage {
+                self.scrollToBottomAnimated(false)
+                self.notifyUnseen()
+            }
         }
     }
     
@@ -98,21 +111,76 @@ public class DialogViewController : JSQMessagesViewController{
     }
     
     private func updateMessages(messages: Array<Message>){
-        chat.messages = messages.sort({
-            return $0.timestamp!.compare($1.timestamp!) == NSComparisonResult.OrderedAscending
-        })
-        
-        self.chat.messages.forEach { (message) in
-            if let userId = message.userId, text = message.text{
-                addMessage(userId, text: text)
+        if messages.count == 0{
+            ThreadHelper.runOnMainThread({
+                self.showLoadEarlierMessagesHeader = false
+            })
+        } else {
+            let messagesSorted = messages.sort({
+                return $0.timestamp!.compare($1.timestamp!) == NSComparisonResult.OrderedAscending
+            })
+            if self.initialPage {
+                chat.messages = messagesSorted
+                self.messages = [JSQMessage]()
+                self.chat.messages.forEach { (message) in
+                    if let userId = message.userId, text = message.text where message != self.chat.messages.first!{
+                        addMessage(userId, text: text)
+                    }
+                }
+                ThreadHelper.runOnMainThread({ 
+                    self.collectionView.reloadData()
+                    self.scrollToBottomAnimated(false)
+                })
+                
+                //cache only first page
+                AccountHandler.Instance.saveMyChats()
+            } else {
+                let oldBottomOffset = self.collectionView.contentSize.height - self.collectionView.contentOffset.y
+                let messagesSortedDescending = messages.sort({
+                    return $0.timestamp!.compare($1.timestamp!) == NSComparisonResult.OrderedDescending
+                })
+                var indexPaths = [NSIndexPath]()
+                var totalCount = messages.count - 1
+                if messages.count > MessagesHandler.DEFAULT_PAGE_SIZE {
+                    totalCount = MessagesHandler.DEFAULT_PAGE_SIZE
+                }
+                for i in 0...totalCount - 1 {
+                    indexPaths.append(NSIndexPath(forItem: i, inSection: 0))
+                }
+                for message in messagesSortedDescending {
+                    if let userId = message.userId, text = message.text where message != messagesSortedDescending.last! {
+                        let msg = JSQMessage(senderId: userId, displayName: "", text: text)
+                        self.messages.insert(msg, atIndex: 0)
+                        //self.chat.messages.insert(message, atIndex: 0)
+                    }
+                }
+                ThreadHelper.runOnMainThread({
+                    CATransaction.begin()
+                    CATransaction.setDisableActions(true)
+                    
+                    self.collectionView.performBatchUpdates({ 
+                        self.collectionView.insertItemsAtIndexPaths(indexPaths)
+                        self.collectionView.collectionViewLayout.invalidateLayoutWithContext(JSQMessagesCollectionViewFlowLayoutInvalidationContext())
+                    }, completion: { (finished) in
+                        self.finishReceivingMessageAnimated(false)
+                        self.collectionView.layoutIfNeeded()
+                        self.collectionView.contentOffset = CGPointMake(0, self.collectionView.contentSize.height - oldBottomOffset)
+                        CATransaction.commit()
+                    })
+                })
+            }
+            
+            ThreadHelper.runOnMainThread {
+                if messages.count > MessagesHandler.DEFAULT_PAGE_SIZE{
+                    self.showLoadEarlierMessagesHeader = true
+                } else {
+                    self.showLoadEarlierMessagesHeader = false
+                }
             }
         }
         
-        AccountHandler.Instance.saveMyChats()
-        
-        ThreadHelper.runOnMainThread { 
-            self.collectionView.reloadData()
-            self.scrollToBottomAnimated(false)
+        if !self.dataFromCache {
+            self.initialPage = false
         }
     }
     
