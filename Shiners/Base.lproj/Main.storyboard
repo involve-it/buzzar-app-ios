@@ -1896,7 +1896,7 @@
         <!--Navigation Controller-->
         <scene sceneID="ceK-Fu-aud">
             <objects>
-                <navigationController id="Hcc-Pc-7WW" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SignUpNavigationController" id="Hcc-Pc-7WW" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="h2S-1r-XxM">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -5129,7 +5129,7 @@
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="127001, NY, New York ..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Tq-6P-iFC">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick location below" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Tq-6P-iFC">
                                                                 <rect key="frame" x="0.0" y="30" width="584" height="19"/>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                                                 <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -6021,14 +6021,14 @@
                                 <action selector="btn_Cancel:" destination="xkZ-tF-tcB" id="EkO-fg-hz9"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Done" id="G0n-bh-lhc">
+                        <barButtonItem key="rightBarButtonItem" title="Register" id="G0n-bh-lhc">
                             <connections>
-                                <action selector="btn_Done:" destination="xkZ-tF-tcB" id="uJa-cG-aan"/>
+                                <action selector="btnRegister_Click:" destination="xkZ-tF-tcB" id="tSK-Qh-CIu"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="btnDone" destination="G0n-bh-lhc" id="X0q-iH-aEb"/>
+                        <outlet property="btnRegister" destination="G0n-bh-lhc" id="aXB-36-cJR"/>
                         <outlet property="textFieldConfirmPassword" destination="lsl-N3-Qqe" id="GPp-5i-Sr9"/>
                         <outlet property="textFieldEmailAddress" destination="lGH-xx-W4y" id="CFm-UV-LWt"/>
                         <outlet property="textFieldPassword" destination="Dff-VS-Nwi" id="c5u-im-psa"/>

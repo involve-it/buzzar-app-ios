@@ -76,12 +76,12 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     func login(){
         if let userName = textFieldUsername.text where userName != "",
            let password = textFieldPassword.text where password != "" {
-            setLoading(true, rightBarButtonItem: self.loginBtn)
+            setLoading(true)
             
             AccountHandler.Instance.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in
-                self.setLoading(false, rightBarButtonItem: self.loginBtn)
                 if !success {
                     ThreadHelper.runOnMainThread({
+                        self.setLoading(false, rightBarButtonItem: self.loginBtn)
                         self.showAlert(self.txtTitleLogInFaild, message: errorMessage)
                     })
                 }
@@ -91,14 +91,16 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     
     func processLogin(){
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-        dispatch_async(dispatch_get_main_queue(), {
-            if AccountHandler.Instance.currentUser != nil {
-                AccountHandler.Instance.requestPushNotifications()
-                self.dismissSelf();
-            } else {
+        if AccountHandler.Instance.currentUser == nil {
+            ThreadHelper.runOnMainThread({
+                self.setLoading(false, rightBarButtonItem: self.loginBtn)
                 self.showAlert(self.txtTitleLogInFaild, message: ResponseHelper.getDefaultErrorMessage())
-            }
-        })
+            })
+        } else {
+            ThreadHelper.runOnMainThread({ 
+                self.dismissSelf()
+            })
+        }
     }
     
     

@@ -96,7 +96,8 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate {
     
     func accountUpdated(){
         if let currentLocation = self.currentLocation where AccountHandler.Instance.isLoggedIn(){
-            ConnectionHandler.Instance.reportLocation(currentLocation.latitude, lng: currentLocation.longitude, notify: false)
+            //ConnectionHandler.Instance.reportLocation(currentLocation.latitude, lng: currentLocation.longitude, notify: false)
+            AccountHandler.Instance.reportLocation(currentLocation.latitude, lng: currentLocation.longitude)
         }
     }
     
@@ -117,9 +118,10 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate {
     }
     
     func appDidBecomeActive(){
-        if self.posts.count > 0 && AccountHandler.Instance.status == .Completed{
+        if ConnectionHandler.Instance.status == .Connected{
             self.getNearby()
             self.checkPending(false)
+            self.locationHandler.getLocationOnce(false)
         }
     }
     
@@ -144,7 +146,8 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate {
             self.getNearby()
             if AccountHandler.Instance.isLoggedIn(){
                 ThreadHelper.runOnBackgroundThread({
-                    ConnectionHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude, notify: false)
+                    //ConnectionHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude, notify: false)
+                    AccountHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude)
                 })
             }
         }

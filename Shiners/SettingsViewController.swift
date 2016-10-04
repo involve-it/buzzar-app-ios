@@ -11,12 +11,6 @@ import FBSDKLoginKit
 import FBSDKCoreKit
 
 class SettingsViewController: UIViewController {
-
-    let storyboardMain = UIStoryboard(name: "Main", bundle: nil)
-    
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -58,13 +52,15 @@ class SettingsViewController: UIViewController {
     // MARK: - Action
     @IBAction func clickToLogin(sender: UIButton) {
         //loginNavigationController
+        let storyboardMain = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboardMain.instantiateViewControllerWithIdentifier("NEWloginNavigationController")
         self.presentViewController(vc, animated: true, completion: nil)
     }
 
     @IBAction func clickToRegister(sender: UIButton) {
-        let vc = storyboard?.instantiateViewControllerWithIdentifier("SignUpViewController")
-        self.navigationController?.pushViewController(vc!, animated: true)
+        let storyboardMain = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboardMain.instantiateViewControllerWithIdentifier("SignUpNavigationController")
+        self.presentViewController(vc, animated: true, completion: nil)
     }
     
     

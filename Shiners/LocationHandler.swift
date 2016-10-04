@@ -10,6 +10,8 @@ import Foundation
 import CoreLocation
 
 public class LocationHandler: NSObject, CLLocationManagerDelegate {
+    public static var lastLocation: CLLocation?
+    
     public override init (){
         super.init()
         self.locationManager.delegate = self;
@@ -72,6 +74,7 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
     
     public func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
+            LocationHandler.lastLocation = location
             if self.geocodingRequired{
                 self.reverseGeocode(location)
             } else {

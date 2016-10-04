@@ -45,6 +45,9 @@ class NewPostNewViewController: UIViewController, UITextFieldDelegate, LocationH
         if !self.locationHandler.getLocationOnce(true){
             self.currentLocationInfo = GeocoderInfo()
             self.currentLocationInfo!.denied = true
+        } else if let location = LocationHandler.lastLocation {
+            self.currentLocationInfo = GeocoderInfo()
+            self.currentLocationInfo!.coordinate = location.coordinate
         }
         
         //Заполняем начальное значение при инициализации контроллера

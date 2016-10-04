@@ -205,13 +205,13 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
             self.currentLocationAnnotation = CustomPointAnnotation(coordinate: userLocation.coordinate)
             
         
-            self.mapView.showAnnotations([self.currentLocationAnnotation] + self.postsLocationAnnotations, animated: true)
+            self.mapView.showAnnotations([self.currentLocationAnnotation] + self.postsLocationAnnotations, animated: false)
             self.mapView.selectAnnotation(self.currentLocationAnnotation, animated: false)
             self.mapView.removeAnnotation(self.currentLocationAnnotation)
             
             //Center map on location
             if let currentLocation = currentLocationAnnotation {
-                centerMapOnLocation(currentLocation, regionRadius: 10000.0)
+                centerMapOnLocation(currentLocation, regionRadius: 160.0)
                 self.mapView.selectAnnotation(currentLocation, animated: false)
             }
             
@@ -232,7 +232,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
                                                                   regionRadius * 2.0, regionRadius * 2.0)
         //let region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
-        mapView.setRegion(coordinateRegion, animated: true)
+        mapView.setRegion(coordinateRegion, animated: false)
     }
 
     /*
