@@ -89,12 +89,33 @@ extension NSDate {
         return output!
     }
     
-    func toFriendlyDateTimeString() -> String{
+    func toFriendlyDateTimeString() -> String {
+        
+        let dateFormatter = NSDateFormatter()
+        //dateFormatter.dateFormat = "h:mm a"
+        
+        dateFormatter.locale = NSLocale.currentLocale()
+        
+        let elapsedTimeInSeconds = NSDate().timeIntervalSinceDate(self)
+        
+        let secondsInDay: NSTimeInterval = 60 * 60 * 24
+        
+        if elapsedTimeInSeconds > 7 * secondsInDay {
+            dateFormatter.dateStyle = .ShortStyle
+        } else if elapsedTimeInSeconds > secondsInDay {
+            dateFormatter.dateFormat = "EEE"
+        } else {
+            dateFormatter.timeStyle = .ShortStyle
+        }
+        
+        return dateFormatter.stringFromDate(self)
+        
+        /*
         if NSCalendar.currentCalendar().isDateInToday(self){
             return self.toShortTimeString()
         } else {
             return self.toShortDateString()
-        }
+        }*/
     }
     
 }
