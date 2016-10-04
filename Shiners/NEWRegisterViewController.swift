@@ -9,8 +9,6 @@
 import UIKit
 
 public class NEWRegisterViewController: UITableViewController, UITextFieldDelegate {
-    
-    
     @IBOutlet weak var textFieldUsername: UITextField!
     @IBOutlet weak var textFieldEmailAddress: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
@@ -18,12 +16,13 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
     
     let txtTitleRegistrationError = NSLocalizedString("Registration error", comment: "Alert title, registration error")
     
-    @IBOutlet weak var btnDone: UIBarButtonItem!
+    
+    @IBOutlet weak var btnRegister: UIBarButtonItem!
 
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        self.setLoading(false, rightBarButtonItem: self.btnDone)
+        self.setLoading(false, rightBarButtonItem: self.btnRegister)
         
         self.tableView.separatorColor = UIColor.clearColor()
         textFieldConfigure([textFieldUsername, textFieldEmailAddress, textFieldPassword, textFieldConfirmPassword])
@@ -50,15 +49,14 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
     
     @objc private func processLogin(){
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-        dispatch_async(dispatch_get_main_queue(), {
-            self.setLoading(false)
-            if AccountHandler.Instance.currentUser != nil {
-                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-            } else {
+        ThreadHelper.runOnMainThread({
+            if AccountHandler.Instance.currentUser == nil {
+                self.setLoading(false, rightBarButtonItem: self.btnRegister)
                 self.showAlert(self.txtTitleRegistrationError, message: ResponseHelper.getDefaultErrorMessage())
+            } else {
+                self.dismissViewControllerAnimated(true, completion: nil)
             }
         })
-        
     }
     
     private func register() {
@@ -70,13 +68,18 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
                 AccountHandler.Instance.register(user, callback: { (success, errorId, errorMessage, result) in
                     if (success){
                         AccountHandler.Instance.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
-                            if !success {
-                                self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
-                            }
+                            ThreadHelper.runOnMainThread({
+                                if !success {
+                                    self.setLoading(false, rightBarButtonItem: self.btnRegister)
+                                    self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
+                                }
+                            })
                         })
                     } else {
-                        self.setLoading(false)
-                        self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
+                        ThreadHelper.runOnMainThread({
+                            self.setLoading(false, rightBarButtonItem: self.btnRegister)
+                            self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
+                        })
                     }
                 })
                 
@@ -118,16 +121,13 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
     }
 
     
-    
-    // MARK: Action
-    
-    @IBAction func btn_Done(sender: UIBarButtonItem) {
+    @IBAction func btnRegister_Click(sender: AnyObject) {
         self.register()
     }
     
     @IBAction func btn_Cancel(sender: UIBarButtonItem) {
         //self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-        self.navigationController?.popViewControllerAnimated(true)
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func btn_LogIn(sender: UIButton) {

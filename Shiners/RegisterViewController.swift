@@ -67,7 +67,6 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
                 self.showAlert("Registration error", message: ResponseHelper.getDefaultErrorMessage())
             }
         })
-
     }
     
     private func register(){

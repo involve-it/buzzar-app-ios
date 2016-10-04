@@ -74,7 +74,7 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
         dispatch_async(dispatch_get_main_queue(), {
             self.setLoading(false, rightBarButtonItem: self.registerButton)
             if AccountHandler.Instance.currentUser != nil {
-                AccountHandler.Instance.requestPushNotifications()
+                //AccountHandler.Instance.requestPushNotifications()
                 self.dismissSelf();
             } else {
                 self.showAlert(self.txtTitleLogInFaild, message: ResponseHelper.getDefaultErrorMessage())

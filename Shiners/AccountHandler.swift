@@ -28,6 +28,10 @@ public class AccountHandler{
     var messagesCollection = MessagesCollection()
     private var messagesId: String?
     
+    private var lastLocationReport: NSDate?
+    //2 minutes
+    private static let LOCATION_REPORT_INTEVAL_SECONDS = 2 * 60.0
+    
     func subscribeToNewMessages(){
         if let messagesId = self.messagesId {
             Meteor.unsubscribe(withId: messagesId)
@@ -133,6 +137,7 @@ public class AccountHandler{
         self.myPosts = nil
         self.userId = nil
         self.myChats = nil
+        self.lastLocationReport = nil
         
         NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
     }
@@ -249,6 +254,23 @@ public class AccountHandler{
         })
     }
     
+    public func reportLocation(lat: Double, lng: Double){
+        if self.isLoggedIn() && (self.lastLocationReport == nil || NSDate().timeIntervalSinceDate(self.lastLocationReport!) >= AccountHandler.LOCATION_REPORT_INTEVAL_SECONDS){
+            var dict = Dictionary<String, AnyObject>()
+            dict["lat"] = lat
+            dict["lng"] = lng
+            dict["deviceId"] = SecurityHandler.getDeviceId()
+            Meteor.call("reportLocation", params: [dict]) { (result, error) in
+                if error == nil {
+                    self.lastLocationReport = NSDate()
+                } else {
+                    print("Error reporting location")
+                    print(error!.error)
+                }
+            }
+        }
+    }
+    
     private func processLocalNotifications(){
         self.myChats?.forEach({ (chat) in
             if !(chat.seen ?? true) && chat.toUserId == self.userId{
@@ -262,7 +284,13 @@ public class AccountHandler{
             self.resolvedDependencies = 0
             self.status = .Completed
             
+            self.requestPushNotifications()
+            
             NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
+            
+            if let location = LocationHandler.lastLocation {
+                self.reportLocation(location.coordinate.latitude, lng: location.coordinate.longitude)
+            }
             
             self.processLocalNotifications()
         }
@@ -273,6 +301,14 @@ public class AccountHandler{
         let app = UIApplication.sharedApplication()
         app.registerForRemoteNotifications()
         app.registerUserNotificationSettings(settings)
+        if let _ = PushNotificationsHandler.getToken() {
+            self.savePushToken { (success) in
+                if !success {
+                    UIApplication.sharedApplication().unregisterForRemoteNotifications()
+                    NotificationManager.sendNotification(NotificationManager.Name.PushRegistrationFailed, object: nil)
+                }
+            }
+        }
     }
     
     public func savePushToken(callback: (success: Bool) -> Void){

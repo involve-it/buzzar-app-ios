@@ -29,8 +29,6 @@ class PushNotificationsHandler{
     }
     
     class func handleNotification(payloadString: String, rootViewController: MainViewController){
-        
-        
         if let payload = Payload(payload: payloadString), payloadType = payload.type {
             switch payloadType {
             case CHAT:
