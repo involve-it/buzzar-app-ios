@@ -612,7 +612,7 @@
 "lGH-xx-W4y.placeholder" = "Email address";
 
 /* Class = "UITabBarItem"; title = "Messages"; ObjectID = "lGM-Kz-ouS"; */
-"lGM-Kz-ouS.title" = "Messages";
+"lGM-Kz-ouS.title" = "Сообщения";
 
 /* Class = "UILabel"; text = "Select Ad type"; ObjectID = "lJN-LQ-PFm"; */
 "lJN-LQ-PFm.text" = "Select Ad type";
@@ -714,7 +714,7 @@
 "uQp-PD-2sU.text" = "My messages";
 
 /* Class = "UINavigationItem"; title = "Messages"; ObjectID = "uX0-i6-PlM"; */
-"uX0-i6-PlM.title" = "Messages";
+"uX0-i6-PlM.title" = "Сообщения";
 
 /* Class = "UILabel"; text = "Your status"; ObjectID = "ujW-Q1-sMn"; */
 "ujW-Q1-sMn.text" = "Your status";

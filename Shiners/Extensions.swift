@@ -94,8 +94,6 @@ extension NSDate {
         let dateFormatter = NSDateFormatter()
         //dateFormatter.dateFormat = "h:mm a"
         
-        dateFormatter.locale = NSLocale.currentLocale()
-        
         let elapsedTimeInSeconds = NSDate().timeIntervalSinceDate(self)
         
         let secondsInDay: NSTimeInterval = 60 * 60 * 24
@@ -222,3 +220,16 @@ extension NSDictionary{
         return nil
     }
 }
+
+extension UIView {
+    func addConstraintsWithFormat(format: String, views: UIView...) {
+        var viewsDictionary = [String: UIView]()
+        for (index, view) in views.enumerate() {
+            let key = "v\(index)"
+            viewsDictionary[key] = view
+            view.translatesAutoresizingMaskIntoConstraints = false
+        }
+        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(format, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary))
+    }
+}
+

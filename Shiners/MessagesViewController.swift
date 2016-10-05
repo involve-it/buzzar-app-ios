@@ -20,6 +20,10 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
     }
     
     public override func viewDidLoad() {
+        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        
+            
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(dialogsUpdated), name: NotificationManager.Name.MyChatsUpdated.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageAdded), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
@@ -205,7 +209,99 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             let chat = self.dialogs[self.tableView.indexPathForSelectedRow!.row]
             
             let viewController = segue.destinationViewController as! DialogViewController
-            viewController.navigationItem.title = selectedCell.lblTitle.text
+            
+            
+            //Добавить новое view с информацией о пользователе
+            let titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.width - 32, view.frame.height))
+            titleLabel.text = "HOME"
+            
+            
+            
+            
+            
+            
+            
+            
+            //Main profile view
+            let views: UIView = {
+                let v = UIView()
+                v.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 42)
+                return v
+            }()
+            
+            //Profile imageView
+            let profileImageView: UIImageView = {
+                let imageView = UIImageView()
+                imageView.contentMode = .ScaleAspectFill
+                imageView.image = selectedCell.imgPhoto.image
+                //imageView.backgroundColor = UIColor.redColor()
+                imageView.layer.cornerRadius = 15
+                imageView.layer.masksToBounds = true
+                return imageView
+            }()
+            
+            
+            
+            views.addSubview(profileImageView)
+            
+            profileImageView.translatesAutoresizingMaskIntoConstraints = false
+            views.addConstraintsWithFormat("H:|-8-[v0(30)]", views: profileImageView)
+            views.addConstraintsWithFormat("V:[v0(30)]", views: profileImageView)
+            
+            views.addConstraint(NSLayoutConstraint(item: profileImageView, attribute: .CenterY, relatedBy: .Equal, toItem: views, attribute: .CenterY, multiplier: 1, constant: 0))
+            
+            //ContainerView
+            let containerView = UIView()
+            views.addSubview(containerView)
+            
+            views.addConstraintsWithFormat("H:|-46-[v0]|", views: containerView)
+            views.addConstraintsWithFormat("V:[v0(30)]", views: containerView)
+            
+            views.addConstraint(NSLayoutConstraint(item: containerView, attribute: .CenterY, relatedBy: .Equal, toItem: views, attribute: .CenterY, multiplier: 1, constant: 0))
+            
+            //nameLabel
+            let nameLabel: UILabel = {
+               let label = UILabel()
+                label.text = selectedCell.lblTitle.text
+                label.font = UIFont.systemFontOfSize(12)
+                return label
+            }()
+            
+            //activeTimeLabel
+            let activeTimeLabel: UILabel = {
+                let label = UILabel()
+                label.text = "была в сети (НЕТ РЕАЛИЗАЦИИ)"
+                label.font = UIFont.systemFontOfSize(10)
+                label.textColor = UIColor.darkGrayColor()
+                return label
+            }()
+            
+            containerView.addSubview(nameLabel)
+            containerView.addSubview(activeTimeLabel)
+            
+            containerView.addConstraintsWithFormat("H:|[v0]|", views: nameLabel)
+            containerView.addConstraintsWithFormat("V:|[v0][v1(14)]|", views: nameLabel, activeTimeLabel)
+            
+            containerView.addConstraintsWithFormat("H:|[v0]-8-|", views: activeTimeLabel)
+    
+            
+            
+            
+            
+            
+            
+            
+            
+           
+            viewController.navigationItem.titleView = views
+            
+            //viewController.navigationItem.titleView = titleLabel
+            
+            
+            //WAS HERE
+            //viewController.navigationItem.title = selectedCell.lblTitle.text
+            
+            
             viewController.chat = chat
             viewController.dataFromCache = false
             
