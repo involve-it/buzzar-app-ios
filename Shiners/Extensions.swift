@@ -116,6 +116,13 @@ extension NSDate {
         }*/
     }
     
+    func toFriendlyLongDateTimeString() -> String {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.timeStyle = .ShortStyle
+        dateFormatter.dateStyle = .LongStyle
+        
+        return dateFormatter.stringFromDate(self)
+    }
 }
 
 extension NSData {

@@ -272,7 +272,9 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             //activeTimeLabel
             let activeTimeLabel: UILabel = {
                 let label = UILabel()
-                label.text = "была в сети (НЕТ РЕАЛИЗАЦИИ)"
+                if let lastLogin = chat.otherParty?.lastLogin{
+                    label.text = lastLogin.toFriendlyLongDateTimeString()
+                }
                 label.font = UIFont.systemFontOfSize(10)
                 label.textColor = UIColor.darkGrayColor()
                 return label

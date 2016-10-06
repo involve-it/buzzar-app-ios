@@ -20,6 +20,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
     public var language: String?
     public var enableNearbyNotifications: Bool?
     public var lastMobileLocationReport: NSDate?
+    public var lastLogin: NSDate?
     
     override init(){
         super.init()
@@ -50,6 +51,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         }
         
         self.online = fields?.valueForKey("online") as? Bool
+        self.lastLogin = (fields?.valueForKey(PropertyKeys.lastLogin) as? NSDictionary)?.javaScriptDateFromFirstElement()
         self.lastMobileLocationReport = (fields?.valueForKey(PropertyKeys.lastMobileLocationReport) as? NSDictionary)?.javaScriptDateFromFirstElement()
         
         if let images = fields?.valueForKey("image") as? NSArray{
@@ -158,6 +160,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         self.profileDetails = aDecoder.decodeObjectForKey(PropertyKeys.profileDetails) as? [ProfileDetail]
         self.language = aDecoder.decodeObjectForKey(PropertyKeys.language) as? String
         self.lastMobileLocationReport = aDecoder.decodeObjectForKey(PropertyKeys.lastMobileLocationReport) as? NSDate
+        self.lastLogin = aDecoder.decodeObjectForKey(PropertyKeys.lastLogin) as? NSDate
     }
     
     public func encodeWithCoder(aCoder: NSCoder) {
@@ -176,6 +179,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
             aCoder.encodeBool(enableNearbyNotifications, forKey: PropertyKeys.enableNearbyNotifications)
         }
         aCoder.encodeObject(self.lastMobileLocationReport, forKey: PropertyKeys.lastMobileLocationReport)
+        aCoder.encodeObject(self.lastLogin, forKey: PropertyKeys.lastLogin)
     }
     
     private struct PropertyKeys{
@@ -190,5 +194,6 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         static let language = "language"
         static let enableNearbyNotifications = "enableNearbyNotifications"
         static let lastMobileLocationReport = "lastMobileLocationReport"
+        static let lastLogin = "lastLogin"
     }
 }
