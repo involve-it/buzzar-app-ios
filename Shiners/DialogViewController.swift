@@ -84,7 +84,6 @@ public class DialogViewController : JSQMessagesViewController{
             self.dataFromCache = false
             self.updateMessages(messages)
             if self.initialPage {
-                self.scrollToBottomAnimated(false)
                 self.notifyUnseen()
             }
         }
@@ -123,8 +122,8 @@ public class DialogViewController : JSQMessagesViewController{
                 chat.messages = messagesSorted
                 self.messages = [JSQMessage]()
                 self.chat.messages.forEach { (message) in
-                    if let userId = message.userId, text = message.text where message != self.chat.messages.first!{
-                        addMessage(userId, text: text)
+                    if let userId = message.userId, text = message.text, timestamp = message.timestamp where message != self.chat.messages.first!{
+                        addMessage(userId, text: text, timestamp: timestamp)
                     }
                 }
                 ThreadHelper.runOnMainThread({ 
@@ -148,9 +147,10 @@ public class DialogViewController : JSQMessagesViewController{
                     indexPaths.append(NSIndexPath(forItem: i, inSection: 0))
                 }
                 for message in messagesSortedDescending {
-                    if let userId = message.userId, text = message.text where message != messagesSortedDescending.last! {
-                        let msg = JSQMessage(senderId: userId, displayName: "", text: text)
-                        self.messages.insert(msg, atIndex: 0)
+                    if let userId = message.userId, text = message.text, timestamp = message.timestamp where message != messagesSortedDescending.last! {
+                        //let msg = JSQMessage(senderId: userId, displayName: "", text: text)
+                        let message = JSQMessage(senderId: userId, senderDisplayName: "", date: timestamp, text: text)
+                        self.messages.insert(message, atIndex: 0)
                         //self.chat.messages.insert(message, atIndex: 0)
                     }
                 }
@@ -187,7 +187,7 @@ public class DialogViewController : JSQMessagesViewController{
     func messageAdded(notification: NSNotification){
         if let message = notification.object as? Message where message.chatId == self.chat.id {
             ThreadHelper.runOnMainThread({ 
-                self.addMessage(message.userId!, text: message.text!, callFinish: true)
+                self.addMessage(message.userId!, text: message.text!, timestamp: message.timestamp!, callFinish: true)
             })
             if UIApplication.sharedApplication().applicationState == .Active {
                 if message.toUserId == AccountHandler.Instance.userId {
@@ -239,6 +239,37 @@ public class DialogViewController : JSQMessagesViewController{
         }
     }
     
+    private func shouldDisplayTimestamp(index: Int) -> Bool{
+        if index == 0{
+            return true
+        } else {
+            let currentMessage = self.messages[index]
+            let previousMessage = self.messages[index - 1]
+            if currentMessage.date.timeIntervalSinceDate(previousMessage.date) > 60 * 5 {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+    
+    public override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+        if self.shouldDisplayTimestamp(indexPath.row){
+            return kJSQMessagesCollectionViewCellLabelHeightDefault
+        } else {
+            return 0
+        }
+    }
+    
+    public override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+        if self.shouldDisplayTimestamp(indexPath.row){
+            let currentMessage = self.messages[indexPath.row]
+            return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(currentMessage.date)
+        } else {
+            return nil
+        }
+    }
+    
     public override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
         return messages[indexPath.item]
     }
@@ -280,8 +311,9 @@ public class DialogViewController : JSQMessagesViewController{
         return nil
     }
     
-    func addMessage(id: String, text: String, callFinish: Bool = false){
-        let message = JSQMessage(senderId: id, displayName: "", text: text)
+    func addMessage(id: String, text: String, timestamp: NSDate, callFinish: Bool = false){
+        //let message = JSQMessage(senderId: id, displayName: "", text: text)
+        let message = JSQMessage(senderId: id, senderDisplayName: "", date: timestamp, text: text)
         messages.append(message)
         if callFinish{
             if id == self.senderId {

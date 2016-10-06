@@ -71,9 +71,11 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         viewController.navigationItem.title = cell.lblTitle.text
         viewController.chat = chat
         viewController.isPeeking = true
+        viewController.dataFromCache = false
         if !chat.messagesRequested {
             chat.messagesRequested = true
             viewController.pendingMessagesAsyncId = MessagesHandler.Instance.getMessagesAsync(chat.id!, skip: 0)
+            viewController.dataFromCache = true
         }
         previewingContext.sourceRect = cell.frame
         
