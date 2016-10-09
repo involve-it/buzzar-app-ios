@@ -122,7 +122,7 @@ public class DialogViewController : JSQMessagesViewController{
                 chat.messages = messagesSorted
                 self.messages = [JSQMessage]()
                 self.chat.messages.forEach { (message) in
-                    if let userId = message.userId, text = message.text, timestamp = message.timestamp where message != self.chat.messages.first!{
+                    if let userId = message.userId, text = message.text, timestamp = message.timestamp where self.chat.messages.count <= MessagesHandler.DEFAULT_PAGE_SIZE || message != self.chat.messages.first!{
                         addMessage(userId, text: text, timestamp: timestamp)
                     }
                 }
