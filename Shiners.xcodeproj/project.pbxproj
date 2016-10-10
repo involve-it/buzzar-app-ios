@@ -26,6 +26,7 @@
 		613C6A4A1D63419400744076 /* cellUserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A491D63419400744076 /* cellUserProfile.swift */; };
 		613C6A4C1D645D5A00744076 /* SettingsProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A4B1D645D5A00744076 /* SettingsProfileTableViewController.swift */; };
 		613C6A701D660A0000744076 /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */; };
+		6147E77D1DAA7A6B0014F7DD /* CreatePostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6147E77C1DAA7A6B0014F7DD /* CreatePostTableViewController.swift */; };
 		617378A21D6B290D00F10ABA /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */; };
 		617378C21D6DC5E100F10ABA /* NEWRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */; };
 		617378C71D6ECFC700F10ABA /* cellAboutMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378C51D6ECFC700F10ABA /* cellAboutMe.swift */; };
@@ -154,6 +155,7 @@
 		613C6A491D63419400744076 /* cellUserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = cellUserProfile.swift; sourceTree = "<group>"; };
 		613C6A4B1D645D5A00744076 /* SettingsProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsProfileTableViewController.swift; sourceTree = "<group>"; };
 		613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewController.swift; sourceTree = "<group>"; };
+		6147E77C1DAA7A6B0014F7DD /* CreatePostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreatePostTableViewController.swift; path = Shiners/CreatePostTableViewController.swift; sourceTree = "<group>"; };
 		617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEWRegisterViewController.swift; sourceTree = "<group>"; };
 		617378C51D6ECFC700F10ABA /* cellAboutMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = cellAboutMe.swift; sourceTree = "<group>"; };
@@ -499,6 +501,7 @@
 		7BC0A20F1CCC15E700DA2824 = {
 			isa = PBXGroup;
 			children = (
+				6147E77C1DAA7A6B0014F7DD /* CreatePostTableViewController.swift */,
 				61F91F0A1D803E0800B9DF3C /* Localization */,
 				7BC0A2351CCC163600DA2824 /* Resources */,
 				7BC0A21A1CCC15E700DA2824 /* Shiners */,
@@ -802,6 +805,7 @@
 				6117A5481D4C03EC009E12DB /* PostDetailsViewController.swift in Sources */,
 				61EA5DA31D47559700083361 /* PhotosViewController.swift in Sources */,
 				7B1C12481D0CD1CA001355AB /* MessagesCollection.swift in Sources */,
+				6147E77D1DAA7A6B0014F7DD /* CreatePostTableViewController.swift in Sources */,
 				61C6F9071D3BED100030CC81 /* NewPostNewViewController.swift in Sources */,
 				7BB2A8131CD30AD700AD636D /* ProfileViewController.swift in Sources */,
 				7BC6BE5C1CFD060500664803 /* ValuePickerViewController.swift in Sources */,

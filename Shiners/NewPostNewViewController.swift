@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewPostNewViewController: UIViewController, UITextFieldDelegate, LocationHandlerDelegate {
+class NewPostNewViewController: UITableViewController, UITextFieldDelegate, LocationHandlerDelegate {
 
     
     @IBOutlet weak var titleTextCount: UILabel!
@@ -53,6 +53,19 @@ class NewPostNewViewController: UIViewController, UITextFieldDelegate, LocationH
         //Заполняем начальное значение при инициализации контроллера
         titleTextCount.text = String(titleAllowCount)
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -100,14 +113,5 @@ class NewPostNewViewController: UIViewController, UITextFieldDelegate, LocationH
         }
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }
