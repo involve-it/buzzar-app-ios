@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-let cssStyle = "<style> h2 {color:red} p {font-size:10pt;}  </style>"
+let cssStyle = "<style> * {font-family: '-apple-system','HelveticaNeue'; font-size:10pt;} p {font-size:10pt;}  </style>"
 
 public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMapViewDelegate, UIViewControllerPreviewingDelegate {
     
@@ -32,7 +32,17 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     @IBOutlet weak var svImages: UIScrollView!
     @IBOutlet weak var btnEdit: UIBarButtonItem!
     
+    @IBOutlet weak var iconFavoritesCount: UIImageView!
+    @IBOutlet weak var iconViewsCount: UIImageView!
+    @IBOutlet weak var iconLocation: UIImageView!
+    
+    @IBOutlet weak var callStack: UIStackView!
+    @IBOutlet weak var writeStack: UIStackView!
+    
+    
     @IBOutlet weak var txtPostStatus: UILabel!
+    
+    let uiBlueColor = UIColor(red: 90/255, green: 177/255, blue: 231/255, alpha: 1)
     @IBOutlet weak var postStatusImage: UIImageView!
     
     //Page control for svImage
@@ -42,11 +52,11 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     @IBOutlet weak var txtTitle: UILabel!
     @IBOutlet weak var txtPostDateExpires: UILabel!
     @IBOutlet weak var txtViews: UILabel!
+    @IBOutlet weak var txtFavoritesCount: UILabel!
     @IBOutlet weak var txtUsername: UILabel!
     @IBOutlet weak var txtPostCreated: UILabel!
     @IBOutlet weak var txtPostDistance: UILabel!
     @IBOutlet weak var txtPostLocationFormattedAddress: UILabel!
-    @IBOutlet weak var postType: UIButton!
     @IBOutlet weak var avatarUser: UIImageView!
     @IBOutlet weak var btnSendMessage: UIButton!
     
@@ -99,15 +109,26 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        iconFavoritesCount.image = UIImage(named: "favorites_standart")?.imageWithRenderingMode(.AlwaysTemplate)
+        iconFavoritesCount.tintColor = uiBlueColor
+        
+        iconViewsCount.image = UIImage(named: "postViews_icon")?.imageWithRenderingMode(.AlwaysTemplate)
+        iconViewsCount.tintColor = uiBlueColor
+        
+        iconLocation.image = UIImage(named: "postDistance_icon")?.imageWithRenderingMode(.AlwaysTemplate)
+        iconLocation.tintColor = uiBlueColor
+        
         let gestureRecognizer = self.postMapLocation.gestureRecognizers![0]
         gestureRecognizer.addTarget(self, action: #selector(map_Clicked))
 
         self.postDescription.delegate = self
         
-        self.navigationItem.title = post?.title
+        //self.navigationItem.title = post?.title
         
         //Check UserId & Post's user id
-        self.btnSendMessage.hidden = post.user?.id == AccountHandler.Instance.userId
+        self.writeStack.hidden = post.user?.id == AccountHandler.Instance.userId
+        
+        
         
         //Title
         self.txtTitle.text = post?.title
@@ -141,13 +162,15 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         }
         
         //Seen total
-        var views = ""
+        var views: String!
         
         if let seenTotal = post?.seenTotal {
-            views = views + "\(seenTotal)";
+            views = "\(seenTotal)";
         }
+        self.txtViews.text = views ?? "0";
         
-        self.txtViews.text = views;
+        //Favorites count
+        self.txtFavoritesCount.text = "0"
         
         /*
          //Seen today
@@ -157,7 +180,10 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
          */
         
         //Post Created
-        txtPostCreated.text = post.timestamp?.toLocalizedString()
+        if let postDateCreated = post.timestamp {
+            //toLocalizedString()
+            txtPostCreated.text = postDateCreated.timestampFormatterForDate().string
+        }
         
         //Post Date Expires
         txtPostDateExpires.text = post.endDate?.toLeftExpiresDatePost()
@@ -179,7 +205,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             for coordinateLocation in postCoordinateLocation {
                 if coordinateLocation.placeType! == .Dynamic {
                     postLocation = coordinateLocation
-                    self.txtPostStatus.text = NSLocalizedString("Dynamic", comment: "Post status, Dynamic")
+                    //self.txtPostStatus.text = NSLocalizedString("Dynamic", comment: "Post status, Dynamic")
                     
                     let typeImage = ( post.isLive() ) ? "PostType_Dynamic_Live" : "PostType_Dynamic"
                     self.postStatusImage.image = UIImage(named: typeImage)
@@ -189,7 +215,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                 } else {
                     //if coordinateLocation.placeType! == .Static
                     postLocation = coordinateLocation
-                    self.txtPostStatus.text = NSLocalizedString("Static", comment: "Post status, Static")
+                    //self.txtPostStatus.text = NSLocalizedString("Static", comment: "Post status, Static")
                     
                     let typeImage = ( post.isLive() ) ? "PostType_Static_Live" : "PostType_Static"
                     self.postStatusImage.image = UIImage(named: typeImage)
@@ -243,9 +269,9 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         }
         
         //POST TYPE
-        if let txtPostType = post.type?.rawValue {
+        /*if let txtPostType = post.type?.rawValue {
             postType.setTitle(txtPostType, forState: .Normal)
-        }
+        }*/
         
         
         //Page Conrol

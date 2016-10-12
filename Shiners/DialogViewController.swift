@@ -337,3 +337,10 @@ public class DialogViewController : JSQMessagesViewController{
         };
     }
 }
+
+extension NSDate {
+    
+    func timestampFormatterForDate() -> NSAttributedString {
+        return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(self)
+    }
+}
