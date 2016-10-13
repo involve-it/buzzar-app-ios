@@ -39,6 +39,8 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     @IBOutlet weak var callStack: UIStackView!
     @IBOutlet weak var writeStack: UIStackView!
     
+    @IBOutlet weak var callWriteView: UIView!
+    @IBOutlet weak var callWriteViewHeight: NSLayoutConstraint!
     
     @IBOutlet weak var txtPostStatus: UILabel!
     
@@ -60,6 +62,8 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     @IBOutlet weak var avatarUser: UIImageView!
     @IBOutlet weak var btnSendMessage: UIButton!
     
+    var phoneNumber: String?
+    
     func map_Clicked(sender: AnyObject) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let vc = storyboard.instantiateViewControllerWithIdentifier("fullMap") as? FullMapViewController else { return }
@@ -70,6 +74,14 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    
+    
+    @IBAction func btnCall_Click(sender: AnyObject) {
+        if let phoneNumber = self.phoneNumber, url = NSURL(string: "tel://\(phoneNumber)") {
+            UIApplication.sharedApplication().openURL(url)
+        }
+    }
+    
     @IBAction func btnSendMessage_Click(sender: AnyObject) {
         let alertController = UIAlertController(title: NSLocalizedString("New message", comment: "Alert title, New message"), message: nil, preferredStyle: .Alert);
         
@@ -126,9 +138,19 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         //self.navigationItem.title = post?.title
         
         //Check UserId & Post's user id
-        self.writeStack.hidden = post.user?.id == AccountHandler.Instance.userId
+        let ownPost = post.user?.id == AccountHandler.Instance.userId
+        if ownPost {
+            self.callWriteView.hidden = ownPost
+            self.callWriteViewHeight.constant = 0
+            self.view.layoutIfNeeded()
+        }
         
-        
+        if let phoneNumberDetail = post.user?.getProfileDetail(.Phone), phoneNumber = phoneNumberDetail.value where !ownPost{
+            self.phoneNumber = phoneNumber
+            self.callStack.hidden = false
+        } else {
+            self.callStack.hidden = true
+        }
         
         //Title
         self.txtTitle.text = post?.title
@@ -275,7 +297,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         
         
         //Page Conrol
-        self.pageControl.numberOfPages = (post?.photos?.count)!
+        self.pageControl.numberOfPages = (post?.photos?.count) ?? 1
         self.pageControl.currentPage = 0
         self.pageControl.userInteractionEnabled = false
         //Page control becomes invisible when its numberOfPages changes to 1
@@ -300,6 +322,10 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         }
         
         
+    }
+    
+    override public func prefersStatusBarHidden() -> Bool {
+        return false
     }
     
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {

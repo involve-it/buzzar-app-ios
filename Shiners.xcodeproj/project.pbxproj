@@ -155,7 +155,7 @@
 		613C6A491D63419400744076 /* cellUserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = cellUserProfile.swift; sourceTree = "<group>"; };
 		613C6A4B1D645D5A00744076 /* SettingsProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsProfileTableViewController.swift; sourceTree = "<group>"; };
 		613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewController.swift; sourceTree = "<group>"; };
-		6147E77C1DAA7A6B0014F7DD /* CreatePostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CreatePostTableViewController.swift; path = Shiners/CreatePostTableViewController.swift; sourceTree = "<group>"; };
+		6147E77C1DAA7A6B0014F7DD /* CreatePostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePostTableViewController.swift; sourceTree = "<group>"; };
 		617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
 		617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEWRegisterViewController.swift; sourceTree = "<group>"; };
 		617378C51D6ECFC700F10ABA /* cellAboutMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = cellAboutMe.swift; sourceTree = "<group>"; };
@@ -419,6 +419,7 @@
 				7B1C123F1D0CC19C001355AB /* ErrorCell.swift */,
 				6117A5471D4C03EC009E12DB /* PostDetailsViewController.swift */,
 				7BC1A9C71D50469B005B4F62 /* FullMapViewController.swift */,
+				6147E77C1DAA7A6B0014F7DD /* CreatePostTableViewController.swift */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -501,7 +502,6 @@
 		7BC0A20F1CCC15E700DA2824 = {
 			isa = PBXGroup;
 			children = (
-				6147E77C1DAA7A6B0014F7DD /* CreatePostTableViewController.swift */,
 				61F91F0A1D803E0800B9DF3C /* Localization */,
 				7BC0A2351CCC163600DA2824 /* Resources */,
 				7BC0A21A1CCC15E700DA2824 /* Shiners */,
