@@ -3683,13 +3683,13 @@
                                                 <rect key="frame" x="0.0" y="226" width="600" height="277"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Название текущего поста" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mMH-4g-vXl" userLabel="Post title">
-                                                        <rect key="frame" x="16" y="8" width="488" height="20"/>
+                                                        <rect key="frame" x="16" y="8" width="480" height="20"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Дата создания поста" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FCL-Kj-ncV">
-                                                        <rect key="frame" x="16" y="32" width="488" height="15"/>
+                                                        <rect key="frame" x="16" y="32" width="480" height="15"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
@@ -3701,7 +3701,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TEq-9Z-Yi1" userLabel="Views, favor">
-                                                        <rect key="frame" x="512" y="8" width="80" height="40"/>
+                                                        <rect key="frame" x="504" y="8" width="80" height="40"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="y5i-7D-A3m">
                                                                 <rect key="frame" x="0.0" y="0.0" width="80" height="40"/>
@@ -3920,7 +3920,7 @@
                                                         </constraints>
                                                     </view>
                                                     <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jsc-SN-pA4" userLabel="PostDescription WebView">
-                                                        <rect key="frame" x="0.0" y="227" width="600" height="50"/>
+                                                        <rect key="frame" x="8" y="227" width="584" height="50"/>
                                                         <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="GQu-ZM-iuS"/>
@@ -3929,12 +3929,12 @@
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="trailing" secondItem="Jsc-SN-pA4" secondAttribute="trailing" id="0Kx-RQ-GJr"/>
-                                                    <constraint firstAttribute="trailing" secondItem="TEq-9Z-Yi1" secondAttribute="trailing" constant="8" id="0a2-mW-8uE"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Jsc-SN-pA4" secondAttribute="trailing" constant="8" id="0Kx-RQ-GJr"/>
+                                                    <constraint firstAttribute="trailing" secondItem="TEq-9Z-Yi1" secondAttribute="trailing" constant="16" id="0a2-mW-8uE"/>
                                                     <constraint firstItem="TEq-9Z-Yi1" firstAttribute="leading" secondItem="FCL-Kj-ncV" secondAttribute="trailing" constant="8" id="1Du-0f-0dG"/>
                                                     <constraint firstItem="TEq-9Z-Yi1" firstAttribute="top" secondItem="X73-bN-Ueg" secondAttribute="top" constant="8" id="7gb-dd-wz8"/>
                                                     <constraint firstItem="TEq-9Z-Yi1" firstAttribute="leading" secondItem="mMH-4g-vXl" secondAttribute="trailing" constant="8" id="EHS-kb-WpG"/>
-                                                    <constraint firstItem="Jsc-SN-pA4" firstAttribute="leading" secondItem="X73-bN-Ueg" secondAttribute="leading" id="FHY-Vt-hSI"/>
+                                                    <constraint firstItem="Jsc-SN-pA4" firstAttribute="leading" secondItem="X73-bN-Ueg" secondAttribute="leading" constant="8" id="FHY-Vt-hSI"/>
                                                     <constraint firstAttribute="trailing" secondItem="Ut0-YR-df1" secondAttribute="trailing" id="Nid-Dl-m1k"/>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="QiO-d5-Knr"/>
                                                     <constraint firstItem="mMH-4g-vXl" firstAttribute="leading" secondItem="X73-bN-Ueg" secondAttribute="leadingMargin" constant="8" id="UsO-d4-gMn"/>
