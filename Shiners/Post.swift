@@ -15,8 +15,8 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
     public var photos: [Photo]?
     public var descr: String?
     public var price: String?
-    public var seenTotal: Int32?
-    public var seenToday: Int32?
+    public var seenTotal: Int?
+    public var seenToday: Int?
     public var type: AdType?
     public var locations: [Location]?
     public var url: String?
@@ -112,12 +112,12 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         }
         
         if let stats = fields?.valueForKey(PropertyKey.stats) as? NSDictionary{
-            if let seenTotal = stats.valueForKey(PropertyKey.seenTotal)as? Int32{
+            if let seenTotal = stats.valueForKey(PropertyKey.seenTotal)as? Int{
                 self.seenTotal = seenTotal;
             } else {
                 self.seenTotal = 0
             }
-            if let seenToday = stats.valueForKey(PropertyKey.seenToday) as? Int32{
+            if let seenToday = stats.valueForKey(PropertyKey.seenToday) as? Int{
                 self.seenToday = seenToday;
             } else {
                 self.seenToday = 0
@@ -164,10 +164,10 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         self.descr = aDecoder.decodeObjectForKey(PropertyKey.description) as? String
         self.price = aDecoder.decodeObjectForKey(PropertyKey.price) as? String
         if aDecoder.containsValueForKey(PropertyKey.seenTotal){
-            self.seenTotal = aDecoder.decodeObjectForKey(PropertyKey.seenTotal) as? Int32
+            self.seenTotal = aDecoder.decodeObjectForKey(PropertyKey.seenTotal) as? Int
         }
         if aDecoder.containsValueForKey(PropertyKey.seenToday){
-            self.seenTotal = aDecoder.decodeObjectForKey(PropertyKey.seenToday) as? Int32
+            self.seenTotal = aDecoder.decodeObjectForKey(PropertyKey.seenToday) as? Int
         }
         self.photos = aDecoder.decodeObjectForKey(PropertyKey.photos) as? [Photo]
         if let type = aDecoder.decodeObjectForKey(PropertyKey.type) as? String {
@@ -199,10 +199,10 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         aCoder.encodeObject(descr, forKey: PropertyKey.description)
         aCoder.encodeObject(price, forKey: PropertyKey.price)
         if let seenTotal = self.seenTotal{
-            aCoder.encodeInt32(seenTotal, forKey: PropertyKey.seenTotal)
+            aCoder.encodeInteger(seenTotal, forKey: PropertyKey.seenTotal)
         }
         if let seenToday = self.seenToday{
-            aCoder.encodeInt32(seenToday, forKey: PropertyKey.seenToday)
+            aCoder.encodeInteger(seenToday, forKey: PropertyKey.seenToday)
         }
         aCoder.encodeObject(type?.rawValue, forKey: PropertyKey.type)
         aCoder.encodeObject(locations, forKey: PropertyKey.locations)

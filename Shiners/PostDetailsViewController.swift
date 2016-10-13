@@ -275,7 +275,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         
         
         //Page Conrol
-        self.pageControl.numberOfPages = (post?.photos?.count)!
+        self.pageControl.numberOfPages = (post?.photos?.count) ?? 1
         self.pageControl.currentPage = 0
         self.pageControl.userInteractionEnabled = false
         //Page control becomes invisible when its numberOfPages changes to 1

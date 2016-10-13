@@ -77,7 +77,7 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         if AccountHandler.Instance.isLoggedIn(){
             controller = storyboard.instantiateViewControllerWithIdentifier("addPost");
         } else {
-            controller = storyboard.instantiateViewControllerWithIdentifier("loginNavigationController");
+            controller = storyboard.instantiateViewControllerWithIdentifier("NEWloginNavigationController");
         }
         self.presentViewController(controller, animated: true, completion: nil)
         
@@ -114,7 +114,7 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
             if AccountHandler.Instance.isLoggedIn(){
                 controller = storyboard.instantiateViewControllerWithIdentifier("addPost");
             } else {
-                controller = storyboard.instantiateViewControllerWithIdentifier("loginNavigationController");
+                controller = storyboard.instantiateViewControllerWithIdentifier("NEWloginNavigationController");
             }
             self.presentViewController(controller, animated: true, completion: nil)
             return false;
