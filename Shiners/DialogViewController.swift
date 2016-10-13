@@ -184,6 +184,10 @@ public class DialogViewController : JSQMessagesViewController{
         }
     }
     
+    override public func prefersStatusBarHidden() -> Bool {
+        return false
+    }
+    
     func messageAdded(notification: NSNotification){
         if let message = notification.object as? Message where message.chatId == self.chat.id {
             ThreadHelper.runOnMainThread({ 

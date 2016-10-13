@@ -118,10 +118,10 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate {
     }
     
     func appDidBecomeActive(){
+        self.locationHandler.getLocationOnce(false)
         if ConnectionHandler.Instance.status == .Connected{
             self.getNearby()
             self.checkPending(false)
-            self.locationHandler.getLocationOnce(false)
         }
     }
     

@@ -3801,7 +3801,7 @@
                                                                                             <constraint firstAttribute="width" constant="18" id="Nrf-5m-jwN"/>
                                                                                         </constraints>
                                                                                     </imageView>
-                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Aquiring location..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rWD-VU-Bnb">
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Acquiring location..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rWD-VU-Bnb">
                                                                                         <rect key="frame" x="26" y="4" width="542" height="16"/>
                                                                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -3870,6 +3870,9 @@
                                                                                         <integer key="value" value="16"/>
                                                                                     </userDefinedRuntimeAttribute>
                                                                                 </userDefinedRuntimeAttributes>
+                                                                                <connections>
+                                                                                    <action selector="btnCall_Click:" destination="Qd9-Zx-awU" eventType="touchUpInside" id="uL3-xA-8SZ"/>
+                                                                                </connections>
                                                                             </button>
                                                                         </subviews>
                                                                     </stackView>
@@ -4093,6 +4096,8 @@
                         <outlet property="btnEdit" destination="WFp-JO-tJy" id="NUX-c4-qnf"/>
                         <outlet property="btnSendMessage" destination="p6M-Vp-H5b" id="LUI-4j-PoY"/>
                         <outlet property="callStack" destination="tRQ-qu-REd" id="ya4-dt-MNn"/>
+                        <outlet property="callWriteView" destination="Ut0-YR-df1" id="3FX-QH-hfE"/>
+                        <outlet property="callWriteViewHeight" destination="xtg-q0-YMV" id="kai-V7-WQ1"/>
                         <outlet property="gradientView" destination="REm-Uk-WRJ" id="vmc-eq-KxN"/>
                         <outlet property="iconFavoritesCount" destination="Jo3-FF-T0U" id="o9D-qU-jQF"/>
                         <outlet property="iconLocation" destination="4cQ-im-DQo" id="WKv-XQ-Lfb"/>
