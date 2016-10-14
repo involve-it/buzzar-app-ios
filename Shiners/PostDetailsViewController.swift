@@ -124,10 +124,10 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         iconFavoritesCount.image = UIImage(named: "favorites_standart")?.imageWithRenderingMode(.AlwaysTemplate)
         iconFavoritesCount.tintColor = uiBlueColor
         
-        iconViewsCount.image = UIImage(named: "postViews_icon")?.imageWithRenderingMode(.AlwaysTemplate)
+        iconViewsCount.image = UIImage(named: "view_eye")?.imageWithRenderingMode(.AlwaysTemplate)
         iconViewsCount.tintColor = uiBlueColor
         
-        iconLocation.image = UIImage(named: "postDistance_icon")?.imageWithRenderingMode(.AlwaysTemplate)
+        iconLocation.image = UIImage(named: "mouse_pointer")?.imageWithRenderingMode(.AlwaysTemplate)
         iconLocation.tintColor = uiBlueColor
         
         let gestureRecognizer = self.postMapLocation.gestureRecognizers![0]
@@ -229,7 +229,8 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                     postLocation = coordinateLocation
                     //self.txtPostStatus.text = NSLocalizedString("Dynamic", comment: "Post status, Dynamic")
                     
-                    let typeImage = ( post.isLive() ) ? "PostType_Dynamic_Live" : "PostType_Dynamic"
+                    //let typeImage = ( post.isLive() ) ? "PostType_Dynamic_Live" : "PostType_Dynamic"
+                    let typeImage = ( post.isLive() ) ? "map_marker_live" : "map_marker"
                     self.postStatusImage.image = UIImage(named: typeImage)
                     
                     break
@@ -239,7 +240,8 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                     postLocation = coordinateLocation
                     //self.txtPostStatus.text = NSLocalizedString("Static", comment: "Post status, Static")
                     
-                    let typeImage = ( post.isLive() ) ? "PostType_Static_Live" : "PostType_Static"
+                    //let typeImage = ( post.isLive() ) ? "PostType_Static_Live" : "PostType_Static"
+                    let typeImage = ( post.isLive() ) ? "map_marker_live" : "map_marker"
                     self.postStatusImage.image = UIImage(named: typeImage)
                 }
             }

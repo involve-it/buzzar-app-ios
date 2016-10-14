@@ -72,6 +72,9 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
 
         self.locationHandler.delegate = self
         if !self.locationHandler.getLocationOnce(true){
@@ -95,6 +98,8 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
         
         //cellDescription.contentView.frame.height
         
+        
+        
     }
 
     
@@ -109,6 +114,26 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
         super.viewWillDisappear(animated)
         self.view.endEditing(true)
     }
+    
+    
+    
+    func keyboardWillShow(notification: NSNotification) {
+        
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+            //self.view.frame.origin.y -= keyboardSize.height
+            
+            print("keyboard size \(keyboardSize.height)")
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+            //self.view.frame.origin.y += keyboardSize.height
+            print("keyboard hide \(keyboardSize.height)")
+        }
+        
+    }
+    
     
     //Textfield limit characters
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
