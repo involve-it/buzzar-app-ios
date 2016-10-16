@@ -9,20 +9,27 @@
 import UIKit
 import CoreLocation
 
-class PostsMainViewController: UIViewController, LocationHandlerDelegate {
+class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISearchBarDelegate {
     let locationHandler = LocationHandler()
     
+    var allPosts = [Post]()
     var posts = [Post]()
+    
+    var filtering = false
+    
     var currentLocation: CLLocationCoordinate2D?
     var pendingPostId: String?
     
-    @IBOutlet weak var btnAddPost: UIBarButtonItem!
+    @IBOutlet var btnAddPost: UIBarButtonItem!
     var locationAcquired = false
     var errorMessage: String?
     var meteorLoaded = false
     
-    @IBOutlet weak var typeSwitch: UISegmentedControl!
+    @IBOutlet var typeSwitch: UISegmentedControl!
     @IBOutlet var contentView: UIView!
+    @IBOutlet var searchBar: UISearchBar!
+    
+    @IBOutlet var btnSearch: UIBarButtonItem!
     
     var searchViewController: NewSearchViewController?
     var currentViewController: UIViewController?
@@ -32,14 +39,14 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate {
     private var listInitialized = false
     private var mapInitialized = false
     
-    lazy var listViewController: UIViewController? = {
-        let list = self.storyBoard.instantiateViewControllerWithIdentifier("postsViewController")
+    lazy var listViewController: PostsViewController! = {
+        let list = self.storyBoard.instantiateViewControllerWithIdentifier("postsViewController") as! PostsViewController
         self.listInitialized = true
         return list
     }()
     //Identifier mapStyle
-    lazy var mapViewController: UIViewController? = {
-        let map = self.storyBoard.instantiateViewControllerWithIdentifier("mapViewControllerForPosts")
+    lazy var mapViewController: PostsMapViewController! = {
+        let map = self.storyBoard.instantiateViewControllerWithIdentifier("mapViewControllerForPosts") as! PostsMapViewController
         self.mapInitialized = true
         return map
     }()
@@ -53,10 +60,14 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate {
         super.viewWillAppear(animated)
         self.locationHandler.monitorSignificantLocationChanges()
         
-        if AccountHandler.Instance.isLoggedIn(){
+        if AccountHandler.Instance.isLoggedIn() && !self.filtering {
             self.navigationItem.leftBarButtonItem = self.btnAddPost
         } else {
             self.navigationItem.leftBarButtonItem = nil
+        }
+        
+        if filtering {
+            self.searchBar.becomeFirstResponder()
         }
     }
     
@@ -87,8 +98,17 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate {
         } else if CachingHandler.Instance.status != .Complete {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
         } else if let posts = CachingHandler.Instance.postsAll {
-            self.posts = posts
+            self.allPosts = posts
+            
+            if self.filtering{
+                self.searchBar(self.searchBar, textDidChange: (self.searchBar.text ?? ""))
+            } else {
+                self.posts = self.allPosts
+            }
         }
+        
+        self.searchBar.showsCancelButton = true
+        self.searchBar.delegate = self
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorConnected), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(accountUpdated), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
@@ -111,7 +131,14 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate {
     func showOfflineData(){
         if !self.meteorLoaded {
             if let posts = CachingHandler.Instance.postsAll {
-                self.posts = posts
+                self.allPosts = posts
+                
+                if self.filtering{
+                    self.searchBar(self.searchBar, textDidChange: (self.searchBar.text ?? ""))
+                } else {
+                    self.posts = self.allPosts
+                }
+                
                 self.callRefreshDelegates()
             }
         }
@@ -164,7 +191,14 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate {
                     //self.refreshControl?.endRefreshing()
                     if success {
                         self.errorMessage = nil
-                        self.posts = result as! [Post]
+                        self.allPosts = result as! [Post]
+                        
+                        if self.filtering{
+                            self.searchBar(self.searchBar, textDidChange: (self.searchBar.text ?? ""))
+                        } else {
+                            self.posts = self.allPosts
+                        }
+                        
                         //self.tableView.reloadData()
                         self.callRefreshDelegates()
                         self.checkPending(true)
@@ -285,13 +319,52 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate {
         loadCurrentViewController(sender.selectedSegmentIndex)
     }
     
-    @IBAction func btnSearchPosts(sender: UIBarButtonItem) {
+    @IBAction func btnSearch_Click(sender: AnyObject) {
+        self.filtering = true
+        if (self.typeSwitch.selectedSegmentIndex != 0){
+            self.typeSwitch.selectedSegmentIndex = 0
+            self.postsViewTypeChanged(self.typeSwitch)
+        }
+        self.listViewController.updateFiltering(true)
+        self.searchBar.alpha = 0
+        //self.searchBar.tintColor =
+        self.navigationItem.setRightBarButtonItem(nil, animated: true)
+        self.navigationItem.setLeftBarButtonItem(nil, animated: true)
+        UIView.animateWithDuration(0.5, animations: {
+            self.navigationItem.titleView = self.searchBar
+            self.searchBar.alpha = 1
+            }) { (finished) in
+                self.searchBar.becomeFirstResponder()
+        }
+        if let searchText = self.searchBar.text where searchText != ""{
+            self.searchBar(self.searchBar, textDidChange: searchText)
+        }
     }
     
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        self.filtering =  false
+        self.listViewController.updateFiltering(false)
+        self.navigationItem.setRightBarButtonItem(self.btnSearch, animated: true)
+        self.navigationItem.setLeftBarButtonItem(self.btnAddPost, animated: true)
+        self.typeSwitch.alpha = 0
+        UIView.animateWithDuration(0.3) {
+            self.navigationItem.titleView = self.typeSwitch
+            self.typeSwitch.alpha = 1
+        }
+        self.posts = self.allPosts
+        self.listViewController.tableView.reloadData()
+    }
     
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        let searchTextLowered = searchText.lowercaseString
+        if searchTextLowered != ""{
+            self.posts = self.allPosts.filter({$0.title!.lowercaseString.containsString(searchTextLowered) || ($0.descr ?? "").lowercaseString.containsString(searchTextLowered)})
+        } else {
+            self.posts = self.allPosts
+        }
+        self.listViewController.tableView.reloadData()
+    }
     
-    
-
     /*
     // MARK: - Navigation
 

@@ -22,9 +22,13 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     internal weak var mainViewController: PostsMainViewController!
     
-    enum PostTypeView: Int {
-        case List = 0
-        case Map
+    func updateFiltering(filtering: Bool){
+        if (filtering){
+            self.refreshControl = nil
+        } else {
+            self.refreshControl = UIRefreshControl()
+            self.refreshControl?.addTarget(self, action: #selector(getNearby), forControlEvents: .ValueChanged)
+        }
     }
     
     func showPostDetails(index: Int) {
@@ -50,6 +54,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
+            self.mainViewController.searchBar.endEditing(true)
             let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
             let index = self.tableView.indexPathForSelectedRow!.row;
             let post = self.mainViewController.posts[index];
@@ -137,6 +142,10 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
             if (self.mainViewController.errorMessage != nil || (self.mainViewController.meteorLoaded && self.self.mainViewController.locationAcquired)){
                 let errorCell = tableView.dequeueReusableCellWithIdentifier("postsError") as! ErrorCell
                 errorCell.lblMessage.text = self.mainViewController.errorMessage ?? NSLocalizedString("There are no posts around you", comment: "There are no posts around you")
+                cell = errorCell
+            } else if self.mainViewController.filtering{
+                let errorCell = tableView.dequeueReusableCellWithIdentifier("postsError") as! ErrorCell
+                errorCell.lblMessage.text = self.mainViewController.errorMessage ?? NSLocalizedString("Can't find any posts matching your search criteria", comment: "Can't find any posts matching your search criteria")
                 cell = errorCell
             } else {
                 cell = tableView.dequeueReusableCellWithIdentifier("waitingPosts")
@@ -272,6 +281,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     }
     
     @IBAction func unwindPosts(segue: UIStoryboardSegue){}
+    
+    
     
 }
 //

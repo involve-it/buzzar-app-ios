@@ -4157,18 +4157,24 @@
                         </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="Q7f-nv-ztc">
                             <connections>
-                                <action selector="btnSearchPosts:" destination="24b-NI-Og3" id="TJc-K8-7F2"/>
-                                <segue destination="Pgw-1i-ZtI" kind="presentation" identifier="searchSegue" id="aL2-r5-nFI"/>
+                                <action selector="btnSearch_Click:" destination="24b-NI-Og3" id="y7Y-Cm-Uth"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="btnAddPost" destination="cFf-ve-goU" id="Ty3-cd-ymb"/>
+                        <outlet property="btnSearch" destination="Q7f-nv-ztc" id="t8Z-1p-NNn"/>
                         <outlet property="contentView" destination="Qi4-c3-hG6" id="Y7q-nd-Pk4"/>
+                        <outlet property="searchBar" destination="LTf-py-pcf" id="eKG-eo-y48"/>
                         <outlet property="typeSwitch" destination="jQc-a5-ojv" id="MYi-3a-Ymg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8as-IE-ARw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchBar contentMode="redraw" id="LTf-py-pcf">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <textInputTraits key="textInputTraits"/>
+                </searchBar>
             </objects>
             <point key="canvasLocation" x="-103" y="357"/>
         </scene>
@@ -4435,7 +4441,7 @@
                     </connections>
                 </containerView>
             </objects>
-            <point key="canvasLocation" x="3382" y="625"/>
+            <point key="canvasLocation" x="3388" y="-11"/>
         </scene>
         <!--More Filters Search View Controller-->
         <scene sceneID="0kz-cH-kNT">
@@ -5581,7 +5587,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="shh-ev-tcW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2726" y="625"/>
+            <point key="canvasLocation" x="2598" y="-11"/>
         </scene>
         <!--Left Menu Table View Controller-->
         <scene sceneID="zDU-0H-icX">

@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
         
         customizeApperance()
         
-        UIBarButtonItem.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = UIColor.whiteColor()
+        /*UIBarButtonItem.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = UIColor.whiteColor()*/
         
         return true
     }
