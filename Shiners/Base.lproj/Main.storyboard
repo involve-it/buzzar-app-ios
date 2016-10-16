@@ -1349,7 +1349,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z8Z-hG-Qe8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1152" y="-795"/>
+            <point key="canvasLocation" x="1184" y="-765"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="JOp-4c-IPT">
@@ -5077,6 +5077,7 @@
                                         <subviews>
                                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="SlS-RG-Sfd">
                                                 <rect key="frame" x="0.0" y="0.0" width="600" height="334"/>
+                                                <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                                             </mapView>
                                             <view autoresizesSubviews="NO" alpha="0.34999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jhM-S5-gEe" userLabel="Image View">
                                                 <rect key="frame" x="0.0" y="0.0" width="600" height="334"/>
@@ -5096,31 +5097,21 @@
                                                 </constraints>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MGP-Sh-ceL" userLabel="Text location View">
-                                                <rect key="frame" x="0.0" y="244" width="600" height="90"/>
+                                                <rect key="frame" x="0.0" y="284" width="600" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="h21-sd-Lnf">
-                                                        <rect key="frame" x="8" y="21" width="584" height="49"/>
+                                                        <rect key="frame" x="8" y="16" width="584" height="19"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Specific location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fyz-QA-9p3">
-                                                                <rect key="frame" x="0.0" y="0.0" width="584" height="24"/>
-                                                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
-                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pick location below" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Tq-6P-iFC">
-                                                                <rect key="frame" x="0.0" y="30" width="584" height="19"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="584" height="19"/>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstItem="1Tq-6P-iFC" firstAttribute="top" secondItem="Fyz-QA-9p3" secondAttribute="bottom" constant="6" id="2KO-zX-bc2"/>
                                                             <constraint firstAttribute="trailing" secondItem="1Tq-6P-iFC" secondAttribute="trailing" id="5Uo-tn-SSB"/>
-                                                            <constraint firstItem="Fyz-QA-9p3" firstAttribute="top" secondItem="h21-sd-Lnf" secondAttribute="top" id="AZx-yx-o2H"/>
                                                             <constraint firstItem="1Tq-6P-iFC" firstAttribute="leading" secondItem="h21-sd-Lnf" secondAttribute="leading" id="BEk-FI-CKx"/>
-                                                            <constraint firstItem="Fyz-QA-9p3" firstAttribute="leading" secondItem="h21-sd-Lnf" secondAttribute="leading" id="Yef-xy-Jcr"/>
-                                                            <constraint firstAttribute="trailing" secondItem="Fyz-QA-9p3" secondAttribute="trailing" id="fdu-1I-joF"/>
                                                             <constraint firstAttribute="bottom" secondItem="1Tq-6P-iFC" secondAttribute="bottom" id="sc4-hh-rZv"/>
                                                         </constraints>
                                                     </stackView>
@@ -5129,8 +5120,34 @@
                                                 <constraints>
                                                     <constraint firstItem="h21-sd-Lnf" firstAttribute="leading" secondItem="MGP-Sh-ceL" secondAttribute="leading" constant="8" id="9ie-cW-bWu"/>
                                                     <constraint firstItem="h21-sd-Lnf" firstAttribute="centerY" secondItem="MGP-Sh-ceL" secondAttribute="centerY" id="c00-V2-3zB"/>
-                                                    <constraint firstAttribute="height" constant="90" id="d0u-g9-wcz"/>
+                                                    <constraint firstAttribute="height" constant="50" id="d0u-g9-wcz"/>
                                                     <constraint firstAttribute="trailing" secondItem="h21-sd-Lnf" secondAttribute="trailing" constant="8" id="fYo-Yf-N01"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8ru-Tn-adI">
+                                                <rect key="frame" x="0.0" y="64" width="600" height="70"/>
+                                                <subviews>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your location" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="lmz-rM-XGc">
+                                                        <rect key="frame" x="16" y="16" width="568" height="38"/>
+                                                        <color key="backgroundColor" red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="38" id="j6F-Dj-WiA"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="4"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                </subviews>
+                                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="lmz-rM-XGc" firstAttribute="leading" secondItem="8ru-Tn-adI" secondAttribute="leading" constant="16" id="47l-xe-8Ku"/>
+                                                    <constraint firstAttribute="height" constant="70" id="B3Y-mE-xtq"/>
+                                                    <constraint firstItem="lmz-rM-XGc" firstAttribute="centerY" secondItem="8ru-Tn-adI" secondAttribute="centerY" id="DHl-Cf-aly"/>
+                                                    <constraint firstAttribute="trailing" secondItem="lmz-rM-XGc" secondAttribute="trailing" constant="16" id="s2a-RT-xoG"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -5139,13 +5156,16 @@
                                             <constraint firstAttribute="bottom" secondItem="MGP-Sh-ceL" secondAttribute="bottom" id="Ifs-1T-alm"/>
                                             <constraint firstItem="SlS-RG-Sfd" firstAttribute="leading" secondItem="hxZ-tD-IkN" secondAttribute="leading" id="Ji1-Tf-OGi"/>
                                             <constraint firstItem="jhM-S5-gEe" firstAttribute="leading" secondItem="hxZ-tD-IkN" secondAttribute="leading" id="KKc-3z-04g"/>
+                                            <constraint firstAttribute="trailing" secondItem="8ru-Tn-adI" secondAttribute="trailing" id="NNb-Id-yUf"/>
                                             <constraint firstAttribute="bottom" secondItem="SlS-RG-Sfd" secondAttribute="bottom" id="V57-72-Dpu"/>
                                             <constraint firstItem="MGP-Sh-ceL" firstAttribute="leading" secondItem="hxZ-tD-IkN" secondAttribute="leading" id="YBc-kX-zOb"/>
+                                            <constraint firstItem="8ru-Tn-adI" firstAttribute="top" secondItem="hxZ-tD-IkN" secondAttribute="top" constant="64" id="Zs9-7T-0Hf"/>
                                             <constraint firstItem="SlS-RG-Sfd" firstAttribute="top" secondItem="hxZ-tD-IkN" secondAttribute="top" id="gBD-E7-Uq8"/>
                                             <constraint firstItem="jhM-S5-gEe" firstAttribute="top" secondItem="hxZ-tD-IkN" secondAttribute="top" id="sl8-P6-DKQ"/>
                                             <constraint firstAttribute="trailing" secondItem="SlS-RG-Sfd" secondAttribute="trailing" id="uEI-5P-Vwx"/>
                                             <constraint firstAttribute="bottom" secondItem="jhM-S5-gEe" secondAttribute="bottom" id="vla-xQ-uYI"/>
                                             <constraint firstAttribute="trailing" secondItem="MGP-Sh-ceL" secondAttribute="trailing" id="wiA-wW-nuI"/>
+                                            <constraint firstItem="8ru-Tn-adI" firstAttribute="leading" secondItem="hxZ-tD-IkN" secondAttribute="leading" id="zod-nk-EXV"/>
                                         </constraints>
                                         <variation key="default">
                                             <mask key="subviews">
@@ -5392,8 +5412,10 @@
                         <outlet property="btn_next" destination="Zw9-JU-V5m" id="nqO-Si-Tcg"/>
                         <outlet property="createPostAddiotionalMenu" destination="FQt-Iq-e5G" id="sod-KE-8Mc"/>
                         <outlet property="labeDetermineLocation" destination="1Tq-6P-iFC" id="keZ-kz-sXB"/>
+                        <outlet property="mapView" destination="SlS-RG-Sfd" id="i6U-xE-AaK"/>
                         <outlet property="switcherDynamic" destination="yqa-5a-7Na" id="Orp-Ly-GhL"/>
                         <outlet property="switcherStatic" destination="YcQ-Lo-cnU" id="T2B-Hb-wNw"/>
+                        <outlet property="textFieldLocation" destination="lmz-rM-XGc" id="UGZ-pZ-k5k"/>
                         <segue destination="uCO-fV-PMo" kind="show" identifier="staticSegue" id="hXN-YS-9wT"/>
                     </connections>
                 </viewController>
@@ -6223,7 +6245,7 @@
         <image name="vk.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DWx-l0-Aia"/>
+        <segue reference="TcT-8i-Eq0"/>
         <segue reference="EKW-F4-b1d"/>
     </inferredMetricsTieBreakers>
 </document>

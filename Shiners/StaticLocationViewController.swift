@@ -64,6 +64,8 @@ public class StaticLocationViewController: UIViewController, MKMapViewDelegate, 
         }
     }
     
+    
+    
     private func centerMap(coordinate: CLLocationCoordinate2D){
         let region = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
         mapView.setRegion(region, animated: false)

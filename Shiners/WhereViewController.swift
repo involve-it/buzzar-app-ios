@@ -8,9 +8,13 @@
 
 import UIKit
 import CoreLocation
+import MapKit
 
-class WhereViewController: UIViewController, StaticLocationViewControllerDelegate {
+class WhereViewController: UIViewController, StaticLocationViewControllerDelegate, MKMapViewDelegate {
+    
     var post: Post!
+    var annotations = [MKPointAnnotation]()
+    
     //var localLocations = [Location]()
 
     let labeDetermineLocationText = NSLocalizedString("Acquiring location...", comment: "Location, Acquiring location...")
@@ -22,6 +26,8 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
     @IBOutlet weak var btn_next: UIBarButtonItem!
     @IBOutlet weak var labeDetermineLocation: UILabel!
     
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var textFieldLocation: UITextField!
     
     @IBOutlet weak var switcherDynamic: UISwitch!
     @IBOutlet weak var switcherStatic: UISwitch!
@@ -30,6 +36,8 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        leftPaddingToTextField([textFieldLocation])
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentLocationReported), name: NotificationManager.Name.NewPostLocationReported.rawValue, object: nil)
         
@@ -52,6 +60,16 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
         } else {
             self.updateUiElementsInLocation()
         }
+    }
+    
+    func leftPaddingToTextField(array: [UITextField]) {
+        
+        for textField in array {
+            let paddingView = UIView(frame: CGRectMake(0, 0, 15, textField.frame.height))
+            textField.leftView = paddingView
+            textField.leftViewMode = UITextFieldViewMode.Always
+        }
+        
     }
     
     //Switcher
@@ -144,6 +162,7 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
                 
                 //self.cellDynamicLocation?.accessoryType = UITableViewCellAccessoryType.Checkmark
                 let location = Location()
+                
                 location.lat = geocoderInfo.coordinate?.latitude
                 location.lng = geocoderInfo.coordinate?.longitude
                 location.name = geocoderInfo.address
@@ -189,8 +208,13 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
         var hasStaticLocation = false
         
         for location in self.post.locations! {
+            
+           
+            showAnnotationOnMap()
+            
             if let locationName = location.name {
                 labelLocation = locationName
+                
             }
             if location.placeType == .Static {
                 hasStaticLocation = true
@@ -214,6 +238,14 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
             }
         }
     }
+    
+    func showAnnotationOnMap() {
+  
+        if !self.annotations.isEmpty {
+            self.mapView.addAnnotations(self.annotations)
+        }
+    }
+    
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "segueDatePicker" {
