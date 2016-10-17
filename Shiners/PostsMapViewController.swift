@@ -32,12 +32,12 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
     }
     
     func postsUpdated() {
-        self.updateMap(self.mainViewController.posts)
+        self.updateMap(self.mainViewController.allPosts)
     }
     
     func showPostDetails(index: Int) {
         let detailsViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("postDetails") as! PostDetailsViewController
-        let post = self.mainViewController.posts[index]
+        let post = self.mainViewController.allPosts[index]
         if let currentLocation = self.mainViewController.currentLocation {
             //current location
             let curLocation = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
@@ -195,7 +195,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
     }
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if let annotation = view.annotation as? CustomPointAnnotation, postIndex = self.mainViewController!.posts.indexOf({$0.id == annotation.id}){
+        if let annotation = view.annotation as? CustomPointAnnotation, postIndex = self.mainViewController!.allPosts.indexOf({$0.id == annotation.id}){
             self.showPostDetails(postIndex)
         }
     }
