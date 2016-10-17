@@ -95,6 +95,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                 let message = MessageToSend()
                 message.destinationUserId = self.post.user!.id
                 message.message = alertController.textFields![0].text
+                message.associatedPostId = self.post!.id
                 ConnectionHandler.Instance.messages.sendMessage(message){ success, errorId, errorMessage, result in
                     if success {
                         AccountHandler.Instance.updateMyChats()

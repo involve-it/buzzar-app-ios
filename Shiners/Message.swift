@@ -19,6 +19,7 @@ public class Message: NSObject, DictionaryInitializable, NSCoding {
     var timestamp: NSDate?
     var keyMessage: String?
     var seen: Bool?
+    var associatedPostId: String?
     
     override init() {
         super.init()
@@ -56,6 +57,7 @@ public class Message: NSObject, DictionaryInitializable, NSCoding {
         }
         self.keyMessage = fields?.objectForKey(PropertyKeys.keyMessage) as? String
         self.seen = fields?.objectForKey(PropertyKeys.seen) as? Bool
+        self.associatedPostId = fields?.objectForKey(PropertyKeys.associatedPostId) as? String
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -69,6 +71,7 @@ public class Message: NSObject, DictionaryInitializable, NSCoding {
         if aDecoder.containsValueForKey(PropertyKeys.seen){
             self.seen = aDecoder.decodeBoolForKey(PropertyKeys.seen)
         }
+        self.associatedPostId = aDecoder.decodeObjectForKey(PropertyKeys.associatedPostId) as? String
     }
     
     public func encodeWithCoder(aCoder: NSCoder) {
@@ -82,6 +85,7 @@ public class Message: NSObject, DictionaryInitializable, NSCoding {
         if let seen = self.seen{
             aCoder.encodeBool(seen, forKey: PropertyKeys.seen)
         }
+        aCoder.encodeObject(self.associatedPostId, forKey: PropertyKeys.associatedPostId)
     }
     
     private struct PropertyKeys {
@@ -93,6 +97,7 @@ public class Message: NSObject, DictionaryInitializable, NSCoding {
         static let timestamp = "timestamp"
         static let keyMessage = "keyMessage"
         static let seen = "seen"
+        static let associatedPostId = "associatedPostId"
     }
     
     func isOwn(userId: String) -> Bool{

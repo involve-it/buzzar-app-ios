@@ -12,12 +12,14 @@ class MessageToSend {
     var message: String?
     var type = "message"
     var destinationUserId: String?
+    var associatedPostId: String?
     
     func toDictionary() -> Dictionary<String, AnyObject>{
         var dict = Dictionary<String, AnyObject>()
         dict["message"] = message
         dict["type"] = type
         dict["destinationUserId"] = destinationUserId
+        dict["associatedPostId"] = associatedPostId
         return dict
     }
 }
