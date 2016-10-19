@@ -18,6 +18,8 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     private var currentLocationInfo: GeocoderInfo?
     private let locationHandler = LocationHandler()
     
+    var post = Post()
+    
     //Устанавливаем лимит символов для текстового поля
     var titleAllowCount:String = "35"
     //Устанавливаем лимит символов для поля с описанием
@@ -186,15 +188,11 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "chooseLocation" {
             if let destination = segue.destinationViewController as? WhereViewController{
-                
-                //Создаем объект post
-                let post = Post()
-                
                 //В свойство объекта title помещаем строку из titleNewPost
                 post.title = titleNewPost.text
                 
                 //В свойство объекта desc помещаем строку из fieldDescriptionOfPost
-                if let description = fieldDescriptionOfPost.text {
+                if let description = fieldDescriptionOfPost.text where description != descriptionPlaceholderText {
                     post.descr = description
                 }
                 

@@ -66,13 +66,14 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     
     func map_Clicked(sender: AnyObject) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        guard let vc = storyboard.instantiateViewControllerWithIdentifier("fullMap") as? FullMapViewController else { return }
+        let nc = storyboard.instantiateViewControllerWithIdentifier("fullMap") as! UINavigationController
+        let vc = nc.viewControllers[0] as! FullMapViewController
         
         vc.geocoderInfo = GeocoderInfo()
         vc.geocoderInfo.address = self.postLocationDisplayed!.name
         vc.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
         
-        self.navigationController?.pushViewController(vc, animated: true)
+        self.presentViewController(nc, animated: true, completion: nil)
     }
     
     
@@ -317,7 +318,8 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             self.navigationItem.rightBarButtonItems?.removeAtIndex(index)
         }
         if self.post?.user?.id == AccountHandler.Instance.currentUser?.id {
-            self.navigationItem.rightBarButtonItems?.append(self.btnEdit)
+            //TODO: uncomment when Edit functionality is ready
+            //self.navigationItem.rightBarButtonItems?.append(self.btnEdit)
         }
         
         if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
@@ -327,22 +329,19 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         
     }
     
-    override public func prefersStatusBarHidden() -> Bool {
-        return false
-    }
-    
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
         //guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
         //guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
         if CGRectContainsPoint(self.postMapLocation.superview!.frame, location){
-            guard let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("fullMap") as? FullMapViewController else {return nil}
+            guard let navController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("fullMap") as? UINavigationController else {return nil}
+            guard let viewController = navController.viewControllers[0] as? FullMapViewController else {return nil}
             
             viewController.geocoderInfo = GeocoderInfo()
             viewController.geocoderInfo.address = self.postLocationDisplayed!.name
             viewController.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
             previewingContext.sourceRect = self.postMapLocation.frame
             
-            return viewController
+            return navController
         } else {
             return nil
         }
@@ -358,7 +357,8 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     public func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
         //self.presentViewController(viewControllerToCommit.navigationController!, animated: true, completion: nil)
         //self.showViewController(viewControllerToCommit, sender: self)
-        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
+        //self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
+        self.presentViewController(viewControllerToCommit, animated: true, completion: nil)
     }
 
     func updateScrollView(){

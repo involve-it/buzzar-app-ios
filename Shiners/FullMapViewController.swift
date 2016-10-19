@@ -27,8 +27,8 @@ class FullMapViewController: UIViewController, MKMapViewDelegate {
         self.mapView.selectAnnotation(self.currentLocationAnnotation, animated: false)
     }
     @IBAction func btnDone_Click(sender: AnyObject) {
-        self.navigationController?.popViewControllerAnimated(true)
-        //self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
+        //self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func btnDirections_Click(sender: AnyObject) {
@@ -38,9 +38,6 @@ class FullMapViewController: UIViewController, MKMapViewDelegate {
         let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
         mapItem.openInMapsWithLaunchOptions(launchOptions)
     }
-    
-    
-    
     
     func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {
         if !self.locationUpdated {

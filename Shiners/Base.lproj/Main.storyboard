@@ -794,7 +794,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8dx-4z-YU8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9642" y="-548"/>
+            <point key="canvasLocation" x="10454" y="-548"/>
         </scene>
         <!--Post Description-->
         <scene sceneID="Rfs-SL-8aU">
@@ -813,7 +813,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Xv-1g-U2p" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8954" y="-1039"/>
+            <point key="canvasLocation" x="9766" y="-1039"/>
         </scene>
         <!--Choose Static Location-->
         <scene sceneID="0Km-HZ-4Hk">
@@ -852,7 +852,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wx1-RW-oJS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10364" y="-528"/>
+            <point key="canvasLocation" x="11176" y="-528"/>
         </scene>
         <!--Select-->
         <scene sceneID="4X6-Xs-CA6">
@@ -1310,7 +1310,7 @@
         <!--Full Map View Controller-->
         <scene sceneID="cts-EM-56q">
             <objects>
-                <viewController storyboardIdentifier="fullMap" hidesBottomBarWhenPushed="YES" id="9qC-0K-l1W" customClass="FullMapViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController hidesBottomBarWhenPushed="YES" id="9qC-0K-l1W" customClass="FullMapViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5hm-cU-o7t"/>
                         <viewControllerLayoutGuide type="bottom" id="JhK-st-TpC"/>
@@ -1349,7 +1349,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z8Z-hG-Qe8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1184" y="-765"/>
+            <point key="canvasLocation" x="2360" y="-653"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="JOp-4c-IPT">
@@ -4441,7 +4441,7 @@
                     </connections>
                 </containerView>
             </objects>
-            <point key="canvasLocation" x="3388" y="-11"/>
+            <point key="canvasLocation" x="4200" y="-11"/>
         </scene>
         <!--More Filters Search View Controller-->
         <scene sceneID="0kz-cH-kNT">
@@ -4781,7 +4781,8 @@
                             <constraint firstAttribute="trailing" secondItem="EA5-dx-xpb" secondAttribute="trailing" id="zmP-tk-Kzh"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Pick when your ad expires" id="xZr-tb-Fqy">
+                    <navigationItem key="navigationItem" title="When does it expire?" id="xZr-tb-Fqy">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="StS-Zk-ace"/>
                         <barButtonItem key="rightBarButtonItem" enabled="NO" title="Next" id="4io-iq-vBb">
                             <connections>
                                 <segue destination="VMS-VH-UTv" kind="show" identifier="addPhotos" id="fPQ-on-Mu2"/>
@@ -4872,8 +4873,9 @@
                             <constraint firstAttribute="trailing" secondItem="J6m-yc-eIo" secondAttribute="trailing" id="z0J-K8-uke"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="Mod-b8-eIC">
-                        <barButtonItem key="rightBarButtonItem" title="Create post" id="KpP-QW-wCB">
+                    <navigationItem key="navigationItem" title="How does it look like?" id="Mod-b8-eIC">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="drZ-7g-oWG"/>
+                        <barButtonItem key="rightBarButtonItem" title="Create" id="KpP-QW-wCB">
                             <connections>
                                 <action selector="createPost:" destination="VMS-VH-UTv" id="lAH-kv-Ap4"/>
                             </connections>
@@ -5014,7 +5016,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pzO-OE-MUS" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Ti6-yD-hlD" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2329" y="-868"/>
+            <point key="canvasLocation" x="3141" y="-868"/>
         </scene>
         <!--Were View Controller-->
         <scene sceneID="JCN-Dj-fCO">
@@ -5424,7 +5426,8 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" title="..." id="PzG-5I-Ruq">
+                    <navigationItem key="navigationItem" title="Where is it located?" id="PzG-5I-Ruq">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="HUW-KV-7zN"/>
                         <barButtonItem key="rightBarButtonItem" enabled="NO" title="Next" id="Zw9-JU-V5m">
                             <connections>
                                 <segue destination="OQd-hp-ELm" kind="show" identifier="segueDatePicker" id="gvH-VL-fsJ">
@@ -5438,11 +5441,11 @@
                         <outlet property="createPostAddiotionalMenu" destination="FQt-Iq-e5G" id="sod-KE-8Mc"/>
                         <outlet property="labeDetermineLocation" destination="1Tq-6P-iFC" id="keZ-kz-sXB"/>
                         <outlet property="mapView" destination="SlS-RG-Sfd" id="i6U-xE-AaK"/>
+                        <outlet property="searchBar" destination="lh8-HC-0Ay" id="m3a-T0-cEA"/>
                         <outlet property="searchContainerView" destination="Wkz-hC-fOo" id="pQv-CR-QNa"/>
                         <outlet property="switcherDynamic" destination="yqa-5a-7Na" id="Orp-Ly-GhL"/>
                         <outlet property="switcherStatic" destination="YcQ-Lo-cnU" id="T2B-Hb-wNw"/>
                         <outlet property="tableView" destination="J1o-k9-I9j" id="gDV-VP-i3C"/>
-                        <segue destination="uCO-fV-PMo" kind="show" identifier="staticSegue" id="hXN-YS-9wT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bG9-dG-5hY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5491,7 +5494,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Idr-vb-Vuy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7165" y="-682"/>
+            <point key="canvasLocation" x="7977" y="-682"/>
         </scene>
         <!--Choose Static Location-->
         <scene sceneID="E8x-K9-neD">
@@ -5530,7 +5533,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X9S-gx-Cyw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3723" y="-868"/>
+            <point key="canvasLocation" x="4535" y="-868"/>
         </scene>
         <!--Post Description-->
         <scene sceneID="0Fd-KA-ZUC">
@@ -5589,7 +5592,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vCK-N1-9fL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2994" y="-868"/>
+            <point key="canvasLocation" x="3806" y="-868"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wSS-ic-Iks">
@@ -5607,7 +5610,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="shh-ev-tcW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2598" y="-11"/>
+            <point key="canvasLocation" x="3410" y="-11"/>
         </scene>
         <!--Left Menu Table View Controller-->
         <scene sceneID="zDU-0H-icX">
@@ -6106,7 +6109,7 @@
             </objects>
             <point key="canvasLocation" x="1133" y="1335"/>
         </scene>
-        <!--Create post-->
+        <!--New post-->
         <scene sceneID="gzo-KY-PUG">
             <objects>
                 <tableViewController id="W2p-v9-u8k" customClass="CreatePostTableViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
@@ -6176,6 +6179,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="129"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kGn-77-7uU">
+                                                    <rect key="frame" x="16" y="110" width="31" height="15"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Optional: Provide more details" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="REF-Uc-KuU">
                                                     <rect key="frame" x="8" y="8" width="584" height="93"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -6186,12 +6195,6 @@
                                                         <outlet property="delegate" destination="W2p-v9-u8k" id="C6f-AD-8bG"/>
                                                     </connections>
                                                 </textView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kGn-77-7uU">
-                                                    <rect key="frame" x="16" y="110" width="31" height="15"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="kGn-77-7uU" secondAttribute="bottom" constant="4" id="118-SA-g0d"/>
@@ -6212,8 +6215,9 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Create post" id="dfX-kM-zaA">
-                        <barButtonItem key="leftBarButtonItem" title="Close" id="SuO-JL-WsU">
+                    <navigationItem key="navigationItem" title="New post" id="dfX-kM-zaA">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="QaD-QI-xTs"/>
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="SuO-JL-WsU">
                             <connections>
                                 <action selector="closeCreatePostForm:" destination="W2p-v9-u8k" id="aJl-SZ-733"/>
                             </connections>
@@ -6237,6 +6241,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zEB-Fc-nBB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2841" y="-1582"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="3rg-Mj-5Sf">
+            <objects>
+                <navigationController storyboardIdentifier="fullMap" automaticallyAdjustsScrollViewInsets="NO" id="bIZ-Wa-wBr" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="EOz-7g-SZJ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="9qC-0K-l1W" kind="relationship" relationship="rootViewController" id="gcE-XD-UGL"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8yR-p8-NXn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1548" y="-653"/>
         </scene>
     </scenes>
     <resources>

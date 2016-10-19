@@ -28,9 +28,24 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         self.lblNoImages.hidden = false;
         
         self.imagePickerHandler = ImagePickerHandler(viewController: self, delegate: self)
-        self.post.photos = [Photo]()
+        if self.post.photos == nil {
+            self.post.photos = [Photo]()
+        } else {
+            self.showExistingPhotos()
+        }
     }
     
+    func showExistingPhotos(){
+        var index = 0
+        self.post.photos!.forEach { (photo) in
+            ImageCachingHandler.Instance.getImageFromUrl(photo.original!, callback: { (image) in
+                ThreadHelper.runOnMainThread({ 
+                    self.addImageToScrollView(image!, index: index)
+                    index += 1
+                })
+            })
+        }
+    }
     
     //Actions
     @IBAction func addImages(sender: AnyObject) {
@@ -39,7 +54,6 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     //Create post
     @IBAction func createPost(sender: AnyObject) {
-        
         let callback: MeteorMethodCallback = { (success, errorId, errorMessage, result) in
             if success{
                 AccountHandler.Instance.updateMyPosts()

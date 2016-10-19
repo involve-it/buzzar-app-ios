@@ -24,12 +24,16 @@ class WhenPickDateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("\(post)")
         // Do any additional setup after loading the view.
         //labelDateNotYetSet.text = ""
     
         datePicker.minimumDate = NSDate()
         datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), forControlEvents: .ValueChanged)
+        
+        if let date = post.endDate{
+            self.datePicker.date = date
+            self.btn_next.enabled = true
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,6 +55,7 @@ class WhenPickDateViewController: UIViewController {
             //Btn "next" set disabled
             btn_next.enabled = false
         }
+        post.endDate = self.datePicker.date
     }
     
     
@@ -76,6 +81,7 @@ class WhenPickDateViewController: UIViewController {
         if(!btn_next.enabled) {
             btn_next.enabled = true
         }
+        post.endDate = self.datePicker.date
     }
     
     
@@ -100,7 +106,7 @@ class WhenPickDateViewController: UIViewController {
         if(!btn_next.enabled) {
             btn_next.enabled = true
         }
-
+        post.endDate = self.datePicker.date
     }
     
     
@@ -125,7 +131,7 @@ class WhenPickDateViewController: UIViewController {
         if(!btn_next.enabled) {
             btn_next.enabled = true
         }
-
+        post.endDate = self.datePicker.date
     }
     
     
@@ -150,7 +156,7 @@ class WhenPickDateViewController: UIViewController {
         if(!btn_next.enabled) {
             btn_next.enabled = true
         }
-
+        post.endDate = self.datePicker.date
     }
     
     
@@ -175,6 +181,7 @@ class WhenPickDateViewController: UIViewController {
         if(!btn_next.enabled) {
             btn_next.enabled = true
         }
+        post.endDate = self.datePicker.date
     }
     
     
@@ -199,21 +206,13 @@ class WhenPickDateViewController: UIViewController {
         if(!btn_next.enabled) {
             btn_next.enabled = true
         }
+        post.endDate = self.datePicker.date
     }
 
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "addPhotos" {
             if let destination = segue.destinationViewController as? PhotosViewController {
-                
-                var post = Post()
-                
-                //Передаю данные по цепочке с предыдущего view контроллера
-                post = self.post
-                
-                // Передать с объектом дата новую дату. Создать под нее переменную и присваивать значение из вызываемых методов
-                post.endDate = self.datePicker.date
-                
                 //Передаем объект post следующему контроллеру
                 destination.post = post
                 destination.currentLocationInfo = self.currentLocationInfo

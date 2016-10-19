@@ -10,13 +10,11 @@ import UIKit
 import CoreLocation
 import MapKit
 
-class WhereViewController: UIViewController, StaticLocationViewControllerDelegate, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
+class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, LocationHandlerDelegate {
     
     var post: Post!
-    var staticLocationAnnotation: MKPointAnnotation!
     
     var locationUpdated = false
-    var showSearchResultTabel = false
     var searchResults: [MKPlacemark]!
 
     let labeDetermineLocationText = NSLocalizedString("Acquiring location...", comment: "Location, Acquiring location...")
@@ -26,7 +24,7 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
     
     private var tapped: Bool = false
     var annotation: MKPointAnnotation?
-    var staticCoordinate: CLLocationCoordinate2D?
+    
     private let locationHandler = LocationHandler()
     
     @IBOutlet weak var createPostAddiotionalMenu: UIView!
@@ -37,11 +35,22 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
     
     @IBOutlet weak var mapView: MKMapView!
     
+    @IBOutlet weak var searchBar: UISearchBar!
     
     @IBOutlet weak var switcherDynamic: UISwitch!
     @IBOutlet weak var switcherStatic: UISwitch!
+    var lastStaticSearchRequestId = ""
     
-    
+    func locationReported(geocoderInfo: GeocoderInfo) {
+        if let annotation = self.annotation, address = geocoderInfo.address{
+            ThreadHelper.runOnMainThread({ 
+                annotation.title = address
+            })
+            if let index = post.locations!.indexOf({return $0.placeType == .Static}) {
+                post.locations![index].name = address
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,25 +59,33 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
         self.searchContainerView.hidden = true
         
         self.searchResults = [MKPlacemark]()
+        self.locationHandler.delegate = self
+        self.mapView.delegate = self
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentLocationReported), name: NotificationManager.Name.NewPostLocationReported.rawValue, object: nil)
         
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         self.mapView.addGestureRecognizer(gestureRecognizer)
-        
-        self.tapped = self.staticCoordinate != nil
-        if (self.staticCoordinate != nil){
-            self.centerMapOnLocation(self.staticCoordinate!, regionRadius: 5000)
-            self.setStaticLocation(self.staticCoordinate!, first: false)
+        if post.locations == nil {
+            post.locations = [Location]()
         }
-
-        
-        self.post.locations = [Location]()
         self.labeDetermineLocation.text = labeDetermineLocationText
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if let _ = self.post.locations!.indexOf({return $0.placeType == .Dynamic}) {
+            self.mapView.showsUserLocation = true
+            self.switcherDynamic.on = true
+        }
+        
+        if let index = self.post.locations!.indexOf({return $0.placeType == .Static}) {
+            let location = self.post.locations![index]
+            self.setStaticLocation(CLLocationCoordinate2DMake(location.lat!, location.lng!), first: false)
+        }
+        
+        self.centerMapOnAnnotations()
         self.updateUiElementsInLocation()
     }
     
@@ -91,12 +108,9 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
         self.mapView.showsUserLocation = sender.on
         
         if sender.on {
-            
             //Center current location on map
             if !self.mapView.userLocationVisible {
-                if let currentCoordinate = self.currentLocationInfo?.coordinate {
-                    centerMapOnLocation(currentCoordinate, regionRadius: 5000)
-                }
+                self.centerMapOnAnnotations()
             }
             
             self.labeDetermineLocation.text = self.labeDetermineLocationText
@@ -106,54 +120,50 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
                 self.dynamicLocationRequested = true
             }
         } else {
-            
             if let index = self.post.locations!.indexOf({return $0.placeType == .Dynamic}) {
                 self.post.locations!.removeAtIndex(index)
             }
-            
-            updateUiElementsInLocation()
         }
+        updateUiElementsInLocation()
     }
     
     
     @IBAction func switcher_getStaticLocation(sender: UISwitch) {
         //event Touch Up Inside
+        
         if sender.on {
-            
             if let currentCoordinate = self.currentLocationInfo?.coordinate {
-                self.centerMapOnLocation(currentCoordinate, regionRadius: 5000)
-                self.setStaticLocation(currentCoordinate, first: false)
+                self.setStaticLocation(currentCoordinate, first: true)
+                self.centerMapOnAnnotations()
             }
-            
-            //Go to staticSegue
-            //self.performSegueWithIdentifier("staticSegue", sender: self)
             
         } else {
+            if let annotation = self.annotation{
+                self.mapView.removeAnnotation(annotation)
+                self.annotation = nil
+            }
             if let index = self.post.locations!.indexOf({return $0.placeType == .Static}) {
                 self.post.locations!.removeAtIndex(index)
-                /*
-                self.labeDetermineLocation.text = self.labeDetermineLocationText
-                */
             }
-            
-            updateUiElementsInLocation()
         }
         
+        updateUiElementsInLocation()
     }
     
     func handleLongPress (gestureRecognizer: UIGestureRecognizer){
         if (gestureRecognizer.state == .Began){
+            self.searchBar.showsCancelButton = false
+            self.searchBar.resignFirstResponder()
             self.tapped = true
             let point = gestureRecognizer.locationInView(self.mapView)
             let coordinate = self.mapView.convertPoint(point, toCoordinateFromView: self.mapView)
             
             self.setStaticLocation(coordinate, first: false)
+            self.updateUiElementsInLocation()
         }
     }
     
     private func setStaticLocation(coordinate: CLLocationCoordinate2D, first: Bool) {
-        self.staticCoordinate = coordinate
-        
         self.locationHandler.reverseGeocode(CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude))
         
         if let annotation = self.annotation{
@@ -163,7 +173,7 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
         self.annotation = MKPointAnnotation()
         self.annotation?.title = "Selected locataion"
         if first {
-            self.annotation?.subtitle = "Tap and hold anywhere on the map to select location"
+            self.annotation?.subtitle = "Tap and hold anywhere on the map to change"
         } else {
             self.annotation?.subtitle = ""
         }
@@ -171,34 +181,55 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
         
         self.mapView.addAnnotation(self.annotation!)
         self.mapView.selectAnnotation(self.annotation!, animated: true)
+        
+        let location = Location()
+        
+        location.lat = coordinate.latitude
+        location.lng = coordinate.longitude
+        location.placeType = .Static
+        
+        if let index = post.locations!.indexOf({return $0.placeType == .Static}) {
+            post.locations!.removeAtIndex(index)
+        }
+        
+        self.post.locations!.append(location)
+        self.switcherStatic.on = true
     }
     
-    private func searchingRequest(request: String) {
+    @objc private func searchingRequest(request: String) {
         //запрос на поиск
-        if !showSearchResultTabel {
+        if request != "" {
+            let requestId = NSUUID().UUIDString
+            self.lastStaticSearchRequestId = requestId
+            
             self.searchContainerView.alpha = 1
             self.searchContainerView.hidden = false
             
             //guard let loc = self.mapView.userLocation.location else {return}
             let req = MKLocalSearchRequest()
             req.naturalLanguageQuery = request
+            if let currentCoords = self.currentLocationInfo?.coordinate{
+                req.region = MKCoordinateRegionMake(currentCoords, MKCoordinateSpanMake(1, 1))
+            }
             //req.region = MKCoordinateRegionMake(loc.coordinate, MKCoordinateSpanMake(1, 1))
             let search = MKLocalSearch(request: req)
             search.startWithCompletionHandler({(response: MKLocalSearchResponse?, error: NSError?) in
-                guard let response = response else { print(error); return}
-                self.mapView.showsUserLocation = false
+                guard let response = response where requestId == self.lastStaticSearchRequestId else { return }
                 
                 self.searchResults.removeAll()
                 for item in response.mapItems {
                     
                     self.searchResults.append(item.placemark)
                 }
-                
-                self.tableView.reloadData()
-                
+                ThreadHelper.runOnMainThread({ 
+                    self.tableView.reloadData()
+                })
             })
-            
-            
+        } else {
+            self.searchContainerView.alpha = 0
+            self.searchContainerView.hidden = true
+            self.searchResults.removeAll()
+            self.tableView.reloadData()
         }
     }
     
@@ -215,20 +246,12 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
         
         self.searchContainerView.alpha = 0
         self.searchContainerView.hidden = true
-        
-        if !(searchBar.text?.isEmpty)! {
-            searchBar.text?.removeAll()
-        }
-        
-        if let annotation = self.annotation{
-            self.mapView.removeAnnotation(annotation)
-        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
         
-        cell.textLabel?.text = self.searchResults[indexPath.row].name
+        cell.textLabel?.text = self.searchResults[indexPath.row].title
         
         return cell
     }
@@ -239,10 +262,9 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
+        self.switcherStatic.on = true
         
         let location = self.searchResults[indexPath.row].coordinate
-        self.centerMapOnLocation(location, regionRadius: 5000)
         
         if let annotation = self.annotation{
             self.mapView.removeAnnotation(annotation)
@@ -262,6 +284,11 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
                 self.searchContainerView.hidden = true
         })
         
+        self.setStaticLocation(location, first: false)
+        self.centerMapOnAnnotations()
+        self.searchBar.resignFirstResponder()
+        self.searchBar.showsCancelButton = false
+        
         //UIView.animateWithDuration(2, delay: 0, options: [.CurveEaseOut], animations: {}, completion: nil)
     }
     
@@ -269,26 +296,37 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
         self.searchingRequest(searchText)
      }
     
-    
-    
-    
-    func centerMapOnLocation(location: CLLocationCoordinate2D, regionRadius: Double) {
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location,
-                                                                  regionRadius * 2.0, regionRadius * 2.0)
-        mapView.setRegion(coordinateRegion, animated: false)
-    }
-    
     func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {
         if !self.locationUpdated {
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = userLocation.coordinate
-            
-            
-            self.mapView.showAnnotations([self.staticLocationAnnotation, annotation], animated: true)
-            self.mapView.selectAnnotation(self.staticLocationAnnotation, animated: false)
-            self.mapView.removeAnnotation(annotation)
             self.locationUpdated = true
+            self.centerMapOnAnnotations()
         }
+    }
+    
+    func centerMapOnAnnotations(){
+        var annotations = [MKPointAnnotation]()
+        var dynamicAnnotation: MKPointAnnotation?
+        if self.mapView.showsUserLocation && self.locationUpdated{
+            dynamicAnnotation = MKPointAnnotation()
+            dynamicAnnotation!.coordinate = self.mapView.userLocation.coordinate
+            annotations.append(dynamicAnnotation!)
+        }
+        
+        if let staticAnnotation = self.annotation{
+            annotations.append(staticAnnotation)
+        }
+        if annotations.count > 0 {
+            ThreadHelper.runOnMainThread({ 
+                self.mapView.showAnnotations(annotations, animated: true)
+                if let dynAnnotation = dynamicAnnotation{
+                    self.mapView.removeAnnotation(dynAnnotation)
+                }
+            })
+        } /*else {
+            let coordinateRegion = MKCoordinateRegionMakeWithDistance(location,
+                                                                      regionRadius * 2.0, regionRadius * 2.0)
+            mapView.setRegion(coordinateRegion, animated: false)
+        }*/
     }
     
     //****************************************************************//
@@ -357,25 +395,6 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
         updateUiElementsInLocation()
     }
     
-    func locationSelected(location: CLLocationCoordinate2D?, address: String?) {
-        if let index = post.locations!.indexOf({return $0.placeType == .Static}) {
-            post.locations!.removeAtIndex(index)
-        }
-        
-        if let locLocation = location {
-            let loc = Location()
-            loc.name = address
-            loc.placeType = .Static
-            loc.lat = locLocation.latitude
-            loc.lng = locLocation.longitude
-            
-            self.post.locations!.append(loc)
-        }
-        
-        updateUiElementsInLocation()
-    }
-    
-    
     func updateUiElementsInLocation() {
         var labelLocation = self.labeDetermineLocationText
         if let currentLocationInfo = self.currentLocationInfo, let address = currentLocationInfo.address{
@@ -384,10 +403,6 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
         var hasStaticLocation = false
         
         for location in self.post.locations! {
-            
-           
-            
-            
             if let locationName = location.name {
                 labelLocation = locationName
                 
@@ -424,14 +439,6 @@ class WhereViewController: UIViewController, StaticLocationViewControllerDelegat
                 //Передаем объект post следующему контроллеру
                 destination.post = post
                 destination.currentLocationInfo = self.currentLocationInfo
-            }
-        } else if segue.identifier == "staticSegue" {
-            if let destination = segue.destinationViewController as? StaticLocationViewController {
-                destination.delegate = self
-                if let index = post.locations!.indexOf({return $0.placeType == .Static}) {
-                    let selectedLocation = self.post.locations![index]
-                    destination.currentCoordinate = CLLocationCoordinate2D(latitude: selectedLocation.lat!, longitude: selectedLocation.lng!)
-                }
             }
         }
     }

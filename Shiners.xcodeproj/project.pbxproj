@@ -345,6 +345,7 @@
 				61C6F9051D3BED100030CC81 /* WhereViewController.swift */,
 				61C6F9061D3BED100030CC81 /* WhenPickDateViewController.swift */,
 				61EA5DA21D47559600083361 /* PhotosViewController.swift */,
+				6147E77C1DAA7A6B0014F7DD /* CreatePostTableViewController.swift */,
 			);
 			name = wizard;
 			sourceTree = "<group>";
@@ -419,7 +420,6 @@
 				7B1C123F1D0CC19C001355AB /* ErrorCell.swift */,
 				6117A5471D4C03EC009E12DB /* PostDetailsViewController.swift */,
 				7BC1A9C71D50469B005B4F62 /* FullMapViewController.swift */,
-				6147E77C1DAA7A6B0014F7DD /* CreatePostTableViewController.swift */,
 			);
 			name = Posts;
 			sourceTree = "<group>";

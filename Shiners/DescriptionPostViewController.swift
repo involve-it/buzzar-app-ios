@@ -15,12 +15,11 @@ class DescriptionPostViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var fieldDescriptionOfPost: UITextView!
     @IBOutlet weak var btn_next: UIBarButtonItem!
     
-    
     //Устанавливаем лимит символов для поля с описанием
     var descriptionAllowCount:String = "1000"
     
     //Создаем объект для приниятия данных с контроллера в предыдущей цепочке
-    var post: Post!
+    var post = Post()
     
     var currentLocationInfo: GeocoderInfo?
 
@@ -81,25 +80,12 @@ class DescriptionPostViewController: UIViewController, UITextViewDelegate {
         
     }
     
-    
-
-    
-    
-
-    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "chooseLocation" {
             if let destination = segue.destinationViewController as? WhereViewController{
-                
-                //Создаем объект post
-                var post = Post()
-                
-                //Из пришедших данных в контроллер добавляем в созданный объект
-                post = self.post
-                
                 //В свойство объекта desc помещаем строку из fieldDescriptionOfPost
                 post.descr = fieldDescriptionOfPost.text
                 
