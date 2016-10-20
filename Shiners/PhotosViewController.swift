@@ -12,14 +12,14 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
 
     @IBOutlet weak var lblNoImages: UILabel!
     @IBOutlet weak var svImages: UIScrollView!
-    @IBOutlet weak var createPost: UIBarButtonItem!
+    @IBOutlet var createPost: UIBarButtonItem!
     
     var post: Post!
     
     private var imagePickerHandler: ImagePickerHandler?
     private var images = [UIImage]()
     
-    var imageCount = 0
+    var uploadingIds = [Int]()
     
     var currentLocationInfo: GeocoderInfo?
     
@@ -74,40 +74,45 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        self.setLoading(true)
+        
         let rotatedImage = image.correctlyOrientedImage().resizeImage()
         self.images.append(rotatedImage)
-        let view = self.addImageToScrollView(rotatedImage, index: self.images.count - 1)
+        let id = self.images.count - 1
+        let view = self.addImageToScrollView(rotatedImage, index: id)
         view.activityIndicator.startAnimating()
-        imageCount = imageCount + 1
-        self.createPost.enabled = false
+        self.uploadingIds.append(id)
         
         ImageCachingHandler.Instance.saveImage(rotatedImage) { (success, imageUrl) in
-            ThreadHelper.runOnMainThread({
-                //self.setLoading(false, rightBarButtonItem: self.cancelButton)
-                //self.btnSave.enabled = true
-                view.activityIndicator.stopAnimating()
-                if success {
-                    let photo = Photo()
-                    photo.original = imageUrl
-                    self.post.photos!.append(photo)
-                } else {
-                    self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("Error uploading photo", comment: "Alert, error message uploading photo"));
-                    self.deleteClicked(view)
-                }
-                
-                self.imageCount = self.imageCount - 1
-                if self.imageCount != 0 {
-                    self.createPost.enabled = false
-                } else {
-                    self.createPost.enabled = true
-                }
-                
-                
-            })
-            
+            if let index = self.uploadingIds.indexOf(id){
+                ThreadHelper.runOnMainThread({
+                    //self.setLoading(false, rightBarButtonItem: self.cancelButton)
+                    //self.btnSave.enabled = true
+                    view.activityIndicator.stopAnimating()
+                    if success {
+                        let photo = Photo()
+                        photo.original = imageUrl
+                        self.post.photos!.append(photo)
+                    } else {
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("Error uploading photo", comment: "Alert, error message uploading photo"));
+                        self.deleteClicked(view)
+                    }
+                    
+                    self.uploadingIds.removeAtIndex(index)
+                    self.updateCreateButton()
+                })
+            }
         }
         
         picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func updateCreateButton(){
+        if self.uploadingIds.count == 0{
+            self.setLoading(false, rightBarButtonItem: self.createPost)
+        } else {
+            self.setLoading(true)
+        }
     }
     
     func addImageToScrollView(image: UIImage, index: Int) -> SmallImageView {
@@ -126,7 +131,6 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         self.svImages.layoutSubviews()
         
         return view
-        
     }
     
     func redrawImagesScrollView(){
@@ -147,14 +151,15 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func deleteClicked(view: SmallImageView) {
+        if let index = self.uploadingIds.indexOf(view.id!){
+            self.uploadingIds.removeAtIndex(index)
+        }
         self.images.removeAtIndex(view.id!)
         self.redrawImagesScrollView()
         if self.images.count == 0{
             self.svImages.hidden = true
             self.lblNoImages.hidden = false
         }
+        self.updateCreateButton()
     }
-    
-    
-    
 }
