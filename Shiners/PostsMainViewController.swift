@@ -166,16 +166,18 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                 self.callRefreshDelegates()
             }
         } else {
-            self.currentLocation = geocoderInfo.coordinate
-            self.locationAcquired = true
-            
-            //self.subscribeToNearby()
-            self.getNearby()
-            if AccountHandler.Instance.isLoggedIn(){
-                ThreadHelper.runOnBackgroundThread({
-                    //ConnectionHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude, notify: false)
-                    AccountHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude)
-                })
+            if self.currentLocation == nil || self.currentLocation?.latitude != geocoderInfo.coordinate?.latitude || self.currentLocation?.longitude != geocoderInfo.coordinate?.longitude{
+                self.currentLocation = geocoderInfo.coordinate
+                self.locationAcquired = true
+                
+                //self.subscribeToNearby()
+                self.getNearby()
+                if AccountHandler.Instance.isLoggedIn(){
+                    ThreadHelper.runOnBackgroundThread({
+                        //ConnectionHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude, notify: false)
+                        AccountHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude)
+                    })
+                }
             }
         }
     }
@@ -248,7 +250,9 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         /*if let currentViewController = currentViewController {
             currentViewController.viewWillDisappear(animated)
         }*/
-        self.locationHandler.stopMonitoringLocation()
+        if self.currentLocation != nil {
+            self.locationHandler.stopMonitoringLocation()
+        }
     }
 
     override func didReceiveMemoryWarning() {

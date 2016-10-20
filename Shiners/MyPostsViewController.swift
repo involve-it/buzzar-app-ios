@@ -220,6 +220,8 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         
         if let textDescription = post.removedHtmlFromPostDescription(post.descr) {
             cell.txtDetails.text = textDescription
+        } else {
+            cell.txtDetails.text = ""
         }
     
         //Post views

@@ -160,6 +160,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
             //Post description
             if let textDescription = post.removedHtmlFromPostDescription(post.descr) {
                 postCell.txtDetails.text = textDescription
+            } else {
+                postCell.txtDetails.text = ""
             }
             
             //Additional labels
