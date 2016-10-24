@@ -227,14 +227,6 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     }
     
     
-    
-    
-    //Animation cell
-    /*override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        cell.alpha = 0
-        UIView.animateWithDuration(0.2, animations: {cell.alpha = 1}, completion: nil)
-    }*/
-    
     func didApplyFilter() {
         self.closeSearchView()
     }
@@ -287,62 +279,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     
 }
-//
-//
-//// MARK: extension
-//extension UIViewController: SWRevealViewControllerDelegate {
-//    
-//    /*public func configureOfLeftMenu() {
-//        if self.revealViewController() != nil {
-//            
-//            self.revealViewController().delegate = self
-//            
-//            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-//            self.view.addGestureRecognizer(self.revealViewController().tapGestureRecognizer())
-//            
-//            //Defines a width on the border of the view attached to the panGesturRecognizer where the gesture is allowed
-//            self.revealViewController().draggableBorderWidth = CGFloat(80.0)
-//            
-//            self.revealViewController().rearViewRevealWidth = self.view.frame.width - 60
-//            
-//            
-//        }
-//    }
-//    
-//    public func addLeftBarButtonWithImage(buttonImage: UIImage) {
-//        let leftButton: UIBarButtonItem = UIBarButtonItem(image: buttonImage, style: UIBarButtonItemStyle.Plain, target: self.revealViewController(), action: #selector(SWRevealViewController.revealToggle(_:)))
-//        
-//        if navigationItem.leftBarButtonItems?.count > 0 {
-//            navigationItem.leftBarButtonItems?.insert(leftButton, atIndex: 0)
-//        } else {
-//            navigationItem.leftBarButtonItem = leftButton
-//        }
-//        
-//    }*/
-//    
-//    public func removeNavigationBarItem() {
-//        self.navigationItem.leftBarButtonItem = nil
-//        self.navigationItem.rightBarButtonItem = nil
-//    }
-//    
-//    // MARK: - SWRevealViewController delegare
-//    /*public func revealController(revealController: SWRevealViewController!, willMoveToPosition position: FrontViewPosition) {
-//        //print("position: \(position.hashValue)")
-//        if position == .Right {
-//            //print("menu will open")
-//        } else {
-//            //print("menu did close")
-//        }
-//
-//    }
-//    
-//    public func revealController(revealController: SWRevealViewController!, didMoveToPosition position: FrontViewPosition) {
-//        //print("didMove")
-//    }*/
-//    
-//}
-//
-//
+
 
 
 

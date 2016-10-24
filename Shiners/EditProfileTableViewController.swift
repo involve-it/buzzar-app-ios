@@ -20,6 +20,9 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     @IBOutlet weak var imgUserAvatar: UIImageView!
     @IBOutlet weak var txtPhoneLabel: UITextField!
     @IBOutlet weak var txtEmailLabel: UITextField!
+    @IBOutlet weak var txtUsernameLabel: UILabel!
+    @IBOutlet weak var txtSkypeLabel: UITextField!
+    
     @IBOutlet weak var txtAddressLocationLabel: UITextField!
     
     private var imagePickerHandler: ImagePickerHandler?
@@ -72,12 +75,13 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
         }
     }
     
-    private func getUser() -> User{
+    private func getUser() -> User {
         let user = AccountHandler.Instance.currentUser!;
         user.setProfileDetail(.FirstName, value: self.firstNameLabel.text)
         user.setProfileDetail(.LastName, value: self.lastNameLabel.text)
         user.setProfileDetail(.City, value: self.txtAddressLocationLabel.text)
         user.setProfileDetail(.Phone, value: self.txtPhoneLabel.text)
+        self.txtUsernameLabel.text = user.username
         //user.setProfileDetail(.Skype, value: self.txtSkype.text)
         
         user.imageUrl = self.currentUser?.imageUrl
@@ -85,6 +89,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     }
     
     private func refreshUserData(){
+        self.txtUsernameLabel.text = self.currentUser!.username
         self.firstNameLabel.text = self.currentUser?.getProfileDetailValue(.FirstName)
         self.lastNameLabel.text = self.currentUser?.getProfileDetailValue(.LastName)
         self.txtAddressLocationLabel.text = self.currentUser?.getProfileDetailValue(.City)

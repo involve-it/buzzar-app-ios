@@ -10,117 +10,201 @@ import UIKit
 
 class ProfileTableViewController: UITableViewController {
     
+    @IBOutlet weak var imgUserAvatar: UIImageView!
+    @IBOutlet weak var txtUserName: UILabel!
+    @IBOutlet weak var phoneRowLabel: UILabel!
+    @IBOutlet weak var skypeRowLabel: UILabel!
+    @IBOutlet weak var vkRowLabel: UILabel!
+    @IBOutlet weak var facebookRowLabel: UILabel!
+    
+    @IBOutlet weak var isStatusLabel: UILabel!
     
     
+    
+    private var currentUser: User?
     
     struct TableViewIdentifierCell {
         static let cellUserProfileNib = "cellUserProfile"
         static let cellAboutMe = "cellAboutMe"
     }
     
+    @IBOutlet weak var phoneRowVisible: UITableViewCell!
+    @IBOutlet weak var skypeRowVisible: UITableViewCell!
+    @IBOutlet weak var vkRowVisible: UITableViewCell!
+    @IBOutlet weak var facebookRowVisible: UITableViewCell!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationItem.title = NSLocalizedString("Profile", comment: "Navigation title, Profile")
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        tableView.registerNib(UINib(nibName: TableViewIdentifierCell.cellUserProfileNib, bundle: nil), forCellReuseIdentifier: TableViewIdentifierCell.cellUserProfileNib)
         
-        tableView.registerNib(UINib(nibName: TableViewIdentifierCell.cellAboutMe, bundle: nil), forCellReuseIdentifier: TableViewIdentifierCell.cellAboutMe)
         
+//        tableView.registerNib(UINib(nibName: TableViewIdentifierCell.cellUserProfileNib, bundle: nil), forCellReuseIdentifier: TableViewIdentifierCell.cellUserProfileNib)
+//        
+//        tableView.registerNib(UINib(nibName: TableViewIdentifierCell.cellAboutMe, bundle: nil), forCellReuseIdentifier: TableViewIdentifierCell.cellAboutMe)
+//        
+//        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
+        self.phoneRowVisible.hidden = false
+        self.skypeRowVisible.hidden = false
+        self.vkRowVisible.hidden = false
+        self.facebookRowVisible.hidden = false
+        
+        fillUserData()
         tabelViewEstimatedRowHeight()
         
-        //conf. LeftMenu
-        //self.configureOfLeftMenu()
-        //self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
-    }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-
-        if (indexPath.row == 0) {
-
-           let cell = tableView.dequeueReusableCellWithIdentifier(TableViewIdentifierCell.cellUserProfileNib, forIndexPath: indexPath) as! cellUserProfile
-            
-            return cell
         
-        } else {
-            
-            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewIdentifierCell.cellAboutMe, forIndexPath: indexPath) as! cellAboutMe
-
-            return cell
-        }
     }
+
+    
+//    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+//
+//        if (indexPath.section == 0) {
+//            if (indexPath.row == 0) {
+//                let cell = tableView.dequeueReusableCellWithIdentifier(TableViewIdentifierCell.cellUserProfileNib, forIndexPath: indexPath) as! cellUserProfile
+//                return cell
+//            } else if (indexPath.row == 1) {
+//                let cell = tableView.dequeueReusableCellWithIdentifier(TableViewIdentifierCell.cellAboutMe, forIndexPath: indexPath) as! cellAboutMe
+//                return cell
+//            }
+//        } else if (indexPath.section == 1) {
+//            let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
+//            return cell
+//        }
+
+//        return tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
+//    }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        
+        //Phone
+        if (indexPath.section == 1 && indexPath.row == 0) {
+            return !self.phoneRowVisible.hidden ? 44 : 0.0
+        } else if(indexPath.section == 1 && indexPath.row == 1) {
+            return !self.skypeRowVisible.hidden ? 44 : 0.0
+        } else if (indexPath.section == 1 && indexPath.row == 2) {
+            return !self.vkRowVisible.hidden ? 44 : 0.0
+        } else if (indexPath.section == 1 && indexPath.row == 3) {
+            return !self.facebookRowVisible.hidden ? 44 : 0.0
+        }
+        
         return UITableViewAutomaticDimension
     }
-
+    
+    
     func tabelViewEstimatedRowHeight() {
         tableView.estimatedRowHeight = 44.0
         tableView.rowHeight = UITableViewAutomaticDimension
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if indexPath.section == 4 {
+            let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .ActionSheet)
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
+                AccountHandler.Instance.logoff(){ success in
+                    if (success){
+                        /*self.currentUser = nil;
+                         self.refreshUser();
+                         dispatch_async(dispatch_get_main_queue(), {
+                         self.tableView.reloadData();
+                         })*/
+                        
+                        
+                        //Segue to postViewController
+                        self.navigationController?.popViewControllerAnimated(true)
+                        
+                        
+                    } else {
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("An error occurred", comment: "Alert message, An error occurred"))
+                    }
+                };
+            }))
+            
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Cancel, handler: nil))
+            
+            self.presentViewController(alertViewController, animated: true, completion: nil)
+        }
+    }
     
-    // MARK: - Table view data source
+    func fillUserData() {
+        if let currentUser = AccountHandler.Instance.currentUser {
+            
+            //Username
+            if let firstName = self.currentUser?.getProfileDetailValue(.FirstName),
+                lastName = self.currentUser?.getProfileDetailValue(.LastName) {
+                txtUserName.text = "\(firstName) \(lastName)"
+            } else {
+                txtUserName.text = currentUser.username;
+            }
+            
+            if currentUser.isOnline() {
+                self.isStatusLabel.text = "online"
+                self.isStatusLabel.textColor = UIColor(red: 50/255, green: 185/255, blue: 91/255, alpha: 1)
+            } else {
+                self.isStatusLabel.text = "offline"
+                self.isStatusLabel.textColor = UIColor.redColor()
+            }
+            
     
-    /*
-     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-     // #warning Incomplete implementation, return the number of sections
-     return 0
-     }
-     
-     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-     // #warning Incomplete implementation, return the number of rows
-     return 2
-     }
-     */
+            //Phone
+            if let isPhone = currentUser.getProfileDetailValue(.Phone) where isPhone != "" {
+                self.phoneRowLabel.text = isPhone
+                
+                //Call
+                
+                
+            } else {
+                self.phoneRowVisible.hidden = true
+            }
+            
+            //Skype
+            if let isSkype = currentUser.getProfileDetailValue(.Skype) where isSkype != "" {
+                self.skypeRowLabel.text = isSkype
+            } else {
+                self.skypeRowVisible.hidden = true
+            }
+            
+            //VKontakte
+            if let isVK = currentUser.getProfileDetailValue(.Vk) where isVK != "" {
+                self.vkRowLabel.text = isVK
+            } else {
+                self.vkRowVisible.hidden = true
+            }
+            
+            //Facebook
+            if let isFacebook = currentUser.getProfileDetailValue(.Facebook) where isFacebook != "" {
+                self.facebookRowLabel.text = isFacebook
+            } else {
+                self.facebookRowVisible.hidden = true
+            }
+            
+            //Avatar
+            if let imageUrl = currentUser.imageUrl{
+                ImageCachingHandler.Instance.getImageFromUrl(imageUrl, callback: { (image) in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.imgUserAvatar.image = image
+                    })
+                })
+            } else {
+                imgUserAvatar.image = ImageCachingHandler.defaultAccountImage;
+            }
+            
+            //Location
+//            if let userLocation = currentUser.locations?.first {
+//                txtUserLocation.text = userLocation.name
+//            } else {
+//                txtUserLocation.text = NSLocalizedString("Location is hidden", comment: "Text, Location is hidden")
+//            }
+            
+            //UserStatus: online/ofline
+            
+            
+        } else {
+            //Load user default data
+            imgUserAvatar.image = ImageCachingHandler.defaultAccountImage;
+        }
+    }
     
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
     
 }

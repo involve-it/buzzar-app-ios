@@ -54,9 +54,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
             self.handlePushNotification(notification)
         }
         
-        customizeApperance()
+        //customizeApperance()
         
-        /*UIBarButtonItem.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = UIColor.whiteColor()*/
+        let colorTabBar = UIColor(red: 90/255, green: 177/255, blue: 231/255, alpha: 1)
+        UITabBar.appearance().tintColor = colorTabBar
+        
+        //UIBarButtonItem.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = UIColor.whiteColor()
         
         return true
     }
@@ -160,9 +163,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
     
     
     func customizeApperance() {
-        
         let barTintColor = UIColor(red: 0/255, green: 118/255, blue: 255/255, alpha: 1)
-        
         //UISearchBar.appearance().tintColor = barTintColor
         UISearchBar.appearance().barTintColor = barTintColor
         window!.tintColor = UIColor(red: 0/255, green: 118/255, blue: 255/255, alpha: 1)

@@ -137,7 +137,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
 
         self.postDescription.delegate = self
         
-        //self.navigationItem.title = post?.title
+        self.navigationItem.title = post?.title
         
         //Check UserId & Post's user id
         let ownPost = post.user?.id == AccountHandler.Instance.userId
@@ -191,10 +191,11 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         if let seenTotal = post?.seenTotal {
             views = "\(seenTotal)";
         }
-        self.txtViews.text = views ?? "0";
+        self.txtViews.text = views ?? "1";
         
         //Favorites count
-        self.txtFavoritesCount.text = "0"
+        
+        self.txtFavoritesCount.text = ""
         
         /*
          //Seen today
@@ -276,12 +277,20 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                         }
                         
                         ThreadHelper.runOnMainThread({
-                            if let formattedAddress = placemark.addressDictionary!["FormattedAddressLines"] {
-                                let allResults = (formattedAddress as! [String]).joinWithSeparator(", ")
-                                self.txtPostLocationFormattedAddress.text = allResults
+  
+                            if placemark.formatAddress() != "" {
+                                self.txtPostLocationFormattedAddress.text = placemark.formatAddress()
                             } else {
                                 self.txtPostLocationFormattedAddress.text = NSLocalizedString("Address is not defined", comment: "Location, Address is not defined")
                             }
+                            
+//                            if let formattedAddress = placemark.addressDictionary!["FormattedAddressLines"] {
+//                                let allResults = (formattedAddress as! [String]).joinWithSeparator(", ")
+//                                self.txtPostLocationFormattedAddress.text = allResults
+//                            } else {
+//                                self.txtPostLocationFormattedAddress.text = NSLocalizedString("Address is not defined", comment: "Location, Address is not defined")
+//                            }
+                            
                         })
                     }
                 })
@@ -395,6 +404,45 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             vc.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
         }
     }
-    
 
 }
+
+
+// MARK: extension for CLPlacemark (formatter address)
+extension CLPlacemark {
+    
+    func formatAddress() -> String {
+        
+        guard let addressDictionary = self.addressDictionary else {return ""}
+        
+        var formattedString: String = ""
+        let street = addressDictionary["Street"] as? String
+        //let city = addressDictionary["City"] as? String
+        //let state = addressDictionary["State"] as? String
+        //let postalCode = addressDictionary["ZIP"] as? String
+        //let country = addressDictionary["Country"] as? String
+        //let ISOCountryCode = addressDictionary["CountryCode"] as? String
+        
+
+        if let street = street {
+            formattedString = formattedString + street
+        }
+        
+//        if let state = state {
+//            formattedString = formattedString + state + ", "
+//        }
+        
+//        if let postalCode = postalCode {
+//            formattedString = formattedString + postalCode + ", "
+//        }
+        
+//        if let country = country {
+//            formattedString = formattedString + country
+//        }
+        
+        //formattedString = street! + ", " + state! + ", " + postalCode! + ", " + country!
+        
+        return formattedString
+    }
+}
+

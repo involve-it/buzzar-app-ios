@@ -15,8 +15,6 @@ class cellUserProfile: UITableViewCell {
     @IBOutlet weak var imgUserAvatar: UIImageView!
     @IBOutlet weak var txtUserName: UILabel!
     @IBOutlet weak var txtUserLocation: UILabel!
-    @IBOutlet weak var txtUserPostsCount: UILabel!
-    @IBOutlet weak var txtUserCommentsCount: UILabel!
     
     
     
@@ -66,15 +64,7 @@ class cellUserProfile: UITableViewCell {
             }
             
             //UserStatus: online/ofline
-            
-            
-            //Posts count
-            txtUserPostsCount.text = "0"
-            // -> Int
-            
-            //CommentsCount
-            txtUserCommentsCount.text = "0"
-            // -> Int
+        
             
         } else {
             //Load user default data

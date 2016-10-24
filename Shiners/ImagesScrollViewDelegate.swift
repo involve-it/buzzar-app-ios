@@ -77,7 +77,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
         self.addPhoto(ImageCachingHandler.defaultPhoto!, index: index)
         
         let imageView = UIImageView(frame: CGRectMake( CGFloat(index) * mainView.frame.size.width, 0, mainView.frame.size.width, scrollView.frame.size.height));
-        imageView.contentMode = .ScaleAspectFit;
+        imageView.contentMode = .ScaleAspectFill;
         imageView.clipsToBounds = true;
         
         let loading = ImageCachingHandler.Instance.getImageFromUrl(imageUrl, callback: { (image) in
