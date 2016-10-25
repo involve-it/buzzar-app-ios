@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VYZ-AR-MXX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VYZ-AR-MXX">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -2828,7 +2828,7 @@
                             <tableViewSection id="iqN-h5-nLz">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" tag="1" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="44" id="e8L-5A-wlp" userLabel="Help">
-                                        <rect key="frame" x="0.0" y="600" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="598" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="e8L-5A-wlp" id="qmQ-YK-iGP">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -2850,7 +2850,7 @@
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" tag="1" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="44" id="t21-0t-7Ln" userLabel="About us">
-                                        <rect key="frame" x="0.0" y="644" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="642" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="t21-0t-7Ln" id="6uV-NY-4ei">
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
@@ -2876,7 +2876,7 @@
                             <tableViewSection id="Dpr-Os-php" userLabel="Section log out">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" tag="1" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="44" id="yec-tC-ybn" userLabel="cell">
-                                        <rect key="frame" x="0.0" y="724" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="722" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yec-tC-ybn" id="Rnp-7X-jtI">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -4616,7 +4616,9 @@
         <scene sceneID="tgu-Lw-May">
             <objects>
                 <viewController title="addPostPlaceholder" id="C4g-CZ-eOj" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Create" image="shiner" id="qDE-a8-S47" colorLabel="IBBuiltInLabel-Red"/>
+                    <tabBarItem key="tabBarItem" title="" image="shiners_add" id="qDE-a8-S47" colorLabel="IBBuiltInLabel-Red">
+                        <inset key="imageInsets" minX="0.0" minY="6" maxX="0.0" maxY="-6"/>
+                    </tabBarItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2hJ-CI-Dag" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -6417,7 +6419,7 @@
         <image name="page-location" width="550" height="550"/>
         <image name="posts" width="22" height="22"/>
         <image name="setting" width="22" height="22"/>
-        <image name="shiner" width="22" height="22"/>
+        <image name="shiners_add" width="32" height="32"/>
         <image name="show_offliners.png" width="48" height="48"/>
         <image name="twitter.png" width="128" height="128"/>
         <image name="visible_filled" width="100" height="100"/>
