@@ -2769,11 +2769,11 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="xVr-0X-qH7">
-                                                    <rect key="frame" x="535" y="6" width="51" height="31"/>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="xVr-0X-qH7">
+                                                    <rect key="frame" x="534" y="6" width="51" height="31"/>
                                                     <color key="onTintColor" red="0.20784313730000001" green="0.85490196080000003" blue="0.67843137249999996" alpha="1" colorSpace="calibratedRGB"/>
                                                     <connections>
-                                                        <action selector="cbNotifications_Changed:" destination="XHa-vg-zMA" eventType="valueChanged" id="5sX-N3-yx8"/>
+                                                        <action selector="cbNearbyNotifications_Changed:" destination="05S-bA-uNH" eventType="valueChanged" id="70U-HD-G7d"/>
                                                     </connections>
                                                 </switch>
                                             </subviews>
@@ -2915,6 +2915,7 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="600" height="750"/>
                     <connections>
+                        <outlet property="cbNearbyNotifications" destination="xVr-0X-qH7" id="XDY-6j-4IP"/>
                         <outlet property="facebookRowLabel" destination="xm7-TG-KaA" id="4FG-1H-jNe"/>
                         <outlet property="facebookRowVisible" destination="AdV-Qa-hEb" id="Roe-rr-3C8"/>
                         <outlet property="imgUserAvatar" destination="bGe-83-VNn" id="dgI-6l-XHw"/>

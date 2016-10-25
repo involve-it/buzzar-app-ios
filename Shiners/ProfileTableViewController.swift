@@ -21,7 +21,7 @@ class ProfileTableViewController: UITableViewController {
     
     
     
-    private var currentUser: User?
+    private var currentUser: User!
     
     struct TableViewIdentifierCell {
         static let cellUserProfileNib = "cellUserProfile"
@@ -32,6 +32,7 @@ class ProfileTableViewController: UITableViewController {
     @IBOutlet weak var skypeRowVisible: UITableViewCell!
     @IBOutlet weak var vkRowVisible: UITableViewCell!
     @IBOutlet weak var facebookRowVisible: UITableViewCell!
+    @IBOutlet weak var cbNearbyNotifications: UISwitch!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,7 +57,26 @@ class ProfileTableViewController: UITableViewController {
         
     }
 
-    
+
+    @IBAction func cbNearbyNotifications_Changed(sender: UISwitch) {
+        if sender.on && !UIApplication.sharedApplication().isRegisteredForRemoteNotifications(){
+            self.showAlert(NSLocalizedString("Notifications", comment: "Alert title, Notifications"), message: NSLocalizedString("To receive notifications, please allow this in device Settings.", comment: "Alert message, to receive notifications, please allow this in device Settings."));
+            sender.on = false
+        } else {
+            let initialState = currentUser.enableNearbyNotifications
+            currentUser.enableNearbyNotifications = sender.on
+            
+            AccountHandler.Instance.saveUser(currentUser) { (success, errorMessage) in
+                if (!success){
+                    ThreadHelper.runOnMainThread({
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: NSLocalizedString("An error occurred while saving.", comment: "Title message, an error occurred while saving."))
+                        self.currentUser?.enableNearbyNotifications = initialState
+                        sender.on = initialState ?? false
+                    })
+                }
+            }
+        }
+    }
 //    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 //
 //        if (indexPath.section == 0) {
@@ -103,19 +123,7 @@ class ProfileTableViewController: UITableViewController {
             let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .ActionSheet)
             alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
                 AccountHandler.Instance.logoff(){ success in
-                    if (success){
-                        /*self.currentUser = nil;
-                         self.refreshUser();
-                         dispatch_async(dispatch_get_main_queue(), {
-                         self.tableView.reloadData();
-                         })*/
-                        
-                        
-                        //Segue to postViewController
-                        self.navigationController?.popViewControllerAnimated(true)
-                        
-                        
-                    } else {
+                    if (!success){
                         self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("An error occurred", comment: "Alert message, An error occurred"))
                     }
                 };
@@ -129,6 +137,13 @@ class ProfileTableViewController: UITableViewController {
     
     func fillUserData() {
         if let currentUser = AccountHandler.Instance.currentUser {
+            self.currentUser = currentUser
+            
+            if UIApplication.sharedApplication().isRegisteredForRemoteNotifications() && (currentUser.enableNearbyNotifications ?? false){
+                self.cbNearbyNotifications.on = true
+            } else {
+                self.cbNearbyNotifications.on = false
+            }
             
             //Username
             if let firstName = self.currentUser?.getProfileDetailValue(.FirstName),
