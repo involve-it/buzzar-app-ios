@@ -25,6 +25,7 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pushRegistrationFailed), name: NotificationManager.Name.PushRegistrationFailed.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateLoggedIn), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedLocalNotification), name: NotificationManager.Name.ServerEventNotification.rawValue, object: nil)
+        
         //buttonCreatePost()
     }
     

@@ -124,14 +124,14 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
             //self.view.frame.origin.y -= keyboardSize.height
             
-            print("keyboard size \(keyboardSize.height)")
+            //print("keyboard size \(keyboardSize.height)")
         }
     }
     
     func keyboardWillHide(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
             //self.view.frame.origin.y += keyboardSize.height
-            print("keyboard hide \(keyboardSize.height)")
+            //print("keyboard hide \(keyboardSize.height)")
         }
         
     }

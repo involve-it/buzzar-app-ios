@@ -19,7 +19,8 @@ public class SmallImageView: UIView{
     public var id: Int?
     public var delegate: SmallImageViewDelegate?
     
-    let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+    let activityIndicator = UIActivityIndicatorView()
+    let coverImageView: UIView = UIView()
     
     public init (x: Float, y : Float, id: Int, delegate: SmallImageViewDelegate?, image: UIImage){
         //todo: fix different aspect ratios
@@ -39,27 +40,25 @@ public class SmallImageView: UIView{
         imageView.clipsToBounds = true
         imageView.image = image
         self.addSubview(imageView)
-        self.imageView = imageView;
+        self.imageView = imageView
         
-        //Indicator
+        //Indicator & coverView
+        self.coverImageView.backgroundColor = UIColor(white: 0.1, alpha: 0.75)
+        self.coverImageView.frame = CGRectMake(0, 0, self.frame.width, self.frame.width)
         
         activityIndicator.center = imageView.center
+        activityIndicator.activityIndicatorViewStyle = .White
         activityIndicator.hidesWhenStopped = true
         //activityIndicator.startAnimating()
+        //self.imageView.addSubview(coverImageView)
         self.addSubview(activityIndicator)
         
-        let btnDelete = UIButton(frame: CGRectMake(CGFloat(SmallImageView.width - 10), CGFloat(y - 5), 20, 20))
-        
+        let btnDelete = UIButton(frame: CGRectMake(CGFloat(SmallImageView.width - 12), CGFloat(y - 4), 17, 17))
         btnDelete.setBackgroundImage(UIImage(named: "deleteImage"), forState: .Normal)
         btnDelete.addTarget(self, action: #selector(btnDelete_Click), forControlEvents: .TouchUpInside)
-        //btnDelete.layer.shadowColor = UIColor.whiteColor().CGColor
-        //btnDelete.layer.shadowOpacity = 0.8
-        //btnDelete.layer.shadowRadius = 1
-        //btnDelete.layer.shadowOffset = CGSizeMake(-2, 2)
+        
         self.addSubview(btnDelete)
         self.btnDelete = btnDelete
-        
-
     }
     
     required public init?(coder aDecoder: NSCoder) {

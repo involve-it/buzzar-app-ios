@@ -14,13 +14,14 @@ class ProfileTableViewController: UITableViewController {
     @IBOutlet weak var txtUserName: UILabel!
     @IBOutlet weak var phoneRowLabel: UILabel!
     @IBOutlet weak var skypeRowLabel: UILabel!
-    @IBOutlet weak var vkRowLabel: UILabel!
-    @IBOutlet weak var facebookRowLabel: UILabel!
+    //@IBOutlet weak var vkRowLabel: UILabel!
+    //@IBOutlet weak var facebookRowLabel: UILabel!
     
     @IBOutlet weak var isStatusLabel: UILabel!
+    @IBOutlet weak var btnCloseVC: UIBarButtonItem!
+    @IBOutlet weak var editProfile: UIBarButtonItem!
     
-    
-    
+    var extUser: User?
     private var currentUser: User!
     
     struct TableViewIdentifierCell {
@@ -30,8 +31,8 @@ class ProfileTableViewController: UITableViewController {
     
     @IBOutlet weak var phoneRowVisible: UITableViewCell!
     @IBOutlet weak var skypeRowVisible: UITableViewCell!
-    @IBOutlet weak var vkRowVisible: UITableViewCell!
-    @IBOutlet weak var facebookRowVisible: UITableViewCell!
+    //@IBOutlet weak var vkRowVisible: UITableViewCell!
+    //@IBOutlet weak var facebookRowVisible: UITableViewCell!
     @IBOutlet weak var cbNearbyNotifications: UISwitch!
     
     override func viewDidLoad() {
@@ -39,24 +40,29 @@ class ProfileTableViewController: UITableViewController {
         
         self.navigationItem.title = NSLocalizedString("Profile", comment: "Navigation title, Profile")
         
-        
-//        tableView.registerNib(UINib(nibName: TableViewIdentifierCell.cellUserProfileNib, bundle: nil), forCellReuseIdentifier: TableViewIdentifierCell.cellUserProfileNib)
-//        
-//        tableView.registerNib(UINib(nibName: TableViewIdentifierCell.cellAboutMe, bundle: nil), forCellReuseIdentifier: TableViewIdentifierCell.cellAboutMe)
-//        
-//        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        
         self.phoneRowVisible.hidden = false
         self.skypeRowVisible.hidden = false
-        self.vkRowVisible.hidden = false
-        self.facebookRowVisible.hidden = false
+        //self.vkRowVisible.hidden = false
+        //self.facebookRowVisible.hidden = false
         
-        fillUserData()
         tabelViewEstimatedRowHeight()
+        fillUserData()
         
-        
+        if extUser == nil {
+            if let index = self.navigationItem.leftBarButtonItems?.indexOf(self.btnCloseVC){
+                self.navigationItem.leftBarButtonItems?.removeAtIndex(index)
+            }
+        } else {
+            if let index = self.navigationItem.rightBarButtonItems?.indexOf(self.editProfile){
+                self.navigationItem.rightBarButtonItems?.removeAtIndex(index)
+            }
+        }
     }
 
+    
+    @IBAction func closeVC(sender: UIBarButtonItem) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
 
     @IBAction func cbNearbyNotifications_Changed(sender: UISwitch) {
         if sender.on && !UIApplication.sharedApplication().isRegisteredForRemoteNotifications(){
@@ -77,23 +83,6 @@ class ProfileTableViewController: UITableViewController {
             }
         }
     }
-//    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//
-//        if (indexPath.section == 0) {
-//            if (indexPath.row == 0) {
-//                let cell = tableView.dequeueReusableCellWithIdentifier(TableViewIdentifierCell.cellUserProfileNib, forIndexPath: indexPath) as! cellUserProfile
-//                return cell
-//            } else if (indexPath.row == 1) {
-//                let cell = tableView.dequeueReusableCellWithIdentifier(TableViewIdentifierCell.cellAboutMe, forIndexPath: indexPath) as! cellAboutMe
-//                return cell
-//            }
-//        } else if (indexPath.section == 1) {
-//            let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as UITableViewCell
-//            return cell
-//        }
-
-//        return tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
-//    }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
@@ -102,15 +91,19 @@ class ProfileTableViewController: UITableViewController {
             return !self.phoneRowVisible.hidden ? 44 : 0.0
         } else if(indexPath.section == 1 && indexPath.row == 1) {
             return !self.skypeRowVisible.hidden ? 44 : 0.0
-        } else if (indexPath.section == 1 && indexPath.row == 2) {
-            return !self.vkRowVisible.hidden ? 44 : 0.0
-        } else if (indexPath.section == 1 && indexPath.row == 3) {
-            return !self.facebookRowVisible.hidden ? 44 : 0.0
         }
+//        } else if (indexPath.section == 1 && indexPath.row == 2) {
+//            return !self.vkRowVisible.hidden ? 44 : 0.0
+//        } else if (indexPath.section == 1 && indexPath.row == 3) {
+//            return !self.facebookRowVisible.hidden ? 44 : 0.0
+//        }
         
         return UITableViewAutomaticDimension
     }
     
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return !(self.extUser != nil) ? 5 : 2
+    }
     
     func tabelViewEstimatedRowHeight() {
         tableView.estimatedRowHeight = 44.0
@@ -132,12 +125,18 @@ class ProfileTableViewController: UITableViewController {
             alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Cancel, handler: nil))
             
             self.presentViewController(alertViewController, animated: true, completion: nil)
+        } else if indexPath.section == 1 {
+            print(indexPath.row)
         }
     }
     
     func fillUserData() {
-        if let currentUser = AccountHandler.Instance.currentUser {
-            self.currentUser = currentUser
+        var user: User!
+        user = extUser ?? AccountHandler.Instance.currentUser
+        
+        
+        if user != nil {
+            self.currentUser = user
             
             if UIApplication.sharedApplication().isRegisteredForRemoteNotifications() && (currentUser.enableNearbyNotifications ?? false){
                 self.cbNearbyNotifications.on = true
@@ -146,14 +145,14 @@ class ProfileTableViewController: UITableViewController {
             }
             
             //Username
-            if let firstName = self.currentUser?.getProfileDetailValue(.FirstName),
-                lastName = self.currentUser?.getProfileDetailValue(.LastName) {
+            if let firstName = self.currentUser?.getProfileDetailValue(.FirstName) where firstName != "",
+               let lastName = self.currentUser?.getProfileDetailValue(.LastName) where lastName != "" {
                 txtUserName.text = "\(firstName) \(lastName)"
             } else {
-                txtUserName.text = currentUser.username;
+                txtUserName.text = self.currentUser.username
             }
             
-            if currentUser.isOnline() {
+            if self.currentUser.isOnline() {
                 self.isStatusLabel.text = "online"
                 self.isStatusLabel.textColor = UIColor(red: 50/255, green: 185/255, blue: 91/255, alpha: 1)
             } else {
@@ -163,7 +162,7 @@ class ProfileTableViewController: UITableViewController {
             
     
             //Phone
-            if let isPhone = currentUser.getProfileDetailValue(.Phone) where isPhone != "" {
+            if let isPhone = self.currentUser.getProfileDetailValue(.Phone) where isPhone != "" {
                 self.phoneRowLabel.text = isPhone
                 
                 //Call
@@ -174,28 +173,28 @@ class ProfileTableViewController: UITableViewController {
             }
             
             //Skype
-            if let isSkype = currentUser.getProfileDetailValue(.Skype) where isSkype != "" {
+            if let isSkype = self.currentUser.getProfileDetailValue(.Skype) where isSkype != "" {
                 self.skypeRowLabel.text = isSkype
             } else {
                 self.skypeRowVisible.hidden = true
             }
             
             //VKontakte
-            if let isVK = currentUser.getProfileDetailValue(.Vk) where isVK != "" {
+            /*if let isVK = currentUser.getProfileDetailValue(.Vk) where isVK != "" {
                 self.vkRowLabel.text = isVK
             } else {
                 self.vkRowVisible.hidden = true
-            }
+            }*/
             
             //Facebook
-            if let isFacebook = currentUser.getProfileDetailValue(.Facebook) where isFacebook != "" {
+            /*if let isFacebook = currentUser.getProfileDetailValue(.Facebook) where isFacebook != "" {
                 self.facebookRowLabel.text = isFacebook
             } else {
                 self.facebookRowVisible.hidden = true
-            }
+            }*/
             
             //Avatar
-            if let imageUrl = currentUser.imageUrl{
+            if let imageUrl = self.currentUser.imageUrl{
                 ImageCachingHandler.Instance.getImageFromUrl(imageUrl, callback: { (image) in
                     dispatch_async(dispatch_get_main_queue(), {
                         self.imgUserAvatar.image = image

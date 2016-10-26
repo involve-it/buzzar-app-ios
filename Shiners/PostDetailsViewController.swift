@@ -171,6 +171,15 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             self.txtUsername.text = username
         }
         
+        //GestureRecognizer on the username and on the avatar
+        let tap = UITapGestureRecognizer(target: self, action: #selector(goUserProfile))
+        let tap1 = UITapGestureRecognizer(target: self, action: #selector(goUserProfile))
+        self.txtUsername.addGestureRecognizer(tap)
+        self.avatarUser.addGestureRecognizer(tap1)
+        
+        
+        
+        
         //Avatar image
         self.avatarUser.contentMode = .ScaleToFill
         if let avatarUrlString = post.user?.imageUrl{
@@ -323,6 +332,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         self.updateScrollView()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateScrollView), name: UIDeviceOrientationDidChangeNotification, object: nil)
+        
         if let index = self.navigationItem.rightBarButtonItems?.indexOf(self.btnEdit){
             self.navigationItem.rightBarButtonItems?.removeAtIndex(index)
         }
@@ -335,6 +345,25 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
         
+        
+    }
+    
+    func goUserProfile() {
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let nc = storyboard.instantiateViewControllerWithIdentifier("settingsLogInUser") as! UINavigationController
+        let vc = nc.viewControllers[0] as! ProfileTableViewController
+        
+        if let user = self.post.user {
+            vc.extUser = user
+            
+            //vc.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .Done, target: nil, action: nil)
+            
+            self.presentViewController(nc, animated: true, completion: nil)
+        } else {
+            //error alert
+            print("TAP USER ERRRORRRRR")
+        }
         
     }
     

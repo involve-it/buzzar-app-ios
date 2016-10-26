@@ -80,6 +80,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         self.images.append(rotatedImage)
         let id = self.images.count - 1
         let view = self.addImageToScrollView(rotatedImage, index: id)
+        view.imageView.addSubview(view.coverImageView)
         view.activityIndicator.startAnimating()
         self.uploadingIds.append(id)
         
@@ -88,6 +89,8 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                 ThreadHelper.runOnMainThread({
                     //self.setLoading(false, rightBarButtonItem: self.cancelButton)
                     //self.btnSave.enabled = true
+                    
+                    view.coverImageView.removeFromSuperview()
                     view.activityIndicator.stopAnimating()
                     if success {
                         let photo = Photo()

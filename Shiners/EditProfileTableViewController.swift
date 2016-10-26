@@ -30,10 +30,10 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     @IBOutlet var btnSave: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
-    var currentUser: User?;
-    
+    var currentUser: User?
     
     @IBOutlet weak var txtBioPlaceholder: UITextView!
+    
     let txtBioPlaceholderText = NSLocalizedString("Bio (optional)", comment: "Placeholder, Bio (optional)")
     let txtPlaceHolderColor = UIColor.lightGrayColor()
     
@@ -41,23 +41,21 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     override public func viewDidLoad() {
         super.viewDidLoad()
         
-        txtBioPlaceholder.delegate = self
+        //txtBioPlaceholder.delegate = self
         
         self.imagePickerHandler = ImagePickerHandler(viewController: self, delegate: self)
         
-        //Placeholder
-        txtBioPlaceholder.text = txtBioPlaceholderText
-        txtBioPlaceholder.textColor = txtPlaceHolderColor
+        //Placeholder bio
+        /*txtBioPlaceholder.text = txtBioPlaceholderText
+        txtBioPlaceholder.textColor = txtPlaceHolderColor*/
         
-        //TODO: Need global constant
-        txtBioPlaceholder.font = UIFont(name: "Helvetica Neue", size: 17.0)
-        
-        txtPlaceholderSelectedTextRange(txtBioPlaceholder)
+        /*txtPlaceholderSelectedTextRange(txtBioPlaceholder)*/
 
         if self.currentUser == nil || self.currentUser! !== AccountHandler.Instance.currentUser{
             self.currentUser = AccountHandler.Instance.currentUser
             self.refreshUserData()
         }
+        
     }
     
     @IBAction func btnSave_Click(sender: AnyObject) {
@@ -82,9 +80,10 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
         user.setProfileDetail(.City, value: self.txtAddressLocationLabel.text)
         user.setProfileDetail(.Phone, value: self.txtPhoneLabel.text)
         self.txtUsernameLabel.text = user.username
-        //user.setProfileDetail(.Skype, value: self.txtSkype.text)
-        
+        user.setProfileDetail(.Skype, value: self.txtSkypeLabel.text)
         user.imageUrl = self.currentUser?.imageUrl
+        user.email = self.txtEmailLabel.text
+        
         return user;
     }
     
@@ -94,8 +93,8 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
         self.lastNameLabel.text = self.currentUser?.getProfileDetailValue(.LastName)
         self.txtAddressLocationLabel.text = self.currentUser?.getProfileDetailValue(.City)
         self.txtPhoneLabel.text = self.currentUser?.getProfileDetailValue(.Phone)
-        //self.txtEmailLabel.text = self.currentUser?.getProfileDetail()
-        //self.txtSkype.text = self.currentUser?.getProfileDetailValue(.Skype)
+        self.txtEmailLabel.text = self.currentUser?.email
+        self.txtSkypeLabel.text = self.currentUser?.getProfileDetailValue(.Skype)
         
         if let imageUrl = self.currentUser?.imageUrl{
             ImageCachingHandler.Instance.getImageFromUrl(imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
@@ -142,7 +141,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
         self.dismissSelf()
     }
     
-    public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    /*public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         let currentText: NSString = txtBioPlaceholder.text
         let updateText = currentText.stringByReplacingCharactersInRange(range, withString: text)
         
@@ -168,7 +167,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
                 txtPlaceholderSelectedTextRange(txtBioPlaceholder)
             }
         }
-    }
+    }*/
     
     func txtPlaceholderSelectedTextRange(placeholder: UITextView) -> () {
         placeholder.selectedTextRange = placeholder.textRangeFromPosition(placeholder.beginningOfDocument, toPosition: placeholder.beginningOfDocument)
@@ -202,6 +201,13 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     
     override public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.reloadData()
+    }
+    
+    //Check email isValid
+    func isValidEmail(emailTestString:String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluateWithObject(emailTestString)
     }
 
 
