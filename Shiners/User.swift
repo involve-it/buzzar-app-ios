@@ -46,7 +46,9 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         
         if let emails = fields?.valueForKey("emails") as? NSArray{
             if emails.count > 0{
-                self.email = emails[0] as? String;
+                if let emailFields = emails[0] as? NSDictionary{
+                    self.email = emailFields.valueForKey("address") as? String
+                }
             }
         }
         
