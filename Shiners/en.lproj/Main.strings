@@ -2,6 +2,9 @@
 /* Class = "UITableViewController"; title = "Profile"; ObjectID = "05S-bA-uNH"; */
 "05S-bA-uNH.title" = "Profile";
 
+/* Class = "UILabel"; text = "What is your post title?"; ObjectID = "0MT-Lh-kZ8"; */
+"0MT-Lh-kZ8.text" = "What is your post title?";
+
 /* Class = "UITextField"; placeholder = "i'm looking for"; ObjectID = "0e6-rl-z6X"; */
 "0e6-rl-z6X.placeholder" = "i'm looking for";
 
@@ -14,8 +17,8 @@
 /* Class = "UINavigationItem"; title = "Choose Static Location"; ObjectID = "0yl-tZ-rwd"; */
 "0yl-tZ-rwd.title" = "Choose Static Location";
 
-/* Class = "UILabel"; text = "127001, NY, New York ..."; ObjectID = "1Tq-6P-iFC"; */
-"1Tq-6P-iFC.text" = "127001, NY, New York ...";
+/* Class = "UILabel"; text = "Pick location below"; ObjectID = "1Tq-6P-iFC"; */
+"1Tq-6P-iFC.text" = "Pick location below";
 
 /* Class = "UILabel"; text = "Description of post"; ObjectID = "1vf-HE-Sla"; */
 "1vf-HE-Sla.text" = "Description of post";
@@ -71,9 +74,6 @@
 /* Class = "UILabel"; text = "Pick when your ad expires"; ObjectID = "62e-KQ-rW3"; */
 "62e-KQ-rW3.text" = "Pick when your ad expires";
 
-/* Class = "UILabel"; text = "27 June 2000"; ObjectID = "7a5-MR-FFy"; */
-"7a5-MR-FFy.text" = "27 June 2000";
-
 /* Class = "UITextField"; placeholder = "Location"; ObjectID = "7e5-TI-ZEf"; */
 "7e5-TI-ZEf.placeholder" = "Location";
 
@@ -98,9 +98,6 @@
 /* Class = "UILabel"; text = "1 year"; ObjectID = "BYW-as-foy"; */
 "BYW-as-foy.text" = "1 year";
 
-/* Class = "UINavigationItem"; title = "Notifications"; ObjectID = "BoM-la-8NX"; */
-"BoM-la-8NX.title" = "Notifications";
-
 /* Class = "UIBarButtonItem"; title = "Clear"; ObjectID = "Bql-zc-VaP"; */
 "Bql-zc-VaP.title" = "Clear";
 
@@ -113,17 +110,20 @@
 /* Class = "UIViewController"; title = "addPostPlaceholder"; ObjectID = "C4g-CZ-eOj"; */
 "C4g-CZ-eOj.title" = "addPostPlaceholder";
 
+/* Class = "UITableViewSection"; footerTitle = "Тут необходим поясняющий текст для пользователей."; ObjectID = "C8v-2i-i1t"; */
+"C8v-2i-i1t.footerTitle" = "Тут необходим поясняющий текст для пользователей.";
+
 /* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "CLc-Kt-ihI"; */
 "CLc-Kt-ihI.title" = "Next";
 
 /* Class = "UITextField"; placeholder = "i'd like to"; ObjectID = "CXY-GK-vJ4"; */
 "CXY-GK-vJ4.placeholder" = "i'd like to";
 
+/* Class = "UITextField"; placeholder = "Email (optional)"; ObjectID = "CqZ-uk-jGd"; */
+"CqZ-uk-jGd.placeholder" = "Email (optional)";
+
 /* Class = "UIButton"; normalTitle = "Already have an account? Log in"; ObjectID = "CzY-aY-JiS"; */
 "CzY-aY-JiS.normalTitle" = "Already have an account? Log in";
-
-/* Class = "UILabel"; text = "Expires in"; ObjectID = "DQH-BI-aFA"; */
-"DQH-BI-aFA.text" = "Expires in";
 
 /* Class = "UILabel"; text = "1 day"; ObjectID = "DeZ-ZQ-haT"; */
 "DeZ-ZQ-haT.text" = "1 day";
@@ -137,9 +137,6 @@
 /* Class = "UILabel"; text = "1 week"; ObjectID = "DiR-qd-a0P"; */
 "DiR-qd-a0P.text" = "1 week";
 
-/* Class = "UITextField"; placeholder = "Email"; ObjectID = "Djt-nA-ez2"; */
-"Djt-nA-ez2.placeholder" = "Email";
-
 /* Class = "UINavigationItem"; title = "My Posts"; ObjectID = "EGv-is-buT"; */
 "EGv-is-buT.title" = "My Posts";
 
@@ -152,11 +149,8 @@
 /* Class = "UITableViewSection"; footerTitle = "Your user status can be active or inactive. When the status \"active\" other users to see next to your posts. Otherwise your posts will not be visible to other users."; ObjectID = "FCH-uk-LxZ"; */
 "FCH-uk-LxZ.footerTitle" = "Your user status can be active or inactive. When the status \"active\" other users to see next to your posts. Otherwise your posts will not be visible to other users.";
 
-/* Class = "UILabel"; text = "July, 15 15:48"; ObjectID = "FCL-Kj-ncV"; */
-"FCL-Kj-ncV.text" = "July, 15 15:48";
-
-/* Class = "UIButton"; normalTitle = "Send message"; ObjectID = "FGm-Rk-EmS"; */
-"FGm-Rk-EmS.normalTitle" = "Send message";
+/* Class = "UILabel"; text = "Дата создания поста"; ObjectID = "FCL-Kj-ncV"; */
+"FCL-Kj-ncV.text" = "Дата создания поста";
 
 /* Class = "UINavigationItem"; title = "New Post"; ObjectID = "FOD-7r-gjD"; */
 "FOD-7r-gjD.title" = "New Post";
@@ -164,11 +158,11 @@
 /* Class = "UILabel"; text = "Tap to select"; ObjectID = "FZ4-i8-M8U"; */
 "FZ4-i8-M8U.text" = "Tap to select";
 
-/* Class = "UILabel"; text = "Specific location"; ObjectID = "Fyz-QA-9p3"; */
-"Fyz-QA-9p3.text" = "Specific location";
+/* Class = "UIBarButtonItem"; title = "Register"; ObjectID = "G0n-bh-lhc"; */
+"G0n-bh-lhc.title" = "Register";
 
-/* Class = "UIBarButtonItem"; title = "Done"; ObjectID = "G0n-bh-lhc"; */
-"G0n-bh-lhc.title" = "Done";
+/* Class = "UILabel"; text = "Местоположение"; ObjectID = "G6j-tc-77a"; */
+"G6j-tc-77a.text" = "Местоположение";
 
 /* Class = "UILabel"; text = "Twitter"; ObjectID = "GAE-M9-19p"; */
 "GAE-M9-19p.text" = "Twitter";
@@ -185,17 +179,20 @@
 /* Class = "UIButton"; normalTitle = "Create"; ObjectID = "GiD-Bd-9Z9"; */
 "GiD-Bd-9Z9.normalTitle" = "Create";
 
+/* Class = "UILabel"; text = "Username for skype"; ObjectID = "Gix-Ff-wXG"; */
+"Gix-Ff-wXG.text" = "Username for skype";
+
 /* Class = "UITextField"; placeholder = "Title"; ObjectID = "HNz-3U-awT"; */
 "HNz-3U-awT.placeholder" = "Title";
+
+/* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "HUW-KV-7zN"; */
+"HUW-KV-7zN.title" = "Back";
 
 /* Class = "UILabel"; text = "154 km"; ObjectID = "HWU-ov-avm"; */
 "HWU-ov-avm.text" = "154 km";
 
 /* Class = "UILabel"; text = "username"; ObjectID = "HpE-uK-oCM"; */
 "HpE-uK-oCM.text" = "username";
-
-/* Class = "UILabel"; text = "Location"; ObjectID = "I4O-6A-rfb"; */
-"I4O-6A-rfb.text" = "Location";
 
 /* Class = "UILabel"; text = "Tags will be here"; ObjectID = "IAy-z8-quM"; */
 "IAy-z8-quM.text" = "Tags will be here";
@@ -215,11 +212,14 @@
 /* Class = "UILabel"; text = "Pinned to static location"; ObjectID = "Jpo-MX-JCq"; */
 "Jpo-MX-JCq.text" = "Pinned to static location";
 
+/* Class = "UITabBarItem"; title = "Posts"; ObjectID = "Jpr-SI-6Ib"; */
+"Jpr-SI-6Ib.title" = "Posts";
+
 /* Class = "UINavigationItem"; title = "Reset password"; ObjectID = "JsG-y4-rPP"; */
 "JsG-y4-rPP.title" = "Reset password";
 
-/* Class = "UILabel"; text = "20 h"; ObjectID = "K1P-QA-pah"; */
-"K1P-QA-pah.text" = "20 h";
+/* Class = "UILabel"; text = "Дата истечение поста"; ObjectID = "K1P-QA-pah"; */
+"K1P-QA-pah.text" = "Дата истечение поста";
 
 /* Class = "UIBarButtonItem"; title = "Search"; ObjectID = "KCO-4M-OLU"; */
 "KCO-4M-OLU.title" = "Search";
@@ -236,14 +236,11 @@
 /* Class = "UILabel"; text = "Static post"; ObjectID = "Kad-Lr-Pmg"; */
 "Kad-Lr-Pmg.text" = "Static post";
 
-/* Class = "UILabel"; text = "Notify me of nearby events"; ObjectID = "Kf7-aV-yEh"; */
-"Kf7-aV-yEh.text" = "Notify me of nearby events";
-
 /* Class = "UILabel"; text = "Log out"; ObjectID = "KhZ-81-9Oc"; */
 "KhZ-81-9Oc.text" = "Log out";
 
-/* Class = "UIBarButtonItem"; title = "Create post"; ObjectID = "KpP-QW-wCB"; */
-"KpP-QW-wCB.title" = "Create post";
+/* Class = "UIBarButtonItem"; title = "Create"; ObjectID = "KpP-QW-wCB"; */
+"KpP-QW-wCB.title" = "Create";
 
 /* Class = "UITextField"; placeholder = "Address"; ObjectID = "Ku5-kC-hVP"; */
 "Ku5-kC-hVP.placeholder" = "Address";
@@ -254,8 +251,8 @@
 /* Class = "UIButton"; normalTitle = "Forgot password?"; ObjectID = "LkP-g7-Q10"; */
 "LkP-g7-Q10.normalTitle" = "Forgot password?";
 
-/* Class = "UILabel"; text = "3 minutes ago"; ObjectID = "MMj-gN-vuL"; */
-"MMj-gN-vuL.text" = "3 minutes ago";
+/* Class = "UIButton"; normalTitle = "Позвонить"; ObjectID = "M9g-hf-h6d"; */
+"M9g-hf-h6d.normalTitle" = "Позвонить";
 
 /* Class = "UILabel"; text = "9999"; ObjectID = "MMv-ub-g6k"; */
 "MMv-ub-g6k.text" = "9999";
@@ -269,11 +266,8 @@
 /* Class = "UITableViewSection"; headerTitle = "User name"; ObjectID = "Mbe-IZ-n8W"; */
 "Mbe-IZ-n8W.headerTitle" = "User name";
 
-/* Class = "UILabel"; text = "Dynamic"; ObjectID = "Mig-jz-jwt"; */
-"Mig-jz-jwt.text" = "Dynamic";
-
-/* Class = "UINavigationItem"; title = "Title"; ObjectID = "Mod-b8-eIC"; */
-"Mod-b8-eIC.title" = "Title";
+/* Class = "UINavigationItem"; title = "How does it look like?"; ObjectID = "Mod-b8-eIC"; */
+"Mod-b8-eIC.title" = "How does it look like?";
 
 /* Class = "UILabel"; text = "You have no messages"; ObjectID = "MtH-Cp-a6x"; */
 "MtH-Cp-a6x.text" = "You have no messages";
@@ -287,32 +281,38 @@
 /* Class = "UILabel"; text = "Choose a category to search"; ObjectID = "NbI-Z4-JjP"; */
 "NbI-Z4-JjP.text" = "Choose a category to search";
 
-/* Class = "UILabel"; text = "Username"; ObjectID = "NdA-Ph-ZId"; */
-"NdA-Ph-ZId.text" = "Username";
-
 /* Class = "UIViewController"; title = "Login view controller"; ObjectID = "Nfo-dS-g7G"; */
 "Nfo-dS-g7G.title" = "Login view controller";
 
 /* Class = "UITextField"; placeholder = "Email address"; ObjectID = "NqW-97-vIl"; */
 "NqW-97-vIl.placeholder" = "Email address";
 
-/* Class = "UILabel"; text = "We will never post to Facoebook without permission. By using Shiners, you agree to the Terms, Cookie Policy, and Privacy Policy."; ObjectID = "O0B-oE-Dxz"; */
-"O0B-oE-Dxz.text" = "We will never post to Facoebook without permission. By using Shiners, you agree to the Terms, Cookie Policy, and Privacy Policy.";
+/* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "NwJ-oT-NeE"; */
+"NwJ-oT-NeE.title" = "Next";
+
+/* Class = "UILabel"; text = "We will never post to Facebook without permission. By using Shiners, you agree to the Terms, Cookie Policy, and Privacy Policy."; ObjectID = "O0B-oE-Dxz"; */
+"O0B-oE-Dxz.text" = "We will never post to Facebook without permission. By using Shiners, you agree to the Terms, Cookie Policy, and Privacy Policy.";
 
 /* Class = "UILabel"; text = "Tap here to log in or register"; ObjectID = "OKk-eE-wAR"; */
 "OKk-eE-wAR.text" = "Tap here to log in or register";
 
+/* Class = "UILabel"; text = "online / offline"; ObjectID = "OMx-iq-R9U"; */
+"OMx-iq-R9U.text" = "online / offline";
+
 /* Class = "UIViewController"; title = "When View Controller"; ObjectID = "OQd-hp-ELm"; */
 "OQd-hp-ELm.title" = "When View Controller";
 
-/* Class = "UILabel"; text = "Twitter"; ObjectID = "PFY-wu-IWN"; */
-"PFY-wu-IWN.text" = "Twitter";
+/* Class = "UILabel"; text = "Skype"; ObjectID = "PXz-dq-CRV"; */
+"PXz-dq-CRV.text" = "Skype";
 
-/* Class = "UIButton"; normalTitle = "connect"; ObjectID = "PIl-Bf-tae"; */
-"PIl-Bf-tae.normalTitle" = "connect";
+/* Class = "UINavigationItem"; title = "Where is it located?"; ObjectID = "PzG-5I-Ruq"; */
+"PzG-5I-Ruq.title" = "Where is it located?";
 
 /* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "QIT-FV-Svl"; */
 "QIT-FV-Svl.title" = "Next";
+
+/* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "QaD-QI-xTs"; */
+"QaD-QI-xTs.title" = "Back";
 
 /* Class = "UITextField"; placeholder = "User name"; ObjectID = "QaV-Iz-C0B"; */
 "QaV-Iz-C0B.placeholder" = "User name";
@@ -322,6 +322,9 @@
 
 /* Class = "UIViewController"; title = "My Post Details"; ObjectID = "Qd9-Zx-awU"; */
 "Qd9-Zx-awU.title" = "My Post Details";
+
+/* Class = "UITextView"; text = "Optional: Provide more details"; ObjectID = "REF-Uc-KuU"; */
+"REF-Uc-KuU.text" = "Optional: Provide more details";
 
 /* Class = "UILabel"; text = "Account"; ObjectID = "RLU-vf-03B"; */
 "RLU-vf-03B.text" = "Account";
@@ -344,26 +347,26 @@
 /* Class = "UITabBarItem"; title = "Settings"; ObjectID = "SIp-10-zfD"; */
 "SIp-10-zfD.title" = "Settings";
 
-/* Class = "UILabel"; text = "Facebook"; ObjectID = "SM7-Ci-5HG"; */
-"SM7-Ci-5HG.text" = "Facebook";
-
 /* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "SOV-8t-KBL"; */
 "SOV-8t-KBL.title" = "Next";
-
-/* Class = "UILabel"; text = "Created:"; ObjectID = "SVy-H2-laP"; */
-"SVy-H2-laP.text" = "Created:";
 
 /* Class = "UITextField"; placeholder = "Phone number"; ObjectID = "Sa2-lM-QOx"; */
 "Sa2-lM-QOx.placeholder" = "Phone number";
 
+/* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "StS-Zk-ace"; */
+"StS-Zk-ace.title" = "Back";
+
+/* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "SuO-JL-WsU"; */
+"SuO-JL-WsU.title" = "Cancel";
+
 /* Class = "UINavigationItem"; title = "Description of post"; ObjectID = "SuW-TY-JwN"; */
 "SuW-TY-JwN.title" = "Description of post";
 
-/* Class = "UILabel"; text = "Language"; ObjectID = "T6i-KV-mUc"; */
-"T6i-KV-mUc.text" = "Language";
-
 /* Class = "UITextField"; placeholder = "Phone number (optional)"; ObjectID = "UAy-DO-yP7"; */
 "UAy-DO-yP7.placeholder" = "Phone number (optional)";
+
+/* Class = "UILabel"; text = "Log out"; ObjectID = "UyQ-sd-lSX"; */
+"UyQ-sd-lSX.text" = "Log out";
 
 /* Class = "UILabel"; text = "VK"; ObjectID = "V0b-0k-AGM"; */
 "V0b-0k-AGM.text" = "VK";
@@ -395,23 +398,20 @@
 /* Class = "UILabel"; text = "0.0"; ObjectID = "WAF-bj-DUX"; */
 "WAF-bj-DUX.text" = "0.0";
 
-/* Class = "UILabel"; text = "Posts"; ObjectID = "WCk-Ca-j4E"; */
-"WCk-Ca-j4E.text" = "Posts";
-
 /* Class = "UITableViewSection"; headerTitle = "Password"; ObjectID = "Whq-s4-6Ek"; */
 "Whq-s4-6Ek.headerTitle" = "Password";
 
-/* Class = "UILabel"; text = "Favorites"; ObjectID = "X4Z-Do-F4L"; */
-"X4Z-Do-F4L.text" = "Favorites";
-
-/* Class = "UITableViewController"; title = "Notifications"; ObjectID = "XHa-vg-zMA"; */
-"XHa-vg-zMA.title" = "Notifications";
+/* Class = "UILabel"; text = "Username"; ObjectID = "XyY-iP-OiC"; */
+"XyY-iP-OiC.text" = "Username";
 
 /* Class = "UIBarButtonItem"; title = "Log in"; ObjectID = "YOp-bh-5go"; */
 "YOp-bh-5go.title" = "Log in";
 
 /* Class = "UINavigationItem"; title = "Post Description"; ObjectID = "YY5-4h-7aW"; */
 "YY5-4h-7aW.title" = "Post Description";
+
+/* Class = "UILabel"; text = "999"; ObjectID = "Z4S-Mm-lA8"; */
+"Z4S-Mm-lA8.text" = "999";
 
 /* Class = "UILabel"; text = "Description"; ObjectID = "Z6o-G7-2wX"; */
 "Z6o-G7-2wX.text" = "Description";
@@ -434,8 +434,8 @@
 /* Class = "UITableViewController"; title = "Search Post Result View Controller"; ObjectID = "a2Z-Oh-Oa2"; */
 "a2Z-Oh-Oa2.title" = "Search Post Result View Controller";
 
-/* Class = "UINavigationItem"; title = "Settings"; ObjectID = "adc-f8-XcK"; */
-"adc-f8-XcK.title" = "Settings";
+/* Class = "UILabel"; text = "About us"; ObjectID = "aU2-x1-9Dr"; */
+"aU2-x1-9Dr.text" = "About us";
 
 /* Class = "UILabel"; text = "Sign up to create post"; ObjectID = "aiN-IS-rrP"; */
 "aiN-IS-rrP.text" = "Sign up to create post";
@@ -449,11 +449,11 @@
 /* Class = "UILabel"; text = "This is some very long text to explain what could possibly be inside a post. This text should wrap itself when there's no more space to show it. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra, purus vel accumsan luctus, magna nunc ornare justo, ut egestas ipsum diam ac ligula. Aenean laoreet libero efficitur justo finibus tincidunt. Vivamus facilisis ex nec dolor molestie hendrerit. Curabitur sed nulla vel augue porta interdum a non erat. Sed mauris lorem, tempor vitae nisi vel, ultrices ullamcorper enim. Donec condimentum magna in feugiat auctor. Aenean in justo eget diam auctor tincidunt quis vestibulum nunc. In congue suscipit malesuada. Pellentesque quis mollis ante, accumsan faucibus dolor."; ObjectID = "bcq-PG-6tO"; */
 "bcq-PG-6tO.text" = "This is some very long text to explain what could possibly be inside a post. This text should wrap itself when there's no more space to show it. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra, purus vel accumsan luctus, magna nunc ornare justo, ut egestas ipsum diam ac ligula. Aenean laoreet libero efficitur justo finibus tincidunt. Vivamus facilisis ex nec dolor molestie hendrerit. Curabitur sed nulla vel augue porta interdum a non erat. Sed mauris lorem, tempor vitae nisi vel, ultrices ullamcorper enim. Donec condimentum magna in feugiat auctor. Aenean in justo eget diam auctor tincidunt quis vestibulum nunc. In congue suscipit malesuada. Pellentesque quis mollis ante, accumsan faucibus dolor.";
 
+/* Class = "UILabel"; text = "login"; ObjectID = "bgg-Uw-kId"; */
+"bgg-Uw-kId.text" = "login";
+
 /* Class = "UIBarButtonItem"; title = "Get Directions"; ObjectID = "blN-sg-Dbd"; */
 "blN-sg-Dbd.title" = "Get Directions";
-
-/* Class = "UILabel"; text = "Birthday"; ObjectID = "bnB-jP-xk8"; */
-"bnB-jP-xk8.text" = "Birthday";
 
 /* Class = "UILabel"; text = "Подводная лодка"; ObjectID = "brf-EZ-cbl"; */
 "brf-EZ-cbl.text" = "Подводная лодка";
@@ -464,14 +464,14 @@
 /* Class = "UITableViewController"; title = "Change password"; ObjectID = "c7O-lc-cfj"; */
 "c7O-lc-cfj.title" = "Change password";
 
-/* Class = "UILabel"; text = "Settings"; ObjectID = "cHT-7q-JFw"; */
-"cHT-7q-JFw.text" = "Settings";
-
 /* Class = "UITableViewSection"; headerTitle = "What"; ObjectID = "coy-YR-Z4E"; */
 "coy-YR-Z4E.headerTitle" = "What";
 
 /* Class = "UILabel"; text = "5 mi"; ObjectID = "crk-mg-lDY"; */
 "crk-mg-lDY.text" = "5 mi";
+
+/* Class = "UILabel"; text = "+7 (999) 999-21-22"; ObjectID = "d8V-Uv-fzK"; */
+"d8V-Uv-fzK.text" = "+7 (999) 999-21-22";
 
 /* Class = "UILabel"; text = "This is some very long text to explain what could possibly be inside a post. This text should wrap itself when there's no more space to show it. "; ObjectID = "dBt-Nc-d6t"; */
 "dBt-Nc-d6t.text" = "This is some very long text to explain what could possibly be inside a post. This text should wrap itself when there's no more space to show it. ";
@@ -482,11 +482,20 @@
 /* Class = "UINavigationItem"; title = "Settings"; ObjectID = "dQF-Mr-9M8"; */
 "dQF-Mr-9M8.title" = "Settings";
 
+/* Class = "UILabel"; text = "Phone"; ObjectID = "dYb-Pj-rWf"; */
+"dYb-Pj-rWf.text" = "Phone";
+
 /* Class = "UILabel"; text = "2 days"; ObjectID = "dd3-fE-U3q"; */
 "dd3-fE-U3q.text" = "2 days";
 
-/* Class = "UILabel"; text = "Post status"; ObjectID = "dp2-PW-zuV"; */
-"dp2-PW-zuV.text" = "Post status";
+/* Class = "UINavigationItem"; title = "New post"; ObjectID = "dfX-kM-zaA"; */
+"dfX-kM-zaA.title" = "New post";
+
+/* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "drZ-7g-oWG"; */
+"drZ-7g-oWG.title" = "Back";
+
+/* Class = "UILabel"; text = "Ivan Brovkovich"; ObjectID = "dsq-Y7-WBr"; */
+"dsq-Y7-WBr.text" = "Ivan Brovkovich";
 
 /* Class = "UILabel"; text = "Description of post"; ObjectID = "e8t-Is-sHY"; */
 "e8t-Is-sHY.text" = "Description of post";
@@ -508,9 +517,6 @@
 
 /* Class = "UILabel"; text = "You have no posts"; ObjectID = "fZh-j2-ptF"; */
 "fZh-j2-ptF.text" = "You have no posts";
-
-/* Class = "UILabel"; text = "cell user profile - nib"; ObjectID = "fd6-Wl-r25"; */
-"fd6-Wl-r25.text" = "cell user profile - nib";
 
 /* Class = "UILabel"; text = "Facebook"; ObjectID = "fpr-qX-PFr"; */
 "fpr-qX-PFr.text" = "Facebook";
@@ -566,8 +572,17 @@
 /* Class = "UIButton"; normalTitle = "Change"; ObjectID = "j8b-84-Jux"; */
 "j8b-84-Jux.normalTitle" = "Change";
 
+/* Class = "UILabel"; text = "Username:"; ObjectID = "jBT-Zc-qw0"; */
+"jBT-Zc-qw0.text" = "Username:";
+
 /* Class = "UITextField"; placeholder = "New password"; ObjectID = "jJW-KI-8zA"; */
 "jJW-KI-8zA.placeholder" = "New password";
+
+/* Class = "UISegmentedControl"; jQc-a5-ojv.segmentTitles[0] = "List"; ObjectID = "jQc-a5-ojv"; */
+"jQc-a5-ojv.segmentTitles[0]" = "List";
+
+/* Class = "UISegmentedControl"; jQc-a5-ojv.segmentTitles[1] = "Map"; ObjectID = "jQc-a5-ojv"; */
+"jQc-a5-ojv.segmentTitles[1]" = "Map";
 
 /* Class = "UILabel"; text = "It is connected with your mobile phone."; ObjectID = "jXt-P5-sY1"; */
 "jXt-P5-sY1.text" = "It is connected with your mobile phone.";
@@ -587,6 +602,9 @@
 /* Class = "UILabel"; text = "Static"; ObjectID = "kCu-0L-P9e"; */
 "kCu-0L-P9e.text" = "Static";
 
+/* Class = "UILabel"; text = "9999"; ObjectID = "kGn-77-7uU"; */
+"kGn-77-7uU.text" = "9999";
+
 /* Class = "UILabel"; text = "Ashot Arutyunyan"; ObjectID = "kRs-ZG-5Kd"; */
 "kRs-ZG-5Kd.text" = "Ashot Arutyunyan";
 
@@ -605,9 +623,6 @@
 /* Class = "UILabel"; text = "666"; ObjectID = "l6I-mw-bBv"; */
 "l6I-mw-bBv.text" = "666";
 
-/* Class = "UILabel"; text = "Map"; ObjectID = "l8c-v1-ejR"; */
-"l8c-v1-ejR.text" = "Map";
-
 /* Class = "UITextField"; placeholder = "Email address"; ObjectID = "lGH-xx-W4y"; */
 "lGH-xx-W4y.placeholder" = "Email address";
 
@@ -623,6 +638,12 @@
 /* Class = "UITextField"; placeholder = "Confirm new password"; ObjectID = "lO4-J3-0Kz"; */
 "lO4-J3-0Kz.placeholder" = "Confirm new password";
 
+/* Class = "UISearchBar"; lh8-HC-0Ay.scopeButtonTitles[0] = "Title"; ObjectID = "lh8-HC-0Ay"; */
+"lh8-HC-0Ay.scopeButtonTitles[0]" = "Title";
+
+/* Class = "UISearchBar"; lh8-HC-0Ay.scopeButtonTitles[1] = "Title"; ObjectID = "lh8-HC-0Ay"; */
+"lh8-HC-0Ay.scopeButtonTitles[1]" = "Title";
+
 /* Class = "UITableViewSection"; headerTitle = "Import from Web (optional)"; ObjectID = "llL-1O-hxQ"; */
 "llL-1O-hxQ.headerTitle" = "Import from Web (optional)";
 
@@ -632,20 +653,17 @@
 /* Class = "UILabel"; text = "Edit profile"; ObjectID = "m3Q-HH-LBJ"; */
 "m3Q-HH-LBJ.text" = "Edit profile";
 
-/* Class = "UILabel"; text = "Post title"; ObjectID = "mMH-4g-vXl"; */
-"mMH-4g-vXl.text" = "Post title";
+/* Class = "UILabel"; text = "Название текущего поста"; ObjectID = "mMH-4g-vXl"; */
+"mMH-4g-vXl.text" = "Название текущего поста";
+
+/* Class = "UILabel"; text = "Notify me of nearby events"; ObjectID = "nF0-Kk-gEa"; */
+"nF0-Kk-gEa.text" = "Notify me of nearby events";
 
 /* Class = "UILabel"; text = "When"; ObjectID = "nFz-Y1-rfV"; */
 "nFz-Y1-rfV.text" = "When";
 
 /* Class = "UITabBarItem"; title = "Posts"; ObjectID = "nYa-Fa-arV"; */
 "nYa-Fa-arV.title" = "Posts";
-
-/* Class = "UISegmentedControl"; nf5-zF-Vli.segmentTitles[0] = "Male"; ObjectID = "nf5-zF-Vli"; */
-"nf5-zF-Vli.segmentTitles[0]" = "Male";
-
-/* Class = "UISegmentedControl"; nf5-zF-Vli.segmentTitles[1] = "Female"; ObjectID = "nf5-zF-Vli"; */
-"nf5-zF-Vli.segmentTitles[1]" = "Female";
 
 /* Class = "UILabel"; text = "Looking to"; ObjectID = "ni6-tS-PN0"; */
 "ni6-tS-PN0.text" = "Looking to";
@@ -662,11 +680,14 @@
 /* Class = "UINavigationItem"; title = "Register"; ObjectID = "osv-iz-1uf"; */
 "osv-iz-1uf.title" = "Register";
 
+/* Class = "UITextField"; placeholder = "Tap here to give post a title"; ObjectID = "ovB-ZE-Vfv"; */
+"ovB-ZE-Vfv.placeholder" = "Tap here to give post a title";
+
+/* Class = "UIButton"; normalTitle = "Написать"; ObjectID = "p6M-Vp-H5b"; */
+"p6M-Vp-H5b.normalTitle" = "Написать";
+
 /* Class = "UILabel"; text = "Title"; ObjectID = "pK5-HD-awh"; */
 "pK5-HD-awh.text" = "Title";
-
-/* Class = "UITextField"; placeholder = "Search posts"; ObjectID = "qER-HL-ilb"; */
-"qER-HL-ilb.placeholder" = "Search posts";
 
 /* Class = "UITextField"; placeholder = "User name"; ObjectID = "qZP-0H-SCW"; */
 "qZP-0H-SCW.placeholder" = "User name";
@@ -677,8 +698,8 @@
 /* Class = "UITableViewSection"; headerTitle = "Tags"; ObjectID = "r4M-zK-zn4"; */
 "r4M-zK-zn4.headerTitle" = "Tags";
 
-/* Class = "UILabel"; text = "Aquiring location..."; ObjectID = "rWD-VU-Bnb"; */
-"rWD-VU-Bnb.text" = "Aquiring location...";
+/* Class = "UILabel"; text = "Acquiring location..."; ObjectID = "rWD-VU-Bnb"; */
+"rWD-VU-Bnb.text" = "Acquiring location...";
 
 /* Class = "UILabel"; text = "email"; ObjectID = "s7z-7t-bod"; */
 "s7z-7t-bod.text" = "email";
@@ -692,17 +713,20 @@
 /* Class = "UILabel"; text = "About us and Help"; ObjectID = "t1p-Vc-vwW"; */
 "t1p-Vc-vwW.text" = "About us and Help";
 
+/* Class = "UILabel"; text = "999"; ObjectID = "t8e-Ua-6YU"; */
+"t8e-Ua-6YU.text" = "999";
+
 /* Class = "UILabel"; text = "Login"; ObjectID = "tRb-Me-Kjv"; */
 "tRb-Me-Kjv.text" = "Login";
 
 /* Class = "UILabel"; text = "Log in with Facebook"; ObjectID = "tUC-3K-QXx"; */
 "tUC-3K-QXx.text" = "Log in with Facebook";
 
+/* Class = "UILabel"; text = "Help"; ObjectID = "tVB-OW-NCc"; */
+"tVB-OW-NCc.text" = "Help";
+
 /* Class = "UILabel"; text = "365 days"; ObjectID = "ttN-lV-xSZ"; */
 "ttN-lV-xSZ.text" = "365 days";
-
-/* Class = "UILabel"; text = "Feedback"; ObjectID = "tyT-D5-q6B"; */
-"tyT-D5-q6B.text" = "Feedback";
 
 /* Class = "UILabel"; text = "Description"; ObjectID = "u09-Q9-mGC"; */
 "u09-Q9-mGC.text" = "Description";
@@ -710,20 +734,11 @@
 /* Class = "UINavigationItem"; title = "Profile"; ObjectID = "uAC-Vy-9zC"; */
 "uAC-Vy-9zC.title" = "Profile";
 
-/* Class = "UILabel"; text = "My messages"; ObjectID = "uQp-PD-2sU"; */
-"uQp-PD-2sU.text" = "My messages";
-
 /* Class = "UINavigationItem"; title = "Messages"; ObjectID = "uX0-i6-PlM"; */
 "uX0-i6-PlM.title" = "Messages";
 
 /* Class = "UILabel"; text = "Your status"; ObjectID = "ujW-Q1-sMn"; */
 "ujW-Q1-sMn.text" = "Your status";
-
-/* Class = "UISegmentedControl"; ury-uL-ybu.segmentTitles[0] = "Nearby"; ObjectID = "ury-uL-ybu"; */
-"ury-uL-ybu.segmentTitles[0]" = "Nearby";
-
-/* Class = "UISegmentedControl"; ury-uL-ybu.segmentTitles[1] = "Featured"; ObjectID = "ury-uL-ybu"; */
-"ury-uL-ybu.segmentTitles[1]" = "Featured";
 
 /* Class = "UILabel"; text = "Tap to select"; ObjectID = "uvK-Br-h7n"; */
 "uvK-Br-h7n.text" = "Tap to select";
@@ -740,8 +755,8 @@
 /* Class = "UILabel"; text = "Access my posts"; ObjectID = "vvd-22-fsE"; */
 "vvd-22-fsE.text" = "Access my posts";
 
-/* Class = "UILabel"; text = "username"; ObjectID = "wnu-Y3-QEy"; */
-"wnu-Y3-QEy.text" = "username";
+/* Class = "UITextField"; placeholder = "Skype (optional)"; ObjectID = "wfy-Jw-npf"; */
+"wfy-Jw-npf.placeholder" = "Skype (optional)";
 
 /* Class = "UILabel"; text = "Add photo"; ObjectID = "wuC-jE-fVP"; */
 "wuC-jE-fVP.text" = "Add photo";
@@ -749,20 +764,14 @@
 /* Class = "UILabel"; text = "Reminders"; ObjectID = "xJz-ss-KoC"; */
 "xJz-ss-KoC.text" = "Reminders";
 
-/* Class = "UINavigationItem"; title = "Pick when your ad expires"; ObjectID = "xZr-tb-Fqy"; */
-"xZr-tb-Fqy.title" = "Pick when your ad expires";
+/* Class = "UINavigationItem"; title = "When does it expire?"; ObjectID = "xZr-tb-Fqy"; */
+"xZr-tb-Fqy.title" = "When does it expire?";
 
 /* Class = "UILabel"; text = "Tap to select"; ObjectID = "xte-8n-oAp"; */
 "xte-8n-oAp.text" = "Tap to select";
 
 /* Class = "UITextField"; placeholder = "Last name"; ObjectID = "y0V-o1-fgO"; */
 "y0V-o1-fgO.placeholder" = "Last name";
-
-/* Class = "UILabel"; text = "cell about Me - nib"; ObjectID = "yXz-w4-njc"; */
-"yXz-w4-njc.text" = "cell about Me - nib";
-
-/* Class = "UILabel"; text = "My posts"; ObjectID = "yhh-9C-yiE"; */
-"yhh-9C-yiE.text" = "My posts";
 
 /* Class = "UIButton"; normalTitle = "Reset password"; ObjectID = "zEc-hI-ea9"; */
 "zEc-hI-ea9.normalTitle" = "Reset password";

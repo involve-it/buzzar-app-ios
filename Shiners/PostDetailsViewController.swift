@@ -422,9 +422,9 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "editPost"{
-            let vc = segue.destinationViewController as! UINavigationController
-            let createVc = vc.viewControllers[0] as! NewPostViewController
-            createVc.post = self.post
+            //let vc = segue.destinationViewController as! UINavigationController
+            //let createVc = vc.viewControllers[0] as! NewPostViewController
+            //createVc.post = self.post
         } else if segue.identifier == "fullMapSegue"{
             let nc = segue.destinationViewController as! UINavigationController
             let vc = nc.viewControllers[0] as! FullMapViewController

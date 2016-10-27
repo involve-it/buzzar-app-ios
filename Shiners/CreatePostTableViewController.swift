@@ -75,8 +75,8 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
+        /*NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)*/
 
         self.locationHandler.delegate = self
         if !self.locationHandler.getLocationOnce(true){
@@ -118,7 +118,7 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     }
     
     
-    
+    /*
     func keyboardWillShow(notification: NSNotification) {
         
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
@@ -134,7 +134,7 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
             //print("keyboard hide \(keyboardSize.height)")
         }
         
-    }
+    }*/
     
     
     //Textfield limit characters

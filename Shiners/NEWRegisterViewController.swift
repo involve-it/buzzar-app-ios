@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 public class NEWRegisterViewController: UITableViewController, UITextFieldDelegate {
     @IBOutlet weak var textFieldUsername: UITextField!
@@ -61,7 +62,17 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
     
     private func register() {
         if self.textFieldPassword.text == self.textFieldConfirmPassword.text {
-            let user = RegisterUser(username: self.textFieldUsername.text, email: self.textFieldEmailAddress.text, password: self.textFieldPassword.text);
+           
+            //username
+            let username = self.textFieldUsername.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            //password
+            let password = self.textFieldPassword.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            //email and check
+            var email: String? = self.textFieldEmailAddress.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            
+            email = email!.isValidEmail() ? email : nil
+            
+            let user = RegisterUser(username: username, email: email, password: password);
             if (user.isValid()){
                 self.setLoading(true)
                 

@@ -30,4 +30,5 @@ class PostsTableViewCell: UITableViewCell{
     @IBOutlet weak var imgSeparatorFromViewCount: UIImageView!
     @IBOutlet weak var imgSeparatorFromViewUI: UIImageView!
     @IBOutlet weak var imgSeparatorFromExpiresPostLabel: UIImageView!
+    
 }

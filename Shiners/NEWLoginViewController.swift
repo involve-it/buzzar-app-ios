@@ -74,8 +74,8 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func login(){
-        if let userName = textFieldUsername.text where userName != "",
-           let password = textFieldPassword.text where password != "" {
+        if let userName = textFieldUsername.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where userName != "",
+           let password = textFieldPassword.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where password != "" {
             setLoading(true)
             
             AccountHandler.Instance.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in
@@ -119,14 +119,4 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
