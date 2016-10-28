@@ -38,7 +38,7 @@ class ProfileTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = NSLocalizedString("Profile", comment: "Navigation title, Profile")
+        self.navigationItem.title = NSLocalizedString("Settings", comment: "Navigation title, Settings")
         
         self.phoneRowVisible.hidden = false
         self.skypeRowVisible.hidden = false
@@ -47,6 +47,10 @@ class ProfileTableViewController: UITableViewController {
         
         tabelViewEstimatedRowHeight()
         fillUserData()
+        
+        if AccountHandler.Instance.status != .Completed {
+            self.editProfile.enabled = false
+        }
         
         if extUser == nil {
             if let index = self.navigationItem.leftBarButtonItems?.indexOf(self.btnCloseVC){
@@ -57,8 +61,17 @@ class ProfileTableViewController: UITableViewController {
                 self.navigationItem.rightBarButtonItems?.removeAtIndex(index)
             }
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorLoaded), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorLoaded), name: NotificationManager.Name.UserUpdated.rawValue, object: nil)
     }
-
+    
+    func meteorLoaded(){
+        self.fillUserData()
+        if let editPorfileButton = self.editProfile{
+            editPorfileButton.enabled = true
+        }
+    }
     
     @IBAction func closeVC(sender: UIBarButtonItem) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -132,8 +145,7 @@ class ProfileTableViewController: UITableViewController {
     
     func fillUserData() {
         var user: User!
-        user = extUser ?? AccountHandler.Instance.currentUser
-        
+        user = (extUser ?? AccountHandler.Instance.currentUser) ?? CachingHandler.Instance.currentUser
         
         if user != nil {
             self.currentUser = user
@@ -218,7 +230,11 @@ class ProfileTableViewController: UITableViewController {
             //Load user default data
             imgUserAvatar.image = ImageCachingHandler.defaultAccountImage;
         }
+        
+        if self.skypeRowVisible.hidden{
+            self.phoneRowVisible.separatorInset = UIEdgeInsetsZero
+            self.phoneRowVisible.layoutMargins = UIEdgeInsetsZero
+            //self.phoneRowVisible.preservesSuperviewLayoutMargins = false
+        }
     }
-    
-    
 }
