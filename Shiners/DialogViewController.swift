@@ -143,7 +143,7 @@ public class DialogViewController : JSQMessagesViewController{
                 if messages.count > MessagesHandler.DEFAULT_PAGE_SIZE {
                     totalCount = MessagesHandler.DEFAULT_PAGE_SIZE
                 }
-                for i in 0...totalCount - 1 {
+                for i in 0...totalCount {
                     indexPaths.append(NSIndexPath(forItem: i, inSection: 0))
                 }
                 for message in messagesSortedDescending {

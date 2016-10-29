@@ -47,7 +47,8 @@ class MessagesCollection: AbstractCollection{
                     if message.toUserId == AccountHandler.Instance.userId {
                         chat.seen = message.seen
                     }
-                    AccountHandler.Instance.myChats?.append(chat)
+                    chat.messagesRequested = true
+                    AccountHandler.Instance.myChats?.insert(chat, atIndex: 0)
                     
                     LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id)
                     NotificationManager.sendNotification(.MyChatsUpdated, object: chat)
