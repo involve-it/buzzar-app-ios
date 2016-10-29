@@ -331,14 +331,21 @@ public class DialogViewController : JSQMessagesViewController{
     }
     
     public override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-        let message = MessageToSend()
-        message.destinationUserId = self.chat.otherParty?.id
-        message.message = text
-        ConnectionHandler.Instance.messages.sendMessage(message){ success, errorId, errorMessage, result in
-            if !success {
-                self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
-            }
-        };
+        if text != "" {
+            let message = MessageToSend()
+            message.destinationUserId = self.chat.otherParty?.id
+            message.message = text
+            
+            ConnectionHandler.Instance.messages.sendMessage(message){ success, errorId, errorMessage, result in
+                if !success {
+                    ThreadHelper.runOnMainThread({ 
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
+                    })
+                }
+            };
+            
+            self.finishSendingMessage()
+        }
     }
 }
 
