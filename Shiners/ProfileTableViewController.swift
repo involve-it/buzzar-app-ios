@@ -157,9 +157,13 @@ class ProfileTableViewController: UITableViewController {
             }
             
             //Username
-            if let firstName = self.currentUser?.getProfileDetailValue(.FirstName) where firstName != "",
-               let lastName = self.currentUser?.getProfileDetailValue(.LastName) where lastName != "" {
-                txtUserName.text = "\(firstName) \(lastName)"
+            if let firstName = self.currentUser?.getProfileDetailValue(.FirstName),
+               lastName = self.currentUser?.getProfileDetailValue(.LastName) where firstName != "" || lastName != "" {
+                if (lastName != ""){
+                    txtUserName.text = "\(firstName) \(lastName)"
+                } else {
+                    txtUserName.text = "\(firstName)"
+                }
             } else {
                 txtUserName.text = self.currentUser.username
             }
