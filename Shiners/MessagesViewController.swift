@@ -101,6 +101,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
                                     self.dialogs.removeAtIndex(self.dialogs.indexOf({$0.id == chatId})!)
                                     AccountHandler.Instance.myChats!.removeAtIndex(AccountHandler.Instance.myChats!.indexOf({$0.id == chatId})!)
                                     AccountHandler.Instance.saveMyChats()
+                                    NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
                                 })
                                 
                                 if self.dialogs.count == 0{
@@ -111,6 +112,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
                                     self.tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
                                 }
                                 self.editAction(self.editButtonItem())
+                                AccountHandler.Instance.processLocalNotifications()
                             } else {
                                 self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
                             }
@@ -299,13 +301,6 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             let titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.width - 32, view.frame.height))
             titleLabel.text = "HOME"
             
-            
-            
-            
-            
-            
-            
-            
             //Main profile view
             let views: UIView = {
                 let v = UIView()
@@ -323,8 +318,6 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
                 imageView.layer.masksToBounds = true
                 return imageView
             }()
-            
-            
             
             views.addSubview(profileImageView)
             
@@ -407,14 +400,18 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             let dialog = self.dialogs[indexPath.row]
             
             ConnectionHandler.Instance.messages.deleteChats([dialog.id!]) { success, errorId, errorMessage, result in
-                if success {
-                    self.dialogs.removeAtIndex(indexPath.row)
-                    AccountHandler.Instance.myChats!.removeAtIndex(AccountHandler.Instance.myChats!.indexOf({$0.id == dialog.id})!)
-                    AccountHandler.Instance.saveMyChats()
-                    self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-                } else {
-                    self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
-                }
+                ThreadHelper.runOnMainThread({ 
+                    if success {
+                        self.dialogs.removeAtIndex(indexPath.row)
+                        AccountHandler.Instance.myChats!.removeAtIndex(AccountHandler.Instance.myChats!.indexOf({$0.id == dialog.id})!)
+                        AccountHandler.Instance.saveMyChats()
+                        self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                        AccountHandler.Instance.processLocalNotifications()
+                        NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
+                    } else {
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
+                    }
+                })
             }
         }
     }

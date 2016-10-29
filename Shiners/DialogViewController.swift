@@ -47,6 +47,8 @@ public class DialogViewController : JSQMessagesViewController{
             }
         }
         
+        self.chat.seen = true
+        
         if self.chat.messages.count > 0{
             self.updateMessages(self.chat.messages)
             self.notifyUnseen()
@@ -90,7 +92,6 @@ public class DialogViewController : JSQMessagesViewController{
     }
     
     private func notifyUnseen(){
-        self.chat.seen = true
         NotificationManager.sendNotification(.MyChatsUpdated, object: chat)
         let unseen = self.chat.messages.filter({!($0.seen ?? false) && $0.id != nil && $0.toUserId == AccountHandler.Instance.userId}).map({$0.id!})
         if unseen.count > 0 && UIApplication.sharedApplication().applicationState == .Active {
@@ -99,6 +100,7 @@ public class DialogViewController : JSQMessagesViewController{
                     self.chat.messages.filter({unseen.contains($0.id ?? "")}).forEach({ (message) in
                         message.seen = true
                     })
+                    self.chat.seen = true
                     ThreadHelper.runOnBackgroundThread({ 
                         AccountHandler.Instance.saveMyChats()
                     })
