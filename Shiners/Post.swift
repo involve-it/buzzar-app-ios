@@ -276,6 +276,8 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         dict[PropertyKey.details] = details
         if let visible = self.visible where visible {
             dict[PropertyKey.status] = [PropertyKey.visible: PropertyKey.visible]
+        } else {
+            dict[PropertyKey.status] = [PropertyKey.visible: false]
         }
         
         if self.type == .Trainings {
