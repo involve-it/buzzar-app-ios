@@ -141,17 +141,22 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         
         //Check UserId & Post's user id
         let ownPost = post.user?.id == AccountHandler.Instance.userId
+        
         if ownPost {
-            self.callWriteView.hidden = ownPost
+            self.callWriteView.hidden = true
             self.callWriteViewHeight.constant = 0
             self.view.layoutIfNeeded()
-        }
-        
-        if let phoneNumberDetail = post.user?.getProfileDetail(.Phone), phoneNumber = phoneNumberDetail.value where !ownPost{
-            self.phoneNumber = phoneNumber
-            self.callStack.hidden = false
         } else {
-            self.callStack.hidden = true
+            if let phoneNumberDetail = post.user?.getProfileDetail(.Phone), phoneNumber = phoneNumberDetail.value where !ownPost{
+                self.phoneNumber = phoneNumber
+                self.callStack.hidden = false
+            } else {
+                self.callStack.hidden = true
+            }
+            
+            if !AccountHandler.Instance.isLoggedIn() {
+                self.writeStack.hidden = true
+            }
         }
         
         //Title
