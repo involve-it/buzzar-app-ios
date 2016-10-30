@@ -39,8 +39,6 @@ class ProfileTableViewController: UITableViewController {
     //@IBOutlet weak var facebookRowVisible: UITableViewCell!
     @IBOutlet weak var cbNearbyNotifications: UISwitch!
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,14 +59,8 @@ class ProfileTableViewController: UITableViewController {
         //self.vkRowVisible.hidden = false
         //self.facebookRowVisible.hidden = false
         
-        
-        
         tabelViewEstimatedRowHeight()
         fillUserData()
-        
-        if AccountHandler.Instance.status != .Completed {
-            self.editProfile.enabled = false
-        }
         
         if extUser == nil {
             if let index = self.navigationItem.leftBarButtonItems?.indexOf(self.btnCloseVC){
@@ -91,6 +83,14 @@ class ProfileTableViewController: UITableViewController {
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if AccountHandler.Instance.status != .Completed {
+            self.editProfile.enabled = false
+        } else {
+            self.editProfile.enabled = true
+        }
+    }
 
     @IBAction func cendMessageToUser(sender: UIButton) {
         let alertController = UIAlertController(title: NSLocalizedString("New message", comment: "Alert title, New message"), message: nil, preferredStyle: .Alert);
