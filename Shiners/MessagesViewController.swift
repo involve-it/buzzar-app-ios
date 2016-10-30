@@ -14,15 +14,14 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
     private var meteorLoaded = false
     
     var pendingChatId: String?
+    var btnDelete: UIBarButtonItem!
     
     @IBAction func unwindMessages(segue: UIStoryboardSegue) {
         //self.navigationController?.popViewControllerAnimated(false)
     }
     
     public override func viewDidLoad() {
-        
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
-        
             
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(dialogsUpdated), name: NotificationManager.Name.MyChatsUpdated.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
@@ -55,10 +54,95 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
         
+        self.btnDelete = UIBarButtonItem(title: "Delete", style: UIBarButtonItemStyle.Done, target: self, action: #selector(deleteMessages))
+        
+        self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        self.editButtonItem().action = #selector(editAction)
+        
+        if self.dialogs.count > 0{
+            self.editButtonItem().enabled = true
+        } else {
+            self.editButtonItem().enabled = false
+        }
+
         
         //conf. LeftMenu
         //self.configureOfLeftMenu()
         //self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
+    }
+    
+    func editAction(sender: UIBarButtonItem){
+        if self.tableView.editing{
+            self.tableView.setEditing(false, animated: true)
+            self.navigationItem.leftBarButtonItem = nil
+            sender.title = "Edit"
+        } else {
+            self.tableView.setEditing(true, animated: true)
+            self.navigationItem.leftBarButtonItem = self.btnDelete
+            sender.title = "Done"
+        }
+    }
+    
+    func deleteMessages(){
+        if let indexPaths = self.tableView.indexPathsForSelectedRows {
+            let count = indexPaths.count
+            if count > 0 {
+                let alertController = UIAlertController(title: NSLocalizedString("Delete Messages", comment: "Delete Messages"), message: NSLocalizedString("Are you sure you want to delete your \(count > 1 ? "\(count) ":"")dialog\(count > 1 ?"s":"")?", comment: "Alert message, Are you sure you want to delete your \(count > 1 ? "\(count) ":"")dialog\(count > 1 ?"s":"")?"), preferredStyle: .ActionSheet);
+                alertController.addAction(UIAlertAction(title: "Delete", style: .Destructive, handler: { (action) in
+                    //self.showAlert("Deleted", message: "Deleted")
+                    var chatIds = [String]()
+                    indexPaths.forEach({ (indexPath) in
+                        chatIds.append(self.dialogs[indexPath.row].id!)
+                    })
+                    ConnectionHandler.Instance.messages.deleteChats(chatIds, callback: { (success, errorId, errorMessage, result) in
+                        ThreadHelper.runOnMainThread({
+                            if success {
+                                chatIds.forEach({ (chatId) in
+                                    self.dialogs.removeAtIndex(self.dialogs.indexOf({$0.id == chatId})!)
+                                    AccountHandler.Instance.myChats!.removeAtIndex(AccountHandler.Instance.myChats!.indexOf({$0.id == chatId})!)
+                                    AccountHandler.Instance.saveMyChats()
+                                    NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
+                                })
+                                
+                                if self.dialogs.count == 0{
+                                    let allExceptFirst = indexPaths.filter({$0.row != 0})
+                                    self.tableView.deleteRowsAtIndexPaths(allExceptFirst, withRowAnimation: .None)
+                                    self.tableView.reloadData()
+                                } else {
+                                    self.tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+                                }
+                                self.editAction(self.editButtonItem())
+                                AccountHandler.Instance.processLocalNotifications()
+                            } else {
+                                self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
+                            }
+                        })
+                    })
+                }))
+                alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil));
+                
+                self.presentViewController(alertController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func endEditIfDone(count: Int, processedCount: Int, allIndexPaths: [NSIndexPath]){
+        if count == processedCount {
+            if self.tableView.editing {
+                ThreadHelper.runOnMainThread({
+                    self.editAction(self.editButtonItem())
+                })
+            }
+            ThreadHelper.runOnMainThread({
+                if self.dialogs.count == 0{
+                    let allExceptFirst = allIndexPaths.filter({$0.row != 0})
+                    self.tableView.deleteRowsAtIndexPaths(allExceptFirst, withRowAnimation: .None)
+                    self.tableView.reloadData()
+                } else {
+                    self.tableView.deleteRowsAtIndexPaths(allIndexPaths, withRowAnimation: .Automatic)
+                }
+            })
+        }
     }
     
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
@@ -217,13 +301,6 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             let titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.width - 32, view.frame.height))
             titleLabel.text = "HOME"
             
-            
-            
-            
-            
-            
-            
-            
             //Main profile view
             let views: UIView = {
                 let v = UIView()
@@ -241,8 +318,6 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
                 imageView.layer.masksToBounds = true
                 return imageView
             }()
-            
-            
             
             views.addSubview(profileImageView)
             
@@ -287,16 +362,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             containerView.addConstraintsWithFormat("V:|[v0][v1(14)]|", views: nameLabel, activeTimeLabel)
             
             containerView.addConstraintsWithFormat("H:|[v0]-8-|", views: activeTimeLabel)
-    
-            
-            
-            
-            
-            
-            
-            
-            
-           
+               
             viewController.navigationItem.titleView = views
             
             //viewController.navigationItem.titleView = titleLabel
@@ -321,6 +387,10 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         }
     }
     
+    public override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        return !self.tableView.editing
+    }
+    
     public override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
@@ -330,13 +400,18 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             let dialog = self.dialogs[indexPath.row]
             
             ConnectionHandler.Instance.messages.deleteChats([dialog.id!]) { success, errorId, errorMessage, result in
-                if success {
-                    self.dialogs.removeAtIndex(indexPath.row)
-                    self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-                } else {
-                    self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
-                }
-                
+                ThreadHelper.runOnMainThread({ 
+                    if success {
+                        self.dialogs.removeAtIndex(indexPath.row)
+                        AccountHandler.Instance.myChats!.removeAtIndex(AccountHandler.Instance.myChats!.indexOf({$0.id == dialog.id})!)
+                        AccountHandler.Instance.saveMyChats()
+                        self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                        AccountHandler.Instance.processLocalNotifications()
+                        NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
+                    } else {
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
+                    }
+                })
             }
         }
     }

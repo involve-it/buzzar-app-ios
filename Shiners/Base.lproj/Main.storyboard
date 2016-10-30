@@ -1047,7 +1047,7 @@
                                     <constraint firstAttribute="height" constant="42" id="ns6-ip-EiG"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                         <integer key="value" value="4"/>
@@ -2624,7 +2624,7 @@
         <scene sceneID="oa4-Uk-vg9">
             <objects>
                 <tableViewController id="dsW-Ec-uRF" customClass="MessagesViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="77" sectionHeaderHeight="28" sectionFooterHeight="28" id="1Qt-Ls-xmQ">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="77" sectionHeaderHeight="28" sectionFooterHeight="28" id="1Qt-Ls-xmQ">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -4910,7 +4910,7 @@
                                                         <constraint firstAttribute="height" constant="42" id="pTX-8k-wOg"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="xkZ-tF-tcB" id="XLM-b8-Rm5"/>
                                                     </connections>
@@ -5268,7 +5268,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="DWx-l0-Aia"/>
-        <segue reference="EKW-F4-b1d"/>
+        <segue reference="gVm-sN-Epi"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.35294117650000001" green="0.69411764710000001" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
 </document>

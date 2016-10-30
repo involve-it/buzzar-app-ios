@@ -53,11 +53,9 @@ class LocalNotificationsHandler{
     }
     
     private func sendLocalNotification(view: AppView, count: Int){
-        if LocalNotificationsHandler.isAppInForeground(){
-            UIApplication.sharedApplication().applicationIconBadgeNumber = self.getTotalEventCount()
-            let notificationEvent = LocalNotificationEvent(view: view, count: count)
-            NotificationManager.sendNotification(NotificationManager.Name.ServerEventNotification, object: notificationEvent)
-        }
+        UIApplication.sharedApplication().applicationIconBadgeNumber = self.getTotalEventCount()
+        let notificationEvent = LocalNotificationEvent(view: view, count: count)
+        NotificationManager.sendNotification(NotificationManager.Name.ServerEventNotification, object: notificationEvent)
     }
     
     private class func isAppInForeground() -> Bool{

@@ -42,17 +42,20 @@ class MessagesCollection: AbstractCollection{
             NotificationManager.sendNotification(NotificationManager.Name.MessageAdded, object: message)
         } else {
             ConnectionHandler.Instance.messages.getChat(message.chatId!){ success, errorId, errorMessage, result in
-                if let chat = result as? Chat where success {
-                    chat.addMessage(message)
-                    if message.toUserId == AccountHandler.Instance.userId {
-                        chat.seen = message.seen
+                if AccountHandler.Instance.myChats?.indexOf({$0.id == message.chatId}) == nil{
+                    if let chat = result as? Chat where success {
+                        chat.addMessage(message)
+                        if message.toUserId == AccountHandler.Instance.userId {
+                            chat.seen = message.seen
+                        }
+                        chat.messagesRequested = true
+                        AccountHandler.Instance.myChats?.insert(chat, atIndex: 0)
+                        
+                        LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id)
+                        NotificationManager.sendNotification(.MyChatsUpdated, object: chat)
+                    } else {
+                        NSLog("error loading chat")
                     }
-                    AccountHandler.Instance.myChats?.append(chat)
-                    
-                    LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id)
-                    NotificationManager.sendNotification(.MyChatsUpdated, object: chat)
-                } else {
-                    NSLog("error loading chat")
                 }
             }
         }

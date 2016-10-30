@@ -47,6 +47,8 @@ public class DialogViewController : JSQMessagesViewController{
             }
         }
         
+        self.chat.seen = true
+        
         if self.chat.messages.count > 0{
             self.updateMessages(self.chat.messages)
             self.notifyUnseen()
@@ -83,14 +85,13 @@ public class DialogViewController : JSQMessagesViewController{
             
             self.dataFromCache = false
             self.updateMessages(messages)
-            if self.initialPage {
+            if !(self.chat.seen ?? true) {
                 self.notifyUnseen()
             }
         }
     }
     
     private func notifyUnseen(){
-        self.chat.seen = true
         NotificationManager.sendNotification(.MyChatsUpdated, object: chat)
         let unseen = self.chat.messages.filter({!($0.seen ?? false) && $0.id != nil && $0.toUserId == AccountHandler.Instance.userId}).map({$0.id!})
         if unseen.count > 0 && UIApplication.sharedApplication().applicationState == .Active {
@@ -99,6 +100,7 @@ public class DialogViewController : JSQMessagesViewController{
                     self.chat.messages.filter({unseen.contains($0.id ?? "")}).forEach({ (message) in
                         message.seen = true
                     })
+                    self.chat.seen = true
                     ThreadHelper.runOnBackgroundThread({ 
                         AccountHandler.Instance.saveMyChats()
                     })
@@ -143,7 +145,7 @@ public class DialogViewController : JSQMessagesViewController{
                 if messages.count > MessagesHandler.DEFAULT_PAGE_SIZE {
                     totalCount = MessagesHandler.DEFAULT_PAGE_SIZE
                 }
-                for i in 0...totalCount - 1 {
+                for i in 0...totalCount {
                     indexPaths.append(NSIndexPath(forItem: i, inSection: 0))
                 }
                 for message in messagesSortedDescending {
@@ -331,14 +333,21 @@ public class DialogViewController : JSQMessagesViewController{
     }
     
     public override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
-        let message = MessageToSend()
-        message.destinationUserId = self.chat.otherParty?.id
-        message.message = text
-        ConnectionHandler.Instance.messages.sendMessage(message){ success, errorId, errorMessage, result in
-            if !success {
-                self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
-            }
-        };
+        if text != "" {
+            let message = MessageToSend()
+            message.destinationUserId = self.chat.otherParty?.id
+            message.message = text
+            
+            ConnectionHandler.Instance.messages.sendMessage(message){ success, errorId, errorMessage, result in
+                if !success {
+                    ThreadHelper.runOnMainThread({ 
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
+                    })
+                }
+            };
+            
+            self.finishSendingMessage()
+        }
     }
 }
 

@@ -59,6 +59,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
                     self.tableView.deleteRowsAtIndexPaths(allIndexPaths, withRowAnimation: .Automatic)
                 }
             })
+            AccountHandler.Instance.updateMyPosts()
         }
     }
     
@@ -96,6 +97,12 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         }
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
         self.editButtonItem().action = #selector(editAction)
+        
+        if self.myPosts.count > 0{
+            self.editButtonItem().enabled = true
+        } else {
+            self.editButtonItem().enabled = false
+        }
         
         //conf. LeftMenu
         //self.configureOfLeftMenu()
@@ -192,6 +199,11 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
             self.myPosts = [Post]()
         }
         ThreadHelper.runOnMainThread {
+            if self.myPosts.count > 0{
+                self.editButtonItem().enabled = true
+            } else {
+                self.editButtonItem().enabled = false
+            }
             self.refreshControl?.endRefreshing()
             self.tableView.separatorStyle = .SingleLine;
             self.tableView.reloadData()
