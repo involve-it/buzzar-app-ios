@@ -354,11 +354,9 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         let nc = storyboard.instantiateViewControllerWithIdentifier("settingsLogInUser") as! UINavigationController
         let vc = nc.viewControllers[0] as! ProfileTableViewController
         
-        if let user = self.post.user {
-            vc.extUser = user
-            
-            //vc.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: .Done, target: nil, action: nil)
-            
+        if let post = self.post {
+            vc.extUser = post.user
+            vc.postId = post.id
             self.presentViewController(nc, animated: true, completion: nil)
         } else {
             //error alert

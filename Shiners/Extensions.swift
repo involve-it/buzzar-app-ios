@@ -248,3 +248,18 @@ extension UIView {
     }
 }
 
+extension UIButton {
+    
+    func centerTextButton() {
+        let spacing: CGFloat = 6.0
+        let imageSize: CGSize = self.imageView!.image!.size
+        self.titleEdgeInsets = UIEdgeInsetsMake(0.0, -imageSize.width, -(imageSize.height + spacing), 0.0)
+        let labelString = NSString(string: self.titleLabel!.text!)
+        let titleSize = labelString.sizeWithAttributes([NSFontAttributeName: self.titleLabel!.font])
+        self.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height + spacing), 0.0, 0.0, -titleSize.width)
+        let edgeOffset = abs(titleSize.height - imageSize.height) / 2.0;
+        self.contentEdgeInsets = UIEdgeInsetsMake(edgeOffset, 0.0, edgeOffset, 0.0)
+    }
+}
+
+

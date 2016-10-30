@@ -21,7 +21,7 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     var post = Post()
     
     //Устанавливаем лимит символов для текстового поля
-    var titleAllowCount:String = "35"
+    var titleAllowCount:String = "50"
     //Устанавливаем лимит символов для поля с описанием
     var descriptionAllowCount:String = "1000"
     

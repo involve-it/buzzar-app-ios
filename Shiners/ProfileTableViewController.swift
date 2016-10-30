@@ -16,12 +16,16 @@ class ProfileTableViewController: UITableViewController {
     @IBOutlet weak var skypeRowLabel: UILabel!
     //@IBOutlet weak var vkRowLabel: UILabel!
     //@IBOutlet weak var facebookRowLabel: UILabel!
+   
     
+    @IBOutlet weak var btnMessageToUser: UIButton!
+    @IBOutlet weak var btnCallToUser: UIButton!
     @IBOutlet weak var isStatusLabel: UILabel!
     @IBOutlet weak var btnCloseVC: UIBarButtonItem!
     @IBOutlet weak var editProfile: UIBarButtonItem!
     
     var extUser: User?
+    var postId: String?
     private var currentUser: User!
     
     struct TableViewIdentifierCell {
@@ -35,15 +39,29 @@ class ProfileTableViewController: UITableViewController {
     //@IBOutlet weak var facebookRowVisible: UITableViewCell!
     @IBOutlet weak var cbNearbyNotifications: UISwitch!
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationItem.title = NSLocalizedString("Settings", comment: "Navigation title, Settings")
         
+        self.imgUserAvatar.layer.cornerRadius = self.imgUserAvatar.frame.width / 2
+        self.imgUserAvatar.clipsToBounds = true
+        self.imgUserAvatar.contentMode = .ScaleAspectFill
+        
+        self.btnCallToUser.enabled = false
+        self.btnMessageToUser.enabled = false
+        self.btnCallToUser.centerTextButton()
+        self.btnMessageToUser.centerTextButton()
+        
+        
         self.phoneRowVisible.hidden = false
         self.skypeRowVisible.hidden = false
         //self.vkRowVisible.hidden = false
         //self.facebookRowVisible.hidden = false
+        
+        
         
         tabelViewEstimatedRowHeight()
         fillUserData()
@@ -70,6 +88,50 @@ class ProfileTableViewController: UITableViewController {
         self.fillUserData()
         if let editPorfileButton = self.editProfile{
             editPorfileButton.enabled = true
+        }
+    }
+    
+
+    @IBAction func cendMessageToUser(sender: UIButton) {
+        let alertController = UIAlertController(title: NSLocalizedString("New message", comment: "Alert title, New message"), message: nil, preferredStyle: .Alert);
+        
+        alertController.addTextFieldWithConfigurationHandler { (textField) in
+            textField.placeholder = NSLocalizedString("Message", comment: "Placeholder, Message")
+        }
+        
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Send", comment: "Alert title, Send"), style: .Default, handler: { (action) in
+            if let text = alertController.textFields?[0].text where text != "" {
+                alertController.resignFirstResponder()
+                let message = MessageToSend()
+                message.destinationUserId = self.extUser!.id
+                message.message = alertController.textFields![0].text
+                message.associatedPostId = self.postId
+                ConnectionHandler.Instance.messages.sendMessage(message){ success, errorId, errorMessage, result in
+                    if success {
+                        AccountHandler.Instance.updateMyChats()
+                    } else {
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
+                    }
+                }
+            }
+        }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert, title, Cancel"), style: .Cancel, handler: {action in
+            alertController.resignFirstResponder()
+        }));
+        self.presentViewController(alertController, animated: true) {
+            alertController.textFields![0].becomeFirstResponder()
+        }
+    }
+    
+    @IBAction func callToUser(sender: UIButton) {
+        if let phoneNumber = self.phoneRowLabel.text {
+            callNumberToUser(phoneNumber)
+        }
+    }
+    
+    func callNumberToUser(phoneNumber: String) {
+        if let url =  NSURL(string: "tel://\(phoneNumber)") {
+            UIApplication.sharedApplication().openURL(url)
         }
     }
     
@@ -100,9 +162,9 @@ class ProfileTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         //Phone
-        if (indexPath.section == 1 && indexPath.row == 0) {
+        if (indexPath.section == 0 && indexPath.row == 0) {
             return !self.phoneRowVisible.hidden ? 44 : 0.0
-        } else if(indexPath.section == 1 && indexPath.row == 1) {
+        } else if(indexPath.section == 0 && indexPath.row == 1) {
             return !self.skypeRowVisible.hidden ? 44 : 0.0
         }
 //        } else if (indexPath.section == 1 && indexPath.row == 2) {
@@ -115,7 +177,7 @@ class ProfileTableViewController: UITableViewController {
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return !(self.extUser != nil) ? 5 : 2
+        return !(self.extUser != nil) ? 4 : 1
     }
     
     func tabelViewEstimatedRowHeight() {
@@ -125,7 +187,7 @@ class ProfileTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        if indexPath.section == 4 {
+        if indexPath.section == 3 {
             let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .ActionSheet)
             alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
                 AccountHandler.Instance.logoff(){ success in
@@ -138,8 +200,6 @@ class ProfileTableViewController: UITableViewController {
             alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Cancel, handler: nil))
             
             self.presentViewController(alertViewController, animated: true, completion: nil)
-        } else if indexPath.section == 1 {
-            print(indexPath.row)
         }
     }
     
@@ -176,12 +236,10 @@ class ProfileTableViewController: UITableViewController {
             //Phone
             if let isPhone = self.currentUser.getProfileDetailValue(.Phone) where isPhone != "" {
                 self.phoneRowLabel.text = isPhone
-                
-                //Call
-                
-                
+                self.btnCallToUser.enabled = true
             } else {
                 self.phoneRowVisible.hidden = true
+                self.btnCallToUser.enabled = false
             }
             
             //Skype
@@ -222,13 +280,18 @@ class ProfileTableViewController: UITableViewController {
 //            } else {
 //                txtUserLocation.text = NSLocalizedString("Location is hidden", comment: "Text, Location is hidden")
 //            }
-            
-            //UserStatus: online/ofline
+
             
             
         } else {
             //Load user default data
             imgUserAvatar.image = ImageCachingHandler.defaultAccountImage;
+        }
+        
+        if self.postId != nil && self.extUser != nil {
+           self.btnMessageToUser.enabled = true
+        } else {
+           self.btnMessageToUser.enabled = false
         }
         
         if self.skypeRowVisible.hidden{

@@ -75,7 +75,7 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     
     func login(){
         if let userName = textFieldUsername.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where userName != "",
-           let password = textFieldPassword.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where password != "" {
+           let password = textFieldPassword.text where password != "" {
             setLoading(true)
             
             AccountHandler.Instance.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in

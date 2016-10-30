@@ -66,7 +66,7 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
             //username
             let username = self.textFieldUsername.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
             //password
-            let password = self.textFieldPassword.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            let password = self.textFieldPassword.text
             //email and check
             var email: String? = self.textFieldEmailAddress.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
             
