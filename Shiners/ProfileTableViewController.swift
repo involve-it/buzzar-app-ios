@@ -86,9 +86,9 @@ class ProfileTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if AccountHandler.Instance.status != .Completed {
-            self.editProfile.enabled = false
+            //self.editProfile.enabled = false
         } else {
-            self.editProfile.enabled = true
+            //self.editProfile.enabled = true
         }
     }
 
@@ -177,7 +177,7 @@ class ProfileTableViewController: UITableViewController {
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return !(self.extUser != nil) ? 4 : 1
+        return !(self.extUser != nil) ? 5 : 1
     }
     
     func tabelViewEstimatedRowHeight() {
@@ -187,7 +187,7 @@ class ProfileTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        if indexPath.section == 3 {
+        if indexPath.section == 4 {
             let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .ActionSheet)
             alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
                 AccountHandler.Instance.logoff(){ success in
