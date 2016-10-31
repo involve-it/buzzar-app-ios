@@ -137,6 +137,8 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
 
         self.postDescription.delegate = self
         
+        self.postDescription.dataDetectorTypes = .Link
+        
         self.navigationItem.title = post?.title
         
         //Check UserId & Post's user id
