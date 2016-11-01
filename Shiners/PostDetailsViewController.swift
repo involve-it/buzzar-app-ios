@@ -115,7 +115,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     }
     
     @IBAction func btnShare_Click(sender: AnyObject) {
-        let activityViewController = UIActivityViewController(activityItems: ["Check out this post: \(ConnectionHandler.baseUrl)/post/\(self.post.id!)", NSURL(string: "\(ConnectionHandler.baseUrl)/post/\(self.post.id!)")!], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: ["Check out this post on Shiners: \(self.post.title!)", NSURL(string: "\(ConnectionHandler.publicUrl)/posts/\(self.post.id!)")!], applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivityTypePrint, UIActivityTypeOpenInIBooks, UIActivityTypeSaveToCameraRoll];
         navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
     }
@@ -158,6 +158,17 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             
             if !AccountHandler.Instance.isLoggedIn() {
                 self.writeStack.hidden = true
+            }
+            
+            let incrementTuple = SeenPostsHandler.updateSeenCounter(post.id!)
+            if incrementTuple.incrementToday {
+                post.seenToday = (post.seenToday ?? 0) + 1
+            }
+            if incrementTuple.incrementTotal{
+                post.seenTotal = (post.seenTotal ?? 0) + 1
+            }
+            if incrementTuple.incrementTotal || incrementTuple.incrementToday {
+                NotificationManager.sendNotification(NotificationManager.Name.PostUpdated, object: self.post.id)
             }
         }
         

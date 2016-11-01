@@ -48,21 +48,29 @@ public class AccountHandler{
     
     @objc public func saveMyChats(){
         if self.status == .Completed {
-            CachingHandler.saveObject(self.myChats!, path: CachingHandler.chats)
+            CachingHandler.Instance.saveChats(self.myChats!)
         }
     }
     
     public func getNearbyPosts(lat: Double, lng: Double, radius: Double, callback: MeteorMethodCallback){
         ConnectionHandler.Instance.posts.getNearbyPosts(lat, lng: lng, radius: radius){ (success, errorId, errorMessage, result) in
             if success {
+                var posts = result as! [Post]
+                posts.sortInPlace({ (post1, post2) -> Bool in
+                    let post1Sort = post1.isLive() ? 1 : 0
+                    let post2Sort = post2.isLive() ? 1 : 0
+                    return post1Sort > post2Sort
+                })
+                
                 ThreadHelper.runOnBackgroundThread(){
-                    if !CachingHandler.saveObject(result as! [Post], path: CachingHandler.postsAll){
+                    if !CachingHandler.Instance.savePostsAll(posts){
                         NSLog("Unable to archive posts")
                     }
                 }
+                callback(success: success, errorId: errorId, errorMessage: errorMessage, result: posts)
+            } else {
+                callback(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
             }
-            
-            callback(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
         }
     }
     
@@ -77,7 +85,7 @@ public class AccountHandler{
         self.nearbyPostsId = Meteor.subscribe("posts-nearby", params: [dict]) {
             //saving posts for offline use
             ThreadHelper.runOnBackgroundThread(){
-                if !CachingHandler.saveObject(self.postsCollection.posts, path: CachingHandler.postsAll){
+                if !CachingHandler.Instance.savePostsAll(self.postsCollection.posts){
                     NSLog("Unable to archive posts")
                 }
             }
@@ -147,7 +155,7 @@ public class AccountHandler{
         ConnectionHandler.Instance.users.saveUser(user) { (success, errorId, errorMessage, result) in
             if errorId == nil {
                 self.currentUser = user
-                CachingHandler.saveObject(self.currentUser!, path: CachingHandler.currentUser)
+                CachingHandler.Instance.saveCurrentUser(self.currentUser!)
                 
                 NotificationManager.sendNotification(.UserUpdated, object: nil)
                 
@@ -176,7 +184,7 @@ public class AccountHandler{
                     if (success){
                         self.currentUser = result as? User
                         
-                        CachingHandler.saveObject(self.currentUser!, path: CachingHandler.currentUser)
+                        CachingHandler.Instance.saveCurrentUser(self.currentUser!)
                         NotificationManager.sendNotification(NotificationManager.Name.UserUpdated, object: nil)
                     } else {
                         NSLog("Error getting current user")
@@ -191,7 +199,7 @@ public class AccountHandler{
                     if (success){
                         self.myPosts = result as? [Post]
                         
-                        CachingHandler.saveObject(self.myPosts!, path: CachingHandler.postsMy)
+                        CachingHandler.Instance.savePostsMy(self.myPosts!)
                         
                         NotificationManager.sendNotification(.MyPostsUpdated, object: nil)
                     }
@@ -211,7 +219,7 @@ public class AccountHandler{
                         //temp
                         self.myChats = self.myChats?.filter({$0.lastMessage != nil})
                         
-                        CachingHandler.saveObject(self.myChats!, path: CachingHandler.chats)
+                        CachingHandler.Instance.saveChats(self.myChats!)
                         
                         NotificationManager.sendNotification(.MyChatsUpdated, object: nil)
                     }
@@ -230,7 +238,7 @@ public class AccountHandler{
             if success {
                 self.myPosts = result as? [Post]
                 
-                CachingHandler.saveObject(self.myPosts!, path: CachingHandler.postsMy)
+                CachingHandler.Instance.savePostsMy(self.myPosts!)
                 NotificationManager.sendNotification(.MyPostsUpdated, object: nil)
             }
             callback?(success: success, errorId: errorId, errorMessage: errorMessage, result: result)

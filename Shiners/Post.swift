@@ -295,7 +295,7 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         static let title = "title"
         static let description = "description"
         static let price = "price"
-        static let seenTotal = "seenAll"
+        static let seenTotal = "seenTotal"
         static let seenToday = "seenToday"
         static let photos = "photos"
         static let type = "type"

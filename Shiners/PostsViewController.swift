@@ -274,10 +274,9 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         
     }
     
-    @IBAction func unwindPosts(segue: UIStoryboardSegue){}
-    
-    
-    
+    @IBAction func unwindPosts(segue: UIStoryboardSegue){
+        print("unwind")
+    }
 }
 
 

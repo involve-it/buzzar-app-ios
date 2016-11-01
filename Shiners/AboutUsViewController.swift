@@ -17,7 +17,7 @@ class AboutUsViewController: UIViewController, UIWebViewDelegate {
         
         self.webView.delegate = self
         
-        let url = NSURL(string: "https://shiners.2list.ru/about-us")
+        let url = NSURL(string: "https://shiners.ru/about-us")
         loadWebView(url!, webView: self.webView)
         self.setLoading(true)
     }
