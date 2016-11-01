@@ -86,9 +86,9 @@ class ProfileTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         if AccountHandler.Instance.status != .Completed {
-            //self.editProfile.enabled = false
+            self.editProfile.enabled = false
         } else {
-            //self.editProfile.enabled = true
+            self.editProfile.enabled = true
         }
     }
 

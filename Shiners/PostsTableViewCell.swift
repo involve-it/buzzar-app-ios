@@ -22,8 +22,7 @@ class PostsTableViewCell: UITableViewCell{
     @IBOutlet weak var imgViewCountPost: UIImageView!
     @IBOutlet weak var txtViewCountPost: UILabel!
     @IBOutlet weak var imgPostTypeLocation: UIImageView!
-    @IBOutlet weak var viewUIPostcategory: UIView!
-    @IBOutlet weak var txtPostCategory: UILabel!
+    
     @IBOutlet weak var txtExpiresPostLabel: UILabel!
     @IBOutlet weak var txtExpiresPostCount: UILabel!
     

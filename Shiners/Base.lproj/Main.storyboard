@@ -436,45 +436,8 @@
                                                         <constraint firstAttribute="width" constant="12" id="HxJ-HD-3Yz"/>
                                                     </constraints>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="MDn-J2-HUc" userLabel="separator image">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5Z5-LW-BVR" userLabel="separator image">
                                                     <rect key="frame" x="69" y="9" width="4" height="4"/>
-                                                    <color key="backgroundColor" red="0.76862745098039209" green="0.76862745098039209" blue="0.76862745098039209" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="4" id="T6h-dR-Yem"/>
-                                                        <constraint firstAttribute="height" constant="4" id="XhA-jX-KQZ"/>
-                                                    </constraints>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="2"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </imageView>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EXO-cr-kGv" userLabel="category post">
-                                                    <rect key="frame" x="77" y="5" width="40" height="12"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connect" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="269-DO-Vy5">
-                                                            <rect key="frame" x="4" y="1" width="32" height="10"/>
-                                                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="8"/>
-                                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                    <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstItem="269-DO-Vy5" firstAttribute="centerX" secondItem="EXO-cr-kGv" secondAttribute="centerX" id="2VV-2L-ghY"/>
-                                                        <constraint firstItem="269-DO-Vy5" firstAttribute="centerY" secondItem="EXO-cr-kGv" secondAttribute="centerY" id="3sa-RO-Exy"/>
-                                                        <constraint firstItem="269-DO-Vy5" firstAttribute="leading" secondItem="EXO-cr-kGv" secondAttribute="leading" constant="4" id="Ik2-fk-Xrt"/>
-                                                        <constraint firstAttribute="height" constant="12" id="glj-iE-Nn3"/>
-                                                        <constraint firstAttribute="trailing" secondItem="269-DO-Vy5" secondAttribute="trailing" constant="4" id="ogj-mw-cec"/>
-                                                    </constraints>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="2"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </view>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Z5-LW-BVR" userLabel="separator image">
-                                                    <rect key="frame" x="121" y="9" width="4" height="4"/>
                                                     <color key="backgroundColor" red="0.76862745099999996" green="0.76862745099999996" blue="0.76862745099999996" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="4" id="9Kk-ZE-VFj"/>
@@ -486,14 +449,14 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Left:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fBg-3H-iN5" userLabel="Left">
-                                                    <rect key="frame" x="129" y="4" width="24" height="14"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Left:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fBg-3H-iN5" userLabel="Left">
+                                                    <rect key="frame" x="77" y="4" width="24" height="14"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="365 days" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ttN-lV-xSZ" userLabel="365 days">
-                                                    <rect key="frame" x="157" y="3" width="50" height="15"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="365 days" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ttN-lV-xSZ" userLabel="365 days">
+                                                    <rect key="frame" x="105" y="3" width="50" height="15"/>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
                                                     <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -507,13 +470,11 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="e6x-SQ-Mbt" firstAttribute="leading" secondItem="gZP-qt-59L" secondAttribute="trailing" constant="4" id="5x8-zS-RCu"/>
-                                                <constraint firstItem="EXO-cr-kGv" firstAttribute="leading" secondItem="MDn-J2-HUc" secondAttribute="trailing" constant="4" id="HAb-LZ-LCL"/>
                                                 <constraint firstAttribute="trailing" secondItem="bX5-eN-EMu" secondAttribute="trailing" id="I1x-R1-6WL"/>
                                                 <constraint firstItem="gZP-qt-59L" firstAttribute="leading" secondItem="l6I-mw-bBv" secondAttribute="trailing" constant="4" id="KDa-xW-1dV"/>
+                                                <constraint firstItem="5Z5-LW-BVR" firstAttribute="leading" secondItem="e6x-SQ-Mbt" secondAttribute="trailing" constant="4" id="KMf-TR-BDv"/>
                                                 <constraint firstAttribute="height" constant="21" id="O5N-t5-iEl"/>
-                                                <constraint firstItem="MDn-J2-HUc" firstAttribute="leading" secondItem="e6x-SQ-Mbt" secondAttribute="trailing" constant="4" id="RNB-di-jxK"/>
                                                 <constraint firstItem="l6I-mw-bBv" firstAttribute="leading" secondItem="Tw1-oZ-W6P" secondAttribute="trailing" constant="4" id="Rhf-KW-Nqe"/>
-                                                <constraint firstItem="5Z5-LW-BVR" firstAttribute="leading" secondItem="EXO-cr-kGv" secondAttribute="trailing" constant="4" id="Wxw-Ex-LpR"/>
                                                 <constraint firstItem="ttN-lV-xSZ" firstAttribute="leading" secondItem="fBg-3H-iN5" secondAttribute="trailing" constant="4" id="jjH-Jd-voY"/>
                                                 <constraint firstItem="fBg-3H-iN5" firstAttribute="leading" secondItem="5Z5-LW-BVR" secondAttribute="trailing" constant="4" id="tly-lZ-bP0"/>
                                             </constraints>
@@ -538,16 +499,13 @@
                                     <outlet property="imgPostTypeLocation" destination="e6x-SQ-Mbt" id="Rz0-ov-8aE"/>
                                     <outlet property="imgSeparatorFromExpiresPostLabel" destination="5Z5-LW-BVR" id="D4Q-M8-QqW"/>
                                     <outlet property="imgSeparatorFromViewCount" destination="gZP-qt-59L" id="769-Zo-OYf"/>
-                                    <outlet property="imgSeparatorFromViewUI" destination="MDn-J2-HUc" id="LCh-Ib-lV1"/>
                                     <outlet property="imgViewCountPost" destination="Tw1-oZ-W6P" id="wVj-uV-CQu"/>
                                     <outlet property="txtDetails" destination="bcq-PG-6tO" id="Wdx-HN-kSc"/>
                                     <outlet property="txtExpiresPostCount" destination="ttN-lV-xSZ" id="e7w-MY-lAw"/>
                                     <outlet property="txtExpiresPostLabel" destination="fBg-3H-iN5" id="ioW-Gm-aLE"/>
-                                    <outlet property="txtPostCategory" destination="269-DO-Vy5" id="nxy-zd-haP"/>
                                     <outlet property="txtPrice" destination="bX5-eN-EMu" id="dA3-6R-8kp"/>
                                     <outlet property="txtTitle" destination="IYE-7X-TXa" id="IjQ-tw-iil"/>
                                     <outlet property="txtViewCountPost" destination="l6I-mw-bBv" id="jCI-XB-4nF"/>
-                                    <outlet property="viewUIPostcategory" destination="EXO-cr-kGv" id="UGS-8r-rfx"/>
                                     <segue destination="Qd9-Zx-awU" kind="show" identifier="myPostDetails" id="gVm-sN-Epi"/>
                                 </connections>
                             </tableViewCell>
