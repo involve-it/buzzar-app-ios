@@ -1,303 +1,260 @@
-
-/* Class = "UITableViewController"; title = "Profile"; ObjectID = "05S-bA-uNH"; */
-"05S-bA-uNH.title" = "Profile";
-
 /* Class = "UILabel"; text = "What is your post title?"; ObjectID = "0MT-Lh-kZ8"; */
-"0MT-Lh-kZ8.text" = "What is your post title?";
-
-/* Class = "UITextField"; placeholder = "i'm looking for"; ObjectID = "0e6-rl-z6X"; */
-"0e6-rl-z6X.placeholder" = "i'm looking for";
+"0MT-Lh-kZ8.text" = "Заголовок поста";
 
 /* Class = "UILabel"; text = "2 days"; ObjectID = "0en-Sk-bFl"; */
-"0en-Sk-bFl.text" = "2 days";
+"0en-Sk-bFl.text" = "2 дня";
 
-/* Class = "UILabel"; text = "I'd like to"; ObjectID = "0mk-Ia-A5i"; */
-"0mk-Ia-A5i.text" = "I'd like to";
+/* (No Commment) */
+"0mk-Ia-A5i.text" = "Я бы хотел/а";
 
-/* Class = "UINavigationItem"; title = "Choose Static Location"; ObjectID = "0yl-tZ-rwd"; */
-"0yl-tZ-rwd.title" = "Choose Static Location";
+/* (No Commment) */
+"0yl-tZ-rwd.title" = "Выберите Статическое (фиксированное) местоположение";
 
 /* Class = "UILabel"; text = "Pick location below"; ObjectID = "1Tq-6P-iFC"; */
-"1Tq-6P-iFC.text" = "Pick location below";
+"1Tq-6P-iFC.text" = "Выберете положение";
 
-/* Class = "UILabel"; text = "Description of post"; ObjectID = "1vf-HE-Sla"; */
-"1vf-HE-Sla.text" = "Description of post";
+/* (No Commment) */
+"1vf-HE-Sla.text" = "Описание поста";
 
 /* Class = "UILabel"; text = "It is connected to the location that you have chosen."; ObjectID = "1yB-M2-EbN"; */
-"1yB-M2-EbN.text" = "It is connected to the location that you have chosen.";
+"1yB-M2-EbN.text" = "Связано с выбранным положением";
 
-/* Class = "UILabel"; text = "Connect"; ObjectID = "269-DO-Vy5"; */
-"269-DO-Vy5.text" = "Connect";
-
-/* Class = "UILabel"; text = "Tap to select"; ObjectID = "2PD-Ab-WB9"; */
-"2PD-Ab-WB9.text" = "Tap to select";
+/* (No Commment) */
+"2PD-Ab-WB9.text" = "Нажмите, чтобы выбрать";
 
 /* Class = "UIBarButtonItem"; title = "Done"; ObjectID = "2Xz-4m-stt"; */
-"2Xz-4m-stt.title" = "Done";
-
-/* Class = "UITextField"; placeholder = "URL"; ObjectID = "31G-lY-SaN"; */
-"31G-lY-SaN.placeholder" = "URL";
+"2Xz-4m-stt.title" = "Готово";
 
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "3yk-eq-aYb"; */
-"3yk-eq-aYb.placeholder" = "Password";
+"3yk-eq-aYb.placeholder" = "Пароль";
 
-/* Class = "UILabel"; text = "Active"; ObjectID = "493-2c-oqI"; */
-"493-2c-oqI.text" = "Active";
-
-/* Class = "UILabel"; text = "USD >"; ObjectID = "4BV-B5-fop"; */
+/* (No Commment) */
 "4BV-B5-fop.text" = "USD >";
 
 /* Class = "UITableViewController"; title = "Settings"; ObjectID = "4Dx-TL-dOe"; */
-"4Dx-TL-dOe.title" = "Settings";
+"4Dx-TL-dOe.title" = "Настройки";
 
-/* Class = "UILabel"; text = "Action"; ObjectID = "4ZM-cn-sAF"; */
-"4ZM-cn-sAF.text" = "Action";
+/* (No Commment) */
+"4ZM-cn-sAF.text" = "Действие";
 
-/* Class = "UILabel"; text = "I'm looking for"; ObjectID = "4a4-OE-U4j"; */
-"4a4-OE-U4j.text" = "I'm looking for";
+/* (No Commment) */
+"4a4-OE-U4j.text" = "Я ищу";
 
 /* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "4io-iq-vBb"; */
-"4io-iq-vBb.title" = "Next";
+"4io-iq-vBb.title" = "Далее";
 
-/* Class = "UITextField"; placeholder = "Tap here to give post a title"; ObjectID = "4sR-a0-EWn"; */
-"4sR-a0-EWn.placeholder" = "Tap here to give post a title";
+/* (No Commment) */
+"4sR-a0-EWn.placeholder" = "Нажмите здесь, чтобы добавить заголовок";
+
+/* Class = "UITableViewController"; title = "Profile"; ObjectID = "05S-bA-uNH"; */
+"05S-bA-uNH.title" = "Профиль";
 
 /* Class = "UILabel"; text = "Pick when your ad expires"; ObjectID = "5Yz-VA-HAe"; */
-"5Yz-VA-HAe.text" = "Pick when your ad expires";
+"5Yz-VA-HAe.text" = "Выберите срок действия объявления";
 
-/* Class = "UILabel"; text = "Dynamic"; ObjectID = "5iK-bq-dyv"; */
-"5iK-bq-dyv.text" = "Dynamic";
+/* (No Commment) */
+"5iK-bq-dyv.text" = "Динамический";
 
 /* Class = "UITextField"; placeholder = "Your email address"; ObjectID = "5w0-p6-xEb"; */
-"5w0-p6-xEb.placeholder" = "Your email address";
-
-/* Class = "UILabel"; text = "Pick when your ad expires"; ObjectID = "62e-KQ-rW3"; */
-"62e-KQ-rW3.text" = "Pick when your ad expires";
+"5w0-p6-xEb.placeholder" = "Ваша электронная почта";
 
 /* Class = "UITextField"; placeholder = "Location"; ObjectID = "7e5-TI-ZEf"; */
-"7e5-TI-ZEf.placeholder" = "Location";
-
-/* Class = "UILabel"; text = "Online"; ObjectID = "93Z-9f-PSa"; */
-"93Z-9f-PSa.text" = "Online";
+"7e5-TI-ZEf.placeholder" = "Локация";
 
 /* Class = "UITextField"; placeholder = "First name"; ObjectID = "9SA-il-lx9"; */
-"9SA-il-lx9.placeholder" = "First name";
+"9SA-il-lx9.placeholder" = "Имя";
 
-/* Class = "UILabel"; text = "Select Ad Type"; ObjectID = "9oO-zy-jdu"; */
-"9oO-zy-jdu.text" = "Select Ad Type";
+/* (No Commment) */
+"9oO-zy-jdu.text" = "Выберите тип объявления";
+
+/* (No Commment) */
+"31G-lY-SaN.placeholder" = "URL";
+
+/* (No Commment) */
+"62e-KQ-rW3.text" = "Выберите срок действия объявления";
+
+/* Class = "UILabel"; text = "Online"; ObjectID = "93Z-9f-PSa"; */
+"93Z-9f-PSa.text" = "Онлайн";
+
+/* (No Commment) */
+"269-DO-Vy5.text" = "Связь";
+
+/* Class = "UILabel"; text = "Active"; ObjectID = "493-2c-oqI"; */
+"493-2c-oqI.text" = "Активный";
 
 /* Class = "UINavigationItem"; title = "Title"; ObjectID = "AUt-pL-0KY"; */
-"AUt-pL-0KY.title" = "Title";
+"AUt-pL-0KY.title" = "Заголовок";
 
 /* Class = "UITextField"; placeholder = "Your username"; ObjectID = "Aae-Kh-rTy"; */
-"Aae-Kh-rTy.placeholder" = "Your username";
+"Aae-Kh-rTy.placeholder" = "Ваше имя пользователя";
 
 /* Class = "UILabel"; text = "1 month"; ObjectID = "B2H-AO-ERw"; */
-"B2H-AO-ERw.text" = "1 month";
+"B2H-AO-ERw.text" = "1 месяц";
 
 /* Class = "UILabel"; text = "1 year"; ObjectID = "BYW-as-foy"; */
-"BYW-as-foy.text" = "1 year";
+"BYW-as-foy.text" = "1 год";
 
-/* Class = "UIBarButtonItem"; title = "Clear"; ObjectID = "Bql-zc-VaP"; */
-"Bql-zc-VaP.title" = "Clear";
+/* (No Commment) */
+"Bql-zc-VaP.title" = "Очистить";
 
 /* Class = "UILabel"; text = "Name"; ObjectID = "BrW-gd-Pu8"; */
-"BrW-gd-Pu8.text" = "Name";
+"BrW-gd-Pu8.text" = "Имя";
 
-/* Class = "UILabel"; text = "No images were added"; ObjectID = "C2s-lm-Dpe"; */
-"C2s-lm-Dpe.text" = "No images were added";
+/* (No Commment) */
+"C2s-lm-Dpe.text" = "Изображения не выбраны";
 
-/* Class = "UIViewController"; title = "addPostPlaceholder"; ObjectID = "C4g-CZ-eOj"; */
-"C4g-CZ-eOj.title" = "addPostPlaceholder";
-
-/* Class = "UITableViewSection"; footerTitle = "Тут необходим поясняющий текст для пользователей."; ObjectID = "C8v-2i-i1t"; */
-"C8v-2i-i1t.footerTitle" = "Тут необходим поясняющий текст для пользователей.";
-
-/* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "CLc-Kt-ihI"; */
-"CLc-Kt-ihI.title" = "Next";
-
-/* Class = "UITextField"; placeholder = "i'd like to"; ObjectID = "CXY-GK-vJ4"; */
-"CXY-GK-vJ4.placeholder" = "i'd like to";
+/* (No Commment) */
+"CLc-Kt-ihI.title" = "Далее";
 
 /* Class = "UITextField"; placeholder = "Email (optional)"; ObjectID = "CqZ-uk-jGd"; */
-"CqZ-uk-jGd.placeholder" = "Email (optional)";
+"CqZ-uk-jGd.placeholder" = "Электронная почта (не обязательно)";
 
 /* Class = "UIButton"; normalTitle = "Already have an account? Log in"; ObjectID = "CzY-aY-JiS"; */
-"CzY-aY-JiS.normalTitle" = "Already have an account? Log in";
+"CzY-aY-JiS.normalTitle" = "У Вас уже есть аккаунт? Авторизоваться";
 
 /* Class = "UILabel"; text = "1 day"; ObjectID = "DeZ-ZQ-haT"; */
-"DeZ-ZQ-haT.text" = "1 day";
+"DeZ-ZQ-haT.text" = "1 день";
 
-/* Class = "UITableViewSection"; headerTitle = "When"; ObjectID = "Dec-Xy-jMm"; */
-"Dec-Xy-jMm.headerTitle" = "When";
+/* (No Commment) */
+"Dec-Xy-jMm.headerTitle" = "Когда";
 
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "Dff-VS-Nwi"; */
-"Dff-VS-Nwi.placeholder" = "Password";
+"Dff-VS-Nwi.placeholder" = "Пароль";
 
 /* Class = "UILabel"; text = "1 week"; ObjectID = "DiR-qd-a0P"; */
-"DiR-qd-a0P.text" = "1 week";
+"DiR-qd-a0P.text" = "1 неделя";
 
 /* Class = "UINavigationItem"; title = "My Posts"; ObjectID = "EGv-is-buT"; */
-"EGv-is-buT.title" = "My Posts";
+"EGv-is-buT.title" = "Мои посты";
 
-/* Class = "UITextField"; placeholder = "looking to"; ObjectID = "EPq-Cu-23K"; */
-"EPq-Cu-23K.placeholder" = "looking to";
+/* (No Commment) */
+"EPq-Cu-23K.placeholder" = "заинтересован в";
 
 /* Class = "UITextField"; placeholder = "Search around"; ObjectID = "F5e-UW-8f6"; */
-"F5e-UW-8f6.placeholder" = "Search around";
+"F5e-UW-8f6.placeholder" = "Искать вокруг";
 
-/* Class = "UITableViewSection"; footerTitle = "Your user status can be active or inactive. When the status \"active\" other users to see next to your posts. Otherwise your posts will not be visible to other users."; ObjectID = "FCH-uk-LxZ"; */
-"FCH-uk-LxZ.footerTitle" = "Your user status can be active or inactive. When the status \"active\" other users to see next to your posts. Otherwise your posts will not be visible to other users.";
+/* (No Commment) */
+"FOD-7r-gjD.title" = "Новый пост";
 
-/* Class = "UILabel"; text = "Дата создания поста"; ObjectID = "FCL-Kj-ncV"; */
-"FCL-Kj-ncV.text" = "Дата создания поста";
-
-/* Class = "UINavigationItem"; title = "New Post"; ObjectID = "FOD-7r-gjD"; */
-"FOD-7r-gjD.title" = "New Post";
-
-/* Class = "UILabel"; text = "Tap to select"; ObjectID = "FZ4-i8-M8U"; */
-"FZ4-i8-M8U.text" = "Tap to select";
+/* (No Commment) */
+"FZ4-i8-M8U.text" = "Нажмите, чтобы выбрать";
 
 /* Class = "UIBarButtonItem"; title = "Register"; ObjectID = "G0n-bh-lhc"; */
-"G0n-bh-lhc.title" = "Register";
-
-/* Class = "UILabel"; text = "Местоположение"; ObjectID = "G6j-tc-77a"; */
-"G6j-tc-77a.text" = "Местоположение";
+"G0n-bh-lhc.title" = "Зарегистрироваться";
 
 /* Class = "UILabel"; text = "Twitter"; ObjectID = "GAE-M9-19p"; */
 "GAE-M9-19p.text" = "Twitter";
 
 /* Class = "UILabel"; text = "Change password"; ObjectID = "GBj-SS-OgT"; */
-"GBj-SS-OgT.text" = "Change password";
+"GBj-SS-OgT.text" = "Поменять пароль";
 
 /* Class = "UIViewController"; title = "Reset password"; ObjectID = "GG4-CG-YhL"; */
-"GG4-CG-YhL.title" = "Reset password";
+"GG4-CG-YhL.title" = "Обновить пароль";
 
 /* Class = "UILabel"; text = "Test - Select this to close"; ObjectID = "GLk-Vj-hIx"; */
 "GLk-Vj-hIx.text" = "Test - Select this to close";
 
 /* Class = "UIButton"; normalTitle = "Create"; ObjectID = "GiD-Bd-9Z9"; */
-"GiD-Bd-9Z9.normalTitle" = "Create";
+"GiD-Bd-9Z9.normalTitle" = "Создать";
 
-/* Class = "UILabel"; text = "Username for skype"; ObjectID = "Gix-Ff-wXG"; */
-"Gix-Ff-wXG.text" = "Username for skype";
-
-/* Class = "UITextField"; placeholder = "Title"; ObjectID = "HNz-3U-awT"; */
-"HNz-3U-awT.placeholder" = "Title";
+/* (No Commment) */
+"HNz-3U-awT.placeholder" = "Заголовок";
 
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "HUW-KV-7zN"; */
-"HUW-KV-7zN.title" = "Back";
+"HUW-KV-7zN.title" = "Назад";
 
 /* Class = "UILabel"; text = "154 km"; ObjectID = "HWU-ov-avm"; */
 "HWU-ov-avm.text" = "154 km";
 
-/* Class = "UILabel"; text = "username"; ObjectID = "HpE-uK-oCM"; */
-"HpE-uK-oCM.text" = "username";
-
-/* Class = "UILabel"; text = "Tags will be here"; ObjectID = "IAy-z8-quM"; */
-"IAy-z8-quM.text" = "Tags will be here";
+/* (No Commment) */
+"IAy-z8-quM.text" = "Тэги";
 
 /* Class = "UILabel"; text = "Lamps for sale"; ObjectID = "IYE-7X-TXa"; */
-"IYE-7X-TXa.text" = "Lamps for sale";
+"IYE-7X-TXa.text" = "Лампы для продажи";
 
-/* Class = "UINavigationItem"; title = "Select"; ObjectID = "JA7-Pl-DOT"; */
-"JA7-Pl-DOT.title" = "Select";
+/* (No Commment) */
+"JA7-Pl-DOT.title" = "Выбрать";
 
 /* Class = "UILabel"; text = "Aquiring nearby posts..."; ObjectID = "JWV-A9-ZJy"; */
-"JWV-A9-ZJy.text" = "Aquiring nearby posts...";
+"JWV-A9-ZJy.text" = "Запрос постов...";
 
 /* Class = "UINavigationItem"; title = "Sign up"; ObjectID = "JoR-1X-WND"; */
-"JoR-1X-WND.title" = "Sign up";
+"JoR-1X-WND.title" = "Зарегистрироваться";
 
-/* Class = "UILabel"; text = "Pinned to static location"; ObjectID = "Jpo-MX-JCq"; */
-"Jpo-MX-JCq.text" = "Pinned to static location";
+/* (No Commment) */
+"Jpo-MX-JCq.text" = "Привязать к местоположению";
 
 /* Class = "UITabBarItem"; title = "Posts"; ObjectID = "Jpr-SI-6Ib"; */
-"Jpr-SI-6Ib.title" = "Posts";
+"Jpr-SI-6Ib.title" = "Посты";
 
 /* Class = "UINavigationItem"; title = "Reset password"; ObjectID = "JsG-y4-rPP"; */
-"JsG-y4-rPP.title" = "Reset password";
-
-/* Class = "UILabel"; text = "Дата истечение поста"; ObjectID = "K1P-QA-pah"; */
-"K1P-QA-pah.text" = "Дата истечение поста";
+"JsG-y4-rPP.title" = "Обновить пароль";
 
 /* Class = "UIBarButtonItem"; title = "Search"; ObjectID = "KCO-4M-OLU"; */
-"KCO-4M-OLU.title" = "Search";
+"KCO-4M-OLU.title" = "Поиск";
 
 /* Class = "UILabel"; text = "Select location:"; ObjectID = "KOK-9K-C5D"; */
-"KOK-9K-C5D.text" = "Select location:";
+"KOK-9K-C5D.text" = "Выбранная локация";
 
 /* Class = "UILabel"; text = "0"; ObjectID = "KPg-kX-jwf"; */
 "KPg-kX-jwf.text" = "0";
 
-/* Class = "UITextField"; placeholder = "i'd like to"; ObjectID = "KQL-Qx-vph"; */
-"KQL-Qx-vph.placeholder" = "i'd like to";
-
 /* Class = "UILabel"; text = "Static post"; ObjectID = "Kad-Lr-Pmg"; */
-"Kad-Lr-Pmg.text" = "Static post";
+"Kad-Lr-Pmg.text" = "Статический пост";
 
 /* Class = "UILabel"; text = "Log out"; ObjectID = "KhZ-81-9Oc"; */
-"KhZ-81-9Oc.text" = "Log out";
+"KhZ-81-9Oc.text" = "Выйдти";
 
 /* Class = "UIBarButtonItem"; title = "Create"; ObjectID = "KpP-QW-wCB"; */
-"KpP-QW-wCB.title" = "Create";
+"KpP-QW-wCB.title" = "Создать";
 
 /* Class = "UITextField"; placeholder = "Address"; ObjectID = "Ku5-kC-hVP"; */
-"Ku5-kC-hVP.placeholder" = "Address";
+"Ku5-kC-hVP.placeholder" = "Адрес";
 
 /* Class = "UILabel"; text = "Notifications"; ObjectID = "LHk-fd-XqA"; */
-"LHk-fd-XqA.text" = "Notifications";
+"LHk-fd-XqA.text" = "Уведомления";
 
 /* Class = "UIButton"; normalTitle = "Forgot password?"; ObjectID = "LkP-g7-Q10"; */
-"LkP-g7-Q10.normalTitle" = "Forgot password?";
+"LkP-g7-Q10.normalTitle" = "Забыли пароль?";
 
-/* Class = "UIButton"; normalTitle = "Позвонить"; ObjectID = "M9g-hf-h6d"; */
-"M9g-hf-h6d.normalTitle" = "Позвонить";
-
-/* Class = "UILabel"; text = "9999"; ObjectID = "MMv-ub-g6k"; */
+/* (No Commment) */
 "MMv-ub-g6k.text" = "9999";
 
 /* Class = "UINavigationItem"; title = "Search"; ObjectID = "MRg-gS-eQr"; */
-"MRg-gS-eQr.title" = "Search";
+"MRg-gS-eQr.title" = "Поиск";
 
 /* Class = "UITabBarItem"; title = "My Posts"; ObjectID = "MVK-B5-gI4"; */
-"MVK-B5-gI4.title" = "My Posts";
+"MVK-B5-gI4.title" = "Мои посты";
 
 /* Class = "UITableViewSection"; headerTitle = "User name"; ObjectID = "Mbe-IZ-n8W"; */
-"Mbe-IZ-n8W.headerTitle" = "User name";
+"Mbe-IZ-n8W.headerTitle" = "Имя пользователя";
 
 /* Class = "UINavigationItem"; title = "How does it look like?"; ObjectID = "Mod-b8-eIC"; */
-"Mod-b8-eIC.title" = "How does it look like?";
+"Mod-b8-eIC.title" = "Как это выглядит?";
 
 /* Class = "UILabel"; text = "You have no messages"; ObjectID = "MtH-Cp-a6x"; */
-"MtH-Cp-a6x.text" = "You have no messages";
+"MtH-Cp-a6x.text" = "У вас нет сообщений";
 
-/* Class = "UINavigationItem"; title = "New Post"; ObjectID = "N41-dR-aTp"; */
-"N41-dR-aTp.title" = "New Post";
-
-/* Class = "UILabel"; text = "Продам совершенно новую подводную лодку, в хорошем состоянии. Все работает, нареканий нет. "; ObjectID = "NJZ-Ov-FCf"; */
-"NJZ-Ov-FCf.text" = "Продам совершенно новую подводную лодку, в хорошем состоянии. Все работает, нареканий нет. ";
+/* (No Commment) */
+"N41-dR-aTp.title" = "Новый пост";
 
 /* Class = "UILabel"; text = "Choose a category to search"; ObjectID = "NbI-Z4-JjP"; */
-"NbI-Z4-JjP.text" = "Choose a category to search";
+"NbI-Z4-JjP.text" = "Выберите категорию для поиска";
 
 /* Class = "UIViewController"; title = "Login view controller"; ObjectID = "Nfo-dS-g7G"; */
 "Nfo-dS-g7G.title" = "Login view controller";
 
 /* Class = "UITextField"; placeholder = "Email address"; ObjectID = "NqW-97-vIl"; */
-"NqW-97-vIl.placeholder" = "Email address";
+"NqW-97-vIl.placeholder" = "Электронная почта";
 
 /* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "NwJ-oT-NeE"; */
-"NwJ-oT-NeE.title" = "Next";
-
-/* Class = "UILabel"; text = "We will never post to Facebook without permission. By using Shiners, you agree to the Terms, Cookie Policy, and Privacy Policy."; ObjectID = "O0B-oE-Dxz"; */
-"O0B-oE-Dxz.text" = "We will never post to Facebook without permission. By using Shiners, you agree to the Terms, Cookie Policy, and Privacy Policy.";
+"NwJ-oT-NeE.title" = "Далее";
 
 /* Class = "UILabel"; text = "Tap here to log in or register"; ObjectID = "OKk-eE-wAR"; */
-"OKk-eE-wAR.text" = "Tap here to log in or register";
+"OKk-eE-wAR.text" = "Нажмите чтобы войти или зарегистрироваться";
 
 /* Class = "UILabel"; text = "online / offline"; ObjectID = "OMx-iq-R9U"; */
-"OMx-iq-R9U.text" = "online / offline";
+"OMx-iq-R9U.text" = "онлайн / оффлайн";
 
 /* Class = "UIViewController"; title = "When View Controller"; ObjectID = "OQd-hp-ELm"; */
 "OQd-hp-ELm.title" = "When View Controller";
@@ -306,301 +263,289 @@
 "PXz-dq-CRV.text" = "Skype";
 
 /* Class = "UINavigationItem"; title = "Where is it located?"; ObjectID = "PzG-5I-Ruq"; */
-"PzG-5I-Ruq.title" = "Where is it located?";
+"PzG-5I-Ruq.title" = "Где это находится?";
 
 /* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "QIT-FV-Svl"; */
-"QIT-FV-Svl.title" = "Next";
+"QIT-FV-Svl.title" = "Далее";
 
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "QaD-QI-xTs"; */
-"QaD-QI-xTs.title" = "Back";
+"QaD-QI-xTs.title" = "Назад";
 
 /* Class = "UITextField"; placeholder = "User name"; ObjectID = "QaV-Iz-C0B"; */
-"QaV-Iz-C0B.placeholder" = "User name";
+"QaV-Iz-C0B.placeholder" = "Имя пользователя";
 
 /* Class = "UIButton"; normalTitle = "Change"; ObjectID = "Qcu-jb-6aj"; */
-"Qcu-jb-6aj.normalTitle" = "Change";
+"Qcu-jb-6aj.normalTitle" = "Поменять";
 
 /* Class = "UIViewController"; title = "My Post Details"; ObjectID = "Qd9-Zx-awU"; */
-"Qd9-Zx-awU.title" = "My Post Details";
+"Qd9-Zx-awU.title" = "Детали моего поста";
 
 /* Class = "UITextView"; text = "Optional: Provide more details"; ObjectID = "REF-Uc-KuU"; */
-"REF-Uc-KuU.text" = "Optional: Provide more details";
+"REF-Uc-KuU.text" = "Необзятельно: Расскажите подробнее";
 
 /* Class = "UILabel"; text = "Account"; ObjectID = "RLU-vf-03B"; */
-"RLU-vf-03B.text" = "Account";
+"RLU-vf-03B.text" = "Аккаунт";
 
 /* Class = "UINavigationItem"; title = "Log In"; ObjectID = "RrN-ZA-iZy"; */
-"RrN-ZA-iZy.title" = "Log In";
+"RrN-ZA-iZy.title" = "Войти";
 
 /* Class = "UILabel"; text = "Moving along with you"; ObjectID = "S2D-xB-PjA"; */
-"S2D-xB-PjA.text" = "Moving along with you";
+"S2D-xB-PjA.text" = "Перемещается вместе с вами";
 
-/* Class = "UITableViewSection"; footerTitle = "This requires location services to be enabled"; ObjectID = "S6u-BL-ftZ"; */
-"S6u-BL-ftZ.footerTitle" = "This requires location services to be enabled";
+/* (No Commment) */
+"S6u-BL-ftZ.footerTitle" = "Требуется включить сервис локации";
 
-/* Class = "UITableViewSection"; headerTitle = "Where"; ObjectID = "S6u-BL-ftZ"; */
-"S6u-BL-ftZ.headerTitle" = "Where";
+/* (No Commment) */
+"S6u-BL-ftZ.headerTitle" = "Где";
 
 /* Class = "UINavigationItem"; title = "Type of post"; ObjectID = "SEh-iA-JtG"; */
-"SEh-iA-JtG.title" = "Type of post";
+"SEh-iA-JtG.title" = "Тип поста";
 
 /* Class = "UITabBarItem"; title = "Settings"; ObjectID = "SIp-10-zfD"; */
-"SIp-10-zfD.title" = "Settings";
+"SIp-10-zfD.title" = "Настройки";
 
-/* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "SOV-8t-KBL"; */
-"SOV-8t-KBL.title" = "Next";
+/* (No Commment) */
+"SOV-8t-KBL.title" = "Далее";
 
 /* Class = "UITextField"; placeholder = "Phone number"; ObjectID = "Sa2-lM-QOx"; */
-"Sa2-lM-QOx.placeholder" = "Phone number";
+"Sa2-lM-QOx.placeholder" = "Номер телефона";
 
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "StS-Zk-ace"; */
-"StS-Zk-ace.title" = "Back";
+"StS-Zk-ace.title" = "Назад";
 
 /* Class = "UIBarButtonItem"; title = "Cancel"; ObjectID = "SuO-JL-WsU"; */
-"SuO-JL-WsU.title" = "Cancel";
+"SuO-JL-WsU.title" = "Отменить";
 
-/* Class = "UINavigationItem"; title = "Description of post"; ObjectID = "SuW-TY-JwN"; */
-"SuW-TY-JwN.title" = "Description of post";
+/* (No Commment) */
+"SuW-TY-JwN.title" = "Описание поста";
 
 /* Class = "UITextField"; placeholder = "Phone number (optional)"; ObjectID = "UAy-DO-yP7"; */
-"UAy-DO-yP7.placeholder" = "Phone number (optional)";
+"UAy-DO-yP7.placeholder" = "Номер телефона (не обаязательно)";
 
 /* Class = "UILabel"; text = "Log out"; ObjectID = "UyQ-sd-lSX"; */
-"UyQ-sd-lSX.text" = "Log out";
+"UyQ-sd-lSX.text" = "Выйдти";
 
 /* Class = "UILabel"; text = "VK"; ObjectID = "V0b-0k-AGM"; */
 "V0b-0k-AGM.text" = "VK";
 
 /* Class = "UIButton"; normalTitle = "Forgot password?"; ObjectID = "V9i-wi-rTf"; */
-"V9i-wi-rTf.normalTitle" = "Forgot password?";
+"V9i-wi-rTf.normalTitle" = "Забыли пароль?";
 
 /* Class = "UILabel"; text = "Notify me of nearby events"; ObjectID = "VHf-Qe-od4"; */
-"VHf-Qe-od4.text" = "Notify me of nearby events";
+"VHf-Qe-od4.text" = "Оповещайте меня о событиях рядом";
 
 /* Class = "UIViewController"; title = "Add photos"; ObjectID = "VMS-VH-UTv"; */
-"VMS-VH-UTv.title" = "Add photos";
-
-/* Class = "UILabel"; text = "To reset your password, enter your email address and we will send you link to create a new password."; ObjectID = "VNk-iv-hD8"; */
-"VNk-iv-hD8.text" = "To reset your password, enter your email address and we will send you link to create a new password.";
+"VMS-VH-UTv.title" = "Добавить фото";
 
 /* Class = "UILabel"; text = "Dynamic post"; ObjectID = "VWr-li-ALu"; */
-"VWr-li-ALu.text" = "Dynamic post";
+"VWr-li-ALu.text" = "Динамический пост";
 
 /* Class = "UITextField"; placeholder = "Skype"; ObjectID = "Var-pC-bmK"; */
 "Var-pC-bmK.placeholder" = "Skype";
 
 /* Class = "UILabel"; text = "Tell a friend"; ObjectID = "VfB-7a-8Ii"; */
-"VfB-7a-8Ii.text" = "Tell a friend";
+"VfB-7a-8Ii.text" = "Рассказать другу";
 
-/* Class = "UIViewController"; title = "Post Description"; ObjectID = "W8o-NH-Gdy"; */
-"W8o-NH-Gdy.title" = "Post Description";
+/* (No Commment) */
+"W8o-NH-Gdy.title" = "Описание поста";
 
 /* Class = "UILabel"; text = "0.0"; ObjectID = "WAF-bj-DUX"; */
 "WAF-bj-DUX.text" = "0.0";
 
 /* Class = "UITableViewSection"; headerTitle = "Password"; ObjectID = "Whq-s4-6Ek"; */
-"Whq-s4-6Ek.headerTitle" = "Password";
+"Whq-s4-6Ek.headerTitle" = "Пароль";
 
 /* Class = "UILabel"; text = "Username"; ObjectID = "XyY-iP-OiC"; */
-"XyY-iP-OiC.text" = "Username";
+"XyY-iP-OiC.text" = "Имя пользователя";
 
 /* Class = "UIBarButtonItem"; title = "Log in"; ObjectID = "YOp-bh-5go"; */
-"YOp-bh-5go.title" = "Log in";
+"YOp-bh-5go.title" = "Войти";
 
-/* Class = "UINavigationItem"; title = "Post Description"; ObjectID = "YY5-4h-7aW"; */
-"YY5-4h-7aW.title" = "Post Description";
+/* (No Commment) */
+"YY5-4h-7aW.title" = "Описание поста";
 
 /* Class = "UILabel"; text = "999"; ObjectID = "Z4S-Mm-lA8"; */
 "Z4S-Mm-lA8.text" = "999";
 
-/* Class = "UILabel"; text = "Description"; ObjectID = "Z6o-G7-2wX"; */
-"Z6o-G7-2wX.text" = "Description";
+/* (No Commment) */
+"Z6o-G7-2wX.text" = "Описание";
 
-/* Class = "UINavigationItem"; title = "Edit profile"; ObjectID = "ZEL-UB-OGk"; */
-"ZEL-UB-OGk.title" = "Edit profile";
+/* Class = "UINavigationItem"; title = "Edit Profile"; ObjectID = "ZEL-UB-OGk"; */
+"ZEL-UB-OGk.title" = "Редактировать Профиль";
 
 /* Class = "UINavigationItem"; title = "Post Details"; ObjectID = "ZqH-Vu-jSF"; */
-"ZqH-Vu-jSF.title" = "Post Details";
+"ZqH-Vu-jSF.title" = "Детали поста";
 
-/* Class = "UIBarButtonItem"; title = "Clear"; ObjectID = "Zti-8X-Pkl"; */
-"Zti-8X-Pkl.title" = "Clear";
+/* (No Commment) */
+"Zti-8X-Pkl.title" = "Очистить";
 
 /* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "Zw9-JU-V5m"; */
-"Zw9-JU-V5m.title" = "Next";
+"Zw9-JU-V5m.title" = "Далее";
 
 /* Class = "UIButton"; normalTitle = "Log in with Facebook"; ObjectID = "Zy7-n9-eJp"; */
-"Zy7-n9-eJp.normalTitle" = "Log in with Facebook";
+"Zy7-n9-eJp.normalTitle" = "Авторизоваться через Facebook";
 
 /* Class = "UITableViewController"; title = "Search Post Result View Controller"; ObjectID = "a2Z-Oh-Oa2"; */
 "a2Z-Oh-Oa2.title" = "Search Post Result View Controller";
 
 /* Class = "UILabel"; text = "About us"; ObjectID = "aU2-x1-9Dr"; */
-"aU2-x1-9Dr.text" = "About us";
+"aU2-x1-9Dr.text" = "О нас";
 
 /* Class = "UILabel"; text = "Sign up to create post"; ObjectID = "aiN-IS-rrP"; */
-"aiN-IS-rrP.text" = "Sign up to create post";
+"aiN-IS-rrP.text" = "Зарегистрируйтесь, чтобы создать пост";
 
-/* Class = "UILabel"; text = "Moving with your ad"; ObjectID = "bAM-XM-Hnv"; */
-"bAM-XM-Hnv.text" = "Moving with your ad";
+/* (No Commment) */
+"bAM-XM-Hnv.text" = "Перемещается вместе с вашим объявлением";
 
 /* Class = "UILabel"; text = "$150"; ObjectID = "bX5-eN-EMu"; */
 "bX5-eN-EMu.text" = "$150";
 
-/* Class = "UILabel"; text = "This is some very long text to explain what could possibly be inside a post. This text should wrap itself when there's no more space to show it. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra, purus vel accumsan luctus, magna nunc ornare justo, ut egestas ipsum diam ac ligula. Aenean laoreet libero efficitur justo finibus tincidunt. Vivamus facilisis ex nec dolor molestie hendrerit. Curabitur sed nulla vel augue porta interdum a non erat. Sed mauris lorem, tempor vitae nisi vel, ultrices ullamcorper enim. Donec condimentum magna in feugiat auctor. Aenean in justo eget diam auctor tincidunt quis vestibulum nunc. In congue suscipit malesuada. Pellentesque quis mollis ante, accumsan faucibus dolor."; ObjectID = "bcq-PG-6tO"; */
-"bcq-PG-6tO.text" = "This is some very long text to explain what could possibly be inside a post. This text should wrap itself when there's no more space to show it. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam viverra, purus vel accumsan luctus, magna nunc ornare justo, ut egestas ipsum diam ac ligula. Aenean laoreet libero efficitur justo finibus tincidunt. Vivamus facilisis ex nec dolor molestie hendrerit. Curabitur sed nulla vel augue porta interdum a non erat. Sed mauris lorem, tempor vitae nisi vel, ultrices ullamcorper enim. Donec condimentum magna in feugiat auctor. Aenean in justo eget diam auctor tincidunt quis vestibulum nunc. In congue suscipit malesuada. Pellentesque quis mollis ante, accumsan faucibus dolor.";
-
 /* Class = "UILabel"; text = "login"; ObjectID = "bgg-Uw-kId"; */
-"bgg-Uw-kId.text" = "login";
+"bgg-Uw-kId.text" = "логин";
 
 /* Class = "UIBarButtonItem"; title = "Get Directions"; ObjectID = "blN-sg-Dbd"; */
-"blN-sg-Dbd.title" = "Get Directions";
+"blN-sg-Dbd.title" = "Как добраться";
 
 /* Class = "UILabel"; text = "Подводная лодка"; ObjectID = "brf-EZ-cbl"; */
 "brf-EZ-cbl.text" = "Подводная лодка";
 
-/* Class = "UITextField"; placeholder = "ad type"; ObjectID = "bzn-aG-Zg7"; */
-"bzn-aG-Zg7.placeholder" = "ad type";
+/* (No Commment) */
+"bzn-aG-Zg7.placeholder" = "Добавить тип";
 
 /* Class = "UITableViewController"; title = "Change password"; ObjectID = "c7O-lc-cfj"; */
-"c7O-lc-cfj.title" = "Change password";
+"c7O-lc-cfj.title" = "Поменять пароль";
 
-/* Class = "UITableViewSection"; headerTitle = "What"; ObjectID = "coy-YR-Z4E"; */
-"coy-YR-Z4E.headerTitle" = "What";
+/* (No Commment) */
+"coy-YR-Z4E.headerTitle" = "Что";
 
 /* Class = "UILabel"; text = "5 mi"; ObjectID = "crk-mg-lDY"; */
-"crk-mg-lDY.text" = "5 mi";
+"crk-mg-lDY.text" = "5 миль";
 
 /* Class = "UILabel"; text = "+7 (999) 999-21-22"; ObjectID = "d8V-Uv-fzK"; */
 "d8V-Uv-fzK.text" = "+7 (999) 999-21-22";
 
-/* Class = "UILabel"; text = "This is some very long text to explain what could possibly be inside a post. This text should wrap itself when there's no more space to show it. "; ObjectID = "dBt-Nc-d6t"; */
-"dBt-Nc-d6t.text" = "This is some very long text to explain what could possibly be inside a post. This text should wrap itself when there's no more space to show it. ";
-
-/* Class = "UIBarButtonItem"; title = "Create"; ObjectID = "dHI-Cm-ri6"; */
-"dHI-Cm-ri6.title" = "Create";
+/* (No Commment) */
+"dHI-Cm-ri6.title" = "Создать";
 
 /* Class = "UINavigationItem"; title = "Settings"; ObjectID = "dQF-Mr-9M8"; */
-"dQF-Mr-9M8.title" = "Settings";
+"dQF-Mr-9M8.title" = "Настройки";
 
 /* Class = "UILabel"; text = "Phone"; ObjectID = "dYb-Pj-rWf"; */
-"dYb-Pj-rWf.text" = "Phone";
+"dYb-Pj-rWf.text" = "Телефон";
 
 /* Class = "UILabel"; text = "2 days"; ObjectID = "dd3-fE-U3q"; */
-"dd3-fE-U3q.text" = "2 days";
+"dd3-fE-U3q.text" = "2 дня";
 
 /* Class = "UINavigationItem"; title = "New post"; ObjectID = "dfX-kM-zaA"; */
-"dfX-kM-zaA.title" = "New post";
+"dfX-kM-zaA.title" = "Новый пост";
 
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "drZ-7g-oWG"; */
-"drZ-7g-oWG.title" = "Back";
+"drZ-7g-oWG.title" = "Назад";
 
-/* Class = "UILabel"; text = "Ivan Brovkovich"; ObjectID = "dsq-Y7-WBr"; */
+/* (No Commment) */
 "dsq-Y7-WBr.text" = "Ivan Brovkovich";
 
-/* Class = "UILabel"; text = "Description of post"; ObjectID = "e8t-Is-sHY"; */
-"e8t-Is-sHY.text" = "Description of post";
+/* (No Commment) */
+"e8t-Is-sHY.text" = "Описание поста";
 
 /* Class = "UILabel"; text = "There are no posts around you"; ObjectID = "eD7-KZ-RzE"; */
-"eD7-KZ-RzE.text" = "There are no posts around you";
+"eD7-KZ-RzE.text" = "Рядом с вами нет постов";
 
 /* Class = "UITextField"; placeholder = "Enter your password"; ObjectID = "eGv-PG-E7f"; */
-"eGv-PG-E7f.placeholder" = "Enter your password";
+"eGv-PG-E7f.placeholder" = "Введите ваш пароль";
 
-/* Class = "UITextField"; placeholder = "action"; ObjectID = "eg2-Ue-QDm"; */
-"eg2-Ue-QDm.placeholder" = "action";
+/* (No Commment) */
+"eg2-Ue-QDm.placeholder" = "действие";
 
 /* Class = "UITextField"; placeholder = "First name"; ObjectID = "eh4-h3-XYx"; */
-"eh4-h3-XYx.placeholder" = "First name";
+"eh4-h3-XYx.placeholder" = "Имя";
 
 /* Class = "UILabel"; text = "Left:"; ObjectID = "fBg-3H-iN5"; */
-"fBg-3H-iN5.text" = "Left:";
+"fBg-3H-iN5.text" = "Осталось:";
 
 /* Class = "UILabel"; text = "You have no posts"; ObjectID = "fZh-j2-ptF"; */
-"fZh-j2-ptF.text" = "You have no posts";
+"fZh-j2-ptF.text" = "У вас нет постов";
 
 /* Class = "UILabel"; text = "Facebook"; ObjectID = "fpr-qX-PFr"; */
 "fpr-qX-PFr.text" = "Facebook";
 
 /* Class = "UITextField"; placeholder = "Last name"; ObjectID = "g3C-bZ-cGl"; */
-"g3C-bZ-cGl.placeholder" = "Last name";
+"g3C-bZ-cGl.placeholder" = "Фамилия";
 
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "gG9-qZ-gff"; */
-"gG9-qZ-gff.placeholder" = "Password";
+"gG9-qZ-gff.placeholder" = "Пароль";
 
-/* Class = "UILabel"; text = "Tap to select"; ObjectID = "gKq-yo-xIO"; */
-"gKq-yo-xIO.text" = "Tap to select";
+/* (No Commment) */
+"gKq-yo-xIO.text" = "Нажмите, чтобы выбрать";
 
-/* Class = "UITextField"; placeholder = "when"; ObjectID = "gNa-Zs-oV0"; */
-"gNa-Zs-oV0.placeholder" = "when";
-
-/* Class = "UILabel"; text = " "; ObjectID = "gOL-QR-Srr"; */
-"gOL-QR-Srr.text" = " ";
+/* (No Commment) */
+"gNa-Zs-oV0.placeholder" = "Когда";
 
 /* Class = "UITextField"; placeholder = "Current password"; ObjectID = "gUm-Wa-jly"; */
-"gUm-Wa-jly.placeholder" = "Current password";
+"gUm-Wa-jly.placeholder" = "Текущий пароль";
 
 /* Class = "UITableViewSection"; headerTitle = "Account"; ObjectID = "hAH-We-hpq"; */
-"hAH-We-hpq.headerTitle" = "Account";
+"hAH-We-hpq.headerTitle" = "Аккаунт";
 
 /* Class = "UILabel"; text = "Today 16:45"; ObjectID = "hHu-Co-uFf"; */
-"hHu-Co-uFf.text" = "Today 16:45";
+"hHu-Co-uFf.text" = "Сегодня 16:45";
 
 /* Class = "UILabel"; text = "Loading your posts..."; ObjectID = "hS6-KG-JqH"; */
-"hS6-KG-JqH.text" = "Loading your posts...";
+"hS6-KG-JqH.text" = "Загружаем посты...";
 
-/* Class = "UILabel"; text = "Category"; ObjectID = "hjq-Xy-j6g"; */
-"hjq-Xy-j6g.text" = "Category";
+/* (No Commment) */
+"hjq-Xy-j6g.text" = "Категория";
 
-/* Class = "UIBarButtonItem"; title = "Close"; ObjectID = "iB0-pB-E8J"; */
-"iB0-pB-E8J.title" = "Close";
+/* (No Commment) */
+"iB0-pB-E8J.title" = "Закрыть";
 
 /* Class = "UIViewController"; title = "Were View Controller"; ObjectID = "iIP-KC-Tq1"; */
 "iIP-KC-Tq1.title" = "Were View Controller";
 
 /* Class = "UITextField"; placeholder = "Confirm password"; ObjectID = "iQD-bb-xOT"; */
-"iQD-bb-xOT.placeholder" = "Confirm password";
+"iQD-bb-xOT.placeholder" = "Подтвердите пароль";
 
-/* Class = "UINavigationItem"; title = "Choose Static Location"; ObjectID = "iXu-0o-eX4"; */
-"iXu-0o-eX4.title" = "Choose Static Location";
+/* (No Commment) */
+"iXu-0o-eX4.title" = "Выберите статическую локацию";
 
-/* Class = "UILabel"; text = "What"; ObjectID = "iZ4-eT-jva"; */
+/* (No Commment) */
 "iZ4-eT-jva.text" = "What";
 
-/* Class = "UILabel"; text = "999"; ObjectID = "iul-xf-RRX"; */
+/* (No Commment) */
 "iul-xf-RRX.text" = "999";
 
 /* Class = "UIButton"; normalTitle = "Change"; ObjectID = "j8b-84-Jux"; */
-"j8b-84-Jux.normalTitle" = "Change";
+"j8b-84-Jux.normalTitle" = "Поменять";
 
 /* Class = "UILabel"; text = "Username:"; ObjectID = "jBT-Zc-qw0"; */
 "jBT-Zc-qw0.text" = "Username:";
 
 /* Class = "UITextField"; placeholder = "New password"; ObjectID = "jJW-KI-8zA"; */
-"jJW-KI-8zA.placeholder" = "New password";
+"jJW-KI-8zA.placeholder" = "Новый пароль";
 
 /* Class = "UISegmentedControl"; jQc-a5-ojv.segmentTitles[0] = "List"; ObjectID = "jQc-a5-ojv"; */
-"jQc-a5-ojv.segmentTitles[0]" = "List";
+"jQc-a5-ojv.segmentTitles[0]" = "Список";
 
 /* Class = "UISegmentedControl"; jQc-a5-ojv.segmentTitles[1] = "Map"; ObjectID = "jQc-a5-ojv"; */
-"jQc-a5-ojv.segmentTitles[1]" = "Map";
+"jQc-a5-ojv.segmentTitles[1]" = "Карта";
 
 /* Class = "UILabel"; text = "It is connected with your mobile phone."; ObjectID = "jXt-P5-sY1"; */
-"jXt-P5-sY1.text" = "It is connected with your mobile phone.";
+"jXt-P5-sY1.text" = "Он связан с местоположением вашего мобильного телефона";
 
 /* Class = "UITableViewSection"; headerTitle = "Select the type of post"; ObjectID = "jdo-n3-fhf"; */
-"jdo-n3-fhf.headerTitle" = "Select the type of post";
+"jdo-n3-fhf.headerTitle" = "Выберите тип поста";
 
 /* Class = "UIButton"; normalTitle = "Add photo"; ObjectID = "jlh-i9-wL1"; */
-"jlh-i9-wL1.normalTitle" = "Add photo";
+"jlh-i9-wL1.normalTitle" = "Добавить фото";
 
-/* Class = "UILabel"; text = "Ad Type"; ObjectID = "k5Q-un-OZi"; */
-"k5Q-un-OZi.text" = "Ad Type";
+/* (No Commment) */
+"k5Q-un-OZi.text" = "Тип объявления";
 
 /* Class = "UIButton"; normalTitle = "Close"; ObjectID = "kBW-wC-Y7T"; */
-"kBW-wC-Y7T.normalTitle" = "Close";
+"kBW-wC-Y7T.normalTitle" = "Закрыть";
 
-/* Class = "UILabel"; text = "Static"; ObjectID = "kCu-0L-P9e"; */
-"kCu-0L-P9e.text" = "Static";
+/* (No Commment) */
+"kCu-0L-P9e.text" = "Статический";
 
 /* Class = "UILabel"; text = "9999"; ObjectID = "kGn-77-7uU"; */
 "kGn-77-7uU.text" = "9999";
@@ -612,172 +557,167 @@
 "kbT-He-JkF.text" = "$150";
 
 /* Class = "UITableViewSection"; footerTitle = "Your posts will be available to all users"; ObjectID = "kjw-ZH-MQH"; */
-"kjw-ZH-MQH.footerTitle" = "Your posts will be available to all users";
+"kjw-ZH-MQH.footerTitle" = "Ваши посты будут доступны всем пользователям";
 
-/* Class = "UILabel"; text = "9999"; ObjectID = "kuo-zO-rrY"; */
+/* (No Commment) */
 "kuo-zO-rrY.text" = "9999";
 
 /* Class = "UIButton"; normalTitle = "Tap here to LOG IN"; ObjectID = "kzT-iH-Jki"; */
-"kzT-iH-Jki.normalTitle" = "Tap here to LOG IN";
+"kzT-iH-Jki.normalTitle" = "Нажмите здесь, чтобы авторизоваться";
 
 /* Class = "UILabel"; text = "666"; ObjectID = "l6I-mw-bBv"; */
 "l6I-mw-bBv.text" = "666";
 
 /* Class = "UITextField"; placeholder = "Email address"; ObjectID = "lGH-xx-W4y"; */
-"lGH-xx-W4y.placeholder" = "Email address";
+"lGH-xx-W4y.placeholder" = "Электронная почта";
 
 /* Class = "UITabBarItem"; title = "Messages"; ObjectID = "lGM-Kz-ouS"; */
-"lGM-Kz-ouS.title" = "Messages";
+"lGM-Kz-ouS.title" = "Сообщени";
 
 /* Class = "UILabel"; text = "Select Ad type"; ObjectID = "lJN-LQ-PFm"; */
-"lJN-LQ-PFm.text" = "Select Ad type";
+"lJN-LQ-PFm.text" = "Выберите тип объявления";
 
 /* Class = "UILabel"; text = "5 Feb"; ObjectID = "lMr-fT-aGZ"; */
 "lMr-fT-aGZ.text" = "5 Feb";
 
 /* Class = "UITextField"; placeholder = "Confirm new password"; ObjectID = "lO4-J3-0Kz"; */
-"lO4-J3-0Kz.placeholder" = "Confirm new password";
+"lO4-J3-0Kz.placeholder" = "Подтвердить новый пароль";
 
 /* Class = "UISearchBar"; lh8-HC-0Ay.scopeButtonTitles[0] = "Title"; ObjectID = "lh8-HC-0Ay"; */
-"lh8-HC-0Ay.scopeButtonTitles[0]" = "Title";
+"lh8-HC-0Ay.scopeButtonTitles[0]" = "Заголовок";
 
 /* Class = "UISearchBar"; lh8-HC-0Ay.scopeButtonTitles[1] = "Title"; ObjectID = "lh8-HC-0Ay"; */
-"lh8-HC-0Ay.scopeButtonTitles[1]" = "Title";
+"lh8-HC-0Ay.scopeButtonTitles[1]" = "Заголовок";
 
-/* Class = "UITableViewSection"; headerTitle = "Import from Web (optional)"; ObjectID = "llL-1O-hxQ"; */
-"llL-1O-hxQ.headerTitle" = "Import from Web (optional)";
+/* (No Commment) */
+"llL-1O-hxQ.headerTitle" = "Импортировать (не обязательное)";
 
 /* Class = "UITextField"; placeholder = "Confirm password"; ObjectID = "lsl-N3-Qqe"; */
-"lsl-N3-Qqe.placeholder" = "Confirm password";
+"lsl-N3-Qqe.placeholder" = "Подтвердить пароль";
 
 /* Class = "UILabel"; text = "Edit profile"; ObjectID = "m3Q-HH-LBJ"; */
-"m3Q-HH-LBJ.text" = "Edit profile";
-
-/* Class = "UILabel"; text = "Название текущего поста"; ObjectID = "mMH-4g-vXl"; */
-"mMH-4g-vXl.text" = "Название текущего поста";
+"m3Q-HH-LBJ.text" = "Редактировать профиль";
 
 /* Class = "UILabel"; text = "Notify me of nearby events"; ObjectID = "nF0-Kk-gEa"; */
-"nF0-Kk-gEa.text" = "Notify me of nearby events";
+"nF0-Kk-gEa.text" = "Оповещайте меня о событиях рядом";
 
-/* Class = "UILabel"; text = "When"; ObjectID = "nFz-Y1-rfV"; */
-"nFz-Y1-rfV.text" = "When";
+/* (No Commment) */
+"nFz-Y1-rfV.text" = "Когда";
 
 /* Class = "UITabBarItem"; title = "Posts"; ObjectID = "nYa-Fa-arV"; */
-"nYa-Fa-arV.title" = "Posts";
+"nYa-Fa-arV.title" = "Посты";
 
-/* Class = "UILabel"; text = "Looking to"; ObjectID = "ni6-tS-PN0"; */
-"ni6-tS-PN0.text" = "Looking to";
+/* (No Commment) */
+"ni6-tS-PN0.text" = "Заинтересован в";
 
 /* Class = "UINavigationItem"; title = "Change password"; ObjectID = "nus-W5-o5L"; */
-"nus-W5-o5L.title" = "Change password";
+"nus-W5-o5L.title" = "Поменять пароль";
 
 /* Class = "UILabel"; text = "Register"; ObjectID = "nwD-3W-Mxh"; */
-"nwD-3W-Mxh.text" = "Register";
+"nwD-3W-Mxh.text" = "Зарегистироваться";
 
 /* Class = "UITextField"; placeholder = "Username"; ObjectID = "onC-Fp-T9F"; */
-"onC-Fp-T9F.placeholder" = "Username";
+"onC-Fp-T9F.placeholder" = "Имя пользователя";
 
 /* Class = "UINavigationItem"; title = "Register"; ObjectID = "osv-iz-1uf"; */
-"osv-iz-1uf.title" = "Register";
+"osv-iz-1uf.title" = "Зарегистрироваться";
 
 /* Class = "UITextField"; placeholder = "Tap here to give post a title"; ObjectID = "ovB-ZE-Vfv"; */
-"ovB-ZE-Vfv.placeholder" = "Tap here to give post a title";
+"ovB-ZE-Vfv.placeholder" = "Нажмите здесь, чтобы создать заголовок";
 
-/* Class = "UIButton"; normalTitle = "Написать"; ObjectID = "p6M-Vp-H5b"; */
-"p6M-Vp-H5b.normalTitle" = "Написать";
-
-/* Class = "UILabel"; text = "Title"; ObjectID = "pK5-HD-awh"; */
-"pK5-HD-awh.text" = "Title";
+/* (No Commment) */
+"pK5-HD-awh.text" = "Заголовок";
 
 /* Class = "UITextField"; placeholder = "User name"; ObjectID = "qZP-0H-SCW"; */
-"qZP-0H-SCW.placeholder" = "User name";
+"qZP-0H-SCW.placeholder" = "Имя пользователя";
 
 /* Class = "UINavigationItem"; title = "Settings"; ObjectID = "qvl-IF-4dz"; */
-"qvl-IF-4dz.title" = "Settings";
+"qvl-IF-4dz.title" = "Настройки";
 
 /* Class = "UITableViewSection"; headerTitle = "Tags"; ObjectID = "r4M-zK-zn4"; */
-"r4M-zK-zn4.headerTitle" = "Tags";
+"r4M-zK-zn4.headerTitle" = "Тэги";
 
 /* Class = "UILabel"; text = "Acquiring location..."; ObjectID = "rWD-VU-Bnb"; */
-"rWD-VU-Bnb.text" = "Acquiring location...";
+"rWD-VU-Bnb.text" = "Определяется локация...";
 
 /* Class = "UILabel"; text = "email"; ObjectID = "s7z-7t-bod"; */
-"s7z-7t-bod.text" = "email";
+"s7z-7t-bod.text" = "Электронная почта";
 
 /* Class = "UIButton"; normalTitle = "Close"; ObjectID = "sTX-PN-nEj"; */
-"sTX-PN-nEj.normalTitle" = "Close";
+"sTX-PN-nEj.normalTitle" = "Закрыть";
 
 /* Class = "UILabel"; text = "Log out"; ObjectID = "szZ-Jq-nTu"; */
-"szZ-Jq-nTu.text" = "Log out";
+"szZ-Jq-nTu.text" = "Выйдти";
 
 /* Class = "UILabel"; text = "About us and Help"; ObjectID = "t1p-Vc-vwW"; */
-"t1p-Vc-vwW.text" = "About us and Help";
+"t1p-Vc-vwW.text" = "О нас и Помощь";
 
 /* Class = "UILabel"; text = "999"; ObjectID = "t8e-Ua-6YU"; */
 "t8e-Ua-6YU.text" = "999";
 
 /* Class = "UILabel"; text = "Login"; ObjectID = "tRb-Me-Kjv"; */
-"tRb-Me-Kjv.text" = "Login";
+"tRb-Me-Kjv.text" = "Войти";
 
 /* Class = "UILabel"; text = "Log in with Facebook"; ObjectID = "tUC-3K-QXx"; */
-"tUC-3K-QXx.text" = "Log in with Facebook";
+"tUC-3K-QXx.text" = "Авторизоваться через Facebook";
 
 /* Class = "UILabel"; text = "Help"; ObjectID = "tVB-OW-NCc"; */
-"tVB-OW-NCc.text" = "Help";
+"tVB-OW-NCc.text" = "Помощь";
 
 /* Class = "UILabel"; text = "365 days"; ObjectID = "ttN-lV-xSZ"; */
-"ttN-lV-xSZ.text" = "365 days";
+"ttN-lV-xSZ.text" = "365 дней";
 
-/* Class = "UILabel"; text = "Description"; ObjectID = "u09-Q9-mGC"; */
-"u09-Q9-mGC.text" = "Description";
+/* (No Commment) */
+"u09-Q9-mGC.text" = "Описание";
 
 /* Class = "UINavigationItem"; title = "Profile"; ObjectID = "uAC-Vy-9zC"; */
-"uAC-Vy-9zC.title" = "Profile";
+"uAC-Vy-9zC.title" = "Профиль";
 
 /* Class = "UINavigationItem"; title = "Messages"; ObjectID = "uX0-i6-PlM"; */
-"uX0-i6-PlM.title" = "Messages";
+"uX0-i6-PlM.title" = "Сообщения";
 
 /* Class = "UILabel"; text = "Your status"; ObjectID = "ujW-Q1-sMn"; */
-"ujW-Q1-sMn.text" = "Your status";
+"ujW-Q1-sMn.text" = "Ваш статус";
 
-/* Class = "UILabel"; text = "Tap to select"; ObjectID = "uvK-Br-h7n"; */
-"uvK-Br-h7n.text" = "Tap to select";
+/* (No Commment) */
+"uvK-Br-h7n.text" = "Нажмите, чтобы выбрать";
 
-/* Class = "UILabel"; text = "Describe"; ObjectID = "vC4-YX-TB7"; */
-"vC4-YX-TB7.text" = "Describe";
+/* (No Commment) */
+"vC4-YX-TB7.text" = "Опишите";
 
 /* Class = "UITabBarItem"; title = "Settings"; ObjectID = "vCI-Of-c03"; */
-"vCI-Of-c03.title" = "Settings";
+"vCI-Of-c03.title" = "Настройки";
 
 /* Class = "UILabel"; text = "No images were added"; ObjectID = "vJ3-R2-TNg"; */
-"vJ3-R2-TNg.text" = "No images were added";
+"vJ3-R2-TNg.text" = "Нет выбранных изображений";
 
 /* Class = "UILabel"; text = "Access my posts"; ObjectID = "vvd-22-fsE"; */
-"vvd-22-fsE.text" = "Access my posts";
+"vvd-22-fsE.text" = "Доступ к постам";
 
 /* Class = "UITextField"; placeholder = "Skype (optional)"; ObjectID = "wfy-Jw-npf"; */
-"wfy-Jw-npf.placeholder" = "Skype (optional)";
+"wfy-Jw-npf.placeholder" = "Skype (не обязательное)";
 
-/* Class = "UILabel"; text = "Add photo"; ObjectID = "wuC-jE-fVP"; */
-"wuC-jE-fVP.text" = "Add photo";
+/* (No Commment) */
+"wuC-jE-fVP.text" = "Добавить фото";
 
 /* Class = "UILabel"; text = "Reminders"; ObjectID = "xJz-ss-KoC"; */
-"xJz-ss-KoC.text" = "Reminders";
+"xJz-ss-KoC.text" = "Напоминание";
 
 /* Class = "UINavigationItem"; title = "When does it expire?"; ObjectID = "xZr-tb-Fqy"; */
-"xZr-tb-Fqy.title" = "When does it expire?";
+"xZr-tb-Fqy.title" = "Когда истекает срок действия?";
 
-/* Class = "UILabel"; text = "Tap to select"; ObjectID = "xte-8n-oAp"; */
-"xte-8n-oAp.text" = "Tap to select";
+/* (No Commment) */
+"xte-8n-oAp.text" = "Нажмите, чтобы выбрать";
 
 /* Class = "UITextField"; placeholder = "Last name"; ObjectID = "y0V-o1-fgO"; */
-"y0V-o1-fgO.placeholder" = "Last name";
+"y0V-o1-fgO.placeholder" = "Фамилия";
 
 /* Class = "UIButton"; normalTitle = "Reset password"; ObjectID = "zEc-hI-ea9"; */
-"zEc-hI-ea9.normalTitle" = "Reset password";
+"zEc-hI-ea9.normalTitle" = "Переустановить пароль";
 
-/* Class = "UILabel"; text = "What is your post title?"; ObjectID = "zVL-uj-w5D"; */
-"zVL-uj-w5D.text" = "What is your post title?";
+/* (No Commment) */
+"zVL-uj-w5D.text" = "Какой ваш заголовок поста?";
 
-/* Class = "UITextField"; placeholder = "123.45"; ObjectID = "zbV-Kk-5ML"; */
+/* (No Commment) */
 "zbV-Kk-5ML.placeholder" = "123.45";
+

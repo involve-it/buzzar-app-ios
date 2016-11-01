@@ -1,4 +1,157 @@
 /* Title, About Me */
 "About Me" = "Обо мне";
+
+/* Location, Address is not defined */
+"Address is not defined" = "Адрес не найден";
+
+/* Alert title, Are you sure? */
+"Are you sure?" = "Вы уверены?";
+
+/* Alert title, Camera */
+"Camera" = "Камера";
+
+/* Can't find any posts matching your search criteria */
+"Can't find any posts matching your search criteria" = "По вашему запросу ничего не найдено";
+
+/* Alert title, Cancel
+   Alert, title, Cancel */
+"Cancel" = "Отменить";
+
+/* Alert title, Choose Image */
+"Choose Image" = "Выберите изображение";
+
+/* Label text, Connected */
+"Connected" = "Соединение установлено";
+
+/* Connection Established, Connected! */
+"Connected!" = "Соединение установлено!";
+
+/* Connection Broken, Connection to server lost. Working offline. */
+"Connection to server lost. Working offline." = "Соединение с сервором оборвано. Продолжаю работать оффлайн.";
+
+/* Title, Delete */
+"Delete" = "Удалить";
+
+/* Delete Posts */
+"Delete Posts" = "Удалить посты";
+
+/* Alert title, Dismiss */
+"Dismiss" = "Пропустить";
+
+/* Alert message, Do you wish to log out? */
+"Do you wish to log out?" = "Вы хотите выйти из аккаунта?";
+
+/* Post status, Dynamic */
+"Dynamic" = "Динамический";
+
+/* Alert error, Error
+   Alert title, Error
+   Alert, Error */
+"Error" = "Ошибка";
+
+/* Alert message, Error logginig in to Facebook */
+"Error logginig in to Facebook" = "";
+
+/* Alert, error occurred */
+"Error occurred" = "Возникла ошибка";
+
+/* Alert message, Error occurred while logging in with Facebook */
+"Error occurred while logging in with Facebook" = "Ошибка при авторизации через Facebook";
+
+/* Alert message, Error updating posts */
+"Error updating posts" = "Ошибка обновления постов";
+
+/* Alert message, Error uploading photo
+   Alert, error message uploading photo */
+"Error uploading photo" = "Ошибка добавления фото";
+
+/* Everywhere */
+"Everywhere" = "Везде";
+
+/* Facebook */
+"Facebook" = "Facebook";
+
+/* Alert title, Facebook Login */
+"Facebook Login" = "Войти через Facebook";
+
+/* Title, Hide */
 "Hide" = "Скрыть";
+
+/* Text, Location is hidden */
+"Location is hidden" = "Местоположение скрыто";
+
+/* Alert title, Log in failed */
+"Log in failed" = "Ошибка авторизации";
+
+/* Alert title, Log out */
+"Log out" = "Выйдти";
+
+/* Placeholder, Message */
+"Message" = "Сообщение";
+
+/* NavigationItem title, Messages */
+"Messages" = "Сообщения";
+
+/* NavigationBar Item, Messages */
+"Messages((count))" = "Сообщения";
+
+/* Alert title, New message */
+"New message" = "Новое сообщение";
+
+/* No Connection */
+"No Connection" = "Нет связи";
+
+/* Alert title, Notifications */
+"Notifications" = "Уведомления";
+
+/* Ok */
+"Ok" = "Ок";
+
+/* Placeholder, Description (optional) */
+"Optional: Provide more details" = "Детали (не обязательное)";
+
+/* Alert title, Permissions */
+"Permissions" = "Доступ";
+
+/* Title, Photo */
+"Photo" = "Фото";
+
+/* Alert title, Photo Library */
+"Photo Library" = "Библиотека фото";
+
+/* Alert message, Please allow access to Camera or Photo Library in Privacy Settings */
+"Please allow access to Camera or Photo Library in Privacy Settings" = "Пожалуйста, разрешите доступ к камере в настройках вашего устройства";
+
+/* Alert denied, Please allow location services in settings
+   Please allow location services in settings */
+"Please allow location services in settings" = "Пожалуйста, включите доступ к локации в настройках вашего устройства";
+
+/* Button title, Register */
+"Register" = "Регистрация";
+
+/* Alert title, registration error */
+"Registration error" = "Ошибка";
+
+/* Search placeholder, Search posts */
+"Search posts" = "Найти посты";
+
+/* Alert title, Send */
+"Send" = "Отправить";
+
+/* Title, Show */
 "Show" = "Показать";
+
+/* Post status, Static */
+"Static" = "Статический";
+
+/* There are no posts around you */
+"There are no posts around you" = "Вокруг вас постов нет";
+
+/* Alert message, to receive notifications, please allow this in device Settings. */
+"To receive notifications, please allow this in device Settings." = "Чтобы получать уведомления, пожалуйста, зайдите в настройки вашего устройства и выберите
+                    \"разрешить отправку уведомлений\"
+                ";
+
+/* Post info, post closed */
+"post closed" = "Пост закрыт";
+

@@ -21,6 +21,7 @@
 		6117A5481D4C03EC009E12DB /* PostDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6117A5471D4C03EC009E12DB /* PostDetailsViewController.swift */; };
 		6120F40A1D6A336E000D4FE8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6120F4091D6A336E000D4FE8 /* SettingsViewController.swift */; };
 		6120F40C1D6AFC6D000D4FE8 /* NEWLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6120F40B1D6AFC6D000D4FE8 /* NEWLoginViewController.swift */; };
+		612736971DC8CF93009EDBD6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 612736991DC8CF93009EDBD6 /* InfoPlist.strings */; };
 		613C6A471D633C8300744076 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A451D633C8300744076 /* ProfileTableViewController.swift */; };
 		613C6A481D633C8300744076 /* cellUserProfile.xib in Resources */ = {isa = PBXBuildFile; fileRef = 613C6A461D633C8300744076 /* cellUserProfile.xib */; };
 		613C6A4A1D63419400744076 /* cellUserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A491D63419400744076 /* cellUserProfile.swift */; };
@@ -145,6 +146,7 @@
 		6117A5471D4C03EC009E12DB /* PostDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDetailsViewController.swift; sourceTree = "<group>"; };
 		6120F4091D6A336E000D4FE8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		6120F40B1D6AFC6D000D4FE8 /* NEWLoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEWLoginViewController.swift; sourceTree = "<group>"; };
+		612736981DC8CF93009EDBD6 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		613C6A451D633C8300744076 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		613C6A461D633C8300744076 /* cellUserProfile.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = cellUserProfile.xib; sourceTree = "<group>"; };
 		613C6A491D63419400744076 /* cellUserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = cellUserProfile.swift; sourceTree = "<group>"; };
@@ -507,6 +509,7 @@
 		7BC0A21A1CCC15E700DA2824 /* Shiners */ = {
 			isa = PBXGroup;
 			children = (
+				612736991DC8CF93009EDBD6 /* InfoPlist.strings */,
 				7B3565461CE7B9A100012CA9 /* UI */,
 				7BB2A7E31CCC2B3800AD636D /* Core */,
 				7BB2A7DD1CCC1BDD00AD636D /* Data */,
@@ -642,6 +645,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B35653E1CE42F8700012CA9 /* add-30.png in Resources */,
+				612736971DC8CF93009EDBD6 /* InfoPlist.strings in Resources */,
 				7BC0A2261CCC15E700DA2824 /* LaunchScreen.storyboard in Resources */,
 				7BC0A2231CCC15E700DA2824 /* Assets.xcassets in Resources */,
 				7BC0A2421CCC164100DA2824 /* home.png in Resources */,
@@ -820,6 +824,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		612736991DC8CF93009EDBD6 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				612736981DC8CF93009EDBD6 /* ru */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		61F91F251D8046CD00B9DF3C /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
