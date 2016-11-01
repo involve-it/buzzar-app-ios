@@ -24,7 +24,7 @@ public class PostsProxy{
         dict["lng"] = lng
         dict["radius"] = radius
         dict["skip"] = 0
-        dict["take"] = 100
+        dict["take"] = 50
         
         Meteor.call("getNearbyPostsTest", params: [dict]) {result, error in
             if error == nil {

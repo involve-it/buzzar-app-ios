@@ -55,14 +55,22 @@ public class AccountHandler{
     public func getNearbyPosts(lat: Double, lng: Double, radius: Double, callback: MeteorMethodCallback){
         ConnectionHandler.Instance.posts.getNearbyPosts(lat, lng: lng, radius: radius){ (success, errorId, errorMessage, result) in
             if success {
+                var posts = result as! [Post]
+                posts.sortInPlace({ (post1, post2) -> Bool in
+                    let post1Sort = post1.isLive() ? 1 : 0
+                    let post2Sort = post2.isLive() ? 1 : 0
+                    return post1Sort > post2Sort
+                })
+                
                 ThreadHelper.runOnBackgroundThread(){
-                    if !CachingHandler.Instance.savePostsAll(result as! [Post]){
+                    if !CachingHandler.Instance.savePostsAll(posts){
                         NSLog("Unable to archive posts")
                     }
                 }
+                callback(success: success, errorId: errorId, errorMessage: errorMessage, result: posts)
+            } else {
+                callback(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
             }
-            
-            callback(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
         }
     }
     
