@@ -177,7 +177,7 @@ class ProfileTableViewController: UITableViewController {
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return !(self.extUser != nil) ? 5 : 1
+        return !(self.extUser != nil) ? 4 : 1
     }
     
     func tabelViewEstimatedRowHeight() {
@@ -186,13 +186,14 @@ class ProfileTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        if indexPath.section == 4 {
+        if indexPath.section == 3 {
             let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .ActionSheet)
             alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
                 AccountHandler.Instance.logoff(){ success in
                     if (!success){
-                        self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("An error occurred", comment: "Alert message, An error occurred"))
+                        ThreadHelper.runOnMainThread({ 
+                            self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("An error occurred", comment: "Alert message, An error occurred"))
+                        })
                     }
                 };
             }))

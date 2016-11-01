@@ -115,7 +115,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     }
     
     @IBAction func btnShare_Click(sender: AnyObject) {
-        let activityViewController = UIActivityViewController(activityItems: ["Check out this post: \(ConnectionHandler.baseUrl)/post/\(self.post.id!)", NSURL(string: "\(ConnectionHandler.baseUrl)/post/\(self.post.id!)")!], applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: ["Check out this post on Shiners: \(self.post.title!)", NSURL(string: "\(ConnectionHandler.publicUrl)/posts/\(self.post.id!)")!], applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivityTypePrint, UIActivityTypeOpenInIBooks, UIActivityTypeSaveToCameraRoll];
         navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
     }

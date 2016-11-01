@@ -111,7 +111,7 @@
 "C4g-CZ-eOj.title" = "addPostPlaceholder";
 
 /* Class = "UITableViewSection"; footerTitle = "Тут необходим поясняющий текст для пользователей."; ObjectID = "C8v-2i-i1t"; */
-"C8v-2i-i1t.footerTitle" = "Тут необходим поясняющий текст для пользователей.";
+"C8v-2i-i1t.footerTitle" = "Keep this switch on to be notified of events near you";
 
 /* Class = "UIBarButtonItem"; title = "Next"; ObjectID = "CLc-Kt-ihI"; */
 "CLc-Kt-ihI.title" = "Next";

@@ -24,7 +24,7 @@ public class PostsProxy{
         dict["lng"] = lng
         dict["radius"] = radius
         dict["skip"] = 0
-        dict["take"] = 50
+        dict["take"] = 100
         
         Meteor.call("getNearbyPostsTest", params: [dict]) {result, error in
             if error == nil {
@@ -100,6 +100,7 @@ public class PostsProxy{
         //todo: fix paging
         dict["incrementTotal"] = incrementTotal
         dict["incrementToday"] = incrementToday
+        dict["incrementAll"] = true
         Meteor.call("incrementPostSeenCounters", params: [dict]){(result, error) in
             if error == nil {
                 let errorId = ResponseHelper.getErrorId(result);
