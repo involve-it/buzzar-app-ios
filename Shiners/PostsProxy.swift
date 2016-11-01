@@ -93,4 +93,20 @@ public class PostsProxy{
             }
         }
     }
+    
+    public func incrementSeenCounters(id: String, incrementTotal: Bool, incrementToday: Bool, callback: MeteorMethodCallback? = nil){
+        var dict = Dictionary<String, AnyObject>()
+        dict["postId"] = id
+        //todo: fix paging
+        dict["incrementTotal"] = incrementTotal
+        dict["incrementToday"] = incrementToday
+        Meteor.call("incrementPostSeenCounters", params: [dict]){(result, error) in
+            if error == nil {
+                let errorId = ResponseHelper.getErrorId(result);
+                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
 }

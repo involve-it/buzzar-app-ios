@@ -99,6 +99,7 @@
 		7BB2A8171CD53B9600AD636D /* facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BB2A8161CD53B9600AD636D /* facebook.png */; };
 		7BB2A8191CD53BC200AD636D /* twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BB2A8181CD53BC200AD636D /* twitter.png */; };
 		7BB2A81B1CD53BF500AD636D /* vk.png in Resources */ = {isa = PBXBuildFile; fileRef = 7BB2A81A1CD53BF500AD636D /* vk.png */; };
+		7BB5870B1DC82FBF00A92CF6 /* SeenPostsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BB5870A1DC82FBF00A92CF6 /* SeenPostsHandler.swift */; };
 		7BC0A21C1CCC15E700DA2824 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC0A21B1CCC15E700DA2824 /* AppDelegate.swift */; };
 		7BC0A21E1CCC15E700DA2824 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC0A21D1CCC15E700DA2824 /* MainViewController.swift */; };
 		7BC0A2231CCC15E700DA2824 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7BC0A2221CCC15E700DA2824 /* Assets.xcassets */; };
@@ -226,6 +227,7 @@
 		7BB2A8161CD53B9600AD636D /* facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook.png; sourceTree = "<group>"; };
 		7BB2A8181CD53BC200AD636D /* twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter.png; sourceTree = "<group>"; };
 		7BB2A81A1CD53BF500AD636D /* vk.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vk.png; sourceTree = "<group>"; };
+		7BB5870A1DC82FBF00A92CF6 /* SeenPostsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeenPostsHandler.swift; sourceTree = "<group>"; };
 		7BC0A2181CCC15E700DA2824 /* Shiners.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shiners.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7BC0A21B1CCC15E700DA2824 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7BC0A21D1CCC15E700DA2824 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -461,6 +463,7 @@
 				7BC1A9C31D4C3D19005B4F62 /* KeyChainWrapper.swift */,
 				7BC1A9C51D4C40B5005B4F62 /* SecurityHandler.swift */,
 				7BFDC6771D99F4E400DE66A6 /* LocalNotificationsHandler.swift */,
+				7BB5870A1DC82FBF00A92CF6 /* SeenPostsHandler.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -798,6 +801,7 @@
 				7B26B19F1CD688B7000495EE /* LocationHandler.swift in Sources */,
 				610671A61D5A0927007828BA /* CVCellNib.swift in Sources */,
 				6120F40A1D6A336E000D4FE8 /* SettingsViewController.swift in Sources */,
+				7BB5870B1DC82FBF00A92CF6 /* SeenPostsHandler.swift in Sources */,
 				7BB2A7E51CCC431700AD636D /* Image.swift in Sources */,
 				7BC1A9C81D50469B005B4F62 /* FullMapViewController.swift in Sources */,
 				7B26B08E1CD564E1000495EE /* MyPostsViewController.swift in Sources */,

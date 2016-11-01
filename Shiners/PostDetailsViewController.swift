@@ -159,6 +159,17 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             if !AccountHandler.Instance.isLoggedIn() {
                 self.writeStack.hidden = true
             }
+            
+            let incrementTuple = SeenPostsHandler.updateSeenCounter(post.id!)
+            if incrementTuple.incrementToday {
+                post.seenToday = (post.seenToday ?? 0) + 1
+            }
+            if incrementTuple.incrementTotal{
+                post.seenTotal = (post.seenTotal ?? 0) + 1
+            }
+            if incrementTuple.incrementTotal || incrementTuple.incrementToday {
+                NotificationManager.sendNotification(NotificationManager.Name.PostUpdated, object: self.post.id)
+            }
         }
         
         //Title

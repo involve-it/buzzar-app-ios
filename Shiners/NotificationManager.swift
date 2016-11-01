@@ -43,5 +43,7 @@ public class NotificationManager{
         case NewPostLocationReported = "shiners:NewPostLocationReported"
         
         case ServerEventNotification = "shiners:ServerEventNotification"
+        
+        case PostUpdated = "shiners:PostUpdated"
     }
 }
