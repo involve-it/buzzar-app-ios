@@ -97,6 +97,13 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
                         
                         let annotation = CustomPointAnnotation(coordinate: location.coordinate)
                         annotation.id = post.id
+                        
+                        if let category = post.type?.rawValue {
+                            annotation.category = category
+                        }
+                        
+                        
+                        
                         annotation.title = post.title
                         if let subTitle = post.descr {
                             annotation.subtitle = subTitle
@@ -148,7 +155,14 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
                 
             }
             
-            annotationView!.image = UIImage(named: "static-live-flag-jobs")
+            
+            if let category = customPointAnnotation.category {
+                annotationView!.image = UIImage(named: "static-live-flag-" + "\(category)")
+            } else {
+                annotationView!.image = UIImage(named: "static-live-flag-jobs")
+            }
+            
+            
             annotationView?.frame = CGRect(x: 0, y: 0, width: 24.2, height: 32)
             
             let leftIconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 53, height: 53))
@@ -156,6 +170,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
             leftIconView.contentMode = .ScaleAspectFill
             leftIconView.clipsToBounds = true
             annotationView?.leftCalloutAccessoryView = leftIconView
+            
             let btn = UIButton(type: .DetailDisclosure)
             annotationView?.rightCalloutAccessoryView = btn
 

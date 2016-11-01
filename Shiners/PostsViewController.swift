@@ -15,6 +15,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     @IBOutlet var segmFilter: UISegmentedControl!
     @IBOutlet weak var txtSearchBox: UITextField!
     @IBOutlet var searchView: UIView!
+   
     
     var currentUser: User?
     
@@ -164,6 +165,31 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
                 postCell.txtDetails.text = ""
             }
             
+            //Post category
+            if let category = post.type?.rawValue {
+                postCell.categoryViewOfPost.hidden = false
+                postCell.imgSeparatorOfCategory.hidden = false
+                postCell.categoryViewOfPost.layer.cornerRadius = 2.0
+                postCell.categoryOfPost.text = category
+                
+                switch category {
+                case "connect": postCell.categoryViewOfPost.backgroundColor = UIColor(netHex: 0xFA5F56)
+                case "trade": postCell.categoryViewOfPost.backgroundColor = UIColor(netHex: 0x9B9C9C)
+                case "jobs": postCell.categoryViewOfPost.backgroundColor = UIColor(netHex: 0x76C9E8)
+                case "trainings": postCell.categoryViewOfPost.backgroundColor = UIColor(netHex: 0xD08BBC)
+                case "housing": postCell.categoryViewOfPost.backgroundColor = UIColor(netHex: 0xBDCE3A)
+                case "events": postCell.categoryViewOfPost.backgroundColor = UIColor(netHex: 0xEB7434)
+                case "services": postCell.categoryViewOfPost.backgroundColor = UIColor(netHex: 0xA7D1AE)
+                case "help": postCell.categoryViewOfPost.backgroundColor = UIColor(netHex: 0x5DA293)
+                default:
+                    break
+                }
+                
+            } else {
+                postCell.categoryViewOfPost.hidden = true
+                postCell.imgSeparatorOfCategory.hidden = true
+            }
+            
             //Additional labels
             if let postCreated = post.timestamp {
                 postCell.txtPostCreated.text = postCreated.toLocalizedString()
@@ -278,6 +304,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         print("unwind")
     }
 }
+
 
 
 
