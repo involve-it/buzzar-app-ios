@@ -63,7 +63,6 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
     }
     
     
-    
     func updateMap(posts: [Post]) {
         self.mapView.removeAnnotations(self.postsLocationAnnotations)
         self.postsLocationAnnotations = [CustomPointAnnotation]()
@@ -117,39 +116,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
                             annotation.image = ImageCachingHandler.defaultPhoto
                         }
                         
-                        annotation.pinCustomImageName = "dynamic_annotation"
-                        
                         postsLocationAnnotations.append(annotation)
- 
-
-//                        geoCoder = CLGeocoder()
-//                        postsPlaceMarks = [CLPlacemark]()
-                        
-//                        geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error in
-//                        
-//                            if error != nil {
-//                                print("Reverse geocoder failed with error: \(error!.localizedDescription)")
-//                            }
-//                    
-//                            /*if placemarks != nil {
-//                                //self.postsPlaceMarks.append(placemarks[0])
-//                                if let placemark = placemarks?.first {
-//                                    let name = placemark.name
-//                                    print("PlaceMark name: \(name)")
-//                                    
-//                                    //Add annotation
-//                                    //let anatation = MKPointAnnotation()
-//                                    //anatation.coordinate = location.coordinate
-//                                    
-//                                    //let anatation = CustomPointAnnotation()
-//                                    //anatation.coordinate = placemark.location!.coordinate
-//                                    //anatation.title = name
-//                                    //anatation.pinCustomImageName = "dynamic_annotation"
-//                                    //self.postsPlaceMarks.append(placemark)
-//         
-//                                }
-//                            }*/
-//                        })
                     }
                 }
             }
@@ -166,31 +133,35 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
             return nil
         }
         
-        if (annotation is CustomPointAnnotation){
-            let reuseIdentifier = "pin"
-            var view = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIdentifier) as? MKPinAnnotationView
+        let customPointAnnotation = annotation as! CustomPointAnnotation
+        
+        if (annotation is CustomPointAnnotation) {
+            let reuseIdentifier = "customPin"
+            var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIdentifier)
             
-            if view == nil {
-                view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
-                view!.canShowCallout = true
-                view?.centerOffset = CGPointMake(10, -20)
+            if (annotationView == nil) {
+                annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
+                annotationView!.canShowCallout = true
+                annotationView?.centerOffset = CGPointMake(10, -20)
             } else {
-                view!.annotation = annotation
+                annotationView!.annotation = annotation
+                
             }
             
-            let customPointAnnotation = annotation as! CustomPointAnnotation
-            //view!.image = UIImage(named: customPointAnnotation.pinCustomImageName!)
+            annotationView!.image = UIImage(named: "static-live-flag-jobs")
+            annotationView?.frame = CGRect(x: 0, y: 0, width: 24.2, height: 32)
             
             let leftIconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 53, height: 53))
             leftIconView.image = customPointAnnotation.image
             leftIconView.contentMode = .ScaleAspectFill
             leftIconView.clipsToBounds = true
-            view?.leftCalloutAccessoryView = leftIconView
+            annotationView?.leftCalloutAccessoryView = leftIconView
             let btn = UIButton(type: .DetailDisclosure)
-            view?.rightCalloutAccessoryView = btn
-            
-            return view
+            annotationView?.rightCalloutAccessoryView = btn
+
+            return annotationView
         }
+        
         return nil
     }
     
@@ -219,14 +190,8 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
         }
     }
     
-    /*
-    func mapView(mapView: MKMapView, annotationView: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if control == annotationView.rightCalloutAccessoryView {
-            let app = UIApplication.sharedApplication()
-            app.openURL(NSURL(string: (annotationView.annotation!.title!)!)!)
-        }
-    }*/
     
+
     
     func centerMapOnLocation(location: CustomPointAnnotation, regionRadius: Double) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
@@ -234,16 +199,6 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
         //let region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
         mapView.setRegion(coordinateRegion, animated: false)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 

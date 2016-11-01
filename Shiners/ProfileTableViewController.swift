@@ -85,10 +85,13 @@ class ProfileTableViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        if AccountHandler.Instance.status != .Completed {
-            self.editProfile.enabled = false
-        } else {
-            self.editProfile.enabled = true
+        
+        if let editPorfileButton = self.editProfile {
+            if AccountHandler.Instance.status != .Completed {
+                editPorfileButton.enabled = false
+            } else {
+                editPorfileButton.enabled = true
+            }
         }
     }
 
