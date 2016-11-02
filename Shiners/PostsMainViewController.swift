@@ -192,6 +192,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     func getMore(){
         if ConnectionHandler.Instance.status == .Connected && !self.loadingPosts, let currentLocation = self.currentLocation {
             self.loadingPosts = true
+            self.callDisplayLoadingMore()
             AccountHandler.Instance.getNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude, radius: 10000, skip: 0, take: self.allPosts.count + AccountHandler.NEARBY_POSTS_PAGE_SIZE) { (success, errorId, errorMessage, result) in
                 self.loadingPosts = false
                 ThreadHelper.runOnMainThread({
@@ -256,6 +257,11 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         } else {
             //self.refreshControl?.endRefreshing()
         }
+    }
+    
+    func callDisplayLoadingMore(){
+        let viewController = viewControllerForSelectedSegmentIndex(self.typeSwitch.selectedSegmentIndex)
+        (viewController as! PostsViewControllerDelegate).displayLoadingMore()
     }
     
     func callRefreshDelegates(){

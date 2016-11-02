@@ -242,6 +242,31 @@
                                     <outlet property="lblMessage" destination="eD7-KZ-RzE" id="7ge-FS-Pa4"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="morePosts" id="nKL-32-k8h" customClass="ErrorCell" customModule="Shiners" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="368" width="600" height="92"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nKL-32-k8h" id="kPZ-ne-eWY">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="91"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading more posts..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wAU-tQ-TII">
+                                            <rect key="frame" x="217" y="35" width="166" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Nl3-X5-q7x">
+                                            <rect key="frame" x="189" y="36" width="20" height="20"/>
+                                        </activityIndicatorView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="wAU-tQ-TII" firstAttribute="leading" secondItem="Nl3-X5-q7x" secondAttribute="trailing" constant="8" id="44c-sF-ua9"/>
+                                        <constraint firstItem="Nl3-X5-q7x" firstAttribute="centerY" secondItem="kPZ-ne-eWY" secondAttribute="centerY" id="TFg-md-Lbd"/>
+                                        <constraint firstItem="wAU-tQ-TII" firstAttribute="centerY" secondItem="kPZ-ne-eWY" secondAttribute="centerY" id="U7O-uf-By3"/>
+                                        <constraint firstItem="wAU-tQ-TII" firstAttribute="centerX" secondItem="kPZ-ne-eWY" secondAttribute="centerX" id="e6x-a3-z11"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <sections/>
                         <connections>

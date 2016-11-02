@@ -11,4 +11,5 @@ import Foundation
 protocol PostsViewControllerDelegate {
     func postsUpdated()
     func showPostDetails(index: Int)
+    func displayLoadingMore()
 }

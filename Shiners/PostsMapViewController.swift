@@ -205,8 +205,9 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
         }
     }
     
-    
-
+    func displayLoadingMore() {
+        
+    }
     
     func centerMapOnLocation(location: CustomPointAnnotation, regionRadius: Double) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
