@@ -59,9 +59,20 @@ public class AccountHandler{
             if success {
                 var posts = result as! [Post]
                 posts.sortInPlace({ (post1, post2) -> Bool in
-                    let post1Sort = post1.isLive() ? 1 : 0
-                    let post2Sort = post2.isLive() ? 1 : 0
-                    return post1Sort > post2Sort
+                    if post1.isLive() && !post2.isLive() {
+                        return true
+                    }
+                    if post2.isLive() && !post1.isLive() {
+                        return false
+                    }
+                    if post1.isLive() == post2.isLive(){
+                        if let currentLocation = LocationHandler.lastLocation {
+                            return post1.getDistance(currentLocation) < post2.getDistance(currentLocation)
+                        } else {
+                           return true
+                        }
+                    }
+                    return false
                 })
                 
                 if posts.count <= AccountHandler.NEARBY_POSTS_PAGE_SIZE {
