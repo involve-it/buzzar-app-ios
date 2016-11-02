@@ -204,7 +204,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                             self.noMorePosts = true
                         } else {
                             self.allPosts = posts
-                            self.callRefreshDelegates()
+                            
                             if !self.filtering{
                                 self.posts = self.allPosts
                             }
@@ -213,8 +213,8 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                         self.errorMessage = errorMessage
                         self.showAlert(NSLocalizedString("Error", comment: "Alert error, Error"), message: NSLocalizedString("Error updating posts", comment: "Alert message, Error updating posts"))
                         //self.tableView.reloadData()
-                        self.callRefreshDelegates()
                     }
+                    self.callRefreshDelegates()
                 })
             }
         }

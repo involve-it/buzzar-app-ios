@@ -198,7 +198,7 @@ public class AccountHandler{
                 }
             })
 
-            ConnectionHandler.Instance.posts.getMyPosts(0, take: 100, callback: { (success, errorId, errorMessage, result) in
+            ConnectionHandler.Instance.posts.getMyPosts(0, take: 1000, callback: { (success, errorId, errorMessage, result) in
                 if self.latestCallId == callId {
                     if (success){
                         self.myPosts = result as? [Post]
@@ -238,7 +238,7 @@ public class AccountHandler{
     }
     
     public func updateMyPosts(callback: MeteorMethodCallback? = nil){
-        ConnectionHandler.Instance.posts.getMyPosts(0, take: 100, callback: { (success, errorId, errorMessage, result) in
+        ConnectionHandler.Instance.posts.getMyPosts(0, take: 1000, callback: { (success, errorId, errorMessage, result) in
             if success {
                 self.myPosts = result as? [Post]
                 
