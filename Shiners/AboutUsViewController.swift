@@ -20,9 +20,9 @@ class AboutUsViewController: UIViewController, UIWebViewDelegate {
         let preferredLanguage = NSLocale.preferredLanguages()[0] as String
         var url: NSURL!
         if preferredLanguage == "ru"{
-            url = NSURL(string: "https://shiners.ru/about-us")
+            url = NSURL(string: "https://shiners.ru/about-us?isiframe=true")
         } else {
-            url = NSURL(string: "https://shiners.mobi/about-us")
+            url = NSURL(string: "https://shiners.mobi/about-us?lat=37&lng=-120&isiframe=true")
         }
         loadWebView(url!, webView: self.webView)
         self.setLoading(true)
