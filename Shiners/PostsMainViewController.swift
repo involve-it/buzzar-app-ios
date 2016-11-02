@@ -193,21 +193,24 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         if ConnectionHandler.Instance.status == .Connected && !self.loadingPosts, let currentLocation = self.currentLocation {
             self.loadingPosts = true
             self.callDisplayLoadingMore()
-            AccountHandler.Instance.getNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude, radius: 10000, skip: 0, take: self.allPosts.count + AccountHandler.NEARBY_POSTS_PAGE_SIZE) { (success, errorId, errorMessage, result) in
+            AccountHandler.Instance.getNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude, radius: 10000, skip: 0, take: self.allPosts.count + AccountHandler.NEARBY_POSTS_PAGE_SIZE + 1) { (success, errorId, errorMessage, result) in
                 self.loadingPosts = false
                 ThreadHelper.runOnMainThread({
                     if success {
                         self.errorMessage = nil
-                        let posts = result as! [Post]
+                        var posts = result as! [Post]
                         
-                        if posts.count == self.allPosts.count && posts.count != AccountHandler.NEARBY_POSTS_PAGE_SIZE{
+                        if posts.count <= self.allPosts.count + AccountHandler.NEARBY_POSTS_PAGE_SIZE && posts.count != AccountHandler.NEARBY_POSTS_PAGE_SIZE{
                             self.noMorePosts = true
+                        } else{
+                            posts.removeLast()
+                        }
+                        self.allPosts = posts
+                        
+                        if self.filtering{
+                            self.searchBar(self.searchBar, textDidChange: (self.searchBar.text ?? ""))
                         } else {
-                            self.allPosts = posts
-                            
-                            if !self.filtering{
-                                self.posts = self.allPosts
-                            }
+                            self.posts = self.allPosts
                         }
                     } else {
                         self.errorMessage = errorMessage
@@ -224,7 +227,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         self.noMorePosts = false
         if ConnectionHandler.Instance.status == .Connected && !self.loadingPosts, let currentLocation = self.currentLocation {
             self.loadingPosts = true
-            AccountHandler.Instance.getNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude, radius: 10000, skip: 0, take: AccountHandler.NEARBY_POSTS_PAGE_SIZE) { (success, errorId, errorMessage, result) in
+            AccountHandler.Instance.getNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude, radius: 10000, skip: 0, take: AccountHandler.NEARBY_POSTS_PAGE_SIZE + 1) { (success, errorId, errorMessage, result) in
                 self.loadingPosts = false
                 ThreadHelper.runOnMainThread({
                     //self.refreshControl?.endRefreshing()
@@ -232,8 +235,10 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                         self.errorMessage = nil
                         self.allPosts = result as! [Post]
                         
-                        if (self.allPosts.count < AccountHandler.NEARBY_POSTS_PAGE_SIZE){
+                        if (self.allPosts.count <= AccountHandler.NEARBY_POSTS_PAGE_SIZE){
                             self.noMorePosts = true
+                        } else {
+                            self.allPosts.removeLast()
                         }
                         
                         if self.filtering{

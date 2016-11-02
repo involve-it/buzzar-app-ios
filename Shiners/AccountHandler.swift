@@ -75,7 +75,7 @@ public class AccountHandler{
                     return false
                 })
                 
-                if posts.count <= AccountHandler.NEARBY_POSTS_PAGE_SIZE {
+                if posts.count <= AccountHandler.NEARBY_POSTS_PAGE_SIZE + 1 {
                     ThreadHelper.runOnBackgroundThread(){
                         if !CachingHandler.Instance.savePostsAll(posts){
                             NSLog("Unable to archive posts")
