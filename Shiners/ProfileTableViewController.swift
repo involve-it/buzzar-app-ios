@@ -24,6 +24,10 @@ class ProfileTableViewController: UITableViewController {
     @IBOutlet weak var btnCloseVC: UIBarButtonItem!
     @IBOutlet weak var editProfile: UIBarButtonItem!
     
+    @IBOutlet weak var profileImageWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var profileImageHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var contactStackViewVerticatConstraint: NSLayoutConstraint!
+    @IBOutlet weak var contactStackView: UIStackView!
     var extUser: User?
     var postId: String?
     private var currentUser: User!
@@ -44,10 +48,6 @@ class ProfileTableViewController: UITableViewController {
         
         self.navigationItem.title = NSLocalizedString("Settings", comment: "Navigation title, Settings")
         
-        self.imgUserAvatar.layer.cornerRadius = self.imgUserAvatar.frame.width / 2
-        self.imgUserAvatar.clipsToBounds = true
-        self.imgUserAvatar.contentMode = .ScaleAspectFill
-        
         self.btnCallToUser.enabled = false
         self.btnMessageToUser.enabled = false
         self.btnCallToUser.centerTextButton()
@@ -66,11 +66,19 @@ class ProfileTableViewController: UITableViewController {
             if let index = self.navigationItem.leftBarButtonItems?.indexOf(self.btnCloseVC){
                 self.navigationItem.leftBarButtonItems?.removeAtIndex(index)
             }
+            self.contactStackView.hidden = true
+            self.contactStackViewVerticatConstraint.constant = 0
+            self.isStatusLabel.hidden = true
+            self.profileImageHeightConstraint.constant = 140
+            self.profileImageWidthConstraint.constant = 140
         } else {
             if let index = self.navigationItem.rightBarButtonItems?.indexOf(self.editProfile){
                 self.navigationItem.rightBarButtonItems?.removeAtIndex(index)
             }
         }
+        
+        self.imgUserAvatar.layer.cornerRadius = self.profileImageHeightConstraint.constant / 2
+        self.imgUserAvatar.clipsToBounds = true
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorLoaded), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorLoaded), name: NotificationManager.Name.UserUpdated.rawValue, object: nil)

@@ -1849,7 +1849,7 @@
                             <rect key="frame" x="0.0" y="64" width="600" height="210"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jgl-3Y-sQP">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jgl-3Y-sQP">
                                     <rect key="frame" x="260" y="16" width="80" height="80"/>
                                     <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
@@ -1857,12 +1857,6 @@
                                         <constraint firstAttribute="width" constant="80" id="QTT-L8-Jxp"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First name / Last name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l7X-wQ-Eby">
-                                    <rect key="frame" x="16" y="104" width="568" height="24"/>
-                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mkV-lq-6Pf">
                                     <rect key="frame" x="16" y="138" width="568" height="60"/>
                                     <subviews>
@@ -1919,6 +1913,12 @@
                                     <rect key="frame" x="511" y="8" width="81" height="15"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First name / Last name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l7X-wQ-Eby">
+                                    <rect key="frame" x="16" y="104" width="568" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
@@ -2136,11 +2136,15 @@
                         <outlet property="btnCloseVC" destination="M7p-lE-J7A" id="ZZD-Yq-PvV"/>
                         <outlet property="btnMessageToUser" destination="59D-uq-1Be" id="iaj-di-EHs"/>
                         <outlet property="cbNearbyNotifications" destination="xVr-0X-qH7" id="XDY-6j-4IP"/>
+                        <outlet property="contactStackView" destination="mkV-lq-6Pf" id="KPu-Eu-N3O"/>
+                        <outlet property="contactStackViewVerticatConstraint" destination="Uuz-Ve-W5i" id="eSz-M9-SZ2"/>
                         <outlet property="editProfile" destination="J28-df-GgD" id="MQn-4g-3IM"/>
                         <outlet property="imgUserAvatar" destination="jgl-3Y-sQP" id="3Xj-of-Db4"/>
                         <outlet property="isStatusLabel" destination="OMx-iq-R9U" id="MK7-yr-WRW"/>
                         <outlet property="phoneRowLabel" destination="d8V-Uv-fzK" id="1aa-OI-gIQ"/>
                         <outlet property="phoneRowVisible" destination="br7-P8-zxP" id="XUi-bV-VHp"/>
+                        <outlet property="profileImageHeightConstraint" destination="8CR-kC-lu4" id="Ab4-uQ-MH4"/>
+                        <outlet property="profileImageWidthConstraint" destination="QTT-L8-Jxp" id="b4l-cF-3Wy"/>
                         <outlet property="skypeRowLabel" destination="Gix-Ff-wXG" id="o2R-KJ-MRU"/>
                         <outlet property="skypeRowVisible" destination="7hI-TX-d9I" id="axF-Ph-Wol"/>
                         <outlet property="tableView" destination="tpa-hy-zfv" id="uQ5-J0-ZAi"/>
