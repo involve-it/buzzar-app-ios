@@ -16,25 +16,8 @@ class SettingsViewController: UIViewController {
 
         configNavigationToolBar()
         
-        //conf. LeftMenu
-        //self.configureOfLeftMenu()
-        //self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
     }
     
-    /*override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-       
-        
-        if AccountHandler.Instance.isLoggedIn() {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyBoard.instantiateViewControllerWithIdentifier("postsViewController")
-            self.revealViewController().pushFrontViewController(vc, animated: false)
-            
-           self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
-        }
-    }*/
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -62,16 +45,4 @@ class SettingsViewController: UIViewController {
         let vc = storyboardMain.instantiateViewControllerWithIdentifier("SignUpNavigationController")
         self.presentViewController(vc, animated: true, completion: nil)
     }
-    
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

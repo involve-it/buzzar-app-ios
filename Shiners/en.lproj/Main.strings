@@ -781,3 +781,12 @@
 
 /* Class = "UITextField"; placeholder = "123.45"; ObjectID = "zbV-Kk-5ML"; */
 "zbV-Kk-5ML.placeholder" = "123.45";
+
+
+/* NEW CHANGES HERE */
+
+/* Register button */
+"swI-D5-iaR.normalTitle" = "Register";
+
+
+

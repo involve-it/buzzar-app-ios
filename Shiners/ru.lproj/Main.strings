@@ -203,7 +203,7 @@
 "Kad-Lr-Pmg.text" = "Статический пост";
 
 /* Class = "UILabel"; text = "Log out"; ObjectID = "KhZ-81-9Oc"; */
-"KhZ-81-9Oc.text" = "Выйдти";
+"KhZ-81-9Oc.text" = "Выйти";
 
 /* Class = "UIBarButtonItem"; title = "Create"; ObjectID = "KpP-QW-wCB"; */
 "KpP-QW-wCB.title" = "Создать";
@@ -323,7 +323,7 @@
 "UAy-DO-yP7.placeholder" = "Номер телефона (не обаязательно)";
 
 /* Class = "UILabel"; text = "Log out"; ObjectID = "UyQ-sd-lSX"; */
-"UyQ-sd-lSX.text" = "Выйдти";
+"UyQ-sd-lSX.text" = "Выйти";
 
 /* Class = "UILabel"; text = "VK"; ObjectID = "V0b-0k-AGM"; */
 "V0b-0k-AGM.text" = "VK";
@@ -563,7 +563,7 @@
 "kuo-zO-rrY.text" = "9999";
 
 /* Class = "UIButton"; normalTitle = "Tap here to LOG IN"; ObjectID = "kzT-iH-Jki"; */
-"kzT-iH-Jki.normalTitle" = "Нажмите здесь, чтобы авторизоваться";
+"kzT-iH-Jki.normalTitle" = "Нажмите здесь, чтобы войти";
 
 /* Class = "UILabel"; text = "666"; ObjectID = "l6I-mw-bBv"; */
 "l6I-mw-bBv.text" = "666";
@@ -572,7 +572,7 @@
 "lGH-xx-W4y.placeholder" = "Электронная почта";
 
 /* Class = "UITabBarItem"; title = "Messages"; ObjectID = "lGM-Kz-ouS"; */
-"lGM-Kz-ouS.title" = "Сообщени";
+"lGM-Kz-ouS.title" = "Сообщения";
 
 /* Class = "UILabel"; text = "Select Ad type"; ObjectID = "lJN-LQ-PFm"; */
 "lJN-LQ-PFm.text" = "Выберите тип объявления";
@@ -647,7 +647,7 @@
 "sTX-PN-nEj.normalTitle" = "Закрыть";
 
 /* Class = "UILabel"; text = "Log out"; ObjectID = "szZ-Jq-nTu"; */
-"szZ-Jq-nTu.text" = "Выйдти";
+"szZ-Jq-nTu.text" = "Выйти";
 
 /* Class = "UILabel"; text = "About us and Help"; ObjectID = "t1p-Vc-vwW"; */
 "t1p-Vc-vwW.text" = "О нас и Помощь";
@@ -661,8 +661,8 @@
 /* Class = "UILabel"; text = "Log in with Facebook"; ObjectID = "tUC-3K-QXx"; */
 "tUC-3K-QXx.text" = "Авторизоваться через Facebook";
 
-/* Class = "UILabel"; text = "Help"; ObjectID = "tVB-OW-NCc"; */
-"tVB-OW-NCc.text" = "Помощь";
+/* Class = "UILabel"; text = "Contact us"; ObjectID = "tVB-OW-NCc"; */
+"tVB-OW-NCc.text" = "Связаться с нами";
 
 /* Class = "UILabel"; text = "365 days"; ObjectID = "ttN-lV-xSZ"; */
 "ttN-lV-xSZ.text" = "365 дней";
@@ -720,4 +720,14 @@
 
 /* (No Commment) */
 "zbV-Kk-5ML.placeholder" = "123.45";
+
+
+/* NEW CHANGES HERE */
+
+/* Register button */
+"swI-D5-iaR.normalTitle" = "Регистрация";
+
+
+
+
 

@@ -15,6 +15,7 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var textFieldUsername: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
     
+    @IBOutlet weak var registerBtn: UIButton!
     @IBOutlet var loginBtn: UIBarButtonItem!
     
     override func viewDidLoad() {
@@ -112,6 +113,12 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func btnCancel_Click(sender: AnyObject) {
         self.dismissSelf();
+    }
+    
+    @IBAction func Register_Click(sender: UIButton) {
+        let storyboardMain = UIStoryboard(name: "Main", bundle: nil)
+        let nc = storyboardMain.instantiateViewControllerWithIdentifier("SignUpNavigationController") as! UINavigationController
+        self.presentViewController(nc, animated: true, completion: nil)
     }
     
     private func dismissSelf(){
