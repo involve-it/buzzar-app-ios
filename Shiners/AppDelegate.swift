@@ -9,6 +9,7 @@
 import UIKit
 import SystemConfiguration
 import FBSDKCoreKit
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {

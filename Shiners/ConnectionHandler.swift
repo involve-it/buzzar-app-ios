@@ -32,6 +32,7 @@ public class ConnectionHandler{
     private var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
     public func reportLocation(lat: Double, lng: Double, notify: Bool){
+        CachingHandler.Instance.saveLastLocation(lat, lng: lng)
         if let userId = AccountHandler.Instance.getSavedUserId() {
             var dict = Dictionary<String, AnyObject>()
             dict["lat"] = lat

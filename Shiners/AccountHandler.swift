@@ -278,6 +278,7 @@ public class AccountHandler{
     }
     
     public func reportLocation(lat: Double, lng: Double){
+        CachingHandler.Instance.saveLastLocation(lat, lng: lng)
         if self.isLoggedIn() && (self.lastLocationReport == nil || NSDate().timeIntervalSinceDate(self.lastLocationReport!) >= AccountHandler.LOCATION_REPORT_INTEVAL_SECONDS){
             var dict = Dictionary<String, AnyObject>()
             dict["lat"] = lat

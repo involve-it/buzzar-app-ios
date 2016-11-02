@@ -75,6 +75,7 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
     public func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             LocationHandler.lastLocation = location
+            CachingHandler.Instance.saveLastLocation(location.coordinate.latitude, lng: location.coordinate.longitude)
             if self.geocodingRequired{
                 self.reverseGeocode(location)
             } else {

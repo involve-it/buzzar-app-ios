@@ -151,7 +151,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
             } else {
                 cell = tableView.dequeueReusableCellWithIdentifier("waitingPosts")
             }
-        } else if indexPath.row == self.mainViewController.posts.count && self.mainViewController.loadingPosts{
+        } else if indexPath.row == self.mainViewController.posts.count && self.mainViewController.loadingMorePosts{
             cell = tableView.dequeueReusableCellWithIdentifier("morePosts")
         } else {
             let postCell: PostsTableViewCell = tableView.dequeueReusableCellWithIdentifier("post") as! PostsTableViewCell;
@@ -258,7 +258,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = max(1, self.mainViewController.posts.count);
-        if self.mainViewController.loadingPosts && self.mainViewController.posts.count != 0 {
+        if self.mainViewController.loadingMorePosts && self.mainViewController.posts.count != 0 {
             count += 1
         }
         return count
