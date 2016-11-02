@@ -151,6 +151,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
             } else {
                 cell = tableView.dequeueReusableCellWithIdentifier("waitingPosts")
             }
+        } else if indexPath.row == self.mainViewController.posts.count && self.mainViewController.loadingPosts{
+            cell = tableView.dequeueReusableCellWithIdentifier("morePosts")
         } else {
             let postCell: PostsTableViewCell = tableView.dequeueReusableCellWithIdentifier("post") as! PostsTableViewCell;
             let post: Post = self.mainViewController.posts[indexPath.row];
@@ -248,10 +250,25 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         return cell;
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return max(1, self.mainViewController.posts.count);
+    func displayLoadingMore() {
+        ThreadHelper.runOnMainThread { 
+            self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.mainViewController.posts.count, inSection: 0)], withRowAnimation: .Automatic)
+        }
     }
     
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var count = max(1, self.mainViewController.posts.count);
+        if self.mainViewController.loadingPosts && self.mainViewController.posts.count != 0 {
+            count += 1
+        }
+        return count
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if !self.mainViewController.filtering && indexPath.row >= self.mainViewController.posts.count - Int(AccountHandler.NEARBY_POSTS_PAGE_SIZE / 3) && !self.mainViewController.noMorePosts && !self.mainViewController.loadingPosts {
+            self.mainViewController.getMore()
+        }
+    }
     
     func didApplyFilter() {
         self.closeSearchView()

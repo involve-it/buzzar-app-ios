@@ -241,6 +241,24 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         return distanceFormatted
     }
     
+    func getDistance(currentLocation: CLLocation) -> Double? {
+        var distance: Double?
+        //Post location
+        if let locations = self.locations {
+            for location in locations {
+                if let lat = location.lat, lng = location.lng {
+                    distance = currentLocation.distanceFromLocation(CLLocation(latitude: lat, longitude: lng))
+                    
+                    if location.placeType == .Dynamic {
+                        break
+                    }
+                }
+            }
+        }
+        
+        return distance
+    }
+    
     public func toDictionary() -> Dictionary<String, AnyObject>{
         var dict = Dictionary<String, AnyObject>()
         

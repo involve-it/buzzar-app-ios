@@ -32,6 +32,8 @@ public class AccountHandler{
     //2 minutes
     private static let LOCATION_REPORT_INTEVAL_SECONDS = 2 * 60.0
     
+    public static let NEARBY_POSTS_PAGE_SIZE = 50
+    
     func subscribeToNewMessages(){
         if let messagesId = self.messagesId {
             Meteor.unsubscribe(withId: messagesId)
@@ -52,19 +54,32 @@ public class AccountHandler{
         }
     }
     
-    public func getNearbyPosts(lat: Double, lng: Double, radius: Double, callback: MeteorMethodCallback){
-        ConnectionHandler.Instance.posts.getNearbyPosts(lat, lng: lng, radius: radius){ (success, errorId, errorMessage, result) in
+    public func getNearbyPosts(lat: Double, lng: Double, radius: Double, skip: Int, take: Int, callback: MeteorMethodCallback){
+        ConnectionHandler.Instance.posts.getNearbyPosts(lat, lng: lng, radius: radius, skip: skip, take: take){ (success, errorId, errorMessage, result) in
             if success {
                 var posts = result as! [Post]
                 posts.sortInPlace({ (post1, post2) -> Bool in
-                    let post1Sort = post1.isLive() ? 1 : 0
-                    let post2Sort = post2.isLive() ? 1 : 0
-                    return post1Sort > post2Sort
+                    if post1.isLive() && !post2.isLive() {
+                        return true
+                    }
+                    if post2.isLive() && !post1.isLive() {
+                        return false
+                    }
+                    if post1.isLive() == post2.isLive(){
+                        if let currentLocation = LocationHandler.lastLocation {
+                            return post1.getDistance(currentLocation) < post2.getDistance(currentLocation)
+                        } else {
+                           return true
+                        }
+                    }
+                    return false
                 })
                 
-                ThreadHelper.runOnBackgroundThread(){
-                    if !CachingHandler.Instance.savePostsAll(posts){
-                        NSLog("Unable to archive posts")
+                if posts.count <= AccountHandler.NEARBY_POSTS_PAGE_SIZE + 1 {
+                    ThreadHelper.runOnBackgroundThread(){
+                        if !CachingHandler.Instance.savePostsAll(posts){
+                            NSLog("Unable to archive posts")
+                        }
                     }
                 }
                 callback(success: success, errorId: errorId, errorMessage: errorMessage, result: posts)
@@ -194,7 +209,7 @@ public class AccountHandler{
                 }
             })
 
-            ConnectionHandler.Instance.posts.getMyPosts(0, take: 100, callback: { (success, errorId, errorMessage, result) in
+            ConnectionHandler.Instance.posts.getMyPosts(0, take: 1000, callback: { (success, errorId, errorMessage, result) in
                 if self.latestCallId == callId {
                     if (success){
                         self.myPosts = result as? [Post]
@@ -234,7 +249,7 @@ public class AccountHandler{
     }
     
     public func updateMyPosts(callback: MeteorMethodCallback? = nil){
-        ConnectionHandler.Instance.posts.getMyPosts(0, take: 100, callback: { (success, errorId, errorMessage, result) in
+        ConnectionHandler.Instance.posts.getMyPosts(0, take: 1000, callback: { (success, errorId, errorMessage, result) in
             if success {
                 self.myPosts = result as? [Post]
                 

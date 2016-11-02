@@ -141,21 +141,19 @@ public class DialogViewController : JSQMessagesViewController{
                     return $0.timestamp!.compare($1.timestamp!) == NSComparisonResult.OrderedDescending
                 })
                 var indexPaths = [NSIndexPath]()
-                var totalCount = messages.count - 1
+                var totalCount = messages.count
                 if messages.count > MessagesHandler.DEFAULT_PAGE_SIZE {
                     totalCount = MessagesHandler.DEFAULT_PAGE_SIZE
                 }
-                for i in 0...totalCount {
+                for i in 0...totalCount - 1 {
                     indexPaths.append(NSIndexPath(forItem: i, inSection: 0))
-                }
-                for message in messagesSortedDescending {
-                    if let userId = message.userId, text = message.text, timestamp = message.timestamp where message != messagesSortedDescending.last! {
-                        //let msg = JSQMessage(senderId: userId, displayName: "", text: text)
+                    let message = messagesSortedDescending[i]
+                    if let userId = message.userId, text = message.text, timestamp = message.timestamp {
                         let message = JSQMessage(senderId: userId, senderDisplayName: "", date: timestamp, text: text)
                         self.messages.insert(message, atIndex: 0)
-                        //self.chat.messages.insert(message, atIndex: 0)
                     }
                 }
+                
                 ThreadHelper.runOnMainThread({
                     CATransaction.begin()
                     CATransaction.setDisableActions(true)

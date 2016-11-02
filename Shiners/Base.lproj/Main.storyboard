@@ -242,6 +242,31 @@
                                     <outlet property="lblMessage" destination="eD7-KZ-RzE" id="7ge-FS-Pa4"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="morePosts" id="nKL-32-k8h" customClass="ErrorCell" customModule="Shiners" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="368" width="600" height="92"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nKL-32-k8h" id="kPZ-ne-eWY">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="91"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading more posts..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wAU-tQ-TII">
+                                            <rect key="frame" x="217" y="35" width="166" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Nl3-X5-q7x">
+                                            <rect key="frame" x="189" y="36" width="20" height="20"/>
+                                        </activityIndicatorView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="wAU-tQ-TII" firstAttribute="leading" secondItem="Nl3-X5-q7x" secondAttribute="trailing" constant="8" id="44c-sF-ua9"/>
+                                        <constraint firstItem="Nl3-X5-q7x" firstAttribute="centerY" secondItem="kPZ-ne-eWY" secondAttribute="centerY" id="TFg-md-Lbd"/>
+                                        <constraint firstItem="wAU-tQ-TII" firstAttribute="centerY" secondItem="kPZ-ne-eWY" secondAttribute="centerY" id="U7O-uf-By3"/>
+                                        <constraint firstItem="wAU-tQ-TII" firstAttribute="centerX" secondItem="kPZ-ne-eWY" secondAttribute="centerX" id="e6x-a3-z11"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <sections/>
                         <connections>
@@ -1856,7 +1881,7 @@
                             <rect key="frame" x="0.0" y="64" width="600" height="210"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jgl-3Y-sQP">
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jgl-3Y-sQP">
                                     <rect key="frame" x="260" y="16" width="80" height="80"/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -1864,12 +1889,6 @@
                                         <constraint firstAttribute="width" constant="80" id="QTT-L8-Jxp"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First name / Last name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l7X-wQ-Eby">
-                                    <rect key="frame" x="16" y="104" width="568" height="24"/>
-                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mkV-lq-6Pf">
                                     <rect key="frame" x="16" y="138" width="568" height="60"/>
                                     <subviews>
@@ -1926,6 +1945,12 @@
                                     <rect key="frame" x="511" y="8" width="81" height="15"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First name / Last name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l7X-wQ-Eby">
+                                    <rect key="frame" x="16" y="104" width="568" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
@@ -2146,11 +2171,15 @@
                         <outlet property="btnCloseVC" destination="M7p-lE-J7A" id="ZZD-Yq-PvV"/>
                         <outlet property="btnMessageToUser" destination="59D-uq-1Be" id="iaj-di-EHs"/>
                         <outlet property="cbNearbyNotifications" destination="xVr-0X-qH7" id="XDY-6j-4IP"/>
+                        <outlet property="contactStackView" destination="mkV-lq-6Pf" id="KPu-Eu-N3O"/>
+                        <outlet property="contactStackViewVerticatConstraint" destination="Uuz-Ve-W5i" id="eSz-M9-SZ2"/>
                         <outlet property="editProfile" destination="J28-df-GgD" id="MQn-4g-3IM"/>
                         <outlet property="imgUserAvatar" destination="jgl-3Y-sQP" id="3Xj-of-Db4"/>
                         <outlet property="isStatusLabel" destination="OMx-iq-R9U" id="MK7-yr-WRW"/>
                         <outlet property="phoneRowLabel" destination="d8V-Uv-fzK" id="1aa-OI-gIQ"/>
                         <outlet property="phoneRowVisible" destination="br7-P8-zxP" id="XUi-bV-VHp"/>
+                        <outlet property="profileImageHeightConstraint" destination="8CR-kC-lu4" id="Ab4-uQ-MH4"/>
+                        <outlet property="profileImageWidthConstraint" destination="QTT-L8-Jxp" id="b4l-cF-3Wy"/>
                         <outlet property="skypeRowLabel" destination="Gix-Ff-wXG" id="o2R-KJ-MRU"/>
                         <outlet property="skypeRowVisible" destination="7hI-TX-d9I" id="axF-Ph-Wol"/>
                         <outlet property="tableView" destination="tpa-hy-zfv" id="uQ5-J0-ZAi"/>
