@@ -31,6 +31,9 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     
     @IBOutlet var btnSearch: UIBarButtonItem!
     
+    var noMorePosts = false
+    var loadingPosts = false
+    
     var searchViewController: NewSearchViewController?
     var currentViewController: UIViewController?
     
@@ -186,14 +189,51 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
      AccountHandler.Instance.subscribeToNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude, radius: 100);
      }*/
     
+    func getMore(){
+        if ConnectionHandler.Instance.status == .Connected && !self.loadingPosts, let currentLocation = self.currentLocation {
+            self.loadingPosts = true
+            AccountHandler.Instance.getNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude, radius: 10000, skip: 0, take: self.allPosts.count + AccountHandler.NEARBY_POSTS_PAGE_SIZE) { (success, errorId, errorMessage, result) in
+                self.loadingPosts = false
+                ThreadHelper.runOnMainThread({
+                    if success {
+                        self.errorMessage = nil
+                        let posts = result as! [Post]
+                        
+                        if posts.count == self.allPosts.count && posts.count != AccountHandler.NEARBY_POSTS_PAGE_SIZE{
+                            self.noMorePosts = true
+                        } else {
+                            self.allPosts = posts
+                            self.callRefreshDelegates()
+                            if !self.filtering{
+                                self.posts = self.allPosts
+                            }
+                        }
+                    } else {
+                        self.errorMessage = errorMessage
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert error, Error"), message: NSLocalizedString("Error updating posts", comment: "Alert message, Error updating posts"))
+                        //self.tableView.reloadData()
+                        self.callRefreshDelegates()
+                    }
+                })
+            }
+        }
+    }
+    
     func getNearby(){
-        if ConnectionHandler.Instance.status == .Connected, let currentLocation = self.currentLocation {
-            AccountHandler.Instance.getNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude, radius: 100000) { (success, errorId, errorMessage, result) in
+        self.noMorePosts = false
+        if ConnectionHandler.Instance.status == .Connected && !self.loadingPosts, let currentLocation = self.currentLocation {
+            self.loadingPosts = true
+            AccountHandler.Instance.getNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude, radius: 10000, skip: 0, take: AccountHandler.NEARBY_POSTS_PAGE_SIZE) { (success, errorId, errorMessage, result) in
+                self.loadingPosts = false
                 ThreadHelper.runOnMainThread({
                     //self.refreshControl?.endRefreshing()
                     if success {
                         self.errorMessage = nil
                         self.allPosts = result as! [Post]
+                        
+                        if (self.allPosts.count < AccountHandler.NEARBY_POSTS_PAGE_SIZE){
+                            self.noMorePosts = true
+                        }
                         
                         if self.filtering{
                             self.searchBar(self.searchBar, textDidChange: (self.searchBar.text ?? ""))

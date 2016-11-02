@@ -18,13 +18,13 @@ public class PostsProxy{
         }
     }
     
-    public func getNearbyPosts(lat: Double, lng: Double, radius: Double, callback: MeteorMethodCallback? = nil){
+    public func getNearbyPosts(lat: Double, lng: Double, radius: Double, skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
         dict["lat"] = lat
         dict["lng"] = lng
         dict["radius"] = radius
-        dict["skip"] = 0
-        dict["take"] = 50
+        dict["skip"] = skip
+        dict["take"] = take
         
         Meteor.call("getNearbyPostsTest", params: [dict]) {result, error in
             if error == nil {

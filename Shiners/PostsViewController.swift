@@ -252,6 +252,11 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         return max(1, self.mainViewController.posts.count);
     }
     
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if !self.mainViewController.filtering && indexPath.row >= self.mainViewController.posts.count - Int(AccountHandler.NEARBY_POSTS_PAGE_SIZE / 3) && !self.mainViewController.noMorePosts && !self.mainViewController.loadingPosts {
+            self.mainViewController.getMore()
+        }
+    }
     
     func didApplyFilter() {
         self.closeSearchView()
