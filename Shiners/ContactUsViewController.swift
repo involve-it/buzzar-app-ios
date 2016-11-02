@@ -22,7 +22,7 @@ class ContactUsViewController: UITableViewController, UITextFieldDelegate, UITex
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = "Contact us"
+        self.navigationItem.title = NSLocalizedString("Contact us", comment: "Title contact us")
         
         textFieldConfigure([self.txtEmail, self.txtSubject])
         leftPaddingToTextField([self.txtEmail, self.txtSubject])
