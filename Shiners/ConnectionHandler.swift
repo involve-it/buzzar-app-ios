@@ -14,7 +14,7 @@ public class ConnectionHandler{
     //public static let baseUrl = "http://msg.webhop.org"
     public static let baseUrl = "https://www.shiners.mobi"
     
-    public static let publicUrl = "https://www.shiners.ru"
+    public static let publicUrl = "https://shiners.ru"
     
     //private let url:String = "ws://msg.webhop.org/websocket"
     //private let url:String = "ws://192.168.1.71:3000/websocket"
