@@ -38,8 +38,6 @@
             <string>HelveticaNeue</string>
             <string>HelveticaNeue</string>
             <string>HelveticaNeue</string>
-            <string>HelveticaNeue</string>
-            <string>HelveticaNeue</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -1182,14 +1180,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To reset your password, enter your email address and we will send you link to create a new password." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VNk-iv-hD8">
-                                <rect key="frame" x="20" y="96" width="560" height="31"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To reset your password, enter your email address and we will send you link to create a new password." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VNk-iv-hD8">
+                                <rect key="frame" x="20" y="96" width="560" height="32"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5w0-p6-xEb">
-                                <rect key="frame" x="20" y="135" width="560" height="42"/>
+                                <rect key="frame" x="20" y="136" width="560" height="42"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="42" id="xKd-B2-5Xd"/>
@@ -1206,11 +1204,11 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zEc-hI-ea9">
-                                <rect key="frame" x="230" y="193" width="141" height="44"/>
+                                <rect key="frame" x="230" y="194" width="141" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="teF-7H-WgC"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="tintColor" red="0.094117647060000004" green="0.41176470590000003" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <inset key="contentEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
                                 <state key="normal" title="Reset password"/>
@@ -5072,7 +5070,7 @@
             </objects>
             <point key="canvasLocation" x="-344" y="2979"/>
         </scene>
-        <!--Sign up-->
+        <!--Register View Controller-->
         <scene sceneID="N4S-Px-MDG">
             <objects>
                 <tableViewController storyboardIdentifier="SignUpViewController" id="xkZ-tF-tcB" customClass="NEWRegisterViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
@@ -5227,7 +5225,7 @@
                             <outlet property="delegate" destination="xkZ-tF-tcB" id="b1t-s0-O5H"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Sign up" id="JoR-1X-WND">
+                    <navigationItem key="navigationItem" id="JoR-1X-WND">
                         <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Bn9-8M-PLi">
                             <connections>
                                 <action selector="btn_Cancel:" destination="xkZ-tF-tcB" id="EkO-fg-hz9"/>
@@ -5477,7 +5475,7 @@
         <image name="vk.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="DWx-l0-Aia"/>
+        <segue reference="TcT-8i-Eq0"/>
         <segue reference="EKW-F4-b1d"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.35294117650000001" green="0.69411764710000001" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>

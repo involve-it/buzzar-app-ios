@@ -116,6 +116,8 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func Register_Click(sender: UIButton) {
+        //self.presentingViewController
+        
         let storyboardMain = UIStoryboard(name: "Main", bundle: nil)
         let nc = storyboardMain.instantiateViewControllerWithIdentifier("SignUpNavigationController") as! UINavigationController
         self.presentViewController(nc, animated: true, completion: nil)
