@@ -81,6 +81,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
         self.navigationController?.navigationBar.shadowImage = nil
         self.navigationController?.navigationBar.translucent = false
+        
+        self.refreshControl?.endRefreshing()
     }
     
     override func viewDidLoad() {
