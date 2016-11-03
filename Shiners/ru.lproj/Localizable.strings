@@ -157,3 +157,6 @@
 
 /*Contact us", comment: "Title contact us"*/
 "Contact us" = "Связаться с нами";
+
+/* Profile navigationTitile Settings */
+"Settings" = "Настройки";

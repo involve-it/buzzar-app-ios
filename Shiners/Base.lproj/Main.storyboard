@@ -2028,7 +2028,7 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
-                            <tableViewSection footerTitle="Keep this switch on to be notified of events near you" id="C8v-2i-i1t">
+                            <tableViewSection footerTitle="Keep this switch on to be notified of events near you." id="C8v-2i-i1t">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="hLJ-fK-sJ1">
                                         <rect key="frame" x="0.0" y="398" width="600" height="44"/>
@@ -2960,14 +2960,19 @@
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2il-LH-eLG" userLabel="Img">
                                                             <rect key="frame" x="0.0" y="0.0" width="78" height="88"/>
                                                             <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qcu-jb-6aj">
-                                                                    <rect key="frame" x="18" y="58" width="42" height="26"/>
-                                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                                                                    <state key="normal" title="Change"/>
-                                                                    <connections>
-                                                                        <action selector="btnChangeImage_Click:" destination="8Vt-gD-y80" eventType="touchUpInside" id="1a9-rA-Oiu"/>
-                                                                    </connections>
-                                                                </button>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="mN4-de-bPg">
+                                                                    <rect key="frame" x="0.0" y="60" width="78" height="26"/>
+                                                                    <subviews>
+                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qcu-jb-6aj">
+                                                                            <rect key="frame" x="18" y="0.0" width="42" height="26"/>
+                                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                                                                            <state key="normal" title="Change"/>
+                                                                            <connections>
+                                                                                <action selector="btnChangeImage_Click:" destination="8Vt-gD-y80" eventType="touchUpInside" id="1a9-rA-Oiu"/>
+                                                                            </connections>
+                                                                        </button>
+                                                                    </subviews>
+                                                                </stackView>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pxS-0J-9cc">
                                                                     <rect key="frame" x="16" y="13" width="45" height="45"/>
                                                                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -2984,8 +2989,9 @@
                                                             </subviews>
                                                             <constraints>
                                                                 <constraint firstItem="pxS-0J-9cc" firstAttribute="leading" secondItem="2il-LH-eLG" secondAttribute="leading" constant="16" id="3wh-HY-w7k"/>
-                                                                <constraint firstItem="Qcu-jb-6aj" firstAttribute="leading" secondItem="2il-LH-eLG" secondAttribute="leading" constant="18" id="QUV-qX-aVU"/>
-                                                                <constraint firstAttribute="bottom" secondItem="Qcu-jb-6aj" secondAttribute="bottom" constant="4" id="bk8-cv-8Jz"/>
+                                                                <constraint firstAttribute="trailing" secondItem="mN4-de-bPg" secondAttribute="trailing" id="Thb-m9-Wjq"/>
+                                                                <constraint firstItem="mN4-de-bPg" firstAttribute="leading" secondItem="2il-LH-eLG" secondAttribute="leading" id="Yra-lS-Z9a"/>
+                                                                <constraint firstItem="mN4-de-bPg" firstAttribute="top" secondItem="pxS-0J-9cc" secondAttribute="bottom" constant="2" id="dXx-Iq-bIQ"/>
                                                                 <constraint firstItem="pxS-0J-9cc" firstAttribute="top" secondItem="2il-LH-eLG" secondAttribute="top" constant="13" id="slh-QB-cso"/>
                                                             </constraints>
                                                         </view>
@@ -3076,7 +3082,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Username:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jBT-Zc-qw0">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="Username:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jBT-Zc-qw0">
                                                     <rect key="frame" x="16" y="11" width="84" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -3096,7 +3102,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="bgg-Uw-kId" secondAttribute="trailing" constant="16" id="XTC-TB-PsX"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="Sni-W7-gxL" userLabel="Email">
                                         <rect key="frame" x="0.0" y="266" width="600" height="44"/>

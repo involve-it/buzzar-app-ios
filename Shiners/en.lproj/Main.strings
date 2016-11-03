@@ -788,5 +788,13 @@
 /* Register button */
 "swI-D5-iaR.normalTitle" = "Register";
 
+/* Label Местоположение внутри поста */
+"G6j-tc-77a.text" = "Location";
+
+/* Profile notified switcher */
+"C8v-2i-i1t.footerTitle" = "Keep this switch on to be notified of events near you.";
+
+/* Username label */
+"jBT-Zc-qw0.text" = "Username:";
 
 

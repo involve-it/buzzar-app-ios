@@ -371,7 +371,7 @@
 "Z6o-G7-2wX.text" = "Описание";
 
 /* Class = "UINavigationItem"; title = "Edit Profile"; ObjectID = "ZEL-UB-OGk"; */
-"ZEL-UB-OGk.title" = "Редактировать Профиль";
+"ZEL-UB-OGk.title" = "Изменение профиля";
 
 /* Class = "UINavigationItem"; title = "Post Details"; ObjectID = "ZqH-Vu-jSF"; */
 "ZqH-Vu-jSF.title" = "Детали поста";
@@ -727,7 +727,13 @@
 /* Register button */
 "swI-D5-iaR.normalTitle" = "Регистрация";
 
+/* Label Местоположение внутри поста */
+"G6j-tc-77a.text" = "Местоположение";
 
+/* Profile notified switcher */
+"C8v-2i-i1t.footerTitle" = "Включите, чтобы получить уведомления о событиях рядом с вами.";
 
+/* Username label */
+"jBT-Zc-qw0.text" = "Логин:";
 
 
