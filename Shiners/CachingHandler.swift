@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 class CachingHandler{
     private static let documentDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
@@ -18,6 +19,7 @@ class CachingHandler{
     static let seenPostIds = "seenPostIds"
     static let todaySeenPostIds = "todaySeenPostIds"
     static let lastSeenPostIdReport = "lastSeenPostIdReport"
+    static let lastLocation = "lastLocation"
     
     private class func saveObject(obj: AnyObject, path: String) -> Bool{
         let archiveUrl = documentDirectory.URLByAppendingPathComponent(path)
@@ -67,6 +69,12 @@ class CachingHandler{
                 try self.chats = CachingHandler.loadObject(CachingHandler.chats)
                 try self.todaySeenPostIds = CachingHandler.loadObject(CachingHandler.todaySeenPostIds)
                 try self.lastSeenPostIdReport = CachingHandler.loadObject(CachingHandler.lastSeenPostIdReport)
+                try self.lastLocation = CachingHandler.loadObject(CachingHandler.lastLocation)
+                
+                if LocationHandler.lastLocation == nil, let lastLocation = CachingHandler.Instance.lastLocation {
+                    let location = CLLocation(latitude: lastLocation[0], longitude: lastLocation[1])
+                    LocationHandler.lastLocation = location
+                }
                 
                 self.status = .Complete
             }
@@ -96,6 +104,7 @@ class CachingHandler{
     
     var todaySeenPostIds: [String]?
     var lastSeenPostIdReport: NSDate?
+    var lastLocation: [Double]?
     
     func savePostsAll(posts: [Post]) -> Bool{
         if self.status == .Complete && CachingHandler.saveObject(posts, path: CachingHandler.postsAll) {
@@ -142,6 +151,15 @@ class CachingHandler{
             self.todaySeenPostIds = postIds
             self.lastSeenPostIdReport = NSDate()
             CachingHandler.saveObject(self.lastSeenPostIdReport!, path: CachingHandler.lastSeenPostIdReport)
+            return true
+        }
+        return false
+    }
+    
+    func saveLastLocation(lat: Double, lng: Double) -> Bool {
+        let lastLocation = [lat ,lng]
+        if self.status == .Complete && CachingHandler.saveObject(lastLocation, path: CachingHandler.lastLocation) {
+            self.lastLocation = lastLocation
             return true
         }
         return false

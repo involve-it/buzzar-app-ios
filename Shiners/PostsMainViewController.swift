@@ -33,6 +33,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     
     var noMorePosts = false
     var loadingPosts = false
+    var loadingMorePosts = false
     
     var searchViewController: NewSearchViewController?
     var currentViewController: UIViewController?
@@ -108,6 +109,11 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
             } else {
                 self.posts = self.allPosts
             }
+        }
+        if let currentLocation = LocationHandler.lastLocation {
+            self.currentLocation = currentLocation.coordinate
+            self.locationAcquired = true
+            self.getNearby()
         }
         
         self.searchBar.showsCancelButton = true
@@ -192,9 +198,11 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     func getMore(){
         if ConnectionHandler.Instance.status == .Connected && !self.loadingPosts, let currentLocation = self.currentLocation {
             self.loadingPosts = true
+            self.loadingMorePosts = true
             self.callDisplayLoadingMore()
             AccountHandler.Instance.getNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude, radius: 10000, skip: 0, take: self.allPosts.count + AccountHandler.NEARBY_POSTS_PAGE_SIZE + 1) { (success, errorId, errorMessage, result) in
                 self.loadingPosts = false
+                self.loadingMorePosts = false
                 ThreadHelper.runOnMainThread({
                     if success {
                         self.errorMessage = nil
