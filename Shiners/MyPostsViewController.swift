@@ -137,15 +137,17 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         self.showViewController(viewControllerToCommit, sender: self)
     }
     
-    /*public override func viewWillAppear(animated: Bool) {
+    public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.checkPending()
-    }*/
+        self.refreshControl?.endRefreshing()
+    }
     
     func appDidBecomeActive(){
         if self.myPosts.count > 0 && AccountHandler.Instance.status == .Completed{
             self.checkPending()
         }
+        self.refreshControl?.endRefreshing()
     }
     
     @IBAction func unwindMyPosts(segue: UIStoryboardSegue){

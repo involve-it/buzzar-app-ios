@@ -187,6 +187,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         
         self.tableView.reloadData()
         self.navigationItem.title = NSLocalizedString("Messages", comment: "NavigationItem title, Messages")
+        self.refreshControl?.endRefreshing()
     }
     
     override public func viewDidAppear(animated: Bool) {
@@ -200,6 +201,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         if self.dialogs.count > 0 && AccountHandler.Instance.status == .Completed{
             self.checkPending(false)
         }
+        self.refreshControl?.endRefreshing()
     }
     
     private func checkPending(stopAfter: Bool){

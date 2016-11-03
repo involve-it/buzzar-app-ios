@@ -99,6 +99,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(forceLayout), name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self, action: #selector(getNearby), forControlEvents: .ValueChanged)
@@ -114,6 +115,10 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     func getNearby(){
         self.mainViewController.getNearby();
+    }
+    
+    func appDidBecomeActive(){
+        self.refreshControl?.endRefreshing()
     }
     
     func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
