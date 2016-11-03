@@ -2071,7 +2071,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="567" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact us" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tVB-OW-NCc">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contact Us" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tVB-OW-NCc">
                                                     <rect key="frame" x="16" y="11" width="543" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -2086,7 +2086,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
-                                            <segue destination="kK2-uu-CA0" kind="show" id="8E1-mv-Qkj"/>
+                                            <segue destination="32p-Q9-QzV" kind="presentation" id="9OA-Oy-ch3"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" tag="1" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="t21-0t-7Ln" userLabel="About us">
@@ -2223,12 +2223,12 @@
             </objects>
             <point key="canvasLocation" x="986" y="3029"/>
         </scene>
-        <!--Title-->
+        <!--Contact Us-->
         <scene sceneID="sgo-yb-rih">
             <objects>
                 <tableViewController id="kK2-uu-CA0" customClass="ContactUsViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="JRK-m8-GcE">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="800"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
@@ -2344,6 +2344,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="190"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What would you like to send us?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rH-t9-zxj">
+                                                    <rect key="frame" x="16" y="16" width="568" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="S9h-1X-H3k">
                                                     <rect key="frame" x="16" y="45" width="568" height="140"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2351,17 +2357,11 @@
                                                         <constraint firstAttribute="height" constant="140" id="jku-ry-qQ5"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="send" enablesReturnKeyAutomatically="YES"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences" enablesReturnKeyAutomatically="YES"/>
                                                     <connections>
                                                         <outlet property="delegate" destination="kK2-uu-CA0" id="eQ1-gc-fyj"/>
                                                     </connections>
                                                 </textView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What would you like to send us?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rH-t9-zxj">
-                                                    <rect key="frame" x="16" y="16" width="568" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="4rH-t9-zxj" secondAttribute="trailing" constant="16" id="D3y-SU-geh"/>
@@ -2382,10 +2382,20 @@
                             <outlet property="delegate" destination="kK2-uu-CA0" id="J6f-ib-1iK"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="aLh-il-hui">
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Send" id="ZwE-dW-n7K"/>
+                    <navigationItem key="navigationItem" title="Contact Us" id="aLh-il-hui">
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="cancel" id="zeU-zO-uEs">
+                            <connections>
+                                <action selector="btnCancel_Click:" destination="kK2-uu-CA0" id="eu4-vf-PpV"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Send" id="ZwE-dW-n7K">
+                            <connections>
+                                <action selector="btnSend_Click:" destination="kK2-uu-CA0" id="QHk-fW-HeR"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="btn_Cancel" destination="zeU-zO-uEs" id="L6T-bo-v4n"/>
                         <outlet property="btn_Send" destination="ZwE-dW-n7K" id="TnD-PQ-q9v"/>
                         <outlet property="txtEmail" destination="cJB-nf-QmB" id="pBN-m5-fHK"/>
                         <outlet property="txtMessage" destination="S9h-1X-H3k" id="Ey0-bp-BM1"/>
@@ -2394,7 +2404,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mgo-n1-lPC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="970" y="3933"/>
+            <point key="canvasLocation" x="2287" y="3933"/>
         </scene>
         <!--Settings-->
         <scene sceneID="DTQ-ot-KdQ">
@@ -3238,7 +3248,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QL4-px-Ly2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="321" y="3933"/>
+            <point key="canvasLocation" x="386" y="3925"/>
         </scene>
         <!--Title-->
         <scene sceneID="MbZ-26-15e">
@@ -5443,6 +5453,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8yR-p8-NXn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1976" y="-804"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ACU-gE-AAF">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="32p-Q9-QzV" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="DvN-Qq-0EX">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="kK2-uu-CA0" kind="relationship" relationship="rootViewController" id="Ai4-A6-XoS"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wdh-ye-Qht" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1475" y="3933"/>
         </scene>
     </scenes>
     <resources>

@@ -484,6 +484,7 @@
 				6120F40B1D6AFC6D000D4FE8 /* NEWLoginViewController.swift */,
 				617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */,
 				617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */,
+				6127369A1DC9E8FD009EDBD6 /* ContactUsViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -516,7 +517,6 @@
 				7BB2A7E31CCC2B3800AD636D /* Core */,
 				7BB2A7DD1CCC1BDD00AD636D /* Data */,
 				61F9608B1D8021DB002FBAED /* Main.storyboard */,
-				6127369A1DC9E8FD009EDBD6 /* ContactUsViewController.swift */,
 				6105C6E91D3F958700E83D29 /* GradientViewPostDetailsScrollView.swift */,
 				7BC0A21B1CCC15E700DA2824 /* AppDelegate.swift */,
 				7BC0A21D1CCC15E700DA2824 /* MainViewController.swift */,
