@@ -100,9 +100,10 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
                                 chatIds.forEach({ (chatId) in
                                     self.dialogs.removeAtIndex(self.dialogs.indexOf({$0.id == chatId})!)
                                     AccountHandler.Instance.myChats!.removeAtIndex(AccountHandler.Instance.myChats!.indexOf({$0.id == chatId})!)
-                                    AccountHandler.Instance.saveMyChats()
-                                    NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
+                                    LocalNotificationsHandler.Instance.reportEventSeen(.Messages, id: chatId)
                                 })
+                                AccountHandler.Instance.saveMyChats()
+                                NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
                                 
                                 if self.dialogs.count == 0{
                                     let allExceptFirst = indexPaths.filter({$0.row != 0})
@@ -404,10 +405,15 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             ConnectionHandler.Instance.messages.deleteChats([dialog.id!]) { success, errorId, errorMessage, result in
                 ThreadHelper.runOnMainThread({ 
                     if success {
+                        LocalNotificationsHandler.Instance.reportEventSeen(.Messages, id: dialog.id)
                         self.dialogs.removeAtIndex(indexPath.row)
                         AccountHandler.Instance.myChats!.removeAtIndex(AccountHandler.Instance.myChats!.indexOf({$0.id == dialog.id})!)
                         AccountHandler.Instance.saveMyChats()
-                        self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                        if self.dialogs.count == 0 {
+                            self.tableView.reloadData()
+                        } else {
+                            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                        }
                         AccountHandler.Instance.processLocalNotifications()
                         NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
                     } else {

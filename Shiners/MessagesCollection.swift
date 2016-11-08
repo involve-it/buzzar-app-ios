@@ -50,8 +50,9 @@ class MessagesCollection: AbstractCollection{
                         }
                         chat.messagesRequested = true
                         AccountHandler.Instance.myChats?.insert(chat, atIndex: 0)
-                        
-                        LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id)
+                        if message.toUserId == AccountHandler.Instance.userId{
+                            LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id)
+                        }
                         NotificationManager.sendNotification(.MyChatsUpdated, object: chat)
                     } else {
                         NSLog("error loading chat")
