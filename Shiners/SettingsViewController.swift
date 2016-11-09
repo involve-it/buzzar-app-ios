@@ -11,16 +11,37 @@ import FBSDKLoginKit
 import FBSDKCoreKit
 
 class SettingsViewController: UIViewController {
+    
+    @IBOutlet weak var backgroundImageView: UIImageView!
+    @IBOutlet weak var logoView: UIStackView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configNavigationToolBar()
-        
+        applyMotionEffect(toView: backgroundImageView, magnitude: 10)
+        applyMotionEffect(toView: logoView, magnitude: -15)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    private func applyMotionEffect (toView view:UIView, magnitude:Float) {
+        let xMotion = UIInterpolatingMotionEffect(keyPath: "center.x", type: .TiltAlongHorizontalAxis)
+        xMotion.minimumRelativeValue = -magnitude
+        xMotion.maximumRelativeValue = magnitude
+        
+        let yMotion = UIInterpolatingMotionEffect(keyPath: "center.y", type: .TiltAlongVerticalAxis)
+        yMotion.minimumRelativeValue = -magnitude
+        yMotion.maximumRelativeValue = magnitude
+        
+        let group = UIMotionEffectGroup()
+        group.motionEffects = [xMotion, yMotion]
+        
+        view.addMotionEffect(group)
     }
 
     func configNavigationToolBar() {

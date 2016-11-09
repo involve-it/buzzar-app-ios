@@ -736,4 +736,16 @@
 /* Username label */
 "jBT-Zc-qw0.text" = "Логин:";
 
+/* Register here */
+"T1G-F7-mwU.normalTitle" = "Регистрация здесь";
+
+/* Don’t have an account? */
+"P1d-nD-1BQ.text" = "Нет аккаунта?";
+
+/* Let's begin */
+"J7u-kp-fzB.text" = "Давайте начнем";
+
+/* Sign up to create post */
+"gB5-8d-ixe.text" = "Зарегистрируйтесь, чтобы создать пост";
+
 

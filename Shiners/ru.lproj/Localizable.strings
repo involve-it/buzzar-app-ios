@@ -160,3 +160,13 @@
 
 /* Profile navigationTitile Settings */
 "Settings" = "Настройки";
+
+/* Log in page, button Next */
+"Next" = "Далее";
+
+/* Log in page, button Skip */
+"Skip" = "Пропустить";
+
+
+
+
