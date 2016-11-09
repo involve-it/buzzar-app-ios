@@ -74,8 +74,7 @@ class cellPage: UICollectionViewCell {
         addSubview(textView)
         
         imageView.anchorToTop(topAnchor, left: leftAnchor, bottom: textView.topAnchor, right: rightAnchor)
-        
-        print("Device: \(modelName)")
+  
         let multiplierId: CGFloat = (modelName == "iPhone 4s" || modelName == "iPhone 4") ? 0.4 : 0.3
         
         textView.anchorWithConstantsToTop(nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, topConstant: 0, leftConstant: 16, bottomConstant: 0, rightConstant: 16)

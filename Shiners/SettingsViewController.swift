@@ -14,10 +14,19 @@ class SettingsViewController: UIViewController {
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var logoView: UIStackView!
+    @IBOutlet weak var dismissViewController: UIButton!
     
+    var isBtnDismiss = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let dissmisImage = UIImage(named: "expand_arrow")?.imageWithRenderingMode(.AlwaysTemplate)
+        dismissViewController.setImage(dissmisImage, forState: .Normal)
+        dismissViewController.tintColor = UIColor(netHex: 0xFFFFFF)
+        dismissViewController.backgroundColor = UIColor(white: 0.2, alpha: 0.3)
+        dismissViewController.layer.cornerRadius = 4.0
+        dismissViewController.hidden = !self.isBtnDismiss
 
         configNavigationToolBar()
         applyMotionEffect(toView: backgroundImageView, magnitude: 10)
@@ -66,4 +75,9 @@ class SettingsViewController: UIViewController {
         let vc = storyboardMain.instantiateViewControllerWithIdentifier("SignUpNavigationController")
         self.presentViewController(vc, animated: true, completion: nil)
     }
+    
+    @IBAction func click_dismissViewController(sender: UIButton) {
+        print(21333)
+    }
+    
 }

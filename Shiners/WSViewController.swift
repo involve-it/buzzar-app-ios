@@ -114,12 +114,15 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
         
         if indexPath.item == pages.count {
             let loginCell = collectionView.dequeueReusableCellWithReuseIdentifier(cellId.LoginCell, forIndexPath: indexPath) as! LoginCell
-            
-        
-            
+
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewControllerWithIdentifier("settingsLogOutUser") as! NavigationControllerBase
             vc.navigationBarHidden = true
+            
+            //SettingsViewController
+            let bb = vc.viewControllers[0] as! SettingsViewController
+            bb.isBtnDismiss = true
+            
             vc.view.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height)
             self.addChildViewController(vc)
             
@@ -153,6 +156,10 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
         pageControlBottomAnchor = pageControl.anchor(nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 60)[1]
         skipBottomAnchor = skipButton.anchor(nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: nil, topConstant: 0, leftConstant: 16, bottomConstant: 16, rightConstant: 0, widthConstant: widthConstant, heightConstant: 32)[1]
         nextBottomAnchor = nextButton.anchor(nil, left: nil, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 16, rightConstant: 16, widthConstant: widthConstant, heightConstant: 32).first
+        
+        
+        
+        
         
         //Register Cell
         registerCells()

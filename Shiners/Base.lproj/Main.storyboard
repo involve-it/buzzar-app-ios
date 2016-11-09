@@ -1653,6 +1653,17 @@
                                     </mask>
                                 </variation>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hy3-s7-BEc" userLabel="exand arrow">
+                                <rect key="frame" x="16" y="80" width="50" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="36" id="762-4q-2pj"/>
+                                    <constraint firstAttribute="width" constant="50" id="gmH-kc-gpO"/>
+                                </constraints>
+                                <state key="normal" image="expand_arrow"/>
+                                <connections>
+                                    <action selector="click_dismissViewController:" destination="Wyf-Mg-xcz" eventType="touchUpInside" id="lwI-XS-AnO"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1663,6 +1674,8 @@
                             <constraint firstAttribute="trailing" secondItem="2uk-5m-5xY" secondAttribute="trailing" constant="20" id="SRP-t2-oR5"/>
                             <constraint firstItem="dsc-Sg-9Jz" firstAttribute="leading" secondItem="G4R-iL-eMz" secondAttribute="leading" constant="-50" id="ToA-uN-Gb2"/>
                             <constraint firstItem="MDh-5c-2E3" firstAttribute="leading" secondItem="G4R-iL-eMz" secondAttribute="leading" constant="-50" id="X0Q-pU-o7S"/>
+                            <constraint firstItem="hy3-s7-BEc" firstAttribute="top" secondItem="BW0-we-AUz" secondAttribute="bottom" constant="16" id="akX-bP-rKv"/>
+                            <constraint firstItem="hy3-s7-BEc" firstAttribute="leading" secondItem="G4R-iL-eMz" secondAttribute="leading" constant="16" id="dOR-Hg-1tu"/>
                             <constraint firstAttribute="bottom" secondItem="dsc-Sg-9Jz" secondAttribute="bottom" constant="-40" id="eGg-92-ZdT"/>
                             <constraint firstItem="MDh-5c-2E3" firstAttribute="top" secondItem="G4R-iL-eMz" secondAttribute="top" constant="-50" id="jcQ-dh-dch"/>
                             <constraint firstAttribute="trailing" secondItem="dsc-Sg-9Jz" secondAttribute="trailing" constant="-50" id="skC-PQ-be6"/>
@@ -1673,6 +1686,7 @@
                     <navigationItem key="navigationItem" id="adc-f8-XcK"/>
                     <connections>
                         <outlet property="backgroundImageView" destination="dsc-Sg-9Jz" id="mcV-II-aja"/>
+                        <outlet property="dismissViewController" destination="hy3-s7-BEc" id="Wco-6C-xXe"/>
                         <outlet property="logoView" destination="VLS-8L-9MF" id="KBR-PG-sX0"/>
                     </connections>
                 </viewController>
@@ -5539,6 +5553,7 @@
         <image name="bg_login_page" width="860" height="1210"/>
         <image name="call-active" width="36" height="36"/>
         <image name="call2" width="36" height="36"/>
+        <image name="expand_arrow" width="30" height="17"/>
         <image name="facebook.png" width="128" height="128"/>
         <image name="home" width="22" height="22"/>
         <image name="message-active" width="36" height="36"/>
