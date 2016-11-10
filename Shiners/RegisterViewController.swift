@@ -76,6 +76,7 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
                 self.setLoading(true)
                 
                 AccountHandler.Instance.register(user, callback: { (success, errorId, errorMessage, result) in
+                    self.setLoading(false)
                     if (success){
                         AccountHandler.Instance.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
                             if !success {
@@ -83,7 +84,6 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
                             }
                         })
                     } else {
-                        self.setLoading(false)
                         self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
                     }
                 })

@@ -16,15 +16,17 @@ public class SmallImageView: UIView{
     public static let width: CGFloat = 100
     public static let height: CGFloat = 80
     
-    public var id: Int?
+    private(set) public var id: String!
+    public var index: Int?
     public var delegate: SmallImageViewDelegate?
     
     let activityIndicator = UIActivityIndicatorView()
     let coverImageView: UIView = UIView()
     
-    public init (x: Float, y : Float, id: Int, delegate: SmallImageViewDelegate?, image: UIImage){
+    public init (x: Float, y : Float, index:Int, delegate: SmallImageViewDelegate?, image: UIImage){
         //todo: fix different aspect ratios
-        self.id = id
+        self.id = NSUUID().UUIDString
+        self.index = index
         self.delegate = delegate
         
         //extension of the edges + 20

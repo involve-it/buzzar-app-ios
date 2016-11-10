@@ -18,7 +18,7 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
     let txtTitleRegistrationError = NSLocalizedString("Registration error", comment: "Alert title, registration error")
     
     
-    @IBOutlet weak var btnRegister: UIBarButtonItem!
+    @IBOutlet var btnRegister: UIBarButtonItem!
 
     override public func viewDidLoad() {
         super.viewDidLoad()

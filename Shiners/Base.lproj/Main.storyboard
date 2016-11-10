@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="RAk-pB-fMv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="VYZ-AR-MXX">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
@@ -1924,14 +1924,6 @@
                             <rect key="frame" x="0.0" y="64" width="600" height="210"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jgl-3Y-sQP">
-                                    <rect key="frame" x="260" y="16" width="80" height="80"/>
-                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="80" id="8CR-kC-lu4"/>
-                                        <constraint firstAttribute="width" constant="80" id="QTT-L8-Jxp"/>
-                                    </constraints>
-                                </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First name / Last name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l7X-wQ-Eby">
                                     <rect key="frame" x="16" y="104" width="568" height="24"/>
                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
@@ -1996,6 +1988,14 @@
                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jgl-3Y-sQP">
+                                    <rect key="frame" x="260" y="16" width="80" height="80"/>
+                                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="80" id="8CR-kC-lu4"/>
+                                        <constraint firstAttribute="width" constant="80" id="QTT-L8-Jxp"/>
+                                    </constraints>
+                                </imageView>
                             </subviews>
                             <constraints>
                                 <constraint firstItem="mkV-lq-6Pf" firstAttribute="top" secondItem="l7X-wQ-Eby" secondAttribute="bottom" constant="10" id="0Tx-Cj-ZWf"/>
@@ -5384,24 +5384,24 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tap here to give post a title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ovB-ZE-Vfv">
-                                                    <rect key="frame" x="16" y="41" width="568" height="30"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="jHg-XO-uLB"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                    <connections>
-                                                        <action selector="titleFieldChanged:" destination="W2p-v9-u8k" eventType="editingChanged" id="KEr-eA-MuY"/>
-                                                        <outlet property="delegate" destination="W2p-v9-u8k" id="1zq-mB-1R5"/>
-                                                    </connections>
-                                                </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t8e-Ua-6YU">
                                                     <rect key="frame" x="16" y="78" width="23" height="15"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tap here to give post a title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ovB-ZE-Vfv">
+                                                    <rect key="frame" x="16" y="40" width="568" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="jHg-XO-uLB"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    <connections>
+                                                        <action selector="titleFieldChanged:" destination="W2p-v9-u8k" eventType="editingChanged" id="KEr-eA-MuY"/>
+                                                        <outlet property="delegate" destination="W2p-v9-u8k" id="1zq-mB-1R5"/>
+                                                    </connections>
+                                                </textField>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="0MT-Lh-kZ8" firstAttribute="leading" secondItem="zkn-ka-e0W" secondAttribute="leading" constant="16" id="4Zw-k2-gFQ"/>
@@ -5524,6 +5524,10 @@
         <scene sceneID="kmn-Xk-3UM">
             <objects>
                 <viewController id="KZk-Je-23a" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="phP-Ra-uK7"/>
+                        <viewControllerLayoutGuide type="bottom" id="hou-Od-XpT"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="0LA-zD-ojk">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
