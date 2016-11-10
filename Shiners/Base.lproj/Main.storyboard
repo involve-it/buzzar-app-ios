@@ -3345,8 +3345,9 @@
         <!--Settings-->
         <scene sceneID="laq-wS-yL9">
             <objects>
-                <navigationController storyboardIdentifier="settingsLogOutUser" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uZU-js-mAI" customClass="NavigationControllerBase" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="settingsLogOutUser" useStoryboardIdentifierAsRestorationIdentifier="YES" navigationBarHidden="YES" id="uZU-js-mAI" customClass="NavigationControllerBase" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Settings" image="setting" id="vCI-Of-c03"/>
+                    <nil key="simulatedTopBarMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="hcT-Gt-5v2">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
