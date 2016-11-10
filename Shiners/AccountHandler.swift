@@ -34,6 +34,18 @@ public class AccountHandler{
     
     public static let NEARBY_POSTS_PAGE_SIZE = 50
     
+    private static let SEEN_WELCOME_SCREEN = "shiners:seen-welcome-screen"
+    
+    class func hasSeenWelcomeScreen() -> Bool{
+        let defaults = NSUserDefaults.standardUserDefaults()
+        return (defaults.valueForKey(AccountHandler.SEEN_WELCOME_SCREEN) as? Bool) ?? false
+    }
+    
+    class func setSeenWelcomeScreen(seen: Bool){
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setBool(seen, forKey: AccountHandler.SEEN_WELCOME_SCREEN)
+    }
+    
     func subscribeToNewMessages(){
         if let messagesId = self.messagesId {
             Meteor.unsubscribe(withId: messagesId)

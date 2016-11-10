@@ -19,7 +19,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     private var imagePickerHandler: ImagePickerHandler?
     private var images = [UIImage]()
     
-    var uploadingIds = [Int]()
+    var uploadingIds = [String]()
     
     var currentLocationInfo: GeocoderInfo?
     
@@ -78,14 +78,13 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         let rotatedImage = image.correctlyOrientedImage().resizeImage()
         self.images.append(rotatedImage)
-        let id = self.images.count - 1
-        let view = self.addImageToScrollView(rotatedImage, index: id)
+        let view = self.addImageToScrollView(rotatedImage, index: self.images.count - 1)
         view.imageView.addSubview(view.coverImageView)
         view.activityIndicator.startAnimating()
-        self.uploadingIds.append(id)
+        self.uploadingIds.append(view.id)
         
         ImageCachingHandler.Instance.saveImage(rotatedImage) { (success, imageUrl) in
-            if let index = self.uploadingIds.indexOf(id){
+            if let index = self.uploadingIds.indexOf(view.id){
                 ThreadHelper.runOnMainThread({
                     //self.setLoading(false, rightBarButtonItem: self.cancelButton)
                     //self.btnSave.enabled = true
@@ -125,7 +124,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
         
         var x = self.calculateImagesWidth(index)
-        let view = SmallImageView(x: x, y: 8, id: index, delegate: self, image: image)
+        let view = SmallImageView(x: x, y: 8, index: index, delegate: self, image: image)
         
         self.svImages.addSubview(view)
         x = self.calculateImagesWidth(index + 1)
@@ -157,7 +156,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         if let index = self.uploadingIds.indexOf(view.id!){
             self.uploadingIds.removeAtIndex(index)
         }
-        self.images.removeAtIndex(view.id!)
+        self.images.removeAtIndex(view.index!)
         self.redrawImagesScrollView()
         if self.images.count == 0{
             self.svImages.hidden = true

@@ -29,6 +29,16 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         //buttonCreatePost()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if !AccountHandler.Instance.isLoggedIn() && !AccountHandler.hasSeenWelcomeScreen() {
+            let storyboardMain = UIStoryboard(name: "Main", bundle: nil)
+            let welcomeViewController = storyboardMain.instantiateViewControllerWithIdentifier("welcomeScreen")
+            self.presentViewController(welcomeViewController, animated: true, completion: nil)
+            AccountHandler.setSeenWelcomeScreen(true)
+        }
+    }
+    
     func receivedLocalNotification(notification: NSNotification){
         if AccountHandler.Instance.isLoggedIn() {
             let notificaionEvent = notification.object as! LocalNotificationEvent

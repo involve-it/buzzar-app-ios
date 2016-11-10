@@ -245,6 +245,11 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             self.refreshControl?.endRefreshing()
             self.tableView.separatorStyle = .SingleLine;
             self.tableView.reloadData()
+            if self.dialogs.count > 0{
+                self.editButtonItem().enabled = true
+            } else {
+                self.editButtonItem().enabled = false
+            }
             self.checkPending(true)
         }
     }

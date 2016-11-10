@@ -33,6 +33,13 @@ class SettingsViewController: UIViewController {
         applyMotionEffect(toView: logoView, magnitude: -15)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if (AccountHandler.Instance.isLoggedIn()){
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -77,7 +84,6 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func click_dismissViewController(sender: UIButton) {
-        print(21333)
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
 }
