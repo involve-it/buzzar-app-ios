@@ -1117,7 +1117,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="5yg-7E-5WL">
                                 <rect key="frame" x="201" y="230" width="198" height="44"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="swI-D5-iaR">
+                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="swI-D5-iaR">
                                         <rect key="frame" x="0.0" y="7" width="57" height="30"/>
                                         <state key="normal" title="Register"/>
                                         <connections>
@@ -1184,7 +1184,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lYV-fu-zBg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6167" y="2893"/>
+            <point key="canvasLocation" x="4396" y="3657"/>
         </scene>
         <!--Reset password-->
         <scene sceneID="Drs-Rt-EhK">
@@ -1259,7 +1259,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i9s-sR-Bmg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6850" y="2893"/>
+            <point key="canvasLocation" x="5079" y="3657"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ceK-Fu-aud">
@@ -1275,7 +1275,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oQ7-NL-NiY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4194" y="2893"/>
+            <point key="canvasLocation" x="3720" y="2979"/>
         </scene>
         <!--Posts Map View Controller-->
         <scene sceneID="ROo-0T-EA8">
@@ -1326,7 +1326,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lnn-eC-56H" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5491" y="2893"/>
+            <point key="canvasLocation" x="3720" y="3657"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="duh-yL-gzI">
@@ -1539,8 +1539,8 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2uk-5m-5xY">
-                                <rect key="frame" x="20" y="64" width="560" height="463"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2uk-5m-5xY">
+                                <rect key="frame" x="20" y="64" width="560" height="507"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="VnO-tt-6YV" userLabel="Shiners logo">
                                         <rect key="frame" x="0.0" y="0.0" width="560" height="80"/>
@@ -1549,7 +1549,7 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="46" translatesAutoresizingMaskIntoConstraints="NO" id="VLS-8L-9MF" userLabel="LogIn + Text">
-                                        <rect key="frame" x="145" y="169" width="270" height="151"/>
+                                        <rect key="frame" x="145" y="191" width="270" height="151"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="fZl-mp-dpW" userLabel="text">
                                                 <rect key="frame" x="0.0" y="0.0" width="270" height="55"/>
@@ -1591,7 +1591,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="o1i-3i-VMC" userLabel="Register account">
-                                        <rect key="frame" x="0.0" y="433" width="560" height="30"/>
+                                        <rect key="frame" x="0.0" y="477" width="560" height="30"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4tq-m3-fhH">
                                                 <rect key="frame" x="0.0" y="0.0" width="560" height="30"/>
@@ -1653,7 +1653,7 @@
                                     </mask>
                                 </variation>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hy3-s7-BEc" userLabel="exand arrow">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hy3-s7-BEc" userLabel="exand arrow">
                                 <rect key="frame" x="16" y="80" width="50" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="762-4q-2pj"/>
@@ -5311,7 +5311,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HKb-2J-dsh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4834" y="2893"/>
+            <point key="canvasLocation" x="4360" y="2979"/>
         </scene>
         <!--Posts-->
         <scene sceneID="e4U-vk-97U">

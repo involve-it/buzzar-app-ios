@@ -167,6 +167,24 @@
 /* Log in page, button Skip */
 "Skip" = "Пропустить";
 
+/* firstPageTitle */
+"Create your post" = "Создай свое объявление";
+
+/* secondPageTitle */
+"Find and get found" = "Ты находишь / тебя находят";
+
+/* thirdPageTitle */
+"Connect and meet" = "Договаривайся / встречайся";
+
+/* firstPageMessage */
+"It will move with you, showing your availability to people around you" = "Оно будет перемещаться вместе с тобой, как твоя виртуальная визитка, которую могут увидеть люди вокруг";
+
+/* secondPageMessage */
+"Use Shiners to search live ads from people around or let them find your live post" = "Используй светлячки для поиска живых объявлений от людей, которые находятся рядом с тобой";
+
+/* thirdPageMessage */
+"After finding the right post contact its owner to meet him immediately!" = "Найдя нужный живой пост рядом, напиши его владельцу и договорись о встрече прямо здесь и сейчас!";
+
 
 
 

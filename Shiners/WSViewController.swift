@@ -28,23 +28,15 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
         static let LoginCell = "wsLoginCell"
     }
     
-    let nextLabelBtn        = NSLocalizedString("Next", comment: "Log in page, button Next")
-    let skipLabelBtn        = NSLocalizedString("Skip", comment: "Log in page, button Skip")
-    
-    let firstPageTitle      = NSLocalizedString("", comment: "")
-    let secondPageTitle     = NSLocalizedString("", comment: "")
-    let thirdPageTitle      = NSLocalizedString("", comment: "")
-    
-    let firstPageMessage    = NSLocalizedString("", comment: "")
-    let secondPageMessage   = NSLocalizedString("", comment: "")
-    let thirdPageMessage    = NSLocalizedString("", comment: "")
+    let nextLabelBtn = NSLocalizedString("Next", comment: "Log in page, button Next")
+    let skipLabelBtn = NSLocalizedString("Skip", comment: "Log in page, button Skip")
     
     let langString = NSLocale.currentLocale().objectForKey(NSLocaleLanguageCode) as! String
     
     let pages: [Page] = {
-        let firstPage = Page(title: "Создай свое объявление", message: "Оно будет перемещаться вместе с тобой, как твоя виртуальная визитка, которую могут увидеть люди вокруг", imageName: "page1")
-        let secondPage = Page(title: "Ты находишь / тебя находят", message: "Используй светлячки для поиска живых объявлений от людей, которые находятся рядом с тобой", imageName: "page2")
-        let thirdPage = Page(title: "Договаривайся / встречайся", message: "Найдя нужный живой пост рядом, напиши его владельцу и договорись о встрече прямо здесь и сейчас!", imageName: "page3")
+        let firstPage = Page(title: NSLocalizedString("Create your post", comment: ""), message: NSLocalizedString("It will move with you, showing your availability to people around you", comment: ""), imageName: "page1")
+        let secondPage = Page(title: NSLocalizedString("Find and get found", comment: ""), message: NSLocalizedString("Use Shiners to search live ads from people around or let them find your live post", comment: ""), imageName: "page2")
+        let thirdPage = Page(title: NSLocalizedString("Connect and meet", comment: ""), message: NSLocalizedString("After finding the right post contact its owner to meet him immediately!", comment: ""), imageName: "page3")
         
         return [firstPage, secondPage, thirdPage]
     }()
