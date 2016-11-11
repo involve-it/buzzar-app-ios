@@ -19,6 +19,7 @@ class CustomPointAnnotation: NSObject, MKAnnotation {
     var id: String?
     var category: String?
     var postType: String?
+    var live: Bool!
     
     
     init(coordinate: CLLocationCoordinate2D) {

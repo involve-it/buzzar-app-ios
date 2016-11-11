@@ -74,14 +74,18 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
                 if let postCoordinateLocations = post.locations {
                     
                     var postLocation: Location?
+                    var postType: String!
                     for coordinareLocation in postCoordinateLocations {
                         
                         if coordinareLocation.placeType == .Dynamic {
                             //Dynamic
                             postLocation = coordinareLocation
+                            postType = "dynamic"
+                            break
                         } else {
                             //Static
                             postLocation = coordinareLocation
+                            postType = "static"
                         }
                         
                     }
@@ -90,10 +94,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
                     
                     if let postLocation = postLocation, lat = postLocation.lat, lng = postLocation.lng {
                         
-                        let location: CLLocation = {
-                            let loc = CLLocation(latitude: lat, longitude: lng)
-                            return loc
-                        }()
+                        let location = CLLocation(latitude: lat, longitude: lng)
                         
                         let annotation = CustomPointAnnotation(coordinate: location.coordinate)
                         annotation.id = post.id
@@ -102,7 +103,8 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
                             annotation.category = category
                         }
                         
-                        
+                        annotation.live = post.isLive()
+                        annotation.postType = postType
                         
                         annotation.title = post.title
                         if let subTitle = post.descr {
@@ -142,7 +144,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
         
         let customPointAnnotation = annotation as! CustomPointAnnotation
         
-        if (annotation is CustomPointAnnotation) {
+        if let _ = customPointAnnotation.id {
             let reuseIdentifier = "customPin"
             var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIdentifier)
             
@@ -152,16 +154,15 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
                 annotationView?.centerOffset = CGPointMake(10, -20)
             } else {
                 annotationView!.annotation = annotation
-                
             }
             
-            
+            var imageName: String!
             if let category = customPointAnnotation.category {
-                annotationView!.image = UIImage(named: "static-live-flag-" + "\(category)")
+                imageName = "\(customPointAnnotation.postType!)-\((customPointAnnotation.live ?? false) ? "live" : "offline")-flag-" + "\(category)"
             } else {
-                annotationView!.image = UIImage(named: "static-live-flag-jobs")
+                imageName = "\(customPointAnnotation.postType!)-\((customPointAnnotation.live ?? false) ? "live" : "offline")-flag-jobs"
             }
-            
+            annotationView!.image = UIImage(named: imageName)
             
             annotationView?.frame = CGRect(x: 0, y: 0, width: 24.2, height: 32)
             
