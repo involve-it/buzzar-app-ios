@@ -21,6 +21,20 @@ public class UsersProxy{
         }
     }
     
+    public func errorLog(log: String, callback: MeteorMethodCallback){
+        var dict = Dictionary<String, AnyObject>()
+        dict["userId"] = Meteor.client.userId()
+        dict["data"] = log
+        
+        Meteor.call("errorLog", params: [dict]){(result, error) in
+            if error == nil{
+                callback(success: ResponseHelper.isSuccessful(result), errorId: nil, errorMessage: nil, result: nil)
+            } else {
+                callback(success: false, errorId: nil, errorMessage: nil, result: nil)
+            }
+        }
+    }
+    
     public func contactUs(email: String, subject: String, message: String, callback: MeteorMethodCallback){
         var dict = Dictionary<String, AnyObject>()
         dict["email"] = email

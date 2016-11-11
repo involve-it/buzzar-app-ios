@@ -85,7 +85,7 @@ public class DialogViewController : JSQMessagesViewController{
             
             self.dataFromCache = false
             self.updateMessages(messages)
-            if !(self.chat.seen ?? true) {
+            if messages.contains({!($0.seen ?? true)}) || !(self.chat.seen ?? true){
                 self.notifyUnseen()
             }
         }

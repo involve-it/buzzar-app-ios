@@ -19,6 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
     private let locationManager = LocationHandler()
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        NSSetUncaughtExceptionHandler { (ex) in
+            ExceptionHandler.saveException(ex)
+        }
         SecurityHandler.setDeviceId()
         
         self.locationManager.delegate = self
