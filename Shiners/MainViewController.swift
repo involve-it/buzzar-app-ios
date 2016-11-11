@@ -40,12 +40,12 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         }
         
         if ExceptionHandler.hasLastCrash() {
-            let alertController = UIAlertController(title: "Oops", message: "Looks like we crashed last time. Would you like to help developers and send anonymous crash report?", preferredStyle: .Alert);
+            let alertController = UIAlertController(title: NSLocalizedString("Oops", comment: "Alert title, Oops"), message: NSLocalizedString("Looks like we crashed last time. Would you like to help developers and send anonymous crash report?", comment: "Alert message, Looks like we crashed last time. Would you like to help developers and send anonymous crash report?"), preferredStyle: .Alert);
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Sure!", comment: "Alert title, Yes"), style: .Default, handler:{ (action) in
                 ExceptionHandler.submitReport()
                 alertController.dismissViewControllerAnimated(true, completion: nil)
             }));
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Alert title, Close"), style: .Cancel, handler: { (action) in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Alert title, Cancel"), style: .Cancel, handler: { (action) in
                 ExceptionHandler.cleanUp()
             }));
             self.presentViewController(alertController, animated: true, completion: nil)
