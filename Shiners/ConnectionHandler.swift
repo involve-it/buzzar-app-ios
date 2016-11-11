@@ -10,15 +10,15 @@ import Foundation
 import SwiftDDP
 
 public class ConnectionHandler{
-    //public static let baseUrl = "http://192.168.1.71:3000"
+    public static let baseUrl = "http://192.168.1.71:3000"
     //public static let baseUrl = "http://msg.webhop.org"
-    public static let baseUrl = "https://www.shiners.mobi"
+    //public static let baseUrl = "https://www.shiners.mobi"
     
     public static let publicUrl = "https://shiners.ru"
     
     //private let url:String = "ws://msg.webhop.org/websocket"
-    //private let url:String = "ws://192.168.1.71:3000/websocket"
-    private let url:String = "wss://www.shiners.mobi/websocket"
+    private let url:String = "ws://192.168.1.71:3000/websocket"
+    //private let url:String = "wss://www.shiners.mobi/websocket"
     
     public private(set) var status: ConnectionStatus = .NotInitialized
     
@@ -66,6 +66,7 @@ public class ConnectionHandler{
     @objc private func accountLoaded(){
         self.dependenciesResolved += 1
         self.executeHandlers(self.dependenciesResolved)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
     }
     
     public func connect() {
@@ -73,7 +74,7 @@ public class ConnectionHandler{
             self.status = ConnectionStatus.Connecting
             //Meteor.client.logLevel = .Debug;
             
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.accountLoaded), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.accountLoaded), name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
             
             Meteor.connect(url) { (session) in
                 NSLog("Meteor connected")
@@ -82,6 +83,7 @@ public class ConnectionHandler{
                     AccountHandler.Instance.loadAccount()
                 } else {
                     AccountHandler.Instance.processLogoff()
+                    self.dependenciesResolved += 1
                 }
                 self.executeHandlers(self.dependenciesResolved)
             }

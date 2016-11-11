@@ -34,6 +34,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     var noMorePosts = false
     var loadingPosts = false
     var loadingMorePosts = false
+    var staleLocation = false
     
     var searchViewController: NewSearchViewController?
     var currentViewController: UIViewController?
@@ -114,6 +115,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
             self.currentLocation = currentLocation.coordinate
             self.locationAcquired = true
             self.getNearby()
+            self.staleLocation = true
         }
         
         self.searchBar.showsCancelButton = true
@@ -124,9 +126,13 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
     
     func accountUpdated(){
-        if let currentLocation = self.currentLocation where AccountHandler.Instance.isLoggedIn(){
+        if let currentLocation = self.currentLocation where AccountHandler.Instance.isLoggedIn() && ConnectionHandler.Instance.status == .Connected{
             //ConnectionHandler.Instance.reportLocation(currentLocation.latitude, lng: currentLocation.longitude, notify: false)
-            AccountHandler.Instance.reportLocation(currentLocation.latitude, lng: currentLocation.longitude)
+            AccountHandler.Instance.reportLocation(currentLocation.latitude, lng: currentLocation.longitude){ (success, _, _, _) in
+                if success {
+                    self.getNearby()
+                }
+            }
         }
     }
     
@@ -134,6 +140,13 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         if self.locationAcquired {
             //self.subscribeToNearby()
             self.getNearby()
+            
+            if AccountHandler.Instance.isLoggedIn() && ConnectionHandler.Instance.status == .Connected && !self.staleLocation{
+                ThreadHelper.runOnBackgroundThread({
+                    //ConnectionHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude, notify: false)
+                    AccountHandler.Instance.reportLocation(self.currentLocation!.latitude, lng: self.currentLocation!.longitude)
+                })
+            }
         }
     }
     
@@ -175,13 +188,14 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                 self.callRefreshDelegates()
             }
         } else {
-            if self.currentLocation == nil || self.currentLocation?.latitude != geocoderInfo.coordinate?.latitude || self.currentLocation?.longitude != geocoderInfo.coordinate?.longitude{
+            if self.currentLocation == nil || self.currentLocation?.latitude != geocoderInfo.coordinate?.latitude || self.currentLocation?.longitude != geocoderInfo.coordinate?.longitude || self.staleLocation{
                 self.currentLocation = geocoderInfo.coordinate
                 self.locationAcquired = true
                 
                 //self.subscribeToNearby()
                 self.getNearby()
-                if AccountHandler.Instance.isLoggedIn(){
+                self.staleLocation = false
+                if AccountHandler.Instance.isLoggedIn() && ConnectionHandler.Instance.status == .Connected{
                     ThreadHelper.runOnBackgroundThread({
                         //ConnectionHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude, notify: false)
                         AccountHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude)

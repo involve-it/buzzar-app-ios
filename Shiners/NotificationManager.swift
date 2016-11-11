@@ -21,6 +21,7 @@ public class NotificationManager{
         case MeteorConnected = "shiners:meteorConnected"
         case OfflineCacheRestored = "shiners:offlineCacheRestored"
         case AccountUpdated = "shiners:AccountUpdated"
+        case AccountLoaded = "shiners:AccountLoaded"
         
         case MyChatsUpdated = "shiners:MyChatsUpdated"
         
