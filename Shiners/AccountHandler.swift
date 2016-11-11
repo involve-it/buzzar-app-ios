@@ -246,6 +246,8 @@ public class AccountHandler{
                         //temp
                         self.myChats = self.myChats?.filter({$0.lastMessage != nil})
                         
+                        self.restoreCachedMessages()
+                        
                         CachingHandler.Instance.saveChats(self.myChats!)
                         
                         NotificationManager.sendNotification(.MyChatsUpdated, object: nil)
@@ -279,6 +281,8 @@ public class AccountHandler{
                 
                 //temp
                 self.myChats = self.myChats?.filter({$0.lastMessage != nil})
+                //restore cached messages
+                self.restoreCachedMessages()
                 
                 self.processLocalNotifications()
                 
@@ -287,6 +291,17 @@ public class AccountHandler{
             }
             callback?(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
         })
+    }
+    
+    private func restoreCachedMessages(){
+        if CachingHandler.Instance.status == .Complete, let cachedChats = CachingHandler.Instance.chats {
+            self.myChats?.filter({$0.messages.count == 0}).forEach({ (chat) in
+                if let cachedChatIndex = cachedChats.indexOf({$0.id! == chat.id!}){
+                    let cachedChat = cachedChats[cachedChatIndex]
+                    chat.messages = cachedChat.messages
+                }
+            })
+        }
     }
     
     public func reportLocation(lat: Double, lng: Double, callback: MeteorMethodCallback? = nil){
