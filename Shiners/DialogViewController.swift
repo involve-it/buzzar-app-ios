@@ -189,7 +189,7 @@ public class DialogViewController : JSQMessagesViewController{
     }
     
     func messageAdded(notification: NSNotification){
-        if let message = notification.object as? Message where message.chatId == self.chat.id {
+        if let message = notification.object as? Message where message.chatId == self.chat.id && !self.chat.messages.contains({$0.id! == message.id!}) {
             ThreadHelper.runOnMainThread({ 
                 self.addMessage(message.userId!, text: message.text!, timestamp: message.timestamp!, callFinish: true)
             })
