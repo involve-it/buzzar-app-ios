@@ -24,6 +24,10 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
         self.setLoading(false, rightBarButtonItem: self.loginBtn);
         
         leftPaddingToTextField([textFieldUsername, textFieldPassword])
+    
+        /*self.navigationController?.navigationBar.translucent = false*/
+        self.navigationController?.navigationBar.barTintColor = UIColor(netHex: 0x2E9AE2)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -129,3 +133,22 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     }
     
 }
+
+extension UINavigationBar {
+    func setGradientTeamColor() {
+        
+    }
+}
+
+class LeftPaddedTextField: UITextField {
+   
+    func textRectForBounds(forBounds bounds: CGRect) -> CGRect {
+        return CGRect(x: bounds.origin.x + 15, y: bounds.origin.y, width: bounds.width + 15, height: bounds.height)
+    }
+    
+    func editingRectForBounds(forBounds bounds: CGRect) -> CGRect {
+        return CGRect(x: bounds.origin.x + 15, y: bounds.origin.y, width: bounds.width + 15, height: bounds.height)
+    }
+    
+}
+
