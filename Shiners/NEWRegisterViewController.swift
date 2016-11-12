@@ -39,17 +39,15 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
     override public func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
     }
     
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.textFieldUsername.becomeFirstResponder();
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
     }
     
     @objc private func processLogin(){
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
         ThreadHelper.runOnMainThread({
             if AccountHandler.Instance.currentUser == nil {
                 self.setLoading(false, rightBarButtonItem: self.btnRegister)
@@ -60,46 +58,79 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
         })
     }
     
-    private func register() {
-        if self.textFieldPassword.text == self.textFieldConfirmPassword.text {
-           
+    private func isFormValid() -> Bool {
+        var message: String?
+        var valid = true
+        if self.textFieldUsername.text == nil || self.textFieldUsername.text == "" {
+            valid = false
+            message = NSLocalizedString("Username cannot be empty", comment: "Alert message, username cannot be empty")
+            self.textFieldUsername.becomeFirstResponder()
+        } else if self.textFieldEmailAddress.text == nil || self.textFieldEmailAddress == "" || !self.textFieldEmailAddress.text!.isValidEmail() {
+            valid = false
+            message = NSLocalizedString("Email address is not valid", comment: "Alert message, email address cannot be empty")
+            self.textFieldEmailAddress.becomeFirstResponder()
+        } else if self.textFieldPassword.text == nil || self.textFieldPassword.text == "" {
+            valid = false
+            message = NSLocalizedString("Password cannot be empty", comment: "Alert message, password cannot be empty")
+            self.textFieldPassword.becomeFirstResponder()
+        } else if self.textFieldPassword.text != self.textFieldConfirmPassword.text {
+            valid = false
+            message = NSLocalizedString("Password and confirmation are not equal", comment: "Alert message, password and confirmation are not equal")
+            self.textFieldConfirmPassword.becomeFirstResponder()
+        }
+        
+        if !valid {
+            self.showAlert(NSLocalizedString("Error", comment: "Alert title, error"), message: message)
+        }
+        
+        return valid
+    }
+    
+    @objc private func register() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+        if self.isFormValid() {
             //username
             let username = self.textFieldUsername.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
             //password
             let password = self.textFieldPassword.text
             //email and check
-            var email: String? = self.textFieldEmailAddress.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-            
-            email = email!.isValidEmail() ? email : nil
+            let email = self.textFieldEmailAddress.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
             
             let user = RegisterUser(username: username, email: email, password: password);
-            if (user.isValid()){
+        
+            ThreadHelper.runOnMainThread({ 
                 self.setLoading(true)
-                
-                AccountHandler.Instance.register(user, callback: { (success, errorId, errorMessage, result) in
-                    if (success){
-                        AccountHandler.Instance.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
-                            ThreadHelper.runOnMainThread({
-                                if !success {
-                                    self.setLoading(false, rightBarButtonItem: self.btnRegister)
-                                    self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
-                                }
-                            })
-                        })
-                    } else {
-                        ThreadHelper.runOnMainThread({
-                            self.setLoading(false, rightBarButtonItem: self.btnRegister)
-                            self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
-                        })
-                    }
-                })
-                
-                return
+            })
+            
+            if ConnectionHandler.Instance.status == .Connected {
+                NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+                self.registerUser(user)
+            } else {
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(register), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
             }
         }
-        
-        //todo: add validation messages
-        self.showAlert(NSLocalizedString("Validation failed", comment: "Alert title, Validation failed"), message: NSLocalizedString("Form validation valied", comment: "Alert message, Form validation valied"))
+    }
+    
+    private func registerUser(user: RegisterUser){
+        AccountHandler.Instance.register(user, callback: { (success, errorId, errorMessage, result) in
+            if (success){
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
+                AccountHandler.Instance.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
+                    ThreadHelper.runOnMainThread({
+                        if !success {
+                            NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
+                            self.setLoading(false, rightBarButtonItem: self.btnRegister)
+                            self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
+                        }
+                    })
+                })
+            } else {
+                ThreadHelper.runOnMainThread({
+                    self.setLoading(false, rightBarButtonItem: self.btnRegister)
+                    self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
+                })
+            }
+        })
     }
 
     

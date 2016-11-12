@@ -42,6 +42,7 @@ class ProfileTableViewController: UITableViewController {
     //@IBOutlet weak var vkRowVisible: UITableViewCell!
     //@IBOutlet weak var facebookRowVisible: UITableViewCell!
     @IBOutlet weak var cbNearbyNotifications: UISwitch!
+    var modalSpinner: UIAlertController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -200,18 +201,32 @@ class ProfileTableViewController: UITableViewController {
         if indexPath.section == 3 {
             let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .ActionSheet)
             alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
-                AccountHandler.Instance.logoff(){ success in
-                    if (!success){
-                        ThreadHelper.runOnMainThread({ 
-                            self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("An error occurred", comment: "Alert message, An error occurred"))
-                        })
-                    }
-                };
+                self.doLogout()
             }))
             
             alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Cancel, handler: nil))
             
             self.presentViewController(alertViewController, animated: true, completion: nil)
+        }
+    }
+    
+    func doLogout(){
+        if self.modalSpinner == nil {
+            self.modalSpinner = self.displayModalAlert(NSLocalizedString("Logging out...", comment: "Alert title, logging out..."))
+        }
+        
+        if ConnectionHandler.Instance.status == .Connected {
+            NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            AccountHandler.Instance.logoff(){ success in
+                ThreadHelper.runOnMainThread({
+                    self.modalSpinner?.dismissViewControllerAnimated(true, completion: nil)
+                    if (!success){
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("An error occurred", comment: "Alert message, An error occurred"))
+                    }
+                })
+            }
+        } else {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(doLogout), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
         }
     }
     
