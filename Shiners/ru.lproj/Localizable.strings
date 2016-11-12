@@ -76,6 +76,10 @@
 
 "Please fill in both, username and password" = "Оба поля - имя пользователя и пароль - обязательны для ввода";
 
+"Oops" = "Просим прощения";
+
+"Looks like we crashed last time. Would you like to help developers and send crash report?" = "Судя по всему, прошлый раз что-то пошло не так и приложение закрылось. Не хотели бы вы помочь разработчиками и отправить детали ошибки?";
+
 /* Everywhere */
 "Everywhere" = "Везде";
 
