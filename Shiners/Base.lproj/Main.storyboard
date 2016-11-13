@@ -1206,6 +1206,7 @@
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
+                        <outlet property="btnForgotPassword" destination="V9i-wi-rTf" id="wwi-68-BCQ"/>
                         <outlet property="loginBtn" destination="YOp-bh-5go" id="6mH-Fk-LMV"/>
                         <outlet property="loginBtnCenter" destination="WzS-SN-1DM" id="Uin-Dw-Y4O"/>
                         <outlet property="textFieldPassword" destination="eGv-PG-E7f" id="EAY-IY-Kir"/>
@@ -1230,6 +1231,25 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XUs-6s-n5m" customClass="GradientView" customModule="Shiners" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                                <subviews>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5w0-p6-xEb">
+                                        <rect key="frame" x="20" y="72" width="560" height="42"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="42" id="xKd-B2-5Xd"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="delegate" destination="GG4-CG-YhL" id="0ej-gP-JKj"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To reset your password, enter your email address and we will send you link to create a new password." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VNk-iv-hD8">
@@ -1238,24 +1258,7 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5w0-p6-xEb">
-                                <rect key="frame" x="20" y="72" width="560" height="42"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="42" id="xKd-B2-5Xd"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="4"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <outlet property="delegate" destination="GG4-CG-YhL" id="0ej-gP-JKj"/>
-                                </connections>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zEc-hI-ea9">
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zEc-hI-ea9">
                                 <rect key="frame" x="230" y="130" width="141" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="teF-7H-WgC"/>
@@ -1269,23 +1272,21 @@
                                         <integer key="value" value="4"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="resetPassword:" destination="GG4-CG-YhL" eventType="touchUpInside" id="wTc-fB-sAT"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="zEc-hI-ea9" firstAttribute="centerX" secondItem="tET-1T-0AE" secondAttribute="centerX" id="3KQ-Jk-Wn9"/>
-                            <constraint firstItem="5w0-p6-xEb" firstAttribute="leading" secondItem="tET-1T-0AE" secondAttribute="leadingMargin" id="4Xs-gX-3js"/>
                             <constraint firstItem="XUs-6s-n5m" firstAttribute="top" secondItem="XhG-rq-R8l" secondAttribute="bottom" id="8Gr-cO-MmB"/>
-                            <constraint firstItem="5w0-p6-xEb" firstAttribute="centerX" secondItem="tET-1T-0AE" secondAttribute="centerX" id="D4F-Bn-IvX"/>
-                            <constraint firstItem="zEc-hI-ea9" firstAttribute="top" secondItem="5w0-p6-xEb" secondAttribute="bottom" constant="16" id="DGa-oN-EzO"/>
                             <constraint firstItem="IwV-9m-Afp" firstAttribute="top" secondItem="XUs-6s-n5m" secondAttribute="bottom" id="HG7-qg-jsC"/>
                             <constraint firstItem="VNk-iv-hD8" firstAttribute="centerX" secondItem="tET-1T-0AE" secondAttribute="centerX" id="KB6-MG-Zmc"/>
                             <constraint firstItem="VNk-iv-hD8" firstAttribute="trailing" secondItem="tET-1T-0AE" secondAttribute="trailingMargin" id="NOe-UW-8XD"/>
                             <constraint firstItem="VNk-iv-hD8" firstAttribute="leading" secondItem="tET-1T-0AE" secondAttribute="leadingMargin" id="Nvb-d0-vgH"/>
                             <constraint firstItem="XUs-6s-n5m" firstAttribute="leading" secondItem="tET-1T-0AE" secondAttribute="leading" id="SpB-gb-ODv"/>
-                            <constraint firstItem="5w0-p6-xEb" firstAttribute="trailing" secondItem="tET-1T-0AE" secondAttribute="trailingMargin" id="XgC-ZZ-r5k"/>
                             <constraint firstAttribute="trailing" secondItem="XUs-6s-n5m" secondAttribute="trailing" id="Y3R-CJ-wxa"/>
-                            <constraint firstItem="5w0-p6-xEb" firstAttribute="top" secondItem="VNk-iv-hD8" secondAttribute="bottom" constant="8" id="fYr-U3-aWs"/>
                             <constraint firstItem="VNk-iv-hD8" firstAttribute="top" secondItem="XhG-rq-R8l" secondAttribute="bottom" constant="32" id="gx1-w5-tKJ"/>
                         </constraints>
                     </view>

@@ -84,6 +84,10 @@
 
 "Network Unreachable" = "Сеть недоступна";
 
+"Password reset" = "Переустановить пароль";
+
+"If you entered correct email address that exists in our system, you should receive an email with password reset instructions within few minutes." = "Если вы ввели адрес электронной почты, который существует у нас в системе, вы получите электронное письмо с инструкциями, как переустановить пароль, в течение нескольких минут.";
+
 /* Everywhere */
 "Everywhere" = "Везде";
 

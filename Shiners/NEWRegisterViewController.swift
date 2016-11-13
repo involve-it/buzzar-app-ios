@@ -117,6 +117,14 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
         return valid
     }
     
+    func enableFields(enable: Bool){
+        self.textFieldUsername.enabled = enable
+        self.textFieldPassword.enabled = enable
+        self.textFieldEmailAddress.enabled = enable
+        self.textFieldConfirmPassword.enabled = enable
+        self.btnRegister.enabled = enable
+    }
+    
     @objc private func register() {
         if !self.isNetworkReachable(){
             return
@@ -134,6 +142,7 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
         
             ThreadHelper.runOnMainThread({ 
                 self.setLoading(true)
+                self.enableFields(false)
             })
             
             if ConnectionHandler.Instance.status == .Connected {
@@ -152,6 +161,7 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
                 AccountHandler.Instance.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
                     ThreadHelper.runOnMainThread({
                         if !success {
+                            self.enableFields(true)
                             NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
                             self.setLoading(false, rightBarButtonItem: self.btnRegister)
                             self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
@@ -160,6 +170,7 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
                 })
             } else {
                 ThreadHelper.runOnMainThread({
+                    self.enableFields(true)
                     self.setLoading(false, rightBarButtonItem: self.btnRegister)
                     self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
                 })
