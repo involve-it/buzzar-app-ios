@@ -13,8 +13,8 @@ public class SmallImageView: UIView{
     public weak var imageView: UIImageView!
     public weak var btnDelete: UIButton!
     
-    public static let width: CGFloat = 100
-    public static let height: CGFloat = 80
+    public var width: CGFloat!
+    public var height: CGFloat!
     
     private(set) public var id: String!
     public var index: Int?
@@ -25,15 +25,21 @@ public class SmallImageView: UIView{
     
     public init (x: Float, y : Float, index:Int, delegate: SmallImageViewDelegate?, image: UIImage){
         //todo: fix different aspect ratios
+        self.width = UIScreen.mainScreen().bounds.width - 16
+        if image.size.width >= image.size.height{
+            self.height = self.width * (10/16)
+        } else {
+            self.height = self.width * (16/10)
+        }
         self.id = NSUUID().UUIDString
         self.index = index
         self.delegate = delegate
         
         //extension of the edges + 20
-        super.init(frame: CGRectMake(CGFloat(x), CGFloat(y), SmallImageView.width + 20, SmallImageView.height + 10))
+        super.init(frame: CGRectMake(CGFloat(x), CGFloat(y), self.width + 20, self.height + 10))
         self.clipsToBounds = true
         
-        let imageView = UIImageView(frame: CGRectMake(0, 10, SmallImageView.width, SmallImageView.height))
+        let imageView = UIImageView(frame: CGRectMake(0, 10, self.width, self.height))
         imageView.contentMode = .ScaleAspectFill
         
         imageView.layer.cornerRadius = CGFloat(4)
@@ -46,7 +52,7 @@ public class SmallImageView: UIView{
         
         //Indicator & coverView
         self.coverImageView.backgroundColor = UIColor(white: 0.1, alpha: 0.75)
-        self.coverImageView.frame = CGRectMake(0, 0, self.frame.width, self.frame.width)
+        self.coverImageView.frame = CGRectMake(0, 0, self.frame.width, self.frame.height)
         
         activityIndicator.center = imageView.center
         activityIndicator.activityIndicatorViewStyle = .White
@@ -55,12 +61,22 @@ public class SmallImageView: UIView{
         //self.imageView.addSubview(coverImageView)
         self.addSubview(activityIndicator)
         
-        let btnDelete = UIButton(frame: CGRectMake(CGFloat(SmallImageView.width - 12), CGFloat(y - 4), 17, 17))
+        let btnDelete = UIButton(frame: CGRectMake(CGFloat(self.width - 12), 0, 17, 17))
         btnDelete.setBackgroundImage(UIImage(named: "deleteImage"), forState: .Normal)
         btnDelete.addTarget(self, action: #selector(btnDelete_Click), forControlEvents: .TouchUpInside)
         
         self.addSubview(btnDelete)
         self.btnDelete = btnDelete
+    }
+    
+    public func displayLoading(loading: Bool){
+        if loading {
+            self.imageView.addSubview(self.coverImageView)
+            self.activityIndicator.startAnimating()
+        } else {
+            self.coverImageView.removeFromSuperview()
+            self.activityIndicator.stopAnimating()
+        }
     }
     
     required public init?(coder aDecoder: NSCoder) {
