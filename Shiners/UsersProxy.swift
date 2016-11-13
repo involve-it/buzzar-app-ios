@@ -25,6 +25,10 @@ public class UsersProxy{
         var dict = Dictionary<String, AnyObject>()
         dict["userId"] = Meteor.client.userId()
         dict["data"] = log
+        dict["platform"] = "ios"
+        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
+            dict["version"] = version
+        }
         
         Meteor.call("errorLog", params: [dict]){(result, error) in
             if error == nil{

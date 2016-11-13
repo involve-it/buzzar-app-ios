@@ -69,8 +69,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
 
         
         //UIBarButtonItem.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = UIColor.whiteColor()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(accountUpdated), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
         
         return true
+    }
+    
+    func accountUpdated(){
+        if AccountHandler.Instance.isLoggedIn() {
+            self.locationManager.monitorSignificantLocationChanges()
+        } else {
+            self.locationManager.stopMonitoringLocation()
+        }
     }
     
     func locationReported(geocoderInfo: GeocoderInfo) {

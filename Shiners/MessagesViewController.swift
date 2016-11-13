@@ -389,7 +389,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
                     chat.messages = cachedChat.messages
                     viewController.dataFromCache = true
                 }
-                chat.messagesRequested = true
+                
                 viewController.pendingMessagesAsyncId = MessagesHandler.Instance.getMessagesAsync(chat.id!, skip: 0)
             }
         }

@@ -32,4 +32,23 @@ public extension UIViewController{
     public func showConnecting(connecting: Bool){
         
     }
+    
+    func displayModalAlert(title: String) -> UIAlertController{
+        let pending = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
+        
+        //create an activity indicator
+        //let indicator = UIActivityIndicatorView(frame: CGRectMake(50, 50, 37, 37))
+        //indicator.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
+        //indicator.activityIndicatorViewStyle = .Gray
+        //add the activity indicator as a subview of the alert controller's view
+        //pending.view.addSubview(indicator)
+        //pending.view.layoutIfNeeded()
+        
+        //indicator.userInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
+        //indicator.startAnimating()
+        
+        self.presentViewController(pending, animated: true, completion: nil)
+        
+        return pending
+    }
 }

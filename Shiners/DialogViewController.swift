@@ -82,7 +82,7 @@ public class DialogViewController : JSQMessagesViewController{
     func messagesPageReceived(notification:NSNotification){
         if let pendingMessagesAsyncId = self.pendingMessagesAsyncId where pendingMessagesAsyncId == notification.object as! String,
             let messages = MessagesHandler.Instance.getMessagesByRequestId(pendingMessagesAsyncId){
-            
+            self.chat.messagesRequested = true
             self.dataFromCache = false
             self.updateMessages(messages)
             if messages.contains({!($0.seen ?? true)}) || !(self.chat.seen ?? true){
@@ -92,7 +92,6 @@ public class DialogViewController : JSQMessagesViewController{
     }
     
     private func notifyUnseen(){
-        NotificationManager.sendNotification(.MyChatsUpdated, object: chat)
         let unseen = self.chat.messages.filter({!($0.seen ?? false) && $0.id != nil && $0.toUserId == AccountHandler.Instance.userId}).map({$0.id!})
         if unseen.count > 0 && UIApplication.sharedApplication().applicationState == .Active {
             ConnectionHandler.Instance.messages.messagesSetSeen(unseen, callback: { (success, errorId, errorMessage, result) in
@@ -104,6 +103,7 @@ public class DialogViewController : JSQMessagesViewController{
                     ThreadHelper.runOnBackgroundThread({ 
                         AccountHandler.Instance.saveMyChats()
                     })
+                    NotificationManager.sendNotification(.MyChatsUpdated, object: self.chat)
                 } else {
                     print("Error marking messages page seen: " + (errorMessage ?? "(null)"))
                 }
@@ -189,7 +189,7 @@ public class DialogViewController : JSQMessagesViewController{
     }
     
     func messageAdded(notification: NSNotification){
-        if let message = notification.object as? Message where message.chatId == self.chat.id {
+        if let message = notification.object as? Message where message.chatId == self.chat.id && !self.chat.messages.contains({$0.id! == message.id!}) {
             ThreadHelper.runOnMainThread({ 
                 self.addMessage(message.userId!, text: message.text!, timestamp: message.timestamp!, callFinish: true)
             })

@@ -246,6 +246,8 @@ public class AccountHandler{
                         //temp
                         self.myChats = self.myChats?.filter({$0.lastMessage != nil})
                         
+                        self.restoreCachedMessages()
+                        
                         CachingHandler.Instance.saveChats(self.myChats!)
                         
                         NotificationManager.sendNotification(.MyChatsUpdated, object: nil)
@@ -279,6 +281,8 @@ public class AccountHandler{
                 
                 //temp
                 self.myChats = self.myChats?.filter({$0.lastMessage != nil})
+                //restore cached messages
+                self.restoreCachedMessages()
                 
                 self.processLocalNotifications()
                 
@@ -289,9 +293,20 @@ public class AccountHandler{
         })
     }
     
-    public func reportLocation(lat: Double, lng: Double){
+    private func restoreCachedMessages(){
+        if CachingHandler.Instance.status == .Complete, let cachedChats = CachingHandler.Instance.chats {
+            self.myChats?.filter({$0.messages.count == 0}).forEach({ (chat) in
+                if let cachedChatIndex = cachedChats.indexOf({$0.id! == chat.id!}){
+                    let cachedChat = cachedChats[cachedChatIndex]
+                    chat.messages = cachedChat.messages
+                }
+            })
+        }
+    }
+    
+    public func reportLocation(lat: Double, lng: Double, callback: MeteorMethodCallback? = nil){
         CachingHandler.Instance.saveLastLocation(lat, lng: lng)
-        if self.isLoggedIn() && (self.lastLocationReport == nil || NSDate().timeIntervalSinceDate(self.lastLocationReport!) >= AccountHandler.LOCATION_REPORT_INTEVAL_SECONDS){
+        if AccountHandler.Instance.status == .Completed && self.isLoggedIn() && (self.lastLocationReport == nil || NSDate().timeIntervalSinceDate(self.lastLocationReport!) >= AccountHandler.LOCATION_REPORT_INTEVAL_SECONDS){
             var dict = Dictionary<String, AnyObject>()
             dict["lat"] = lat
             dict["lng"] = lng
@@ -299,10 +314,13 @@ public class AccountHandler{
             Meteor.call("reportLocation", params: [dict]) { (result, error) in
                 if error == nil {
                     self.lastLocationReport = NSDate()
+                    callback?(success: true, errorId: nil, errorMessage: nil, result: nil)
                 } else {
                     print("Error reporting location")
                     print(error!.error)
+                    callback?(success: false, errorId: nil, errorMessage: nil, result: nil)
                 }
+                
             }
         }
     }
@@ -324,10 +342,11 @@ public class AccountHandler{
             self.requestPushNotifications()
             
             NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
+            NotificationManager.sendNotification(NotificationManager.Name.AccountLoaded, object: nil)
             
-            if let location = LocationHandler.lastLocation {
+            /*if let location = LocationHandler.lastLocation {
                 self.reportLocation(location.coordinate.latitude, lng: location.coordinate.longitude)
-            }
+            }*/
             
             self.processLocalNotifications()
         }

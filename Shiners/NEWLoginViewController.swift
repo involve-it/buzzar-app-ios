@@ -44,13 +44,11 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
         super.viewWillDisappear(animated)
         
         self.view.endEditing(true)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.textFieldUsername.becomeFirstResponder();
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
     }
     
     
@@ -99,21 +97,33 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     func login(){
         if let userName = textFieldUsername.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where userName != "",
            let password = textFieldPassword.text where password != "" {
-            setLoading(true)
-            
-            AccountHandler.Instance.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in
-                if !success {
-                    ThreadHelper.runOnMainThread({
-                        self.setLoading(false, rightBarButtonItem: self.loginBtn)
-                        self.showAlert(self.txtTitleLogInFaild, message: errorMessage)
-                    })
-                }
+            ThreadHelper.runOnMainThread({ 
+                self.setLoading(true)
+            })
+            if ConnectionHandler.Instance.status == .Connected {
+                NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
+                AccountHandler.Instance.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in
+                    if !success {
+                        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
+                        ThreadHelper.runOnMainThread({
+                            self.setLoading(false, rightBarButtonItem: self.loginBtn)
+                            self.showAlert(self.txtTitleLogInFaild, message: errorMessage)
+                        })
+                    }
+                })
+            } else {
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.login), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            }
+        } else {
+            ThreadHelper.runOnMainThread({ 
+                self.showAlert(NSLocalizedString("Error", comment: "Alert title, error"), message: NSLocalizedString("Please fill in both, username and password", comment: "Alert message, please fill in both, username and password"))
             })
         }
     }
     
     func processLogin(){
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
         if AccountHandler.Instance.currentUser == nil {
             ThreadHelper.runOnMainThread({
                 self.setLoading(false, rightBarButtonItem: self.loginBtn)

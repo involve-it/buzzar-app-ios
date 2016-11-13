@@ -65,6 +65,21 @@
    Alert, error message uploading photo */
 "Error uploading photo" = "Ошибка добавления фото";
 
+/* Alert message, Password cannot be empty */
+"Password cannot be empty" = "Пароль не может быть пустой строкой";
+
+"Password and confirmation are not equal" = "Пароль и подтверждение пароля не совпадают";
+
+"Username cannot be empty" = "Имя пользователя не может быть пустой строкой";
+
+"Email address is not valid" = "Адрес электронной почты не верен";
+
+"Please fill in both, username and password" = "Оба поля - имя пользователя и пароль - обязательны для ввода";
+
+"Oops" = "Просим прощения";
+
+"Looks like we crashed last time. Would you like to help developers and send crash report?" = "Судя по всему, прошлый раз что-то пошло не так и приложение закрылось. Не хотели бы вы помочь разработчиками и отправить детали ошибки?";
+
 /* Everywhere */
 "Everywhere" = "Везде";
 
@@ -85,6 +100,8 @@
 
 /* Alert title, Log out */
 "Log out" = "Выйти";
+
+"Logging out..." = "Выполняем выход...";
 
 /* Placeholder, Message */
 "Message" = "Сообщение";
