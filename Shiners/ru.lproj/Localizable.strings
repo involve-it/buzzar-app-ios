@@ -185,6 +185,8 @@
 /* thirdPageMessage */
 "After finding the right post contact its owner to meet him immediately!" = "Найдя нужный живой пост рядом, напиши его владельцу и договорись о встрече прямо здесь и сейчас!";
 
+/* Alert title, Log in failed */
+"Log in failed" = "Ошибка входа";
 
-
-
+/* Log in */
+"Log in" = "Войти";

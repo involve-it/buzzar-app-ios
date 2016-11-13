@@ -24,13 +24,16 @@ class SettingsViewController: UIViewController {
         let dissmisImage = UIImage(named: "expand_arrow")?.imageWithRenderingMode(.AlwaysTemplate)
         dismissViewController.setImage(dissmisImage, forState: .Normal)
         dismissViewController.tintColor = UIColor(netHex: 0xFFFFFF)
-        dismissViewController.backgroundColor = UIColor(white: 0.2, alpha: 0.3)
+        dismissViewController.backgroundColor = UIColor(white: 1, alpha: 0.2)
         dismissViewController.layer.cornerRadius = 4.0
         dismissViewController.hidden = !self.isBtnDismiss
 
         configNavigationToolBar()
+        
         applyMotionEffect(toView: backgroundImageView, magnitude: 10)
         applyMotionEffect(toView: logoView, magnitude: -15)
+        
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -61,13 +64,18 @@ class SettingsViewController: UIViewController {
     }
 
     func configNavigationToolBar() {
-        self.navigationController!.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
-        self.navigationController!.navigationBar.shadowImage = UIImage()
-        self.navigationController!.navigationBar.backgroundColor = UIColor.whiteColor()
-        self.navigationController!.navigationBar.translucent = false
+        
+        self.navigationController?.tabBarController?.tabBar.backgroundImage = UIImage.imageWithColor(UIColor.clearColor())
+        let frost = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+        
+        if let bottomBar = self.navigationController?.tabBarController {
+            frost.frame = bottomBar.tabBar.bounds
+            frost.autoresizingMask = .FlexibleWidth
+            bottomBar.tabBar.insertSubview(frost, atIndex: 0)
+        }
+        
+        
     }
-    
-    
     
     // MARK: - Action
     @IBAction func clickToLogin(sender: UIButton) {
@@ -85,5 +93,21 @@ class SettingsViewController: UIViewController {
     
     @IBAction func click_dismissViewController(sender: UIButton) {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+extension UIImage {
+    class func imageWithColor(color: UIColor) -> UIImage {
+        let rect = CGRectMake(0.0, 0.0, 1.0, 1.0)
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        
+        CGContextSetFillColorWithColor(context, color.CGColor)
+        CGContextFillRect(context, rect)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return image
     }
 }

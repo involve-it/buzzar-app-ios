@@ -364,3 +364,11 @@ extension UIDevice {
     
 }
 
+//Set gradient color for view
+extension GradientView {
+    func setGradientBlueColor() {
+        startColor = UIColor(netHex: 0x5DBDF6)
+        midColor = UIColor(netHex: 0x57B8F5)
+        endColor = UIColor(netHex: 0x4EB2F4)
+    }
+}

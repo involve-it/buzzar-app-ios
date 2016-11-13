@@ -15,19 +15,23 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var textFieldUsername: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
     
-    @IBOutlet weak var registerBtn: UIButton!
     @IBOutlet var loginBtn: UIBarButtonItem!
+    @IBOutlet weak var loginBtnCenter: UIButton!
+    
+    //Team color
+    let blueColorCustom = UIColor(netHex: 0x2E9AE2)
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.setLoading(false, rightBarButtonItem: self.loginBtn);
-        
         leftPaddingToTextField([textFieldUsername, textFieldPassword])
     
-        /*self.navigationController?.navigationBar.translucent = false*/
-        self.navigationController?.navigationBar.barTintColor = UIColor(netHex: 0x2E9AE2)
-        
+        self.navigationController?.navigationBar.setGradientTeamColor()
+        self.loginBtnCenter.tintColor = UIColor.whiteColor()
+        self.loginBtnCenter.backgroundColor = blueColorCustom
+        self.loginBtnCenter.layer.cornerRadius = 4.0
+        self.loginBtnCenter.setTitle(NSLocalizedString("Log in", comment: "Log in"), forState: .Normal)
     }
 
     override func didReceiveMemoryWarning() {
@@ -59,6 +63,20 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
             textField.leftViewMode = UITextFieldViewMode.Always
         }
     
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        textFieldAnimationBackgroundShow(textField, alpha: 1)
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        textFieldAnimationBackgroundShow(textField, alpha: 0.5)
+    }
+    
+    func textFieldAnimationBackgroundShow(textField: UITextField, alpha: CGFloat) {
+        UIView.animateWithDuration(0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+            textField.backgroundColor = UIColor(white: 1, alpha: alpha)
+        }, completion: nil)
     }
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -108,8 +126,15 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+   
+    
     
     // MARK: - Action
+    
+    
+    @IBAction func LogInCenter_Done(sender: UIButton) {
+        self.login()
+    }
     
     @IBAction func LogIn_Done(sender: AnyObject) {
         self.login();
@@ -136,7 +161,9 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
 
 extension UINavigationBar {
     func setGradientTeamColor() {
-        
+        barTintColor = UIColor(netHex: 0x2E9AE2)
+        tintColor = UIColor.whiteColor()
+        titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
     }
 }
 

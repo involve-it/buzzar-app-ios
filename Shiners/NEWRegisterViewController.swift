@@ -10,12 +10,14 @@ import UIKit
 import Foundation
 
 public class NEWRegisterViewController: UITableViewController, UITextFieldDelegate {
+    
     @IBOutlet weak var textFieldUsername: UITextField!
     @IBOutlet weak var textFieldEmailAddress: UITextField!
     @IBOutlet weak var textFieldPassword: UITextField!
     @IBOutlet weak var textFieldConfirmPassword: UITextField!
     
     let txtTitleRegistrationError = NSLocalizedString("Registration error", comment: "Alert title, registration error")
+    
     
     
     @IBOutlet var btnRegister: UIBarButtonItem!
@@ -28,12 +30,41 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
         self.tableView.separatorColor = UIColor.clearColor()
         textFieldConfigure([textFieldUsername, textFieldEmailAddress, textFieldPassword, textFieldConfirmPassword])
         leftPaddingToTextField([textFieldUsername, textFieldEmailAddress, textFieldPassword, textFieldConfirmPassword])
+        
+        self.navigationController?.navigationBar.setGradientTeamColor()
+        configureBackgroundTableView()
+    }
+    
+    func configureBackgroundTableView() {
+        let view: GradientView = {
+           let v = GradientView()
+            v.frame = self.tableView.bounds
+            //v.setGradientBlueColor()
+            v.backgroundColor = UIColor(netHex: 0x57B8F5)
+            return v
+        }()
+        
+        self.tableView.backgroundView = view
     }
     
     func textFieldConfigure(textField: [UITextField]) {
         for item in textField {
             item.layer.cornerRadius = 4.0
         }
+    }
+    
+    public func textFieldDidBeginEditing(textField: UITextField) {
+        textFieldAnimationBackgroundShow(textField, alpha: 1)
+    }
+    
+    public func textFieldDidEndEditing(textField: UITextField) {
+        textFieldAnimationBackgroundShow(textField, alpha: 0.5)
+    }
+    
+    func textFieldAnimationBackgroundShow(textField: UITextField, alpha: CGFloat) {
+        UIView.animateWithDuration(0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+            textField.backgroundColor = UIColor(white: 1, alpha: alpha)
+            }, completion: nil)
     }
     
     override public func viewWillDisappear(animated: Bool) {
@@ -147,3 +178,5 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
     }
 
 }
+
+

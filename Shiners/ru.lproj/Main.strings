@@ -748,4 +748,12 @@
 /* Sign up to create post */
 "gB5-8d-ixe.text" = "Зарегистрируйтесь, чтобы создать пост";
 
+/* Class = "UILabel"; Reset password, header title */
+"VNk-iv-hD8.text" = "Чтобы сбросить пароль, введите email адрес и мы отправим вам ссылку для получения нового пароля.";
+
+
+
+
+
+
 

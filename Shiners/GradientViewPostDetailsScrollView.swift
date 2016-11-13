@@ -54,7 +54,7 @@ import UIKit
     }
     
     // 8
-    private func gradientSetup() {
+    func gradientSetup() {
         
         //let tmpColor = UIColor.yellowColor()
         

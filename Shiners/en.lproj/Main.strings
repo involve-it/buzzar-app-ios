@@ -808,3 +808,11 @@
 
 /* Sign up to create post */
 "gB5-8d-ixe.text" = "Sign up to create post";
+
+/* Class = "UILabel"; Reset password, header title */
+"VNk-iv-hD8.text" = "To reset your password, enter your email address and we will send you link to create a new password.";
+
+
+
+
+

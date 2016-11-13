@@ -11,22 +11,28 @@ import UIKit
 class ResetPasswordViewController: UIViewController, UITextFieldDelegate {
 
     
+    @IBOutlet weak var gradientView: GradientView!
     
     @IBOutlet weak var textFieldEmailAddress: UITextField!
     @IBOutlet weak var btnResetPassword: UIButton!
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        textFieldEmailAddress.becomeFirstResponder()
         leftPaddingToTextField([textFieldEmailAddress])
+        
+        //Set gradient color
+        self.gradientView.setGradientBlueColor()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        textFieldEmailAddress.becomeFirstResponder()
     }
     
 
@@ -51,7 +57,19 @@ class ResetPasswordViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
+    func textFieldDidBeginEditing(textField: UITextField) {
+        textFieldAnimationBackgroundShow(textField, alpha: 1)
+    }
     
+    func textFieldDidEndEditing(textField: UITextField) {
+        textFieldAnimationBackgroundShow(textField, alpha: 0.5)
+    }
+    
+    func textFieldAnimationBackgroundShow(textField: UITextField, alpha: CGFloat) {
+        UIView.animateWithDuration(0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+            textField.backgroundColor = UIColor(white: 1, alpha: alpha)
+            }, completion: nil)
+    }
     
     // MARK: - Action
     @IBAction func resetPassword(sender: AnyObject) {}

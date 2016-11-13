@@ -63,6 +63,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
         let colorTabBar = UIColor(red: 90/255, green: 177/255, blue: 231/255, alpha: 1)
         UITabBar.appearance().tintColor = colorTabBar
         
+        
+        //UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: .Normal)
+        //UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.redColor()], forState: .Selected)
+
+        
         //UIBarButtonItem.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = UIColor.whiteColor()
         
         return true

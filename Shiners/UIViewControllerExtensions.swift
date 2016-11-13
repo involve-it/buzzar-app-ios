@@ -21,11 +21,13 @@ public extension UIViewController{
         }
     }
     
+    
     public func showAlert(title: String, message: String?){
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert);
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Dismiss", comment: "Alert title, Dismiss"), style: .Default, handler: nil));
         self.presentViewController(alertController, animated: true, completion: nil)
     }
+    
     
     public func showConnecting(connecting: Bool){
         
