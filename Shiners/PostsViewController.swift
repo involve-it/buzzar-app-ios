@@ -257,6 +257,14 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         return cell;
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.row == self.mainViewController.posts.count && self.mainViewController.loadingMorePosts {
+            return 44
+        } else {
+            return 92
+        }
+    }
+    
     func displayLoadingMore() {
         ThreadHelper.runOnMainThread { 
             self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.mainViewController.posts.count, inSection: 0)], withRowAnimation: .Automatic)

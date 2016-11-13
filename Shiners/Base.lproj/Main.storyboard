@@ -240,21 +240,21 @@
                                     <outlet property="lblMessage" destination="eD7-KZ-RzE" id="7ge-FS-Pa4"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="morePosts" id="9q4-2q-Qp9" customClass="ErrorCell" customModule="Shiners" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="368" width="600" height="92"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="morePosts" rowHeight="44" id="9q4-2q-Qp9" customClass="ErrorCell" customModule="Shiners" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="368" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9q4-2q-Qp9" id="Rxp-S7-4Od">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="91"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading more posts..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oBq-Kp-74Z">
-                                            <rect key="frame" x="239" y="38" width="123" height="15"/>
+                                            <rect key="frame" x="239" y="14" width="123" height="15"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="fHy-SL-q0B">
-                                            <rect key="frame" x="211" y="36" width="20" height="20"/>
+                                            <rect key="frame" x="211" y="12" width="20" height="20"/>
                                         </activityIndicatorView>
                                     </subviews>
                                     <constraints>
