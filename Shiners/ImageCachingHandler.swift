@@ -19,6 +19,7 @@ public class ImageCachingHandler{
     private var images: Dictionary<String, ImageEntity> = [:]
     //private var imagesPendingUpload: Dictionary<NSURL, LocalImageEntity> = [:]
     private var failedUrls: [String] = []
+    private static let NON_RETRY_ERRORS = [NSURLErrorBadURL, NSURLErrorUnsupportedURL, NSURLErrorDataLengthExceedsMaximum, NSURLErrorUserAuthenticationRequired, NSURLErrorCannotDecodeContentData, NSURLErrorCannotParseResponse, NSURLErrorFileDoesNotExist];
     private let lockQueue = dispatch_queue_create("org.buzzar.app.Shiners.imageCachingHandler", nil);
     private static let MAX_COUNT = 50;
     public static let defaultPhoto = UIImage(named: "no-image-placeholder.jpg");
@@ -104,8 +105,12 @@ public class ImageCachingHandler{
                             callback(image: defaultImage);
                         }
                     } else {
-                        NSLog("Error: \(error)");
-                        self.failedUrls.append(url)
+                        if (error != nil){
+                            print("Error: \(error)");
+                            if let _ = ImageCachingHandler.NON_RETRY_ERRORS.indexOf(error!.code){
+                                self.failedUrls.append(url)
+                            }
+                        }
                         callback(image: defaultImage);
                     }
                 }.resume()
