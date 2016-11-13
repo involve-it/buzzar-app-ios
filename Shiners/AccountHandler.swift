@@ -11,7 +11,7 @@ import SwiftDDP
 
 public class AccountHandler{
     private static let USER_ID = "shiners:userId"
-    private let totalDependencies = 3
+    private let totalDependencies = 4
     private var resolvedDependencies = 0
     private var latestCallId = 0
     
@@ -56,6 +56,7 @@ public class AccountHandler{
         }
         self.messagesId = Meteor.subscribe("messages-new") {
             NSLog("messages-new subscribed");
+            self.resolvedDependencies += 1
             NotificationManager.sendNotification(NotificationManager.Name.MessagesNewSubscribed, object: nil)
         }
     }

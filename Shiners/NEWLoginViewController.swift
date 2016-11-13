@@ -95,6 +95,9 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func login(){
+        if !self.isNetworkReachable(){
+            return
+        }
         if let userName = textFieldUsername.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where userName != "",
            let password = textFieldPassword.text where password != "" {
             ThreadHelper.runOnMainThread({ 

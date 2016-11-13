@@ -59,6 +59,9 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     }
     
     @IBAction func btnSave_Click(sender: AnyObject) {
+        if !self.isNetworkReachable(){
+            return
+        }
         self.setLoading(true)
         let user = self.getUser();
         AccountHandler.Instance.saveUser(user) { (success, errorMessage) in

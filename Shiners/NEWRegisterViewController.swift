@@ -118,6 +118,9 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
     }
     
     @objc private func register() {
+        if !self.isNetworkReachable(){
+            return
+        }
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
         if self.isFormValid() {
             //username

@@ -54,22 +54,38 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     //Create post
     @IBAction func createPost(sender: AnyObject) {
-        let callback: MeteorMethodCallback = { (success, errorId, errorMessage, result) in
-            if success{
-                AccountHandler.Instance.updateMyPosts()
-                ThreadHelper.runOnMainThread({
-                    self.view.endEditing(true)
-                    self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-                })
-            } else {
-                ThreadHelper.runOnMainThread({
-                    self.showAlert(NSLocalizedString("Error occurred", comment: "Alert, error occurred"), message: errorMessage)
-                })
-            }
+        if !self.isNetworkReachable(){
+            return
         }
-        
-        //Add post
-        ConnectionHandler.Instance.posts.addPost(post, currentCoordinates: self.currentLocationInfo?.coordinate, callback: callback)
+        self.doCreatePost()
+    }
+    
+    func doCreatePost(){
+        self.setLoading(true)
+        if ConnectionHandler.Instance.status == .Connected {
+            NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            let callback: MeteorMethodCallback = { (success, errorId, errorMessage, result) in
+                ThreadHelper.runOnMainThread({ 
+                    self.setLoading(false, rightBarButtonItem: self.createPost)
+                })
+                if success{
+                    AccountHandler.Instance.updateMyPosts()
+                    ThreadHelper.runOnMainThread({
+                        self.view.endEditing(true)
+                        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                    })
+                } else {
+                    ThreadHelper.runOnMainThread({
+                        self.showAlert(NSLocalizedString("Error occurred", comment: "Alert, error occurred"), message: errorMessage)
+                    })
+                }
+            }
+            
+            //Add post
+            ConnectionHandler.Instance.posts.addPost(post, currentCoordinates: self.currentLocationInfo?.coordinate, callback: callback)
+        } else {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(doCreatePost), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+        }
     }
     
     

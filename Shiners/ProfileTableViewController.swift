@@ -211,6 +211,9 @@ class ProfileTableViewController: UITableViewController {
     }
     
     func doLogout(){
+        if !self.isNetworkReachable(){
+            return
+        }
         if self.modalSpinner == nil {
             self.modalSpinner = self.displayModalAlert(NSLocalizedString("Logging out...", comment: "Alert title, logging out..."))
         }

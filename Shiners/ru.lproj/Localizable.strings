@@ -80,6 +80,10 @@
 
 "Looks like we crashed last time. Would you like to help developers and send crash report?" = "Судя по всему, прошлый раз что-то пошло не так и приложение закрылось. Не хотели бы вы помочь разработчиками и отправить детали ошибки?";
 
+"Looks like you are not connected to Internet. Please, check you Internet connection and try again." = "Похоже, что вы не подключены в Интернету. Пожалуйста, проверьте ваше соединение и попробуйте еще раз.";
+
+"Network Unreachable" = "Сеть недоступна";
+
 /* Everywhere */
 "Everywhere" = "Везде";
 
