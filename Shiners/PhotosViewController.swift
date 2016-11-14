@@ -113,6 +113,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                         let photo = Photo()
                         photo.original = imageUrl
                         self.post.photos!.append(photo)
+                        view.imageUrl = imageUrl
                     } else {
                         self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("Error uploading photo", comment: "Alert, error message uploading photo"));
                         self.deleteClicked(view)
@@ -198,6 +199,9 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     func deleteClicked(smallImageView: SmallImageView) {
         if let index = self.uploadingIds.indexOf(smallImageView.id!){
             self.uploadingIds.removeAtIndex(index)
+        }
+        if let imageUrl = smallImageView.imageUrl, index = self.post.photos!.indexOf({$0.original == imageUrl}) {
+            self.post.photos!.removeAtIndex(index)
         }
         
         UIView.animateWithDuration(0.3, animations: {
