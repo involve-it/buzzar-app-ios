@@ -64,7 +64,7 @@ class SettingsViewController: UIViewController {
     }
 
     func configNavigationToolBar() {
-        
+        self.navigationController?.tabBarController?.tabBar.translucent = true
         self.navigationController?.tabBarController?.tabBar.backgroundImage = UIImage.imageWithColor(UIColor.clearColor())
         let frost = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
         
