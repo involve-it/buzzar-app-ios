@@ -158,7 +158,7 @@ extension UIImage {
         var actualHeight = self.size.height
         var actualWidth = self.size.width
         let maxHeight = CGFloat(1024)
-        let maxWidth = CGFloat(768)
+        let maxWidth = CGFloat(1024)
         let actualRatio = actualWidth / actualHeight
         var ratio = maxWidth / maxHeight
         
@@ -185,6 +185,43 @@ extension UIImage {
         UIGraphicsEndImageContext()
         
         if let data = UIImageJPEGRepresentation(image, 0.7){
+            return UIImage(data: data)!
+        } else {
+            return image
+        }
+    }
+    
+    func resizeImage(maxWidth: Int, maxHeight: Int, quality: Float) -> UIImage {
+        var actualHeight = self.size.height
+        var actualWidth = self.size.width
+        let maxHeight = CGFloat(maxHeight)
+        let maxWidth = CGFloat(maxWidth)
+        let actualRatio = actualWidth / actualHeight
+        var ratio = maxWidth / maxHeight
+        
+        if actualHeight > maxHeight || actualWidth > maxWidth {
+            if actualRatio < ratio {
+                ratio = maxHeight / actualHeight
+                actualWidth = ratio * actualWidth
+                actualHeight = maxHeight
+            } else if actualRatio > ratio {
+                ratio = maxWidth / actualWidth
+                actualWidth = maxWidth
+                actualHeight = ratio * actualHeight
+            } else {
+                actualHeight = maxHeight
+                actualWidth = maxWidth
+            }
+        }
+        
+        let rect = CGRectMake(0, 0, actualWidth, actualHeight)
+        UIGraphicsBeginImageContext(rect.size)
+        self.drawInRect(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        
+        UIGraphicsEndImageContext()
+        
+        if let data = UIImageJPEGRepresentation(image, CGFloat(quality)){
             return UIImage(data: data)!
         } else {
             return image

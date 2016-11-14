@@ -18,12 +18,12 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     private var photos: [CustomPhoto] = []
     
     private var position = 0
-    private let pageControl: UIPageControl
+    private let pageControl: UIPageControl?
     private var imagesCount = 0
     
     let addPhotoTitle = NSLocalizedString("Photo", comment: "Title, Photo")
     
-    public init(mainView: UIView, scrollView: UIScrollView, viewController: UIViewController, pageControl: UIPageControl){
+    public init(mainView: UIView, scrollView: UIScrollView, viewController: UIViewController, pageControl: UIPageControl?){
         self.mainView = mainView;
         self.scrollView = scrollView;
         self.viewController = viewController
@@ -127,7 +127,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
         targetContentOffset.memory = CGPointMake(CGFloat(position) * mainView.frame.size.width, 0);
         
         //Change currentPosition - pageControl
-        self.pageControl.currentPage = position
+        self.pageControl?.currentPage = position
     }
     
     func scrollToPosition(position: Int){

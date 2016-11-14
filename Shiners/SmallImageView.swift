@@ -25,13 +25,16 @@ public class SmallImageView: UIView{
     
     var uploadTakingLongView: UploadTakingLongView?
     public var imageUrl: String?
+    public var image: UIImage!
+    
+    var uploadDelegate: ImageCachingHandler.UploadDelegate?
     
     public init (x: Float, y : Float, index:Int, delegate: SmallImageViewDelegate?, image: UIImage){
         //todo: fix different aspect ratios
         self.width = UIScreen.mainScreen().bounds.width - 16
         
         self.height = max(60, self.width * (image.size.height / image.size.width))
-        
+        self.image = image
         self.id = NSUUID().UUIDString
         self.index = index
         self.delegate = delegate
@@ -54,6 +57,7 @@ public class SmallImageView: UIView{
         //Indicator & coverView
         self.coverImageView.backgroundColor = UIColor(white: 0.1, alpha: 0.75)
         self.coverImageView.frame = CGRectMake(0, 0, self.frame.width, self.frame.height)
+        self.coverImageView.alpha = 0
         
         activityIndicator.center = imageView.center
         activityIndicator.activityIndicatorViewStyle = .White
@@ -99,10 +103,20 @@ public class SmallImageView: UIView{
         self.initControlButtons()
     }
     
+    public func hideLongUploadControls(){
+        UIView.animateWithDuration(0.3, animations: {
+            self.uploadTakingLongView?.alpha = 0
+        }) {(finished) in
+            self.uploadTakingLongView?.removeFromSuperview()
+            self.uploadTakingLongView = nil
+        }
+    }
+    
     public func displayLoading(loading: Bool){
         if loading {
-            self.coverImageView.alpha = 0
             self.imageView.addSubview(self.coverImageView)
+            //self.layer.removeAllAnimations()
+            UIView.setAnimationBeginsFromCurrentState(true)
             UIView.animateWithDuration(0.3, animations: { 
                 self.coverImageView.alpha = 1
                 }, completion: { (finished) in
@@ -113,13 +127,8 @@ public class SmallImageView: UIView{
         } else {
             UIView.animateWithDuration(0.3, animations: { 
                 self.coverImageView.alpha = 0
-                self.uploadTakingLongView?.alpha = 0
-                }, completion: { (finished) in
-                    self.coverImageView.removeFromSuperview()
-                    self.uploadTakingLongView?.removeFromSuperview()
-                    self.uploadTakingLongView = nil
-                    self.activityIndicator.stopAnimating()
             })
+            self.hideLongUploadControls()
         }
     }
     

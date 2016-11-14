@@ -7,9 +7,9 @@
 //
 
 import UIKit
+import NYTPhotoViewer
 
 class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SmallImageViewDelegate {
-
     @IBOutlet weak var lblNoImages: UILabel!
     @IBOutlet weak var svImages: UIScrollView!
     @IBOutlet var createPost: UIBarButtonItem!
@@ -24,6 +24,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     private var images = [UIImage]()
     
     var uploadingIds = [String]()
+    var retryingIds = [String]()
     
     var currentLocationInfo: GeocoderInfo?
     
@@ -36,6 +37,29 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
             self.post.photos = [Photo]()
         } else {
             self.showExistingPhotos()
+        }
+        
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(scrollViewTapped))
+        self.svImages.addGestureRecognizer(gestureRecognizer)
+    }
+    
+    func scrollViewTapped(gestureRecognizer: UIGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.Recognized && self.images.count > 0 {
+            let point = gestureRecognizer.locationInView(self.svImages)
+            var index = 0
+            var currentHeight:Float = 0
+            var imageIndex = 0
+            self.svImages.subviews.forEach({ (view) in
+                if let smallImageView = view as? SmallImageView {
+                    currentHeight += Float(smallImageView.height)
+                    if Float(point.y) < currentHeight {
+                        imageIndex = index
+                    }
+                    index += 1
+                }
+            })
+            
+            self.showPhotoViewer(imageIndex)
         }
     }
     
@@ -99,33 +123,47 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         let rotatedImage = image.correctlyOrientedImage().resizeImage()
         self.images.append(rotatedImage)
         let view = self.addImageToScrollView(rotatedImage, index: self.images.count - 1)
+        self.doUpload(view)
+        
+        picker.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func doUpload(view: SmallImageView){
         view.displayLoading(true)
         self.uploadingIds.append(view.id)
         
-        ImageCachingHandler.Instance.saveImage(rotatedImage) { (success, imageUrl) in
-            if let index = self.uploadingIds.indexOf(view.id){
-                ThreadHelper.runOnMainThread({
+        view.uploadDelegate = ImageCachingHandler.Instance.saveImage(view.image) { (success, imageUrl) in
+            ThreadHelper.runOnMainThread({
+                if let index = self.uploadingIds.indexOf(view.id){
                     //self.setLoading(false, rightBarButtonItem: self.cancelButton)
                     //self.btnSave.enabled = true
                     
-                    view.displayLoading(false)
                     if success {
+                        view.activityIndicator.stopAnimating()
+                        view.displayLoading(false)
                         let photo = Photo()
                         photo.original = imageUrl
                         self.post.photos!.append(photo)
                         view.imageUrl = imageUrl
+                        self.uploadingIds.removeAtIndex(index)
+                        if let retryIndex = self.retryingIds.indexOf(view.id){
+                            self.retryingIds.removeAtIndex(retryIndex)
+                        }
                     } else {
-                        self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("Error uploading photo", comment: "Alert, error message uploading photo"));
-                        self.deleteClicked(view)
+                        if self.retryingIds.indexOf(view.id) == nil {
+                            self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("Error uploading photo", comment: "Alert, error message uploading photo"));
+                            self.deleteClicked(view)
+                        }
                     }
                     
-                    self.uploadingIds.removeAtIndex(index)
                     self.updateCreateButton()
-                })
-            }
+                } else {
+                    let globalY = self.calculateImagesHeight(self.images.count - 1)
+                    self.svImages.contentSize = CGSizeMake(self.svImages.frame.size.width, CGFloat(globalY));
+                }
+            })
         }
-        
-        picker.dismissViewControllerAnimated(true, completion: nil)
+        NSTimer.scheduledTimerWithTimeInterval(5.0, target: self, selector: #selector(displayUploadingLongTime), userInfo: view, repeats: false)
     }
     
     func updateCreateButton(){
@@ -173,6 +211,12 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
     }*/
     
+    func displayUploadingLongTime(timer: NSTimer){
+        if let view = timer.userInfo as? SmallImageView where self.uploadingIds.indexOf(view.id) != nil {
+            view.initControlButtons()
+        }
+    }
+    
     func calculateImagesHeight(count: Int) -> Float {
         var height: Float = 8
         var i = 0
@@ -199,6 +243,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     func deleteClicked(smallImageView: SmallImageView) {
         if let index = self.uploadingIds.indexOf(smallImageView.id!){
             self.uploadingIds.removeAtIndex(index)
+            smallImageView.uploadDelegate?.abort()
         }
         if let imageUrl = smallImageView.imageUrl, index = self.post.photos!.indexOf({$0.original == imageUrl}) {
             self.post.photos!.removeAtIndex(index)
@@ -236,5 +281,38 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                 }
                 self.updateCreateButton()
             }
+    }
+    
+    func retryClicked(view: SmallImageView) {
+        if let index = self.uploadingIds.indexOf(view.id!){
+            self.uploadingIds.removeAtIndex(index)
+            self.retryingIds.append(view.id!)
+            view.uploadDelegate?.abort()
+            view.hideLongUploadControls()
+        }
+        self.doUpload(view)
+    }
+    
+    func uploadWithLowerQualityClicked(view: SmallImageView) {
+        if let index = self.uploadingIds.indexOf(view.id!){
+            self.uploadingIds.removeAtIndex(index)
+            self.retryingIds.append(view.id!)
+            view.uploadDelegate?.abort()
+            view.hideLongUploadControls()
+        }
+        view.image = view.image.resizeImage(320, maxHeight: 320, quality: 0.5)
+        self.doUpload(view)
+    }
+    
+    func showPhotoViewer(currentIndex: Int){
+        var photos = [CustomPhoto]()
+        var i = 0
+        self.images.forEach { (image) in
+            photos.append(CustomPhoto(image: image, attributedCaptionTitle: NSAttributedString(string: "\(i + 1)", attributes: [NSForegroundColorAttributeName: UIColor.whiteColor()])))
+            i += 1
+        }
+        let photosViewController = NYTPhotosViewController(photos: photos, initialPhoto: photos[currentIndex], delegate: nil)
+        photosViewController.rightBarButtonItem = nil
+        self.presentViewController(photosViewController, animated: true, completion: nil)
     }
 }
