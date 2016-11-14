@@ -19,6 +19,7 @@ public class ImageCachingHandler{
     private var images: Dictionary<String, ImageEntity> = [:]
     //private var imagesPendingUpload: Dictionary<NSURL, LocalImageEntity> = [:]
     private var failedUrls: [String] = []
+    private static let NON_RETRY_ERRORS = [NSURLErrorBadURL, NSURLErrorUnsupportedURL, NSURLErrorDataLengthExceedsMaximum, NSURLErrorUserAuthenticationRequired, NSURLErrorCannotDecodeContentData, NSURLErrorCannotParseResponse, NSURLErrorFileDoesNotExist];
     private let lockQueue = dispatch_queue_create("org.buzzar.app.Shiners.imageCachingHandler", nil);
     private static let MAX_COUNT = 50;
     public static let defaultPhoto = UIImage(named: "no-image-placeholder.jpg");
@@ -52,22 +53,22 @@ public class ImageCachingHandler{
         return image;
     }
     
-    public func saveImage(image: UIImage, callback: (success: Bool, imageUrl: String?) -> Void) -> Void{
-        ThreadHelper.runOnBackgroundThread {
-            if let imageEntity = self.saveImageToLocalStorage(image) {
-                self.uploadPhotoToAmazon(ImageCachingHandler.imagesDirectory.URLByAppendingPathComponent(imageEntity.filename), contentType: imageEntity.contentType!, callback: { (url) in
-                    if let _ = url{
-                        imageEntity.setUrl(url!)
-                        self.savedImages[url!] = imageEntity
-                        self.saveContentsFile()
-                        callback(success: true, imageUrl: url!)
-                    } else {
-                        callback(success: false, imageUrl: nil)
-                    }
-                })
-            } else {
-                callback(success: false, imageUrl: nil)
-            }
+    public func saveImage(image: UIImage, callback: (success: Bool, imageUrl: String?) -> Void) -> UploadDelegate?{
+        if let imageEntity = self.saveImageToLocalStorage(image) {
+            let request = self.uploadPhotoToAmazon(ImageCachingHandler.imagesDirectory.URLByAppendingPathComponent(imageEntity.filename), contentType: imageEntity.contentType!, callback: { (url) in
+                if let _ = url{
+                    imageEntity.setUrl(url!)
+                    self.savedImages[url!] = imageEntity
+                    self.saveContentsFile()
+                    callback(success: true, imageUrl: url!)
+                } else {
+                    callback(success: false, imageUrl: nil)
+                }
+            })
+            return UploadDelegate(uploadRequest: request)
+        } else {
+            callback(success: false, imageUrl: nil)
+            return nil
         }
     }
         
@@ -104,8 +105,12 @@ public class ImageCachingHandler{
                             callback(image: defaultImage);
                         }
                     } else {
-                        NSLog("Error: \(error)");
-                        self.failedUrls.append(url)
+                        if (error != nil){
+                            print("Error: \(error)");
+                            if let _ = ImageCachingHandler.NON_RETRY_ERRORS.indexOf(error!.code){
+                                self.failedUrls.append(url)
+                            }
+                        }
                         callback(image: defaultImage);
                     }
                 }.resume()
@@ -128,7 +133,7 @@ public class ImageCachingHandler{
         AWSServiceManager.defaultServiceManager().defaultServiceConfiguration = configuration;
     }
     
-    private func uploadPhotoToAmazon(url: NSURL, contentType: String, callback: (url: String?)->Void) {
+    private func uploadPhotoToAmazon(url: NSURL, contentType: String, callback: (url: String?) -> Void) -> AWSS3TransferManagerUploadRequest {
         // See https://www.codementor.io/tips/5748713276/how-to-upload-images-to-aws-s3-in-swift
         // Setup a new swift project in Xcode and run pod install. Then open the created Xcode workspace.
         // Once AWSS3 framework is ready, we need to configure the authentication:
@@ -167,6 +172,8 @@ public class ImageCachingHandler{
             }
             return nil
         }
+        
+        return uploadRequest
     }
 
     
@@ -361,6 +368,20 @@ public class ImageCachingHandler{
             self.timestamp = NSDate();
             self.id = id;
             self.image = image;
+        }
+    }
+    
+    public class UploadDelegate {
+        var id: String?
+        private var uploadRequest: AWSS3TransferManagerUploadRequest!
+        init(uploadRequest: AWSS3TransferManagerUploadRequest){
+            self.uploadRequest = uploadRequest
+        }
+        
+        func abort(){
+            if self.uploadRequest.state != .Completed{
+                self.uploadRequest.cancel()
+            }
         }
     }
 }

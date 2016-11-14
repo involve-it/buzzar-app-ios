@@ -124,6 +124,8 @@
 		7BC1A9C41D4C3D19005B4F62 /* KeyChainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC1A9C31D4C3D19005B4F62 /* KeyChainWrapper.swift */; };
 		7BC1A9C61D4C40B5005B4F62 /* SecurityHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC1A9C51D4C40B5005B4F62 /* SecurityHandler.swift */; };
 		7BC1A9C81D50469B005B4F62 /* FullMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC1A9C71D50469B005B4F62 /* FullMapViewController.swift */; };
+		7BF881D31DD93F20005E927E /* UploadTakingLongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF881D21DD93F20005E927E /* UploadTakingLongView.swift */; };
+		7BF881D51DD94431005E927E /* UploadTakingLongView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BF881D41DD94431005E927E /* UploadTakingLongView.xib */; };
 		7BFDC6761D9881B500DE66A6 /* PostsViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFDC6751D9881B500DE66A6 /* PostsViewControllerDelegate.swift */; };
 		7BFDC6781D99F4E400DE66A6 /* LocalNotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFDC6771D99F4E400DE66A6 /* LocalNotificationsHandler.swift */; };
 		7BFDC67C1D9B5AFB00DE66A6 /* CWStatusBarNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFDC67A1D9B5AFB00DE66A6 /* CWStatusBarNotification.swift */; };
@@ -261,6 +263,8 @@
 		7BC1A9C31D4C3D19005B4F62 /* KeyChainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChainWrapper.swift; sourceTree = "<group>"; };
 		7BC1A9C51D4C40B5005B4F62 /* SecurityHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecurityHandler.swift; sourceTree = "<group>"; };
 		7BC1A9C71D50469B005B4F62 /* FullMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullMapViewController.swift; sourceTree = "<group>"; };
+		7BF881D21DD93F20005E927E /* UploadTakingLongView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadTakingLongView.swift; sourceTree = "<group>"; };
+		7BF881D41DD94431005E927E /* UploadTakingLongView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadTakingLongView.xib; sourceTree = "<group>"; };
 		7BFDC6751D9881B500DE66A6 /* PostsViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewControllerDelegate.swift; sourceTree = "<group>"; };
 		7BFDC6771D99F4E400DE66A6 /* LocalNotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNotificationsHandler.swift; sourceTree = "<group>"; };
 		7BFDC67A1D9B5AFB00DE66A6 /* CWStatusBarNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWStatusBarNotification.swift; sourceTree = "<group>"; };
@@ -359,6 +363,8 @@
 				61C6F9061D3BED100030CC81 /* WhenPickDateViewController.swift */,
 				61EA5DA21D47559600083361 /* PhotosViewController.swift */,
 				6147E77C1DAA7A6B0014F7DD /* CreatePostTableViewController.swift */,
+				7BF881D21DD93F20005E927E /* UploadTakingLongView.swift */,
+				7BF881D41DD94431005E927E /* UploadTakingLongView.xib */,
 			);
 			name = wizard;
 			sourceTree = "<group>";
@@ -679,6 +685,7 @@
 				7BC0A23D1CCC164100DA2824 /* lock_open.png in Resources */,
 				7BC0A23E1CCC164100DA2824 /* lock_closed.png in Resources */,
 				61F960891D8021DB002FBAED /* Main.storyboard in Resources */,
+				7BF881D51DD94431005E927E /* UploadTakingLongView.xib in Resources */,
 				610671A71D5A0927007828BA /* CVCellNib.xib in Resources */,
 				613C6A481D633C8300744076 /* cellUserProfile.xib in Resources */,
 				7B26B1AB1CD6DE52000495EE /* cancel.png in Resources */,
@@ -828,6 +835,7 @@
 				7BFDC67D1D9B5AFB00DE66A6 /* CWStatusBarNotificationUtils.swift in Sources */,
 				61A089291D70602700CABB8D /* ChangePasswordTableViewController.swift in Sources */,
 				7B3565591CE922DE00012CA9 /* NavigationControllerBase.swift in Sources */,
+				7BF881D31DD93F20005E927E /* UploadTakingLongView.swift in Sources */,
 				6167D8271DD0EABC00A56864 /* loginCell.swift in Sources */,
 				7BC0A2321CCC160C00DA2824 /* PostsViewController.swift in Sources */,
 				613C6A4C1D645D5A00744076 /* SettingsProfileTableViewController.swift in Sources */,

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="16B2555" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="UploadTakingLongView" customModule="Shiners" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upload seems to be taking long time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k7i-mC-W4v">
+                    <rect key="frame" x="160" y="8" width="280" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ea9-DZ-GAZ">
+                    <rect key="frame" x="152" y="281" width="297" height="38"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dfS-SJ-DqY">
+                            <rect key="frame" x="0.0" y="0.0" width="64" height="38"/>
+                            <color key="backgroundColor" white="1" alpha="0.248459507" colorSpace="calibratedWhite"/>
+                            <inset key="contentEdgeInsets" minX="8" minY="10" maxX="8" maxY="10"/>
+                            <state key="normal" title="Cancel">
+                                <color key="titleColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WCf-Rp-OzK">
+                            <rect key="frame" x="76" y="0.0" width="53" height="38"/>
+                            <color key="backgroundColor" white="1" alpha="0.248459507" colorSpace="calibratedWhite"/>
+                            <inset key="contentEdgeInsets" minX="8" minY="10" maxX="8" maxY="10"/>
+                            <state key="normal" title="Retry">
+                                <color key="titleColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mxf-Ds-bVj">
+                            <rect key="frame" x="141" y="0.0" width="156" height="38"/>
+                            <color key="backgroundColor" white="1" alpha="0.248459507" colorSpace="calibratedWhite"/>
+                            <inset key="contentEdgeInsets" minX="8" minY="10" maxX="8" maxY="10"/>
+                            <state key="normal" title="Upload lower quality">
+                                <color key="titleColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                        </button>
+                    </subviews>
+                </stackView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We are still trying..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DVD-lo-dht">
+                    <rect key="frame" x="227" y="571" width="146" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="ea9-DZ-GAZ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="7b8-GL-arH"/>
+                <constraint firstAttribute="bottom" secondItem="DVD-lo-dht" secondAttribute="bottom" constant="8" id="RN6-a8-oSs"/>
+                <constraint firstItem="ea9-DZ-GAZ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="gfj-eT-eOz"/>
+                <constraint firstItem="k7i-mC-W4v" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="r5M-W6-r6j"/>
+                <constraint firstItem="k7i-mC-W4v" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="slc-Tg-A83"/>
+                <constraint firstItem="DVD-lo-dht" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="wUj-BW-PaN"/>
+            </constraints>
+            <connections>
+                <outlet property="btnCancel" destination="dfS-SJ-DqY" id="d8x-xa-kcX"/>
+                <outlet property="btnRetry" destination="WCf-Rp-OzK" id="PWb-t0-sMh"/>
+                <outlet property="btnUploadLowerQuality" destination="mxf-Ds-bVj" id="njG-2w-0Ta"/>
+                <outlet property="lblMessage" destination="k7i-mC-W4v" id="Ytr-Za-dXy"/>
+                <outlet property="swButtons" destination="ea9-DZ-GAZ" id="waW-Bb-wyI"/>
+            </connections>
+        </view>
+    </objects>
+</document>

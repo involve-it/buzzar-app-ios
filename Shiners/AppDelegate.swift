@@ -111,7 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let token = PushNotificationsHandler.saveToken(deviceToken)
         if AccountHandler.Instance.isLoggedIn(){
-            if ConnectionHandler.Instance.status == .Connected {
+            if ConnectionHandler.Instance.isConnected() {
                 self.savePushToken()
             } else {
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.savePushToken), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
@@ -148,6 +148,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
         } else {
             NotificationManager.sendNotification(NotificationManager.Name.NetworkUnreachable, object: nil)
         }
+    }
+    
+    func isNetworkReachable() -> Bool {
+        guard let reachability = self.reachability else {return true}
+        return reachability.isReachable()
     }
 
     func applicationWillResignActive(application: UIApplication) {

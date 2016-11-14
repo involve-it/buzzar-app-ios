@@ -18,6 +18,7 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var loginBtn: UIBarButtonItem!
     @IBOutlet weak var loginBtnCenter: UIButton!
     
+    @IBOutlet weak var btnForgotPassword: UIButton!
     //Team color
     let blueColorCustom = UIColor(netHex: 0x2E9AE2)
     
@@ -94,11 +95,23 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
         return false
     }
     
+    func enableFields(enable: Bool){
+        self.textFieldUsername.enabled = enable
+        self.textFieldPassword.enabled = enable
+        self.loginBtn.enabled = enable
+        self.loginBtnCenter.enabled = enable
+        self.btnForgotPassword.enabled = enable
+    }
+    
     func login(){
+        if !self.isNetworkReachable(){
+            return
+        }
         if let userName = textFieldUsername.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where userName != "",
            let password = textFieldPassword.text where password != "" {
             ThreadHelper.runOnMainThread({ 
                 self.setLoading(true)
+                self.enableFields(false)
             })
             if ConnectionHandler.Instance.status == .Connected {
                 NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
@@ -107,6 +120,7 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
                     if !success {
                         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
                         ThreadHelper.runOnMainThread({
+                            self.enableFields(true)
                             self.setLoading(false, rightBarButtonItem: self.loginBtn)
                             self.showAlert(self.txtTitleLogInFaild, message: errorMessage)
                         })

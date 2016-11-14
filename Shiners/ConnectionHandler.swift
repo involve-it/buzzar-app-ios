@@ -90,6 +90,14 @@ public class ConnectionHandler{
         }
     }
     
+    public func isConnected() -> Bool {
+        return self.status == .Connected && self.isNetworkReachable()
+    }
+    
+    public func isNetworkReachable() -> Bool {
+        return (UIApplication.sharedApplication().delegate as! AppDelegate).isNetworkReachable()
+    }
+    
     public func disconnect(){
         //todo: disconnect
         Meteor.connect("")

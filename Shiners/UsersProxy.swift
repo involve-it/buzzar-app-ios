@@ -104,6 +104,19 @@ public class UsersProxy{
         }
     }
     
+    public func resetPassword(email: String, callback: MeteorMethodCallback){
+        var dict = Dictionary<String, AnyObject>()
+        dict["email"] = email
+        Meteor.call("forgotPassword", params: [dict]) { (result, error) in
+            if (error == nil){
+                //let errorId = ResponseHelper.getErrorId(result)
+                callback(success: true, errorId: nil, errorMessage: nil, result: nil)
+            } else {
+                callback(success: false, errorId: nil, errorMessage: error?.reason, result: nil)
+            }
+        }
+    }
+    
     public func login(userName: String, password: String, callback: MeteorMethodCallback){
         Meteor.loginWithUsername(userName, password: password){ result, error in
             if (error == nil){

@@ -332,19 +332,38 @@ public class DialogViewController : JSQMessagesViewController{
     
     public override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
         if text != "" {
+            if !self.isNetworkReachable(){
+                return
+            }
+            self.setLoading(true)
+            button.enabled = false
+            
+            
+            self.doSendMessge()
+        }
+    }
+    
+    func doSendMessge() {
+        if ConnectionHandler.Instance.status == .Connected {
+            NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
             let message = MessageToSend()
             message.destinationUserId = self.chat.otherParty?.id
-            message.message = text
+            message.message = self.inputToolbar.contentView.textView.text
             
             ConnectionHandler.Instance.messages.sendMessage(message){ success, errorId, errorMessage, result in
-                if !success {
-                    ThreadHelper.runOnMainThread({ 
+                ThreadHelper.runOnMainThread({
+                    self.setLoading(false)
+                    self.inputToolbar.contentView.rightBarButtonItem.enabled = true
+                    
+                    if success {
+                        self.finishSendingMessage()
+                    } else {
                         self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
-                    })
-                }
-            };
-            
-            self.finishSendingMessage()
+                    }
+                })
+            }
+        } else {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(doSendMessge), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
         }
     }
 }

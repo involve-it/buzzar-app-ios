@@ -51,4 +51,13 @@ public extension UIViewController{
         
         return pending
     }
+    
+    func isNetworkReachable() -> Bool {
+        if !ConnectionHandler.Instance.isConnected(){
+            self.showAlert(NSLocalizedString("Network Unreachable", comment: "Alert title, Network Unreachable"), message: NSLocalizedString("Looks like you are not connected to Internet. Please, check you Internet connection and try again.", comment: "Alert message, Looks like you are not connected to Internet. Please, check you Internet connection and try again."))
+            return false
+        }
+        return true
+    }
+    
 }
