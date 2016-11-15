@@ -37,6 +37,12 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     let txtBioPlaceholderText = NSLocalizedString("Bio (optional)", comment: "Placeholder, Bio (optional)")
     let txtPlaceHolderColor = UIColor.lightGrayColor()
     
+    var uploadDelegate: ImageCachingHandler.UploadDelegate?
+    var uploadAlertController: UIAlertController?
+    var aborting = false
+    var tryingLowerQuality = false
+    var previousImage: UIImage?
+    var lastRequestId: String!
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -178,23 +184,65 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     
     public func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         picker.dismissViewControllerAnimated(true, completion: nil)
-        self.setLoading(true)
+        
         let rotatedImage = image.correctlyOrientedImage().resizeImage()
-        let currentImage = self.imgUserAvatar.image
+        self.previousImage = self.imgUserAvatar.image
         self.imgUserAvatar.image = rotatedImage
+        self.tryingLowerQuality = false
+        self.doUpload()
+        self.aborting = false
+    }
+    
+    func doUpload(){
+        self.setLoading(true)
         self.cancelButton.enabled = false
-        ImageCachingHandler.Instance.saveImage(rotatedImage) { (success, imageUrl) in
+        let lastRequestId = NSUUID().UUIDString
+        self.lastRequestId = lastRequestId
+        self.aborting = false
+        self.uploadDelegate = ImageCachingHandler.Instance.saveImage(self.imgUserAvatar.image!) { (success, imageUrl) in
             ThreadHelper.runOnMainThread({
-                self.setLoading(false, rightBarButtonItem: self.btnSave)
-                self.cancelButton.enabled = true
-                if success {
-                    self.currentUser?.imageUrl = imageUrl
-                } else {
-                    self.imgUserAvatar.image = currentImage
-                    self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: NSLocalizedString("Error uploading photo", comment: "Alert message, Error uploading photo"))
+                if self.lastRequestId == lastRequestId {
+                    self.setLoading(false, rightBarButtonItem: self.btnSave)
+                    self.cancelButton.enabled = true
+                    self.uploadAlertController?.dismissViewControllerAnimated(true, completion: nil)
+                    if success {
+                        self.currentUser?.imageUrl = imageUrl
+                        self.previousImage = nil
+                    } else  {
+                        self.imgUserAvatar.image = self.previousImage
+                        self.previousImage = nil
+                        if !self.aborting{
+                            self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: NSLocalizedString("Error uploading photo", comment: "Alert message, Error uploading photo"))
+                        }
+                    }
                 }
             })
         }
+        
+        NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: #selector(displayUploadingLongTime), userInfo: nil, repeats: false)
+    }
+    
+    func displayUploadingLongTime(timer: NSTimer){
+        self.uploadAlertController = UIAlertController(title: NSLocalizedString("Uploading photo...", comment: "Alert title, Uploading photo"), message: NSLocalizedString("Looks like upload is taking longer then usual. We are still trying to upload, but if you wish, you may continue waiting, cancel, retry and attempt to upload image with lower quality.", comment: "Alert message, Looks like upload is taking longer then usual. We are still trying to upload, but if you wish, you may continue waiting, cancel, retry and attempt to upload image with lower quality."), preferredStyle: .Alert)
+        self.uploadAlertController?.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action) in
+            self.aborting = true
+            self.uploadDelegate?.abort()
+        }))
+        self.uploadAlertController?.addAction(UIAlertAction(title: "Retry", style: .Default, handler: { (action) in
+            self.aborting = true
+            self.uploadDelegate?.abort()
+            self.doUpload()
+        }))
+        if !self.tryingLowerQuality {
+            self.uploadAlertController?.addAction(UIAlertAction(title: "Try lower quality", style: .Default, handler: { (action) in
+                self.aborting = true
+                self.tryingLowerQuality = true
+                self.uploadDelegate?.abort()
+                self.imgUserAvatar.image = self.imgUserAvatar.image?.resizeImage(320, maxHeight: 320, quality: 0.5)
+                self.doUpload()
+            }))
+        }
+        self.presentViewController(self.uploadAlertController!, animated: true, completion: nil)
     }
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {

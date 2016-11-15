@@ -33,11 +33,11 @@ public extension UIViewController{
         
     }
     
-    func displayModalAlert(title: String) -> UIAlertController{
+    func displayModalAlert(title: String, message: String? = nil) -> UIAlertController{
         let pending = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
         
         //create an activity indicator
-        //let indicator = UIActivityIndicatorView(frame: CGRectMake(50, 50, 37, 37))
+        //let indicator = UIActivityIndicatorView(frame: CGRectMake(-12, 22, 37, 37))
         //indicator.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         //indicator.activityIndicatorViewStyle = .Gray
         //add the activity indicator as a subview of the alert controller's view

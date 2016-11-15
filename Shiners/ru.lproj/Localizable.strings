@@ -274,3 +274,6 @@
 /* Post info, post closed */
 "post closed" = "Пост закрыт";
 
+"Uploading photo..." = "Загружаем фото...";
+
+"Looks like upload is taking longer then usual. We are still trying to upload, but if you wish, you may continue waiting, cancel, retry and attempt to upload image with lower quality." = "Похоже, что загрузка фотографии занимает дольше, чем обычно. Мы все продолжаем пытаться загрузить, а вы можете подождать еще, отменить, попробовать еще раз или использовать фото с меньшим качеством.";

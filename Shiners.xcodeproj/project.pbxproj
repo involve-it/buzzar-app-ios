@@ -265,6 +265,7 @@
 		7BC1A9C71D50469B005B4F62 /* FullMapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullMapViewController.swift; sourceTree = "<group>"; };
 		7BF881D21DD93F20005E927E /* UploadTakingLongView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadTakingLongView.swift; sourceTree = "<group>"; };
 		7BF881D41DD94431005E927E /* UploadTakingLongView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadTakingLongView.xib; sourceTree = "<group>"; };
+		7BF881D61DDAC3B0005E927E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7BFDC6751D9881B500DE66A6 /* PostsViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewControllerDelegate.swift; sourceTree = "<group>"; };
 		7BFDC6771D99F4E400DE66A6 /* LocalNotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNotificationsHandler.swift; sourceTree = "<group>"; };
 		7BFDC67A1D9B5AFB00DE66A6 /* CWStatusBarNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWStatusBarNotification.swift; sourceTree = "<group>"; };
@@ -868,6 +869,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				612736981DC8CF93009EDBD6 /* ru */,
+				7BF881D61DDAC3B0005E927E /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
