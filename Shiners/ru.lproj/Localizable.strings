@@ -1,11 +1,31 @@
 /* Title, About Me */
 "About Me" = "Обо мне";
 
+/* Location, Acquiring location... */
+"Acquiring location..." = "Получаем местоположение...";
+
 /* Location, Address is not defined */
 "Address is not defined" = "Адрес не найден";
 
+/* No comment provided by engineer. */
+"After finding the right post contact its owner to meet him immediately!" = "Найдя нужный живой пост рядом, напиши его владельцу и договорись о встрече прямо здесь и сейчас!";
+
+/* Alert message, An error occurred */
+"An error occurred" = "Произошла ошибка";
+
+/* Alert error, An error occurred getting your current location
+   Error getting current location */
+"An error occurred getting your current location" = "Произошла ошибка при попытке получить ваше местоположение";
+
+/* Alert message, An error occurred while saving.
+   Title message, an error occurred while saving. */
+"An error occurred while saving." = "Произошла ошибка при сохранении";
+
 /* Alert title, Are you sure? */
 "Are you sure?" = "Вы уверены?";
+
+/* Connection Connecting, Attempting to recover broken connection... */
+"Attempting to recover broken connection..." = "Пытаемся восстановить соединение...";
 
 /* Alert title, Camera */
 "Camera" = "Камера";
@@ -14,19 +34,21 @@
 "Can't find any posts matching your search criteria" = "По вашему запросу ничего не найдено";
 
 /* Alert title, Cancel
-   Alert, title, Cancel */
+   Alert, title, Cancel
+   Button, Cancel */
 "Cancel" = "Отменить";
 
-"Retry" = "Повторить";
-
-"Try lower quality" = "Ухудшить качество";
-
-"Upload seems to be taking long time" = "Загрузка длится дольше обычного";
-
-"We are still trying..." = "Загрузка продолжается...";
+/* Cellular */
+"Cellular" = "Сотовый";
 
 /* Alert title, Choose Image */
 "Choose Image" = "Выберите изображение";
+
+/* Alert title, Cancel */
+"Close" = "Закрыть";
+
+/* No comment provided by engineer. */
+"Connect and meet" = "Договаривайся / встречайся";
 
 /* Label text, Connected */
 "Connected" = "Соединение установлено";
@@ -37,8 +59,17 @@
 /* Connection Broken, Connection to server lost. Working offline. */
 "Connection to server lost. Working offline." = "Соединение с сервором оборвано. Продолжаю работать оффлайн.";
 
+/* Title contact us */
+"Contact us" = "Связаться с нами";
+
+/* No comment provided by engineer. */
+"Create your post" = "Создай свое объявление";
+
 /* Title, Delete */
 "Delete" = "Удалить";
+
+/* Delete Messages */
+"Delete Messages" = "Удалить сообщения";
 
 /* Delete Posts */
 "Delete Posts" = "Удалить посты";
@@ -52,9 +83,14 @@
 /* Post status, Dynamic */
 "Dynamic" = "Динамический";
 
+/* Alert message, email address cannot be empty */
+"Email address is not valid" = "Адрес электронной почты не верен";
+
 /* Alert error, Error
+   Alert title, error
    Alert title, Error
-   Alert, Error */
+   Alert, Error
+   Title error */
 "Error" = "Ошибка";
 
 /* Alert message, Error logginig in to Facebook */
@@ -73,29 +109,6 @@
    Alert, error message uploading photo */
 "Error uploading photo" = "Ошибка добавления фото";
 
-/* Alert message, Password cannot be empty */
-"Password cannot be empty" = "Пароль не может быть пустой строкой";
-
-"Password and confirmation are not equal" = "Пароль и подтверждение пароля не совпадают";
-
-"Username cannot be empty" = "Имя пользователя не может быть пустой строкой";
-
-"Email address is not valid" = "Адрес электронной почты не верен";
-
-"Please fill in both, username and password" = "Оба поля - имя пользователя и пароль - обязательны для ввода";
-
-"Oops" = "Просим прощения";
-
-"Looks like we crashed last time. Would you like to help developers and send crash report?" = "Судя по всему, прошлый раз что-то пошло не так и приложение закрылось. Не хотели бы вы помочь разработчиками и отправить детали ошибки?";
-
-"Looks like you are not connected to Internet. Please, check you Internet connection and try again." = "Похоже, что вы не подключены в Интернету. Пожалуйста, проверьте ваше соединение и попробуйте еще раз.";
-
-"Network Unreachable" = "Сеть недоступна";
-
-"Password reset" = "Переустановить пароль";
-
-"If you entered correct email address that exists in our system, you should receive an email with password reset instructions within few minutes." = "Если вы ввели адрес электронной почты, который существует у нас в системе, вы получите электронное письмо с инструкциями, как переустановить пароль, в течение нескольких минут.";
-
 /* Everywhere */
 "Everywhere" = "Везде";
 
@@ -105,19 +118,38 @@
 /* Alert title, Facebook Login */
 "Facebook Login" = "Войти через Facebook";
 
+/* No comment provided by engineer. */
+"Find and get found" = "Ты находишь / тебя находят";
+
 /* Title, Hide */
 "Hide" = "Скрыть";
+
+/* Internal error occurred */
+"Internal error occurred" = "Произошла ошибка";
+
+/* No comment provided by engineer. */
+"It will move with you, showing your availability to people around you" = "Оно будет перемещаться вместе с тобой, как твоя виртуальная визитка, которую могут увидеть люди вокруг";
 
 /* Text, Location is hidden */
 "Location is hidden" = "Местоположение скрыто";
 
+/* Log in */
+"Log in" = "Войти";
+
 /* Alert title, Log in failed */
-"Log in failed" = "Ошибка авторизации";
+"Log in failed" = "Ошибка входа";
 
 /* Alert title, Log out */
 "Log out" = "Выйти";
 
+/* Alert title, logging out... */
 "Logging out..." = "Выполняем выход...";
+
+/* Alert message, Looks like we crashed last time. Would you like to help developers and send crash report? */
+"Looks like we crashed last time. Would you like to help developers and send crash report?" = "Судя по всему, прошлый раз что-то пошло не так и приложение закрылось. Не хотели бы вы помочь разработчиками и отправить детали ошибки?";
+
+/* Alert message, Looks like you are not connected to Internet. Please, check you Internet connection and try again. */
+"Looks like you are not connected to Internet. Please, check you Internet connection and try again." = "Похоже, что вы не подключены в Интернету. Пожалуйста, проверьте ваше соединение и попробуйте еще раз.";
 
 /* Placeholder, Message */
 "Message" = "Сообщение";
@@ -128,8 +160,14 @@
 /* NavigationBar Item, Messages */
 "Messages((count))" = "Сообщения";
 
+/* Alert title, Network Unreachable */
+"Network Unreachable" = "Сеть недоступна";
+
 /* Alert title, New message */
 "New message" = "Новое сообщение";
+
+/* Log in page, button Next */
+"Next" = "Далее";
 
 /* No Connection */
 "No Connection" = "Нет связи";
@@ -140,8 +178,20 @@
 /* Ok */
 "Ok" = "Ок";
 
+/* Alert title, Oops */
+"Oops" = "Просим прощения";
+
 /* Placeholder, Description (optional) */
 "Optional: Provide more details" = "Детали (не обязательное)";
+
+/* Alert message, password and confirmation are not equal */
+"Password and confirmation are not equal" = "Пароль и подтверждение пароля не совпадают";
+
+/* Alert message, password cannot be empty */
+"Password cannot be empty" = "Пароль не может быть пустой строкой";
+
+/* Alert title, password reset */
+"Password reset" = "Переустановить пароль";
 
 /* Alert title, Permissions */
 "Permissions" = "Доступ";
@@ -159,11 +209,20 @@
    Please allow location services in settings */
 "Please allow location services in settings" = "Пожалуйста, включите доступ к локации в настройках вашего устройства";
 
+/* Please fill in all the fields */
+"Please fill in all the fields" = "Пожалуйста, заполните все поля";
+
+/* Alert message, please fill in both, username and password */
+"Please fill in both, username and password" = "Оба поля - имя пользователя и пароль - обязательны для ввода";
+
 /* Button title, Register */
 "Register" = "Регистрация";
 
 /* Alert title, registration error */
 "Registration error" = "Ошибка";
+
+/* Button, Retry */
+"Retry" = "Повторить";
 
 /* Search placeholder, Search posts */
 "Search posts" = "Найти посты";
@@ -171,11 +230,20 @@
 /* Alert title, Send */
 "Send" = "Отправить";
 
+/* Navigation title, Settings */
+"Settings" = "Настройки";
+
 /* Title, Show */
 "Show" = "Показать";
 
+/* Log in page, button Skip */
+"Skip" = "Пропустить";
+
 /* Post status, Static */
 "Static" = "Статический";
+
+/* Alert title, Yes */
+"Sure!" = "Конечно!";
 
 /* There are no posts around you */
 "There are no posts around you" = "Вокруг вас постов нет";
@@ -185,41 +253,24 @@
                     \"разрешить отправку уведомлений\"
                 ";
 
+/* Button, Try lower quality */
+"Try lower quality" = "Ухудшить качество";
+
+/* Message, Upload seems to be taking long time */
+"Upload seems to be taking long time" = "Загрузка длится дольше обычного";
+
+/* No comment provided by engineer. */
+"Use Shiners to search live ads from people around or let them find your live post" = "Используй светлячки для поиска живых объявлений от людей, которые находятся рядом с тобой";
+
+/* Alert message, username cannot be empty */
+"Username cannot be empty" = "Имя пользователя не может быть пустой строкой";
+
+/* Alert title, Validation failed */
+"Validation failed" = "Проверьте все поля формы";
+
+/* Message, We are still trying */
+"We are still trying..." = "Загрузка продолжается...";
+
 /* Post info, post closed */
 "post closed" = "Пост закрыт";
 
-/*Contact us", comment: "Title contact us"*/
-"Contact us" = "Связаться с нами";
-
-/* Profile navigationTitile Settings */
-"Settings" = "Настройки";
-
-/* Log in page, button Next */
-"Next" = "Далее";
-
-/* Log in page, button Skip */
-"Skip" = "Пропустить";
-
-/* firstPageTitle */
-"Create your post" = "Создай свое объявление";
-
-/* secondPageTitle */
-"Find and get found" = "Ты находишь / тебя находят";
-
-/* thirdPageTitle */
-"Connect and meet" = "Договаривайся / встречайся";
-
-/* firstPageMessage */
-"It will move with you, showing your availability to people around you" = "Оно будет перемещаться вместе с тобой, как твоя виртуальная визитка, которую могут увидеть люди вокруг";
-
-/* secondPageMessage */
-"Use Shiners to search live ads from people around or let them find your live post" = "Используй светлячки для поиска живых объявлений от людей, которые находятся рядом с тобой";
-
-/* thirdPageMessage */
-"After finding the right post contact its owner to meet him immediately!" = "Найдя нужный живой пост рядом, напиши его владельцу и договорись о встрече прямо здесь и сейчас!";
-
-/* Alert title, Log in failed */
-"Log in failed" = "Ошибка входа";
-
-/* Log in */
-"Log in" = "Войти";

@@ -93,7 +93,7 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
         }
         
         //todo: add validation messages
-        self.showAlert(NSLocalizedString("Validation failed", comment: "Alert title, Validation failed"), message: NSLocalizedString("Form validation valied", comment: "Alert message, Form validation valied"))
+        self.showAlert(NSLocalizedString("Validation failed", comment: "Alert title, Validation failed"), message: NSLocalizedString("Form validation failed", comment: "Alert message, Form validation failed"))
     }
     
     public func textFieldShouldReturn(textField: UITextField) -> Bool {
