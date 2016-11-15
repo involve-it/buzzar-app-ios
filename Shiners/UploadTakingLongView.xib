@@ -65,6 +65,7 @@
                 <outlet property="btnCancel" destination="dfS-SJ-DqY" id="d8x-xa-kcX"/>
                 <outlet property="btnRetry" destination="WCf-Rp-OzK" id="PWb-t0-sMh"/>
                 <outlet property="btnUploadLowerQuality" destination="mxf-Ds-bVj" id="njG-2w-0Ta"/>
+                <outlet property="lblBottomMessage" destination="DVD-lo-dht" id="mwK-Qa-3Mi"/>
                 <outlet property="lblMessage" destination="k7i-mC-W4v" id="Ytr-Za-dXy"/>
                 <outlet property="swButtons" destination="ea9-DZ-GAZ" id="waW-Bb-wyI"/>
             </connections>

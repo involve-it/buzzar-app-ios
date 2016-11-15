@@ -17,6 +17,14 @@
    Alert, title, Cancel */
 "Cancel" = "Отменить";
 
+"Retry" = "Повторить";
+
+"Try lower quality" = "Ухудшить качество";
+
+"Upload seems to be taking long time" = "Загрузка длится дольше обычного";
+
+"We are still trying..." = "Загрузка продолжается...";
+
 /* Alert title, Choose Image */
 "Choose Image" = "Выберите изображение";
 
