@@ -16,8 +16,8 @@
                     <color key="textColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ea9-DZ-GAZ">
-                    <rect key="frame" x="152" y="281" width="297" height="38"/>
+                <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ea9-DZ-GAZ">
+                    <rect key="frame" x="152" y="281" width="270" height="38"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dfS-SJ-DqY">
                             <rect key="frame" x="0.0" y="0.0" width="64" height="38"/>
@@ -35,11 +35,11 @@
                                 <color key="titleColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mxf-Ds-bVj">
-                            <rect key="frame" x="141" y="0.0" width="156" height="38"/>
+                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mxf-Ds-bVj">
+                            <rect key="frame" x="141" y="0.0" width="129" height="38"/>
                             <color key="backgroundColor" white="1" alpha="0.248459507" colorSpace="calibratedWhite"/>
                             <inset key="contentEdgeInsets" minX="8" minY="10" maxX="8" maxY="10"/>
-                            <state key="normal" title="Upload lower quality">
+                            <state key="normal" title="Try lower quality">
                                 <color key="titleColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                         </button>

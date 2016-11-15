@@ -26,6 +26,7 @@ public class SmallImageView: UIView{
     var uploadTakingLongView: UploadTakingLongView?
     public var imageUrl: String?
     public var image: UIImage!
+    public var isLowerQualityUpload = false
     
     var uploadDelegate: ImageCachingHandler.UploadDelegate?
     
@@ -33,7 +34,7 @@ public class SmallImageView: UIView{
         //todo: fix different aspect ratios
         self.width = UIScreen.mainScreen().bounds.width - 16
         
-        self.height = max(60, self.width * (image.size.height / image.size.width))
+        self.height = max(self.width / 2 - 10, self.width * (image.size.height / image.size.width))
         self.image = image
         self.id = NSUUID().UUIDString
         self.index = index
@@ -43,7 +44,7 @@ public class SmallImageView: UIView{
         super.init(frame: CGRectMake(CGFloat(x), CGFloat(y), self.width + 20, self.height + 10))
         self.clipsToBounds = true
         
-        let imageView = UIImageView(frame: CGRectMake(0, 10, self.width, self.height))
+        let imageView = UIImageView(frame: CGRectMake(0, 8, self.width, self.height))
         imageView.contentMode = .ScaleAspectFill
         
         imageView.layer.cornerRadius = CGFloat(4)
@@ -84,7 +85,11 @@ public class SmallImageView: UIView{
         uploadTakingLongView.setupSubviews()
         uploadTakingLongView.btnCancel.addTarget(self, action: #selector(btnDelete_Click), forControlEvents: .TouchUpInside)
         uploadTakingLongView.btnRetry.addTarget(self, action: #selector(btnRetry_Click), forControlEvents: .TouchUpInside)
-        uploadTakingLongView.btnUploadLowerQuality.addTarget(self, action: #selector(btnUploadWithLowerQuality_Click), forControlEvents: .TouchUpInside)
+        if self.isLowerQualityUpload {
+            uploadTakingLongView.btnUploadLowerQuality.removeFromSuperview()
+        } else {
+            uploadTakingLongView.btnUploadLowerQuality.addTarget(self, action: #selector(btnUploadWithLowerQuality_Click), forControlEvents: .TouchUpInside)
+        }
             //UploadTakingLongView(frame: self.coverImageView.frame)
         uploadTakingLongView.alpha = 0
         
@@ -95,7 +100,7 @@ public class SmallImageView: UIView{
         
         UIView.animateWithDuration(0.3, animations: {
             uploadTakingLongView.alpha = 1
-            self.activityIndicator.center = CGPointMake(self.activityIndicator.center.x, 70)
+            self.activityIndicator.center = CGPointMake(self.activityIndicator.center.x, CGFloat(self.height) / 4 + 8)
         })
     }
     
@@ -119,6 +124,7 @@ public class SmallImageView: UIView{
             UIView.setAnimationBeginsFromCurrentState(true)
             UIView.animateWithDuration(0.3, animations: { 
                 self.coverImageView.alpha = 1
+                self.activityIndicator.center = self.imageView.center
                 }, completion: { (finished) in
                     //temp
                     //self.initControlButtons()

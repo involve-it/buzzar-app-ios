@@ -59,8 +59,9 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                     index += 1
                 }
             }
-            
-            self.showPhotoViewer(index)
+            if index < self.images.count {
+                self.showPhotoViewer(index)
+            }
         }
     }
     
@@ -295,14 +296,17 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func uploadWithLowerQualityClicked(view: SmallImageView) {
-        if let index = self.uploadingIds.indexOf(view.id!){
-            self.uploadingIds.removeAtIndex(index)
-            self.retryingIds.append(view.id!)
-            view.uploadDelegate?.abort()
-            view.hideLongUploadControls()
+        if !view.isLowerQualityUpload {
+            view.isLowerQualityUpload = true
+            if let index = self.uploadingIds.indexOf(view.id!){
+                self.uploadingIds.removeAtIndex(index)
+                self.retryingIds.append(view.id!)
+                view.uploadDelegate?.abort()
+                view.hideLongUploadControls()
+            }
+            view.image = view.image.resizeImage(320, maxHeight: 320, quality: 0.5)
+            self.doUpload(view)
         }
-        view.image = view.image.resizeImage(320, maxHeight: 320, quality: 0.5)
-        self.doUpload(view)
     }
     
     func showPhotoViewer(currentIndex: Int){
