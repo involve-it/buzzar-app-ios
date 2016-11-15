@@ -48,18 +48,19 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
             let point = gestureRecognizer.locationInView(self.svImages)
             var index = 0
             var currentHeight:Float = 0
-            var imageIndex = 0
-            self.svImages.subviews.forEach({ (view) in
+            
+            for view in self.svImages.subviews {
                 if let smallImageView = view as? SmallImageView {
                     currentHeight += Float(smallImageView.height)
                     if Float(point.y) < currentHeight {
-                        imageIndex = index
+                        break
                     }
+                    
                     index += 1
                 }
-            })
+            }
             
-            self.showPhotoViewer(imageIndex)
+            self.showPhotoViewer(index)
         }
     }
     
