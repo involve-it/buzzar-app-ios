@@ -47,6 +47,7 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     }
     
     @IBAction func closeCreatePostForm(sender: UIBarButtonItem) {
+        AppAnalytics.logEvent(.NewPostWizard_TitleStep_BtnCancel_Click)
         dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -187,6 +188,7 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "chooseLocation" {
+            AppAnalytics.logEvent(.NewPostWizard_BtnNext_Click)
             if let destination = segue.destinationViewController as? WhereViewController{
                 //В свойство объекта title помещаем строку из titleNewPost
                 post.title = titleNewPost.text
@@ -203,20 +205,4 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
             }
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
 }

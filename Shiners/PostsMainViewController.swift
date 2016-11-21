@@ -394,9 +394,15 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         self.currentViewController!.view.removeFromSuperview()
         self.currentViewController!.removeFromParentViewController()
         loadCurrentViewController(sender.selectedSegmentIndex)
+        if sender.selectedSegmentIndex == 0{
+            AppAnalytics.logEvent(.NearbyPostsScreen_ListTabActive)
+        } else {
+            AppAnalytics.logEvent(.NearbyPostsScreen_MapTabActive)
+        }
     }
     
     @IBAction func btnSearch_Click(sender: AnyObject) {
+        AppAnalytics.logEvent(.NearbyPostsScreen_BtnSearch_Click)
         self.filtering = true
         if (self.typeSwitch.selectedSegmentIndex != 0){
             self.typeSwitch.selectedSegmentIndex = 0
@@ -419,6 +425,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        AppAnalytics.logEvent(.NearbyPostsScreen_Search_BtnCancel_Click)
         self.filtering =  false
         self.listViewController.updateFiltering(false)
         self.navigationItem.setRightBarButtonItem(self.btnSearch, animated: true)
@@ -440,6 +447,12 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
             self.posts = self.allPosts
         }
         self.listViewController.tableView.reloadData()
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "nearbyPosts_CreatePost"{
+            AppAnalytics.logEvent(.NearbyPostsScreen_BtnNewPost_Click)
+        }
     }
     
     /*

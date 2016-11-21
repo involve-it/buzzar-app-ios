@@ -209,10 +209,12 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
 
     
     @IBAction func btnRegister_Click(sender: AnyObject) {
+        AppAnalytics.logEvent(.RegisterScreen_BtnRegister_Click)
         self.register()
     }
     
     @IBAction func btn_Cancel(sender: UIBarButtonItem) {
+        AppAnalytics.logEvent(.RegisterScreen_BtnCancel_Click)
         //self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
         self.dismissViewControllerAnimated(true, completion: nil)
     }

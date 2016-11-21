@@ -43,6 +43,7 @@ class WhenPickDateViewController: UIViewController {
     
     
     func datePickerChanged(sender: UIDatePicker) {
+        AppAnalytics.logEvent(.NewPostWizard_WhenStep_Spinner_Modified)
         let formatter = NSDateFormatter()
         formatter.dateStyle = .LongStyle
         
@@ -61,6 +62,7 @@ class WhenPickDateViewController: UIViewController {
     
     //btn action
     @IBAction func pickOneDay(sender: AnyObject) {
+        AppAnalytics.logEvent(.NewPostWizard_WhenStep_Preset_Click)
         let dayToAdd = 1
         
         //Текущая дата
@@ -86,6 +88,7 @@ class WhenPickDateViewController: UIViewController {
     
     
     @IBAction func pickTwoDays(sender: AnyObject) {
+        AppAnalytics.logEvent(.NewPostWizard_WhenStep_Preset_Click)
         let daysToAdd = 2
         
         //Текущая дата
@@ -111,6 +114,7 @@ class WhenPickDateViewController: UIViewController {
     
     
     @IBAction func pickOneWeek(sender: AnyObject) {
+        AppAnalytics.logEvent(.NewPostWizard_WhenStep_Preset_Click)
         let daysToAdd = 7
         
         //Текущая дата
@@ -136,6 +140,7 @@ class WhenPickDateViewController: UIViewController {
     
     
     @IBAction func pickTwoWeek(sender: AnyObject) {
+        AppAnalytics.logEvent(.NewPostWizard_WhenStep_Preset_Click)
         let daysToAdd = 14
         
         //Текущая дата
@@ -161,6 +166,7 @@ class WhenPickDateViewController: UIViewController {
     
     
     @IBAction func pickOneMonth(sender: AnyObject) {
+        AppAnalytics.logEvent(.NewPostWizard_WhenStep_Preset_Click)
         let monthToAdd = 1
         
         //Текущая дата
@@ -186,6 +192,7 @@ class WhenPickDateViewController: UIViewController {
     
     
     @IBAction func pickOneYear(sender: AnyObject) {
+        AppAnalytics.logEvent(.NewPostWizard_WhenStep_Preset_Click)
         let yearToAdd = 1
         
         //Текущая дата
@@ -212,6 +219,7 @@ class WhenPickDateViewController: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "addPhotos" {
+            AppAnalytics.logEvent(.NewPostWizard_WhenStep_BtnNext_Click)
             if let destination = segue.destinationViewController as? PhotosViewController {
                 //Передаем объект post следующему контроллеру
                 destination.post = post

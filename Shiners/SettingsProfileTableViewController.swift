@@ -130,12 +130,16 @@ class SettingsProfileTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 4 {
+            AppAnalytics.logEvent(.SettingsLoggedInScreen_Logout)
             let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .ActionSheet)
             alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
+                AppAnalytics.logEvent(.SettingsLoggedInScreen_DoLogout)
                 self.doLogout()
             }))
             
-            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Cancel, handler: nil))
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Cancel, handler: { (_) in
+                AppAnalytics.logEvent(.SettingsLoggedInScreen_CancelLogout)
+            }))
             
             self.presentViewController(alertViewController, animated: true, completion: nil)
         }

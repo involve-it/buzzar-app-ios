@@ -607,7 +607,7 @@
                     <navigationItem key="navigationItem" title="My Posts" id="EGv-is-buT">
                         <barButtonItem key="leftBarButtonItem" systemItem="add" id="PLz-p1-uL3">
                             <connections>
-                                <segue destination="pxY-TO-wJC" kind="presentation" id="DWx-l0-Aia"/>
+                                <segue destination="pxY-TO-wJC" kind="presentation" identifier="myPosts_CreatePost" id="DWx-l0-Aia"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1159,7 +1159,7 @@
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="GG4-CG-YhL" kind="show" id="Bv5-zi-a9g"/>
+                                            <segue destination="GG4-CG-YhL" kind="show" identifier="login_ResetPassword" id="Bv5-zi-a9g"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -3904,7 +3904,7 @@
                         <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" style="plain" systemItem="add" id="cFf-ve-goU">
                             <connections>
-                                <segue destination="pxY-TO-wJC" kind="presentation" id="TcT-8i-Eq0"/>
+                                <segue destination="pxY-TO-wJC" kind="presentation" identifier="nearbyPosts_CreatePost" id="TcT-8i-Eq0"/>
                             </connections>
                         </barButtonItem>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" id="jQc-a5-ojv">
@@ -5607,7 +5607,7 @@
         <image name="vk.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="TcT-8i-Eq0"/>
+        <segue reference="DWx-l0-Aia"/>
         <segue reference="EKW-F4-b1d"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.35294117650000001" green="0.69411764710000001" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>

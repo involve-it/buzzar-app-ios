@@ -64,6 +64,12 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "login_ResetPassword" {
+            AppAnalytics.logEvent(.LoginScreen_BtnResetPassword_Click)
+        }
+    }
+    
     func textFieldDidBeginEditing(textField: UITextField) {
         textFieldAnimationBackgroundShow(textField, alpha: 1)
     }
@@ -157,14 +163,17 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     
     
     @IBAction func LogInCenter_Done(sender: UIButton) {
+        AppAnalytics.logEvent(.LoginScreen_BtnLogin_Click)
         self.login()
     }
     
     @IBAction func LogIn_Done(sender: AnyObject) {
+        AppAnalytics.logEvent(.LoginScreen_BtnLogin_Click)
         self.login();
     }
     
     @IBAction func btnCancel_Click(sender: AnyObject) {
+        AppAnalytics.logEvent(.LoginScreen_BtnCancel_Click)
         self.dismissSelf();
     }
     

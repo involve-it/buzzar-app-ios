@@ -183,6 +183,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if let annotation = view.annotation as? CustomPointAnnotation, postIndex = self.mainViewController!.allPosts.indexOf({$0.id == annotation.id}){
+            AppAnalytics.logEvent(.NearbyPostsScreen_Map_PostSelected)
             self.showPostDetails(postIndex)
         }
     }

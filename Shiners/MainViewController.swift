@@ -107,6 +107,8 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         
     }
     
+    
+    
     func updateLoggedIn(){
         if AccountHandler.Instance.isLoggedIn() {
             if self.viewControllers!.count != 5 {
@@ -130,9 +132,9 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         if viewController.title == "addPostPlaceholder" {
+            AppAnalytics.logEvent(.Main_CreatePost_Display)
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             var controller: UIViewController
             if AccountHandler.Instance.isLoggedIn(){
@@ -179,12 +181,19 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
             let index = self.allViewControllers.indexOf(viewController)!
             switch index {
             case 0:
+                AppAnalytics.logEvent(.Main_NearbyPostsTab_Display)
                 LocalNotificationsHandler.Instance.reportActiveView(.Posts)
                 self.setBadgeValue(0, count: 0)
             case 1:
+                AppAnalytics.logEvent(.Main_MessagesTab_Display)
                 LocalNotificationsHandler.Instance.reportActiveView(.Messages)
             case 3:
+                AppAnalytics.logEvent(.Main_MyPostsTab_Display)
                 LocalNotificationsHandler.Instance.reportActiveView(.MyPosts)
+            case 4:
+                AppAnalytics.logEvent(.Main_SettingsLoggedOutTab_Display)
+            case 5:
+                AppAnalytics.logEvent(.Main_SettingsLoggedInTab_Display)
             default:
                 LocalNotificationsHandler.Instance.reportActiveView(.Other)
             }

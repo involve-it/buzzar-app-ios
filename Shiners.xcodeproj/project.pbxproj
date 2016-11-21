@@ -126,6 +126,7 @@
 		7BC1A9C81D50469B005B4F62 /* FullMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BC1A9C71D50469B005B4F62 /* FullMapViewController.swift */; };
 		7BF881D31DD93F20005E927E /* UploadTakingLongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF881D21DD93F20005E927E /* UploadTakingLongView.swift */; };
 		7BF881D51DD94431005E927E /* UploadTakingLongView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7BF881D41DD94431005E927E /* UploadTakingLongView.xib */; };
+		7BF881D81DE3A869005E927E /* AppAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BF881D71DE3A869005E927E /* AppAnalytics.swift */; };
 		7BFDC6761D9881B500DE66A6 /* PostsViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFDC6751D9881B500DE66A6 /* PostsViewControllerDelegate.swift */; };
 		7BFDC6781D99F4E400DE66A6 /* LocalNotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFDC6771D99F4E400DE66A6 /* LocalNotificationsHandler.swift */; };
 		7BFDC67C1D9B5AFB00DE66A6 /* CWStatusBarNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFDC67A1D9B5AFB00DE66A6 /* CWStatusBarNotification.swift */; };
@@ -266,6 +267,7 @@
 		7BF881D21DD93F20005E927E /* UploadTakingLongView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadTakingLongView.swift; sourceTree = "<group>"; };
 		7BF881D41DD94431005E927E /* UploadTakingLongView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UploadTakingLongView.xib; sourceTree = "<group>"; };
 		7BF881D61DDAC3B0005E927E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7BF881D71DE3A869005E927E /* AppAnalytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppAnalytics.swift; sourceTree = "<group>"; };
 		7BFDC6751D9881B500DE66A6 /* PostsViewControllerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostsViewControllerDelegate.swift; sourceTree = "<group>"; };
 		7BFDC6771D99F4E400DE66A6 /* LocalNotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNotificationsHandler.swift; sourceTree = "<group>"; };
 		7BFDC67A1D9B5AFB00DE66A6 /* CWStatusBarNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CWStatusBarNotification.swift; sourceTree = "<group>"; };
@@ -498,6 +500,7 @@
 				7BB5870A1DC82FBF00A92CF6 /* SeenPostsHandler.swift */,
 				7BB2A8061CCF0EBC00AD636D /* ThreadHelper.swift */,
 				7B35654D1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift */,
+				7BF881D71DE3A869005E927E /* AppAnalytics.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -784,6 +787,7 @@
 				61F91F5C1D869A5600B9DF3C /* CustomPointAnnotation.swift in Sources */,
 				7BFFB1021D20445A007CCF87 /* MessagesHandler.swift in Sources */,
 				7BB2A80F1CCF199D00AD636D /* ProfileDetail.swift in Sources */,
+				7BF881D81DE3A869005E927E /* AppAnalytics.swift in Sources */,
 				7B26B1A91CD6DDA8000495EE /* SmallImageView.swift in Sources */,
 				7B0B31731CF4086A00029458 /* PostDetails.swift in Sources */,
 				7B26B1A71CD6D72E000495EE /* ImagePickerHandler.swift in Sources */,

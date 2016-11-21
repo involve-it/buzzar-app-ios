@@ -26,6 +26,7 @@ class AboutUsViewController: UIViewController, UIWebViewDelegate {
         }
         loadWebView(url!, webView: self.webView)
         self.setLoading(true)
+        AppAnalytics.logEvent(.SettingsLoggedInScreen_AboutUs)
     }
     
     

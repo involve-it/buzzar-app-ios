@@ -61,10 +61,11 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
             self.currentUser = AccountHandler.Instance.currentUser
             self.refreshUserData()
         }
-        
+        AppAnalytics.logEvent(.SettingsLoggedInScreen_BtnEdit_Click)
     }
     
     @IBAction func btnSave_Click(sender: AnyObject) {
+        AppAnalytics.logEvent(.EditProfileScreen_BtnSave_Click)
         if !self.isNetworkReachable(){
             return
         }
@@ -132,6 +133,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     }
     
     @IBAction func btnChangeImage_Click(sender: AnyObject) {
+        AppAnalytics.logEvent(.EditProfileScreen_ChangePhoto_Click)
         self.imagePickerHandler?.displayImagePicker()
     }
     
@@ -146,6 +148,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
         let vc = storyboard.instantiateViewControllerWithIdentifier("settingsUserProfile")
         self.navigationController?.pushViewController(vc, animated: true)
          */
+        AppAnalytics.logEvent(.EditProfileScreen_BtnCancel_Click)
         
         self.dismissSelf()
     }

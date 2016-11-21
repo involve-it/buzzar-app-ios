@@ -20,11 +20,13 @@ class ContactUsViewController: UITableViewController, UITextFieldDelegate, UITex
 
     @IBOutlet weak var btn_Cancel: UIBarButtonItem!
     @IBAction func btnCancel_Click(sender: AnyObject) {
+        AppAnalytics.logEvent(.ContactUsScreen_BtnCancel_Click)
         self.view.endEditing(true)
         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func btnSend_Click(sender: AnyObject) {
+        AppAnalytics.logEvent(.ContactUsScreen_BtnSend_Click)
         if let email = txtEmail.text, subject = txtSubject.text, message = txtMessage.text where email != "" && subject != "" && message != "" {
             self.setFieldsEnabled(false)
             ConnectionHandler.Instance.users.contactUs(email, subject: subject, message: message, callback: { (success, errorId, errorMessage, result) in
@@ -67,7 +69,7 @@ class ContactUsViewController: UITableViewController, UITextFieldDelegate, UITex
         self.txtMessage.layer.cornerRadius = 4.0
         
         fillUserData()
-        
+        AppAnalytics.logEvent(.SettingsLoggedInScreen_ContactUs)
     }
     
     func fillUserData() {

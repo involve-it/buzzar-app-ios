@@ -152,6 +152,7 @@ class ProfileTableViewController: UITableViewController {
     }
 
     @IBAction func cbNearbyNotifications_Changed(sender: UISwitch) {
+        AppAnalytics.logEvent(.SettingsLoggedInScreen_NotifyOfNearbyEvents_Change)
         if sender.on && !UIApplication.sharedApplication().isRegisteredForRemoteNotifications(){
             self.showAlert(NSLocalizedString("Notifications", comment: "Alert title, Notifications"), message: NSLocalizedString("To receive notifications, please allow this in device Settings.", comment: "Alert message, to receive notifications, please allow this in device Settings."));
             sender.on = false
@@ -199,12 +200,16 @@ class ProfileTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 3 {
+            AppAnalytics.logEvent(.SettingsLoggedInScreen_Logout)
             let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .ActionSheet)
             alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
+                AppAnalytics.logEvent(.SettingsLoggedInScreen_DoLogout)
                 self.doLogout()
             }))
             
-            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Cancel, handler: nil))
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Cancel, handler: { (_) in
+                AppAnalytics.logEvent(.SettingsLoggedInScreen_CancelLogout)
+            }))
             
             self.presentViewController(alertViewController, animated: true, completion: nil)
         }

@@ -72,6 +72,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
     }
     
     func editAction(sender: UIBarButtonItem){
+        AppAnalytics.logEvent(.MessagesScreen_BtnEdit_Click)
         if self.tableView.editing{
             self.tableView.setEditing(false, animated: true)
             self.navigationItem.leftBarButtonItem = nil
@@ -84,6 +85,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
     }
     
     func deleteMessages(){
+        AppAnalytics.logEvent(.MessagesScreen_BtnDelete_Clicked)
         if let indexPaths = self.tableView.indexPathsForSelectedRows {
             let count = indexPaths.count
             if count > 0 {
@@ -299,6 +301,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
     
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "dialog"{
+            AppAnalytics.logEvent(.MessagesScreen_DialogSelected)
             let selectedCell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow!) as! MessagesTableViewCell;
             let chat = self.dialogs[self.tableView.indexPathForSelectedRow!.row]
             
@@ -406,7 +409,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
     override public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             let dialog = self.dialogs[indexPath.row]
-            
+            AppAnalytics.logEvent(.MessagesScreen_SlideDelete_Clicked)
             ConnectionHandler.Instance.messages.deleteChats([dialog.id!]) { success, errorId, errorMessage, result in
                 ThreadHelper.runOnMainThread({ 
                     if success {

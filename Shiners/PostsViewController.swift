@@ -55,6 +55,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "postDetails"){
+            AppAnalytics.logEvent(.NearbyPostsScreen_List_PostSelected)
             self.mainViewController.searchBar.endEditing(true)
             let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
             let index = self.tableView.indexPathForSelectedRow!.row;
@@ -114,6 +115,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     }
     
     func getNearby(){
+        AppAnalytics.logEvent(.NearbyPostsScreen_List_GetMore)
         self.mainViewController.getNearby();
     }
     

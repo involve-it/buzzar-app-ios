@@ -18,6 +18,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
     var btnDelete: UIBarButtonItem!
     
     func deletePosts(){
+        AppAnalytics.logEvent(.MyPostsScreen_BtnDelete_Clicked)
         if let indexPaths = self.tableView.indexPathsForSelectedRows {
             let count = indexPaths.count
             if count > 0 {
@@ -110,6 +111,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
     }
     
     func editAction(sender: UIBarButtonItem){
+        AppAnalytics.logEvent(.MyPostsScreen_BtnEdit_Click)
         if self.tableView.editing{
             self.tableView.setEditing(false, animated: true)
             self.navigationItem.leftBarButtonItem = self.btnAdd
@@ -294,11 +296,14 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
     
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "myPostDetails"){
+            AppAnalytics.logEvent(.MyPostsScreen_PostSelected)
             let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
             let index = self.tableView.indexPathForSelectedRow!.row;
             let post = myPosts[index];
             vc.isOwnPost = true
             vc.post = post;
+        } else if segue.identifier == "myPosts_CreatePost"{
+            AppAnalytics.logEvent(.MyPostsScreen_BtnNewPost_Click)
         }
     }
    
@@ -327,6 +332,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         let title = (post.visible ?? false) ? NSLocalizedString("Hide", comment: "Title, Hide") : NSLocalizedString("Show", comment: "Title, Show")
         
         var button = UITableViewRowAction(style: .Normal, title: title) { (action, indexPath) in
+            AppAnalytics.logEvent(.MyPostsScreen_SlideHide_Clicked)
             print(title)
             let post = self.myPosts[indexPath.row]
             post.visible = !(post.visible ?? false)
@@ -343,6 +349,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         actions.append(button)
         
         button = UITableViewRowAction(style: .Destructive, title: NSLocalizedString("Delete", comment: "Title, Delete")) { (action, indexPath) in
+            AppAnalytics.logEvent(.MyPostsScreen_SlideDelete_Clicked)
             print("delete")
             //self.tableView.editing = false
             

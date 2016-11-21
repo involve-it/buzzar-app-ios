@@ -79,11 +79,13 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     //Actions
     @IBAction func addImages(sender: AnyObject) {
+        AppAnalytics.logEvent(.NewPostWizard_PhotoStep_AddPhoto_Click)
         self.imagePickerHandler?.displayImagePicker()
     }
     
     //Create post
     @IBAction func createPost(sender: AnyObject) {
+        AppAnalytics.logEvent(.NewPostWizard_PhotoStep_BtnCreate_Click)
         if !self.isNetworkReachable(){
             return
         }
@@ -243,6 +245,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func deleteClicked(smallImageView: SmallImageView) {
+        AppAnalytics.logEvent(.NewPostWizard_PhotoStep_Photo_BtnRemove_Click)
         if let index = self.uploadingIds.indexOf(smallImageView.id!){
             self.uploadingIds.removeAtIndex(index)
             smallImageView.uploadDelegate?.abort()
@@ -286,6 +289,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func retryClicked(view: SmallImageView) {
+        AppAnalytics.logEvent(.NewPostWizard_PhotoStep_Photo_BtnRetry_Click)
         if let index = self.uploadingIds.indexOf(view.id!){
             self.uploadingIds.removeAtIndex(index)
             self.retryingIds.append(view.id!)
@@ -296,6 +300,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func uploadWithLowerQualityClicked(view: SmallImageView) {
+        AppAnalytics.logEvent(.NewPostWizard_PhotoStep_Photo_BtnLowerQuality_Click)
         if !view.isLowerQualityUpload {
             view.isLowerQualityUpload = true
             if let index = self.uploadingIds.indexOf(view.id!){
