@@ -108,7 +108,7 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
         self.mapView.showsUserLocation = sender.on
         
         if sender.on {
-            AppAnalytics.logEvent(.NewPostWizard_LocationStep_Dynamic_On)
+            AppAnalytics.logEvent(.NewPostWizard_Loc_Dynamic_On)
             //Center current location on map
             if !self.mapView.userLocationVisible {
                 self.centerMapOnAnnotations()
@@ -121,7 +121,7 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
                 self.dynamicLocationRequested = true
             }
         } else {
-            AppAnalytics.logEvent(.NewPostWizard_LocationStep_Dynamic_Off)
+            AppAnalytics.logEvent(.NewPostWizard_Loc_Dynamic_Off)
             if let index = self.post.locations!.indexOf({return $0.placeType == .Dynamic}) {
                 self.post.locations!.removeAtIndex(index)
             }
@@ -134,14 +134,14 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
         //event Touch Up Inside
         
         if sender.on {
-            AppAnalytics.logEvent(.NewPostWizard_LocationStep_Static_On)
+            AppAnalytics.logEvent(.NewPostWizard_Loc_Static_On)
             if let currentCoordinate = self.currentLocationInfo?.coordinate {
                 self.setStaticLocation(currentCoordinate, first: true)
                 self.centerMapOnAnnotations()
             }
             
         } else {
-            AppAnalytics.logEvent(.NewPostWizard_LocationStep_Static_Off)
+            AppAnalytics.logEvent(.NewPostWizard_Loc_Static_Off)
             if let annotation = self.annotation{
                 self.mapView.removeAnnotation(annotation)
                 self.annotation = nil
@@ -241,12 +241,12 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         //фокус на searchBar
-        AppAnalytics.logEvent(.NewPostWizard_LocationStep_SearchFieldActive)
+        AppAnalytics.logEvent(.NewPostWizard_Loc_SearchFieldActive)
         searchBar.showsCancelButton = true
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        AppAnalytics.logEvent(.NewPostWizard_LocationStep_SearchField_BtnCancel_Click)
+        AppAnalytics.logEvent(.NewPostWizard_Loc_Search_Cancel_Click)
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
         
@@ -267,7 +267,7 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        AppAnalytics.logEvent(.NewPostWizard_LocationStep_SearchField_ResultSelected)
+        AppAnalytics.logEvent(.NewPostWizard_Loc_Search_ResSelected)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         self.switcherStatic.on = true
         
@@ -284,9 +284,7 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
         self.mapView.addAnnotation(self.annotation!)
         
         UIView.animateWithDuration(0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
-            
                 self.searchContainerView.alpha = 0
-            
             }, completion: { (completed: Bool) in
                 self.searchContainerView.hidden = true
         })
@@ -441,7 +439,7 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "segueDatePicker" {
-            AppAnalytics.logEvent(.NewPostWizard_LocationStep_BtnNext_Click)
+            AppAnalytics.logEvent(.NewPostWizard_Loc_BtnNext_Click)
             if let destination = segue.destinationViewController as? WhenPickDateViewController {
                 
                 //Передаем объект post следующему контроллеру

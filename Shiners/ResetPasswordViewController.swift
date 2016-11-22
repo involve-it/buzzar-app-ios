@@ -84,7 +84,7 @@ class ResetPasswordViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Action
     @IBAction func resetPassword(sender: AnyObject) {
-        AppAnalytics.logEvent(.ResetPasswordScreen_BtnResetPassword_Click)
+        AppAnalytics.logEvent(.ResetPasswordScreen_ResetPassword)
         if !self.isNetworkReachable(){
             return
         }

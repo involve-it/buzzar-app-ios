@@ -105,6 +105,7 @@ class ProfileTableViewController: UITableViewController {
     }
 
     @IBAction func cendMessageToUser(sender: UIButton) {
+        AppAnalytics.logEvent(.ProfileScreen_Message)
         let alertController = UIAlertController(title: NSLocalizedString("New message", comment: "Alert title, New message"), message: nil, preferredStyle: .Alert);
         
         alertController.addTextFieldWithConfigurationHandler { (textField) in
@@ -112,6 +113,7 @@ class ProfileTableViewController: UITableViewController {
         }
         
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Send", comment: "Alert title, Send"), style: .Default, handler: { (action) in
+            AppAnalytics.logEvent(.ProfileScreen_Msg_Send)
             if let text = alertController.textFields?[0].text where text != "" {
                 alertController.resignFirstResponder()
                 let message = MessageToSend()
@@ -128,6 +130,7 @@ class ProfileTableViewController: UITableViewController {
             }
         }))
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert, title, Cancel"), style: .Cancel, handler: {action in
+            AppAnalytics.logEvent(.ProfileScreen_Msg_Cancel)
             alertController.resignFirstResponder()
         }));
         self.presentViewController(alertController, animated: true) {
@@ -136,6 +139,7 @@ class ProfileTableViewController: UITableViewController {
     }
     
     @IBAction func callToUser(sender: UIButton) {
+        AppAnalytics.logEvent(.ProfileScreen_Call)
         if let phoneNumber = self.phoneRowLabel.text {
             callNumberToUser(phoneNumber)
         }
@@ -152,7 +156,7 @@ class ProfileTableViewController: UITableViewController {
     }
 
     @IBAction func cbNearbyNotifications_Changed(sender: UISwitch) {
-        AppAnalytics.logEvent(.SettingsLoggedInScreen_NotifyOfNearbyEvents_Change)
+        AppAnalytics.logEvent(.SettingsLoggedInScreen_Notify_Change)
         if sender.on && !UIApplication.sharedApplication().isRegisteredForRemoteNotifications(){
             self.showAlert(NSLocalizedString("Notifications", comment: "Alert title, Notifications"), message: NSLocalizedString("To receive notifications, please allow this in device Settings.", comment: "Alert message, to receive notifications, please allow this in device Settings."));
             sender.on = false

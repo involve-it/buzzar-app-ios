@@ -425,7 +425,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
     
     func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        AppAnalytics.logEvent(.NearbyPostsScreen_Search_BtnCancel_Click)
+        AppAnalytics.logEvent(.NearbyPostsScreen_Search_Cancel)
         self.filtering =  false
         self.listViewController.updateFiltering(false)
         self.navigationItem.setRightBarButtonItem(self.btnSearch, animated: true)

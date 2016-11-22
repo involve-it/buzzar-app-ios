@@ -65,6 +65,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     var phoneNumber: String?
     
     func map_Clicked(sender: AnyObject) {
+        AppAnalytics.logEvent(.PostDetailsScreen_FullScreenMap)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let nc = storyboard.instantiateViewControllerWithIdentifier("fullMap") as! UINavigationController
         let vc = nc.viewControllers[0] as! FullMapViewController
@@ -78,12 +79,14 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     
     
     @IBAction func btnCall_Click(sender: AnyObject) {
+        AppAnalytics.logEvent(.PostDetailsScreen_BtnCall_Clicked)
         if let phoneNumber = self.phoneNumber, url = NSURL(string: "tel://\(phoneNumber)") {
             UIApplication.sharedApplication().openURL(url)
         }
     }
     
     @IBAction func btnSendMessage_Click(sender: AnyObject) {
+        AppAnalytics.logEvent(.PostDetailsScreen_BtnMessage_Clicked)
         let alertController = UIAlertController(title: NSLocalizedString("New message", comment: "Alert title, New message"), message: nil, preferredStyle: .Alert);
         
         alertController.addTextFieldWithConfigurationHandler { (textField) in
@@ -91,6 +94,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         }
         
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Send", comment: "Alert title, Send"), style: .Default, handler: { (action) in
+            AppAnalytics.logEvent(.PostDetailsScreen_Msg_BtnSend_Clicked)
             if let text = alertController.textFields?[0].text where text != "" {
                 alertController.resignFirstResponder()
                 let message = MessageToSend()
@@ -107,6 +111,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             }
         }))
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert, title, Cancel"), style: .Cancel, handler: {action in
+            AppAnalytics.logEvent(.PostDetailsScreen_Msg_BtnCancel_Clicked)
             alertController.resignFirstResponder()
         }));
         self.presentViewController(alertController, animated: true) {
@@ -115,6 +120,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     }
     
     @IBAction func btnShare_Click(sender: AnyObject) {
+        AppAnalytics.logEvent(.PostDetailsScreen_BtnShare_Clicked)
         let activityViewController = UIActivityViewController(activityItems: ["Check out this post on Shiners: \(self.post.title!)", NSURL(string: "\(ConnectionHandler.publicUrl)/posts/\(self.post.id!)")!], applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivityTypePrint, UIActivityTypeOpenInIBooks, UIActivityTypeSaveToCameraRoll];
         navigationController?.presentViewController(activityViewController, animated: true, completion: nil)
@@ -194,9 +200,6 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         let tap1 = UITapGestureRecognizer(target: self, action: #selector(goUserProfile))
         self.txtUsername.addGestureRecognizer(tap)
         self.avatarUser.addGestureRecognizer(tap1)
-        
-        
-        
         
         //Avatar image
         self.avatarUser.contentMode = .ScaleToFill
@@ -367,7 +370,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     }
     
     func goUserProfile() {
-        
+        AppAnalytics.logEvent(.PostDetailsScreen_UserProfile)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let nc = storyboard.instantiateViewControllerWithIdentifier("settingsLogInUser") as! UINavigationController
         let vc = nc.viewControllers[0] as! ProfileTableViewController
@@ -442,6 +445,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             //let createVc = vc.viewControllers[0] as! NewPostViewController
             //createVc.post = self.post
         } else if segue.identifier == "fullMapSegue"{
+            AppAnalytics.logEvent(.PostDetailsScreen_FullScreenMap)
             let nc = segue.destinationViewController as! UINavigationController
             let vc = nc.viewControllers[0] as! FullMapViewController
             vc.geocoderInfo = GeocoderInfo()
