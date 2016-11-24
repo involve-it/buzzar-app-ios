@@ -22,8 +22,8 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         if let indexPaths = self.tableView.indexPathsForSelectedRows {
             let count = indexPaths.count
             if count > 0 {
-                let alertController = UIAlertController(title: NSLocalizedString("Delete Posts", comment: "Delete Posts"), message: NSLocalizedString("Are you sure you want to delete your \(count > 1 ? "\(count) ":"")post\(count > 1 ?"s":"")?", comment: "Alert message, Are you sure you want to delete your \(count > 1 ? "\(count) ":"")post\(count > 1 ?"s":"")?"), preferredStyle: .ActionSheet);
-                alertController.addAction(UIAlertAction(title: "Delete", style: .Destructive, handler: { (action) in
+                let alertController = UIAlertController(title: NSLocalizedString("Delete Posts", comment: "Delete Posts"), message: NSLocalizedString("Are you sure you want to delete selected post(s)?", comment: "Alert message, Are you sure you want to delete selected posts?"), preferredStyle: .ActionSheet);
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: "Delete"), style: .Destructive, handler: { (action) in
                     //self.showAlert("Deleted", message: "Deleted")
                     var processedCount = 0
                     var successfulIndexPaths = [NSIndexPath]()
@@ -37,7 +37,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
                         })
                     })
                 }))
-                alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil));
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .Cancel, handler: nil));
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
             }
@@ -67,7 +67,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
     public override func viewDidLoad() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(myPostsUpdated), name: NotificationManager.Name.MyPostsUpdated.rawValue, object: nil)
-        self.btnDelete = UIBarButtonItem(title: "Delete", style: UIBarButtonItemStyle.Done, target: self, action: #selector(deletePosts))
+        self.btnDelete = UIBarButtonItem(title: NSLocalizedString("Delete", comment: "Delete"), style: UIBarButtonItemStyle.Done, target: self, action: #selector(deletePosts))
         self.myPosts = [Post]()
         if AccountHandler.Instance.status == .Completed {
             self.meteorLoaded = true
@@ -115,11 +115,11 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         if self.tableView.editing{
             self.tableView.setEditing(false, animated: true)
             self.navigationItem.leftBarButtonItem = self.btnAdd
-            sender.title = "Edit"
+            sender.title = NSLocalizedString("Edit", comment: "Edit")
         } else {
             self.tableView.setEditing(true, animated: true)
             self.navigationItem.leftBarButtonItem = self.btnDelete
-            sender.title = "Done"
+            sender.title = NSLocalizedString("Done", comment: "Done")
         }
     }
     

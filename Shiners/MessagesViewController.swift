@@ -54,7 +54,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
         
-        self.btnDelete = UIBarButtonItem(title: "Delete", style: UIBarButtonItemStyle.Done, target: self, action: #selector(deleteMessages))
+        self.btnDelete = UIBarButtonItem(title: NSLocalizedString("Delete", comment: "Delete"), style: UIBarButtonItemStyle.Done, target: self, action: #selector(deleteMessages))
         
         self.navigationItem.rightBarButtonItem = self.editButtonItem()
         self.editButtonItem().action = #selector(editAction)
@@ -76,11 +76,11 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         if self.tableView.editing{
             self.tableView.setEditing(false, animated: true)
             self.navigationItem.leftBarButtonItem = nil
-            sender.title = "Edit"
+            sender.title = NSLocalizedString("Edit", comment: "Edit")
         } else {
             self.tableView.setEditing(true, animated: true)
             self.navigationItem.leftBarButtonItem = self.btnDelete
-            sender.title = "Done"
+            sender.title = NSLocalizedString("Done", comment: "Done")
         }
     }
     
@@ -89,8 +89,8 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         if let indexPaths = self.tableView.indexPathsForSelectedRows {
             let count = indexPaths.count
             if count > 0 {
-                let alertController = UIAlertController(title: NSLocalizedString("Delete Messages", comment: "Delete Messages"), message: NSLocalizedString("Are you sure you want to delete your \(count > 1 ? "\(count) ":"")dialog\(count > 1 ?"s":"")?", comment: "Alert message, Are you sure you want to delete your \(count > 1 ? "\(count) ":"")dialog\(count > 1 ?"s":"")?"), preferredStyle: .ActionSheet);
-                alertController.addAction(UIAlertAction(title: "Delete", style: .Destructive, handler: { (action) in
+                let alertController = UIAlertController(title: NSLocalizedString("Delete Messages", comment: "Delete Messages"), message: NSLocalizedString("Are you sure you want to delete selected dialog(s)?", comment: "Alert message, Are you sure you want to delete selected dialogs?"), preferredStyle: .ActionSheet);
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: "Delete"), style: .Destructive, handler: { (action) in
                     //self.showAlert("Deleted", message: "Deleted")
                     var chatIds = [String]()
                     indexPaths.forEach({ (indexPath) in
@@ -122,7 +122,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
                         })
                     })
                 }))
-                alertController.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil));
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .Cancel, handler: nil));
                 
                 self.presentViewController(alertController, animated: true, completion: nil)
             }

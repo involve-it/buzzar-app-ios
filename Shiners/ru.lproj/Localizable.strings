@@ -283,3 +283,10 @@
 /* Post info, post closed */
 "post closed" = "Пост закрыт";
 
+"Edit" = "Изменить";
+
+"Done" = "Готово";
+
+"Are you sure you want to delete selected dialog(s)?" = "Вы уверены, что хотите удалить выбранные диалоги?";
+
+"Are you sure you want to delete selected post(s)?" = "Вы уверены, что хотите удалить выбранные посты?";
