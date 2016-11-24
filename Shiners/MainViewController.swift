@@ -134,15 +134,16 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
     
     func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         if viewController.title == "addPostPlaceholder" {
-            AppAnalytics.logEvent(.Main_CreatePost_Display)
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            var controller: UIViewController
             if AccountHandler.Instance.isLoggedIn(){
-                controller = storyboard.instantiateViewControllerWithIdentifier("addPost");
+                AppAnalytics.logEvent(.Main_CreatePost_Display)
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let controller = storyboard.instantiateViewControllerWithIdentifier("addPost");
+                self.presentViewController(controller, animated: true, completion: nil)
             } else {
-                controller = storyboard.instantiateViewControllerWithIdentifier("NEWloginNavigationController");
+                //controller = storyboard.instantiateViewControllerWithIdentifier("NEWloginNavigationController");
+                self.selectedIndex = 2
+                AppAnalytics.logEvent(.Main_SettingsLoggedOutTab_Display)
             }
-            self.presentViewController(controller, animated: true, completion: nil)
             return false;
         }
         return true;
@@ -177,27 +178,34 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
     }*/
     
     func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
-        if AccountHandler.Instance.isLoggedIn(){
-            let index = self.allViewControllers.indexOf(viewController)!
-            switch index {
-            case 0:
-                AppAnalytics.logEvent(.Main_NearbyPostsTab_Display)
+        let index = self.allViewControllers.indexOf(viewController)!
+        switch index {
+        case 0:
+            AppAnalytics.logEvent(.Main_NearbyPostsTab_Display)
+            if AccountHandler.Instance.isLoggedIn(){
                 LocalNotificationsHandler.Instance.reportActiveView(.Posts)
-                self.setBadgeValue(0, count: 0)
-            case 1:
-                AppAnalytics.logEvent(.Main_MessagesTab_Display)
+            }
+            self.setBadgeValue(0, count: 0)
+        case 1:
+            AppAnalytics.logEvent(.Main_MessagesTab_Display)
+            if AccountHandler.Instance.isLoggedIn(){
                 LocalNotificationsHandler.Instance.reportActiveView(.Messages)
-            case 3:
-                AppAnalytics.logEvent(.Main_MyPostsTab_Display)
+            }
+        case 3:
+            AppAnalytics.logEvent(.Main_MyPostsTab_Display)
+            if AccountHandler.Instance.isLoggedIn(){
                 LocalNotificationsHandler.Instance.reportActiveView(.MyPosts)
-            case 4:
-                AppAnalytics.logEvent(.Main_SettingsLoggedOutTab_Display)
-            case 5:
-                AppAnalytics.logEvent(.Main_SettingsLoggedInTab_Display)
-            default:
+            }
+        case 4:
+            AppAnalytics.logEvent(.Main_SettingsLoggedOutTab_Display)
+        case 5:
+            AppAnalytics.logEvent(.Main_SettingsLoggedInTab_Display)
+        default:
+            if AccountHandler.Instance.isLoggedIn(){
                 LocalNotificationsHandler.Instance.reportActiveView(.Other)
             }
         }
+        
     }
 }
 
