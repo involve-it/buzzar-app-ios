@@ -64,11 +64,20 @@
 /* Class = "UITextField"; placeholder = "Your email address"; ObjectID = "5w0-p6-xEb"; */
 "5w0-p6-xEb.placeholder" = "Ваша электронная почта";
 
+/* Class = "UILabel"; text = "Buy and sell"; ObjectID = "06N-Ib-rlH"; */
+"06N-Ib-rlH.text" = "Покупка и продажа";
+
 /* Class = "UIButton"; normalTitle = "Call"; ObjectID = "6Nn-4L-XLc"; */
 "6Nn-4L-XLc.normalTitle" = "Позвонить";
 
+/* Class = "UILabel"; text = "Job market"; ObjectID = "7JF-Ge-df8"; */
+"7JF-Ge-df8.text" = "Работа";
+
 /* Class = "UITextField"; placeholder = "Location"; ObjectID = "7e5-TI-ZEf"; */
 "7e5-TI-ZEf.placeholder" = "Локация";
+
+/* Class = "UILabel"; text = "Need or provide training"; ObjectID = "8pk-45-XDR"; */
+"8pk-45-XDR.text" = "Тренинги";
 
 /* Class = "UITextField"; placeholder = "First name"; ObjectID = "9SA-il-lx9"; */
 "9SA-il-lx9.placeholder" = "Имя";
@@ -142,11 +151,17 @@
 /* Class = "UILabel"; text = "1 week"; ObjectID = "DiR-qd-a0P"; */
 "DiR-qd-a0P.text" = "1 неделя";
 
+/* Class = "UILabel"; text = "Looking for connections"; ObjectID = "Dl7-UP-Vb3"; */
+"Dl7-UP-Vb3.text" = "Связи и знакомства";
+
 /* Class = "UINavigationItem"; title = "My Posts"; ObjectID = "EGv-is-buT"; */
 "EGv-is-buT.title" = "Мои посты";
 
 /* (No Commment) */
 "EPq-Cu-23K.placeholder" = "заинтересован в";
+
+/* Class = "UILabel"; text = "Housing market"; ObjectID = "EWB-L8-BNQ"; */
+"EWB-L8-BNQ.text" = "Рынок жилья";
 
 /* Class = "UITextField"; placeholder = "Search around"; ObjectID = "F5e-UW-8f6"; */
 "F5e-UW-8f6.placeholder" = "Искать вокруг";
@@ -397,8 +412,14 @@
 /* Class = "UIButton"; normalTitle = "Log in"; ObjectID = "WzS-SN-1DM"; */
 "WzS-SN-1DM.normalTitle" = "Войти";
 
+/* Class = "UILabel"; text = "None"; ObjectID = "X2R-Xn-4kz"; */
+"X2R-Xn-4kz.text" = "Не выбрано";
+
 /* Class = "UILabel"; text = "Username"; ObjectID = "XyY-iP-OiC"; */
 "XyY-iP-OiC.text" = "Имя пользователя";
+
+/* Class = "UILabel"; text = "None"; ObjectID = "Y3j-lQ-5kW"; */
+"Y3j-lQ-5kW.text" = "Не выбрано";
 
 /* Class = "UIBarButtonItem"; title = "Log in"; ObjectID = "YOp-bh-5go"; */
 "YOp-bh-5go.title" = "Войти";
@@ -414,6 +435,9 @@
 
 /* Class = "UINavigationItem"; title = "Edit Profile"; ObjectID = "ZEL-UB-OGk"; */
 "ZEL-UB-OGk.title" = "Изменение профиля";
+
+/* Class = "UINavigationItem"; title = "Select category"; ObjectID = "ZPG-aq-xGw"; */
+"ZPG-aq-xGw.title" = "Выберите категорию";
 
 /* Class = "UINavigationItem"; title = "Post Details"; ObjectID = "ZqH-Vu-jSF"; */
 "ZqH-Vu-jSF.title" = "Детали поста";
@@ -444,6 +468,9 @@
 
 /* (No Commment) */
 "bAM-XM-Hnv.text" = "Перемещается вместе с вашим объявлением";
+
+/* Class = "UILabel"; text = "Need or give help"; ObjectID = "bGT-7f-nZD"; */
+"bGT-7f-nZD.text" = "Помощь";
 
 /* Class = "UILabel"; text = "$150"; ObjectID = "bX5-eN-EMu"; */
 "bX5-eN-EMu.text" = "$150";
@@ -495,6 +522,9 @@
 
 /* (No Commment) */
 "e8t-Is-sHY.text" = "Описание поста";
+
+/* Class = "UILabel"; text = "Need or provide service"; ObjectID = "e88-hJ-Sv9"; */
+"e88-hJ-Sv9.text" = "Услуги";
 
 /* Class = "UILabel"; text = "There are no posts around you"; ObjectID = "eD7-KZ-RzE"; */
 "eD7-KZ-RzE.text" = "Рядом с вами нет постов";
@@ -583,6 +613,9 @@
 /* Class = "UILabel"; text = "It is connected with your mobile phone."; ObjectID = "jXt-P5-sY1"; */
 "jXt-P5-sY1.text" = "Он связан с местоположением вашего мобильного телефона";
 
+/* Class = "UILabel"; text = "Local events"; ObjectID = "jaE-pa-mJB"; */
+"jaE-pa-mJB.text" = "Местные события";
+
 /* Class = "UITableViewSection"; headerTitle = "Select the type of post"; ObjectID = "jdo-n3-fhf"; */
 "jdo-n3-fhf.headerTitle" = "Выберите тип поста";
 
@@ -636,6 +669,9 @@
 
 /* Class = "UITextField"; placeholder = "Confirm new password"; ObjectID = "lO4-J3-0Kz"; */
 "lO4-J3-0Kz.placeholder" = "Подтвердить новый пароль";
+
+/* Class = "UILabel"; text = "Category"; ObjectID = "lU3-Ze-Jtx"; */
+"lU3-Ze-Jtx.text" = "Категория";
 
 /* Class = "UISearchBar"; lh8-HC-0Ay.scopeButtonTitles[0] = "Title"; ObjectID = "lh8-HC-0Ay"; */
 "lh8-HC-0Ay.scopeButtonTitles[0]" = "Заголовок";

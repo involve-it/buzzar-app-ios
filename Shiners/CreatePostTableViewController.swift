@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CreatePostTableViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, LocationHandlerDelegate {
+class CreatePostTableViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, LocationHandlerDelegate, SelectCategoryViewControllerDelegate {
 
     //Title
     @IBOutlet weak var titleTextCount: UILabel!
@@ -27,6 +27,7 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     
     @IBOutlet weak var cellDescription: UITableViewCell!
     
+    @IBOutlet weak var cellCategory: UITableViewCell!
     
     //Description
     @IBOutlet weak var titleCountOfDescription: UILabel!
@@ -203,6 +204,20 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
 
                 destination.currentLocationInfo = self.currentLocationInfo
             }
+        } else if segue.identifier == "selectCategory"{
+            let navController = segue.destinationViewController as! UINavigationController
+            let selectCategoryViewController = navController.viewControllers[0] as! SelectCategoryTableViewController
+            selectCategoryViewController.currentCategory = post.type?.rawValue
+            selectCategoryViewController.selectCategoryDelegate = self
         }
+    }
+    
+    func categorySelected(category: String?, value: String) {
+        if let cat = category {
+            self.post.type = Post.AdType(rawValue: cat)
+        } else {
+            self.post.type = nil
+        }
+        self.cellCategory.detailTextLabel!.text = value
     }
 }
