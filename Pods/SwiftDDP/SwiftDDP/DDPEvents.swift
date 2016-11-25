@@ -17,85 +17,93 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 import Foundation
-
 /**
-DDPEvents is a struct holder for callback closures that execute in response to 
-websocket and Meteor lifecyle events. New closures can be assigned to public
-closures to modify the clients behavior in response to the trigger event.
-*/
-
+ DDPEvents is a struct holder for callback closures that execute in response to
+ websocket and Meteor lifecyle events. New closures can be assigned to public
+ closures to modify the clients behavior in response to the trigger event.
+ */
 public struct DDPEvents {
     
     /**
-    onWebsocketClose executes when the websocket connection has closed
+     onWebsocketClose executes when the websocket connection has closed
+     
+     - parameter code:       An integer value that provides the reason code for closing the websocket connection
+     - parameter reason:     A string describing the reason that the websocket was closed
+     - parameter clean:      A boolean value indicating if the websocket connection was closed cleanly
+     */
     
-    - parameter code:       An integer value that provides the reason code for closing the websocket connection
-    - parameter reason:     A string describing the reason that the websocket was closed
-    - parameter clean:      A boolean value indicating if the websocket connection was closed cleanly
-    */
-    
-    internal var onWebsocketClose:    ((code:Int, reason:String, clean:Bool) -> ())?
-    
-    /**
-    onWebsocketError executes when the websocket connection returns an error.
-    
-    - parameter error:      An ErrorType object describing the error
-    */
-    
-    internal var onWebsocketError:    (error:ErrorType) -> () = {error in log.error("websocket error \(error)")}
+    internal var onWebsocketClose:    ((code:Int, reason:String, clean:Bool) -> ())? = { code, reason, clean in
+        NSNotificationCenter.defaultCenter().postNotificationName(DDP_WEBSOCKET_CLOSE, object: nil)
+    }
     
     /**
-    onConnected executes when the client makes a DDP connection
+     onWebsocketError executes when the websocket connection returns an error.
+     
+     - parameter error:      An ErrorType object describing the error
+     */
     
-    - parameter session:    A string session id
-    */
+    internal var onWebsocketError:    (error:ErrorType) -> () = {error in
+        log.error("websocket error \(error)")
+        NSNotificationCenter.defaultCenter().postNotificationName(DDP_WEBSOCKET_ERROR, object: nil)
+    }
+    
+    /**
+     onConnected executes when the client makes a DDP connection
+     
+     - parameter session:    A string session id
+     */
     
     // public var onConnected:         (session:String) -> () = {session in log.info("connected with session: \(session)")}
     public var onConnected: Completion = Completion(callback: {session in log.info("connected with session: \(session)")})
     /**
-    onDisconnected executes when the client is disconnected
-    */
+     onDisconnected executes when the client is disconnected
+     */
     
-    public var onDisconnected:      () -> () = {log.debug("disconnected")}
+    public var onDisconnected:      () -> () = {
+        log.debug("disconnected")
+        NSNotificationCenter.defaultCenter().postNotificationName(DDP_DISCONNECTED, object: nil)
+    }
     
     /**
-    onFailed executes when an attempt to make a DDP connection fails
-    */
+     onFailed executes when an attempt to make a DDP connection fails
+     */
     
-    public var onFailed:            () -> () = {log.error("failed")}
+    public var onFailed:            () -> () = {
+        log.error("failed")
+        NSNotificationCenter.defaultCenter().postNotificationName(DDP_FAILED, object: nil)
+    }
     
     // Data messages
     
     /**
-    onAdded executes when a document has been added to a local collection
-    
-    - parameter collection:     the string name of the collection to which the document belongs
-    - parameter id:             the string unique id that identifies the document on the server
-    - parameter fields:         an optional NSDictionary with the documents properties
-    */
+     onAdded executes when a document has been added to a local collection
+     
+     - parameter collection:     the string name of the collection to which the document belongs
+     - parameter id:             the string unique id that identifies the document on the server
+     - parameter fields:         an optional NSDictionary with the documents properties
+     */
     
     public var onAdded:             ((collection:String, id:String, fields:NSDictionary?) -> ())?
     
     /**
-    onChanged executes when the server sends an instruction to modify a local document
-    
-    
-    - parameter collection:     the string name of the collection to which the document belongs
-    - parameter id:             the string unique id that identifies the document on the server
-    - parameter fields:         an optional NSDictionary with the documents properties
-    - parameter cleared:        an optional array of string property names to delete
-    */
+     onChanged executes when the server sends an instruction to modify a local document
+     
+     
+     - parameter collection:     the string name of the collection to which the document belongs
+     - parameter id:             the string unique id that identifies the document on the server
+     - parameter fields:         an optional NSDictionary with the documents properties
+     - parameter cleared:        an optional array of string property names to delete
+     */
     
     public var onChanged:           ((collection:String, id:String, fields:NSDictionary?, cleared:NSArray?) -> ())?
     
     /**
-    onRemoved executes when the server sends an instruction to remove a document from the local collection
-    
-    - parameter collection:     the string name of the collection to which the document belongs
-    - parameter id:             the string unique id that identifies the document on the server
-    */
+     onRemoved executes when the server sends an instruction to remove a document from the local collection
+     
+     - parameter collection:     the string name of the collection to which the document belongs
+     - parameter id:             the string unique id that identifies the document on the server
+     */
     
     public var onRemoved:           ((collection:String, id:String) -> ())?
     
@@ -103,21 +111,20 @@ public struct DDPEvents {
     // public var onResult:            (json: NSDictionary?, callback:(result:AnyObject?, error:AnyObject?) -> ()) -> () = {json, callback in callback(result: json, error:nil) }
     
     /**
-    onUpdated executes when the server sends a notification that all the consequences of a method call have
-    been communicated to the client
-    
-    - parameter methods:    An array of method id strings
-    */
+     onUpdated executes when the server sends a notification that all the consequences of a method call have
+     been communicated to the client
+     
+     - parameter methods:    An array of method id strings
+     */
     
     public var onUpdated:           ((methods: [String]) -> ())?
     
     /**
-    onError executes when the client receives a DDP error message
-    
-    - parameter message:    A DDPError message describing the error
-    */
+     onError executes when the client receives a DDP error message
+     
+     - parameter message:    A DDPError message describing the error
+     */
     
     public var onError:             ((message:DDPError) -> ())?
     
 }
-

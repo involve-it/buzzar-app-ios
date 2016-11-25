@@ -71,6 +71,12 @@ public class ConnectionHandler{
     
     public func connect() {
         if self.status != .Connected && self.status != .Connecting{
+            
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(clientDisconnected), name: DDP_WEBSOCKET_ERROR, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(clientDisconnected), name: DDP_WEBSOCKET_CLOSE, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(clientDisconnected), name: DDP_DISCONNECTED, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(clientDisconnected), name: DDP_FAILED, object: nil)
+            
             self.status = ConnectionStatus.Connecting
             //Meteor.client.logLevel = .Debug;
             
@@ -122,6 +128,10 @@ public class ConnectionHandler{
     
     public enum ConnectionStatus{
         case NotInitialized, Connecting, Failed, Connected
+    }
+    
+    @objc func clientDisconnected(){
+        self.status = .Failed
     }
 }
 
