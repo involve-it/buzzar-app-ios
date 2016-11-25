@@ -413,11 +413,15 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         //self.searchBar.tintColor =
         self.navigationItem.setRightBarButtonItem(nil, animated: true)
         self.navigationItem.setLeftBarButtonItem(nil, animated: true)
-        UIView.animateWithDuration(0.5, animations: {
-            self.navigationItem.titleView = self.searchBar
-            self.searchBar.alpha = 1
+        UIView.animateWithDuration(0.1, animations: {
+            self.typeSwitch.alpha = 0
             }) { (finished) in
-                self.searchBar.becomeFirstResponder()
+                self.navigationItem.titleView = self.searchBar
+                UIView.animateWithDuration(0.1, animations: { 
+                    self.searchBar.alpha = 1
+                }, completion: { (finishedLast) in
+                    self.searchBar.becomeFirstResponder()
+                })
         }
         if let searchText = self.searchBar.text where searchText != ""{
             self.searchBar(self.searchBar, textDidChange: searchText)
@@ -431,10 +435,19 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         self.navigationItem.setRightBarButtonItem(self.btnSearch, animated: true)
         self.navigationItem.setLeftBarButtonItem(self.btnAddPost, animated: true)
         self.typeSwitch.alpha = 0
-        UIView.animateWithDuration(0.3) {
+        /*UIView.animateWithDuration(0.1, animations: {
+            self.searchBar.alpha = 0
+        }) { (finished) in
+            self.navigationItem.titleView = self.typeSwitch
+            UIView.animateWithDuration(0.1, animations: { 
+                self.typeSwitch.alpha = 1
+            }, completion: nil)
+        }*/
+        UIView.animateWithDuration(0.2) {
             self.navigationItem.titleView = self.typeSwitch
             self.typeSwitch.alpha = 1
         }
+        
         self.posts = self.allPosts
         self.listViewController.tableView.reloadData()
     }
