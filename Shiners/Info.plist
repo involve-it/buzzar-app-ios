@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Your location will be used to find posts near you, and help your own live posts move along with you.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
@@ -30,7 +28,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>3</string>
 	<key>FacebookAppID</key>
 	<string>1024999790877408</string>
 	<key>FacebookDisplayName</key>
@@ -50,6 +48,8 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your location will be used to find posts near you, and help your own live posts move along with you.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Your location will be used to find posts near you, and help your own live posts move along with you.</string>
 	<key>UIBackgroundModes</key>
 	<array>
