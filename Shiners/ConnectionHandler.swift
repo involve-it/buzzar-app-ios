@@ -71,7 +71,6 @@ public class ConnectionHandler{
     
     public func connect() {
         if self.status != .Connected && self.status != .Connecting{
-            
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(clientDisconnected), name: DDP_WEBSOCKET_ERROR, object: nil)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(clientDisconnected), name: DDP_WEBSOCKET_CLOSE, object: nil)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(clientDisconnected), name: DDP_DISCONNECTED, object: nil)
@@ -132,6 +131,7 @@ public class ConnectionHandler{
     
     @objc func clientDisconnected(){
         self.status = .Failed
+        self.dependenciesResolved = 0
     }
 }
 

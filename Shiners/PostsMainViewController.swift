@@ -167,6 +167,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
     
     func appDidBecomeActive(){
+        self.loadingPosts = false
         self.locationHandler.getLocationOnce(false)
         if ConnectionHandler.Instance.status == .Connected{
             self.getNearby()
