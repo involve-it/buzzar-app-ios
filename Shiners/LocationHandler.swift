@@ -31,6 +31,9 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
     private lazy var geocoder = CLGeocoder()
     
     public var delegate: LocationHandlerDelegate?
+    private var locationReportedOnce = false
+    
+    private static let DEFAULT_LOCATION_UPDATE_TIMEOUT = 30.0
     
     public func startMonitoringLocation() -> Bool{
         if self.notDenied {
@@ -55,9 +58,20 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
             self.locationManager.requestAlwaysAuthorization()
             self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
             self.locationManager.requestLocation()
+            
+            self.locationReportedOnce = false
+            NSTimer.scheduledTimerWithTimeInterval(LocationHandler.DEFAULT_LOCATION_UPDATE_TIMEOUT, target: self, selector: #selector(notifyTimeout), userInfo: nil, repeats: false)
         }
         
         return self.notDenied
+    }
+    
+    func notifyTimeout(){
+        if !self.locationReportedOnce {
+            let geocoderInfo = GeocoderInfo()
+            geocoderInfo.error = true
+            self.delegate?.locationReported(geocoderInfo)
+        }
     }
     
     public func monitorSignificantLocationChanges() -> Bool {
@@ -74,6 +88,7 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
     
     public func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
+            self.locationReportedOnce = true
             LocationHandler.lastLocation = location
             CachingHandler.Instance.saveLastLocation(location.coordinate.latitude, lng: location.coordinate.longitude)
             if self.geocodingRequired{
