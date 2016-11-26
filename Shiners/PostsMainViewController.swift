@@ -9,7 +9,9 @@
 import UIKit
 import CoreLocation
 
-class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISearchBarDelegate {
+let SEARCH_TOOLBAR_HEIGHT = CGFloat(44)
+
+class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISearchBarDelegate, UIToolbarDelegate {
     let locationHandler = LocationHandler()
     
     var allPosts = [Post]()
@@ -29,6 +31,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     @IBOutlet var contentView: UIView!
     @IBOutlet var searchBar: UISearchBar!
     
+    @IBOutlet var searchCriteriaToolbar: UIToolbar!
     @IBOutlet var btnSearch: UIBarButtonItem!
     
     var noMorePosts = false
@@ -39,6 +42,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     var searchViewController: NewSearchViewController?
     var currentViewController: UIViewController?
     
+    @IBOutlet var searchCriteriaView: UIView!
     let storyBoard = UIStoryboard(name: "Main", bundle: nil)
     //Identifier postStyle
     private var listInitialized = false
@@ -120,6 +124,11 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         
         self.searchBar.showsCancelButton = true
         self.searchBar.delegate = self
+        self.searchCriteriaToolbar.delegate = self
+        
+        self.searchCriteriaView.frame = CGRectMake(0, -SEARCH_TOOLBAR_HEIGHT, self.navigationController!.navigationBar.frame.width, SEARCH_TOOLBAR_HEIGHT)
+        
+        self.view.addSubview(self.searchCriteriaView)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorConnected), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(accountUpdated), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
@@ -345,6 +354,8 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
             self.contentView.addSubview(vc.view)
             self.currentViewController = vc
             
+            self.view.bringSubviewToFront(self.searchCriteriaView)
+            
             (vc as! PostsViewControllerDelegate).postsUpdated()
         }
     }
@@ -360,36 +371,9 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         return vc
     }
     
-    /*func closeSearchView(){
-        self.txtSearchBox.resignFirstResponder()
-        UIView.animateWithDuration(0.25, animations: {
-            // self.segmFilter.alpha = 1
-            self.txtSearchBox.alpha = 0
-            self.searchView.alpha = 0
-        }) { (_) in
-            self.searchView.removeFromSuperview()
-            self.tableView.scrollEnabled = true
-        }
+    func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
+        return .TopAttached
     }
-    
-    func openSearchView(){
-        self.searchView.frame = self.view.bounds;
-        self.tableView.scrollEnabled = false
-        
-        self.searchViewController?.setContentInset(self.navigationController!, tabBarController: self.tabBarController!)
-        self.searchView.alpha = 0
-        self.view.addSubview(self.searchView)
-        
-        self.txtSearchBox.becomeFirstResponder()
-        UIView.animateWithDuration(0.25, animations: {
-            //self.segmFilter.alpha = 0
-            self.txtSearchBox.alpha = 1
-            self.searchView.alpha = 1
-            
-        }) { (_) in
-            
-        }
-    }*/
     
     @IBAction func postsViewTypeChanged(sender: UISegmentedControl) {
         self.currentViewController!.view.removeFromSuperview()
@@ -424,6 +408,12 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                     self.searchBar.becomeFirstResponder()
                 })
         }
+        
+        UIView.animateWithDuration(0.2, animations: {
+            self.searchCriteriaView.frame.origin.y += SEARCH_TOOLBAR_HEIGHT
+            self.listViewController.tableView.frame.origin.y += SEARCH_TOOLBAR_HEIGHT
+        })
+        
         if let searchText = self.searchBar.text where searchText != ""{
             self.searchBar(self.searchBar, textDidChange: searchText)
         }
@@ -436,17 +426,13 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         self.navigationItem.setRightBarButtonItem(self.btnSearch, animated: true)
         self.navigationItem.setLeftBarButtonItem(self.btnAddPost, animated: true)
         self.typeSwitch.alpha = 0
-        /*UIView.animateWithDuration(0.1, animations: {
-            self.searchBar.alpha = 0
-        }) { (finished) in
-            self.navigationItem.titleView = self.typeSwitch
-            UIView.animateWithDuration(0.1, animations: { 
-                self.typeSwitch.alpha = 1
-            }, completion: nil)
-        }*/
+        
         UIView.animateWithDuration(0.2) {
             self.navigationItem.titleView = self.typeSwitch
             self.typeSwitch.alpha = 1
+            
+            self.searchCriteriaView.frame.origin.y -= SEARCH_TOOLBAR_HEIGHT
+            self.listViewController.tableView.frame.origin.y -= SEARCH_TOOLBAR_HEIGHT
         }
         
         self.posts = self.allPosts
