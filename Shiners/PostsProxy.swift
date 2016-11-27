@@ -110,4 +110,30 @@ public class PostsProxy{
             }
         }
     }
+    
+    public func getComments(postId: String, skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
+        var dict = Dictionary<String, AnyObject>()
+        dict["postId"] = postId
+        dict["take"] = take
+        dict["skip"] = skip
+        Meteor.call("getComments", params: [dict]){ (result, error) in
+            if error == nil {
+                ResponseHelper.callHandlerArray(result, handler: callback) as [Comment]?
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
+    
+    func addComment(comment: Comment, callback: MeteorMethodCallback? = nil){
+        let dict = comment.toDictionary()
+        Meteor.call("addComment", params: [dict]) { (result, error) in
+            if error == nil {
+                let errorId = ResponseHelper.getErrorId(result);
+                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
 }

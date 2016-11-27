@@ -8,11 +8,22 @@
 
 import Foundation
 import UIKit
+import BRYXBanner
 
 class LocalNotificationsHandler{
     var activeView: AppView = .Posts
     var activeViewId: String?
     private var newEvents = Dictionary<AppView, NotificationCounter>()
+    
+    let bannerBackgroundColor = UIColor(red: 0, green: 122/255.0, blue: 1, alpha: 1)
+    
+    func showBanner(title: String, subtitle: String){
+        let banner = Banner(title: title, subtitle: subtitle, image: nil, backgroundColor: self.bannerBackgroundColor, didTapBlock: nil)
+        banner.dismissesOnTap = true
+        ThreadHelper.runOnMainThread({
+            banner.show(duration: 1.0)
+        })
+    }
     
     func getTotalEventCount() -> Int {
         return newEvents.values.reduce(0, combine: { (i, counter) -> Int in
@@ -25,7 +36,7 @@ class LocalNotificationsHandler{
         return event.totalCount
     }
     
-    func reportNewEvent(view: AppView, count: Int = 1, id: String? = nil){
+    func reportNewEvent(view: AppView, count: Int = 1, id: String? = nil, messageTitle: String? = nil, messageSubtitle: String? = nil){
         let event = self.newEvents[view]!
         event.addCounter(count, id: id)
         
@@ -33,6 +44,9 @@ class LocalNotificationsHandler{
             event.subtractCounter()
         } else {
             self.sendLocalNotification(view, count: event.totalCount)
+            if !self.isActive(view, id: id), let msgTitle = messageTitle, msgSubtitle = messageSubtitle {
+                self.showBanner(msgTitle, subtitle: msgSubtitle)
+            }
         }
     }
     

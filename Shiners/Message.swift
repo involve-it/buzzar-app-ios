@@ -8,7 +8,7 @@
 
 import Foundation
 
-let MAX_SHORT_MESSAGE_LENGTH = 43
+
 
 public class Message: NSObject, DictionaryInitializable, NSCoding {
     var id: String?
@@ -27,11 +27,7 @@ public class Message: NSObject, DictionaryInitializable, NSCoding {
     
     public func shortMessage() -> String{
         if let text = self.text {
-            if text.characters.count > MAX_SHORT_MESSAGE_LENGTH {
-                return text.substringToIndex(text.startIndex.advancedBy(MAX_SHORT_MESSAGE_LENGTH)) + "..."
-            } else {
-                return text
-            }
+            return text.shortMessageForNotification()
         }
         return ""
     }

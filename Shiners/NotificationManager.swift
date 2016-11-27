@@ -37,6 +37,12 @@ public class NotificationManager{
         
         case MessagesAsyncRequestCompleted = "shiners:MessagesAsyncRequestCompleted"
         
+        case CommentsMySubscribed = "shiners:CommentsMySubscribed"
+        case CommentAdded = "shiners:CommentAdded"
+        case CommentRemoved = "shiners:CommentRemoved"
+        //case MyCommentAdded = "shiners:MyCommentAdded"
+        //case MyCommentRemoved = "shiners:MyCommentRemoved"
+        
         //case ChatAdded = "shiners:ChatAdded"
         
         case PushRegistrationFailed = "shiners:PushRegistrationFailed"

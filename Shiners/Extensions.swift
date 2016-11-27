@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 import CoreLocation
 
+let MAX_SHORT_MESSAGE_LENGTH = 43
+
 extension String{
     func heightWithConstrainedWidth(width: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: width, height: CGFloat.max)
@@ -30,6 +32,16 @@ extension String{
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluateWithObject(self)
+    }
+    
+    func shortMessageForNotification() -> String{
+        if self.characters.count > MAX_SHORT_MESSAGE_LENGTH {
+            return self.substringToIndex(self.startIndex.advancedBy(MAX_SHORT_MESSAGE_LENGTH)) + "..."
+        } else {
+            return self
+        }
+        
+        return ""
     }
 }
 

@@ -8,7 +8,7 @@
 
 import Foundation
 import SwiftDDP
-import BRYXBanner
+//import BRYXBanner
 
 class MessagesCollection: AbstractCollection{
     var messages = [Message]()
@@ -29,15 +29,15 @@ class MessagesCollection: AbstractCollection{
             }
             
             if message.toUserId == AccountHandler.Instance.userId{
-                if !LocalNotificationsHandler.Instance.isActive(.Messages, id: chat.id) && !LocalNotificationsHandler.Instance.isActive(.Messages, id: nil){
+                /*if !LocalNotificationsHandler.Instance.isActive(.Messages, id: chat.id) && !LocalNotificationsHandler.Instance.isActive(.Messages, id: nil){
                     let banner = Banner(title: "New message from \(chat.otherParty?.username ?? "Unknown")", subtitle: message.shortMessage(), image: nil, backgroundColor: self.bannerBackgroundColor, didTapBlock: nil)
                     banner.dismissesOnTap = true
                     ThreadHelper.runOnMainThread({
                         banner.show(duration: 1.0)
                     })
-                }
+                }*/
                 
-                LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id)
+                LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id, messageTitle: "New message from \(chat.otherParty?.username ?? "Unknown")", messageSubtitle: message.shortMessage())
             }
             NotificationManager.sendNotification(NotificationManager.Name.MessageAdded, object: message)
         } else {

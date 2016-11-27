@@ -357,16 +357,15 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         if let index = self.navigationItem.rightBarButtonItems?.indexOf(self.btnEdit){
             self.navigationItem.rightBarButtonItems?.removeAtIndex(index)
         }
-        if self.post?.user?.id == AccountHandler.Instance.currentUser?.id {
+        if self.post?.user?.id == AccountHandler.Instance.userId {
             //TODO: uncomment when Edit functionality is ready
             //self.navigationItem.rightBarButtonItems?.append(self.btnEdit)
+            LocalNotificationsHandler.Instance.reportEventSeen(.MyPosts, id: self.post.id)
         }
         
         if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
-        
-        
     }
     
     func goUserProfile() {

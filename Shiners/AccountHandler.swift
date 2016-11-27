@@ -11,7 +11,7 @@ import SwiftDDP
 
 public class AccountHandler{
     private static let USER_ID = "shiners:userId"
-    private let totalDependencies = 4
+    private let totalDependencies = 5
     private var resolvedDependencies = 0
     private var latestCallId = 0
     
@@ -27,6 +27,9 @@ public class AccountHandler{
     
     var messagesCollection = MessagesCollection()
     private var messagesId: String?
+    
+    var commentsCollection = CommentsCollection()
+    private var commentsId: String?
     
     private var lastLocationReport: NSDate?
     //2 minutes
@@ -46,18 +49,44 @@ public class AccountHandler{
         defaults.setBool(seen, forKey: AccountHandler.SEEN_WELCOME_SCREEN)
     }
     
+    func subscribe(){
+        self.subscribeToNewMessages()
+        self.subscribeToNewComments()
+    }
+    
     func subscribeToNewMessages(){
         if let messagesId = self.messagesId {
             Meteor.unsubscribe(withId: messagesId)
         } else {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveMyChats), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveMyChats), name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
-            //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveMyChats), name: NotificationManager.Name.MessageModified.rawValue, object: nil)
         }
         self.messagesId = Meteor.subscribe("messages-new") {
             NSLog("messages-new subscribed");
             self.resolvedDependencies += 1
             NotificationManager.sendNotification(NotificationManager.Name.MessagesNewSubscribed, object: nil)
+        }
+    }
+    
+    func subscribeToNewComments(){
+        if let commentsId = self.commentsId {
+            Meteor.unsubscribe(withId: commentsId)
+        } else {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(savePosts), name: NotificationManager.Name.CommentAdded.rawValue, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(savePosts), name: NotificationManager.Name.CommentRemoved.rawValue, object: nil)
+        }
+        self.commentsId = Meteor.subscribe("comments-my") {
+            print("comments-my subscribed")
+            self.resolvedDependencies += 1
+            NotificationManager.sendNotification(NotificationManager.Name.CommentsMySubscribed, object: nil)
+        }
+    }
+    
+    @objc func savePosts(notification: NSNotification){
+        if self.status == .Completed, let comment = notification.object as? Comment {
+            if let _ = self.myPosts?.indexOf({$0.id == comment.entityId}){
+                CachingHandler.Instance.savePostsMy(self.myPosts!)
+            }
         }
     }
     
@@ -206,7 +235,7 @@ public class AccountHandler{
         
         if self.isLoggedIn(){
             self.userId = Meteor.client.userId()
-            self.subscribeToNewMessages()
+            self.subscribe()
             ConnectionHandler.Instance.users.getCurrentUser({ (success, errorId, errorMessage, result) in
                 if (self.latestCallId == callId){
                     if (success){

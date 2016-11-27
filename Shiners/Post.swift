@@ -31,6 +31,7 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
     
     public var outDistancePost: String?
     
+    var comments = [Comment]()
     
     public override init(){
         super.init()
