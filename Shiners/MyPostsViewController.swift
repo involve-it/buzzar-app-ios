@@ -315,6 +315,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         let post = self.myPosts[indexPath.row]
         ConnectionHandler.Instance.posts.deletePost(post.id!) { success, errorId, errorMessage, result in
             if success {
+                NotificationManager.sendNotification(.NearbyPostRemoved, object: post.id)
                 self.myPosts.removeAtIndex(self.myPosts.indexOf({ (p) -> Bool in
                     return p.id == post.id
                 })!)
@@ -339,6 +340,11 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
             self.tableView.editing = false
             ConnectionHandler.Instance.posts.editPost(post, callback: { (success, errorId, errorMessage, result) in
                 if success {
+                    if post.visible! {
+                        NotificationManager.sendNotification(.NearbyPostAdded, object: post)
+                    } else {
+                        NotificationManager.sendNotification(.NearbyPostRemoved, object: post.id)
+                    }
                     self.tableView.rectForRowAtIndexPath(indexPath)
                 } else {
                     self.showAlert("Error", message: errorMessage)

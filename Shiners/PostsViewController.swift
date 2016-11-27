@@ -157,8 +157,12 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
                 let errorCell = tableView.dequeueReusableCellWithIdentifier("postsError") as! ErrorCell
                 errorCell.lblMessage.text = self.mainViewController.errorMessage ?? NSLocalizedString("Can't find any posts matching your search criteria", comment: "Can't find any posts matching your search criteria")
                 cell = errorCell
-            } else {
+            } else if self.mainViewController.loadingPosts {
                 cell = tableView.dequeueReusableCellWithIdentifier("waitingPosts")
+            } else {
+                let errorCell = tableView.dequeueReusableCellWithIdentifier("postsError") as! ErrorCell
+                errorCell.lblMessage.text =  NSLocalizedString("There are no posts around you", comment: "There are no posts around you")
+                cell = errorCell
             }
         } else if indexPath.row == self.mainViewController.posts.count && self.mainViewController.loadingMorePosts{
             cell = tableView.dequeueReusableCellWithIdentifier("morePosts")
@@ -282,7 +286,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if !self.mainViewController.filtering && indexPath.row >= self.mainViewController.posts.count - Int(AccountHandler.NEARBY_POSTS_PAGE_SIZE / 3) && !self.mainViewController.noMorePosts && !self.mainViewController.loadingPosts {
+        if !self.mainViewController.filtering && indexPath.row >= self.mainViewController.posts.count - Int(AccountHandler.NEARBY_POSTS_PAGE_SIZE / 3) && !self.mainViewController.noMorePosts && !self.mainViewController.loadingPosts && self.mainViewController.allPosts.count >= AccountHandler.NEARBY_POSTS_PAGE_SIZE {
             self.mainViewController.getMore()
         }
     }

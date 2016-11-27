@@ -28,7 +28,8 @@ public class NotificationManager{
         case NearbyPostsSubscribed = "shiners:NearbyPostsSubscribed"
         case NearbyPostAdded = "shiners:NearbyPostAdded"
         case NearbyPostRemoved = "shiners:NearbyPostRemoved"
-        case NearbyPostModified = "shiners:NearbyPosrtModified"
+        case NearbyPostModified = "shiners:NearbyPostModified"
+        case NearbyPostsUpdated = "shiners:NearbyPostsUpdated"
         
         case MessagesNewSubscribed = "shiners:MessagesNewSubscribed"
         case MessageAdded = "shiners:MessageAdded"

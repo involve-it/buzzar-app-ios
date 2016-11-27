@@ -106,6 +106,10 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                         self.view.endEditing(true)
                         self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
                     })
+                    if let id = result as? String {
+                        self.post.id = id
+                        NotificationManager.sendNotification(.NearbyPostsUpdated, object: nil)
+                    }
                 } else {
                     ThreadHelper.runOnMainThread({
                         self.showAlert(NSLocalizedString("Error occurred", comment: "Alert, error occurred"), message: errorMessage)

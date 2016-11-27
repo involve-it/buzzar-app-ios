@@ -132,6 +132,42 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorConnected), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(accountUpdated), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(postAdded), name: NotificationManager.Name.NearbyPostAdded.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(postRemoved), name: NotificationManager.Name.NearbyPostRemoved.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(postModified), name: NotificationManager.Name.NearbyPostModified.rawValue, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(getNearby), name: NotificationManager.Name.NearbyPostsUpdated.rawValue, object: nil)
+    }
+    
+    func postAdded(notification: NSNotification){
+        if ConnectionHandler.Instance.status == .Connected, let post = notification.object as? Post {
+            if self.allPosts.indexOf({$0.id == post.id}) == nil {
+                /*var posts = self.allPosts
+                posts.append(post)
+                posts = AccountHandler.Instance.sortNearbyPosts(posts)
+                self.allPosts = posts
+                self.refreshSearchResults()
+                self.callRefreshDelegates()*/
+                self.getNearby()
+            }
+        }
+    }
+    
+    func postRemoved(notification: NSNotification){
+        if ConnectionHandler.Instance.status == .Connected, let postId = notification.object as? String, index =  self.allPosts.indexOf({$0.id == postId}){
+            self.allPosts.removeAtIndex(index)
+            self.refreshSearchResults()
+            self.callRefreshDelegates()
+        }
+    }
+    
+    func postModified(notification: NSNotification){
+        if ConnectionHandler.Instance.status == .Connected, let post = notification.object as? Post, index =  self.allPosts.indexOf({$0.id == post.id}){
+            self.allPosts.removeAtIndex(index)
+            self.allPosts.insert(post, atIndex: index)
+            self.refreshSearchResults()
+            self.callRefreshDelegates()
+        }
     }
     
     func accountUpdated(){
@@ -192,10 +228,13 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                 self.callRefreshDelegates()
             }
         } else if geocoderInfo.error {
-            self.errorMessage = NSLocalizedString("An error occurred getting your current location", comment: "Alert error, An error occurred getting your current location")
-            ThreadHelper.runOnMainThread {
-                //self.tableView.reloadData()
-                self.callRefreshDelegates()
+            if self.staleLocation {
+                self.errorMessage = NSLocalizedString("An error occurred getting your current location", comment: "Alert error, An error occurred getting your current location")
+            
+                ThreadHelper.runOnMainThread {
+                    //self.tableView.reloadData()
+                    self.callRefreshDelegates()
+                }
             }
         } else {
             if self.currentLocation == nil || self.currentLocation?.latitude != geocoderInfo.coordinate?.latitude || self.currentLocation?.longitude != geocoderInfo.coordinate?.longitude || self.staleLocation{
@@ -211,6 +250,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                         AccountHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude)
                     })
                 }
+                AccountHandler.Instance.subscribeToNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude)
             }
         }
     }
@@ -239,11 +279,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                         }
                         self.allPosts = posts
                         
-                        if self.filtering{
-                            self.searchBar(self.searchBar, textDidChange: (self.searchBar.text ?? ""))
-                        } else {
-                            self.posts = self.allPosts
-                        }
+                        self.refreshSearchResults()
                     } else {
                         self.errorMessage = errorMessage
                         self.showAlert(NSLocalizedString("Error", comment: "Alert error, Error"), message: NSLocalizedString("Error updating posts", comment: "Alert message, Error updating posts"))
@@ -255,11 +291,27 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         }
     }
     
-    func getNearby(){
+    func refreshSearchResults(){
+        if self.filtering{
+            self.searchBar(self.searchBar, textDidChange: (self.searchBar.text ?? ""))
+        } else {
+            self.posts = self.allPosts
+        }
+    }
+    
+    func refreshNearby(){
+        self.getNearby(true)
+    }
+    
+    func getNearby(refreshing: Bool = false){
         self.noMorePosts = false
         if ConnectionHandler.Instance.status == .Connected && !self.loadingPosts, let currentLocation = self.currentLocation {
             self.loadingPosts = true
-            AccountHandler.Instance.getNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude, radius: 10000, skip: 0, take: AccountHandler.NEARBY_POSTS_PAGE_SIZE + 1) { (success, errorId, errorMessage, result) in
+            var take = AccountHandler.NEARBY_POSTS_PAGE_SIZE + 1
+            if refreshing {
+                take = max(take, self.allPosts.count)
+            }
+            AccountHandler.Instance.getNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude, radius: 10000, skip: 0, take: take) { (success, errorId, errorMessage, result) in
                 self.loadingPosts = false
                 ThreadHelper.runOnMainThread({
                     //self.refreshControl?.endRefreshing()
@@ -273,11 +325,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                             self.allPosts.removeLast()
                         }
                         
-                        if self.filtering{
-                            self.searchBar(self.searchBar, textDidChange: (self.searchBar.text ?? ""))
-                        } else {
-                            self.posts = self.allPosts
-                        }
+                        self.refreshSearchResults()
                         
                         //self.tableView.reloadData()
                         self.callRefreshDelegates()

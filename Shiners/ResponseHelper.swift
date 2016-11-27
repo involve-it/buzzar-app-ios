@@ -68,12 +68,14 @@ public class ResponseHelper{
     
     public class func callHandlerArray<T: DictionaryInitializable>(result: AnyObject?, handler: MeteorMethodCallback?) -> [T]?{
         if let fields = result as? NSDictionary, success = fields.valueForKey("success") as? Bool{
-            if success, let result = fields.valueForKey("result") as? NSArray {
+            if success {
                 var concreteResults = [T]()
-                for value in result {
-                    if let objFields = value as? NSDictionary {
-                        let concreteResult = T(fields: objFields)
-                        concreteResults.append(concreteResult)
+                if let result = fields.valueForKey("result") as? NSArray{
+                    for value in result {
+                        if let objFields = value as? NSDictionary {
+                            let concreteResult = T(fields: objFields)
+                            concreteResults.append(concreteResult)
+                        }
                     }
                 }
                 

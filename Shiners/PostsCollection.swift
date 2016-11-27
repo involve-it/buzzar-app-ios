@@ -10,6 +10,7 @@ import Foundation
 import SwiftDDP
 
 public class PostsCollection:AbstractCollection{
+    var subscribing = false
     public var posts = [Post]()
     
     init() {
@@ -19,13 +20,18 @@ public class PostsCollection:AbstractCollection{
     override public func documentWasAdded(collection: String, id: String, fields: NSDictionary?) {
         let post = Post(id: id, fields: fields)
         self.posts.append(post)
-        NotificationManager.sendNotification(NotificationManager.Name.NearbyPostAdded, object: nil)
+        if !subscribing {
+            NotificationManager.sendNotification(NotificationManager.Name.NearbyPostAdded, object: post)
+        }
     }
     
     override public func documentWasRemoved(collection: String, id: String) {
+        guard subscribing == false else { return }
         if let index = self.posts.indexOf({post in return post.id == id}){
             self.posts.removeAtIndex(index)
-            NotificationManager.sendNotification(NotificationManager.Name.NearbyPostRemoved, object: nil)
+            if !subscribing {
+                NotificationManager.sendNotification(NotificationManager.Name.NearbyPostRemoved, object: id)
+            }
         }
     }
     
@@ -33,7 +39,9 @@ public class PostsCollection:AbstractCollection{
         if let index = self.posts.indexOf({post in return post.id == id}){
             let post = self.posts[index];
             post.update(fields);
-            NotificationManager.sendNotification(NotificationManager.Name.NearbyPostModified, object: nil)
+            if !subscribing {
+                NotificationManager.sendNotification(NotificationManager.Name.NearbyPostModified, object: post)
+            }
         }
     }
     
