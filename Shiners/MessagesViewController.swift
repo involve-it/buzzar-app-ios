@@ -64,7 +64,6 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         } else {
             self.editButtonItem().enabled = false
         }
-
         
         //conf. LeftMenu
         //self.configureOfLeftMenu()

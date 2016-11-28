@@ -130,6 +130,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         
         self.view.addSubview(self.searchCriteriaView)
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(connectionFailed), name: NotificationManager.Name.MeteorConnectionFailed.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorConnected), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorNetworkConnected), name: NotificationManager.Name.MeteorNetworkConnected.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(accountUpdated), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
@@ -138,6 +139,11 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(postModified), name: NotificationManager.Name.NearbyPostModified.rawValue, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(getNearby), name: NotificationManager.Name.NearbyPostsUpdated.rawValue, object: nil)
+    }
+    
+    func connectionFailed(){
+        self.loadingPosts = false
+        self.loadingMorePosts = false
     }
     
     func postAdded(notification: NSNotification){
@@ -217,6 +223,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     
     func appDidBecomeActive(){
         self.loadingPosts = false
+        self.loadingMorePosts = false
         self.locationHandler.getLocationOnce(false)
         if ConnectionHandler.Instance.isNetworkConnected() {
             self.getNearby()

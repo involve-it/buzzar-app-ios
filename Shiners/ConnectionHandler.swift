@@ -138,6 +138,7 @@ public class ConnectionHandler{
     @objc func clientDisconnected(){
         self.status = .Failed
         self.dependenciesResolved = 0
+        NotificationManager.sendNotification(.MeteorConnectionFailed, object: nil)
     }
 }
 
