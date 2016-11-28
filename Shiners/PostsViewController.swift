@@ -235,6 +235,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
                 
                 //Post location
                 postCell.txtPostDistance.text = post.getDistanceFormatted(curLocation)
+            } else {
+                postCell.txtPostDistance.text = "..."
             }
             
             if let price = post.price where post.price != "" {

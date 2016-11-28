@@ -83,6 +83,8 @@ public class ConnectionHandler{
             
             Meteor.connect(url) { (session) in
                 NSLog("Meteor connected")
+                self.status = .NetworkConnected
+                NotificationManager.sendNotification(.MeteorNetworkConnected, object: nil)
                 
                 if AccountHandler.Instance.isLoggedIn(){
                     AccountHandler.Instance.loadAccount()
@@ -97,6 +99,10 @@ public class ConnectionHandler{
     
     public func isConnected() -> Bool {
         return self.status == .Connected && self.isNetworkReachable()
+    }
+    
+    public func isNetworkConnected() -> Bool {
+        return self.status == .NetworkConnected || self.status == .Connected
     }
     
     public func isNetworkReachable() -> Bool {
@@ -126,7 +132,7 @@ public class ConnectionHandler{
     
     
     public enum ConnectionStatus{
-        case NotInitialized, Connecting, Failed, Connected
+        case NotInitialized, Connecting, Failed, Connected, NetworkConnected
     }
     
     @objc func clientDisconnected(){

@@ -119,7 +119,7 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
                 self.setLoading(true)
                 self.enableFields(false)
             })
-            if ConnectionHandler.Instance.status == .Connected {
+            if ConnectionHandler.Instance.isNetworkConnected() {
                 NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
                 AccountHandler.Instance.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in

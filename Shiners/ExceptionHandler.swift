@@ -46,7 +46,7 @@ class ExceptionHandler{
     }
     
     @objc class func submitReport(){
-        if ConnectionHandler.Instance.status == .Connected {
+        if ConnectionHandler.Instance.isNetworkConnected() {
             NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
             do {
                 let log = try String(contentsOfFile: path.relativePath!, encoding: NSUTF8StringEncoding)

@@ -145,7 +145,7 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
                 self.enableFields(false)
             })
             
-            if ConnectionHandler.Instance.status == .Connected {
+            if ConnectionHandler.Instance.isNetworkConnected() {
                 NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
                 self.registerUser(user)
             } else {

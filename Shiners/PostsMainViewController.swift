@@ -82,7 +82,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if self.posts.count > 0 && ConnectionHandler.Instance.status == .Connected{
+        if self.posts.count > 0 && ConnectionHandler.Instance.isNetworkConnected() {
             self.checkPending(false)
         }
     }
@@ -102,7 +102,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         
         self.locationHandler.getLocationOnce(false)
         
-        if ConnectionHandler.Instance.status == .Connected{
+        if ConnectionHandler.Instance.isNetworkConnected() {
             self.getNearby()
         } else if CachingHandler.Instance.status != .Complete {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
@@ -131,6 +131,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         self.view.addSubview(self.searchCriteriaView)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorConnected), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorNetworkConnected), name: NotificationManager.Name.MeteorNetworkConnected.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(accountUpdated), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(postAdded), name: NotificationManager.Name.NearbyPostAdded.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(postRemoved), name: NotificationManager.Name.NearbyPostRemoved.rawValue, object: nil)
@@ -140,7 +141,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
     
     func postAdded(notification: NSNotification){
-        if ConnectionHandler.Instance.status == .Connected, let post = notification.object as? Post {
+        if ConnectionHandler.Instance.isNetworkConnected(), let post = notification.object as? Post {
             if self.allPosts.indexOf({$0.id == post.id}) == nil {
                 /*var posts = self.allPosts
                 posts.append(post)
@@ -154,7 +155,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
     
     func postRemoved(notification: NSNotification){
-        if ConnectionHandler.Instance.status == .Connected, let postId = notification.object as? String, index =  self.allPosts.indexOf({$0.id == postId}){
+        if ConnectionHandler.Instance.isNetworkConnected(), let postId = notification.object as? String, index =  self.allPosts.indexOf({$0.id == postId}){
             self.allPosts.removeAtIndex(index)
             self.refreshSearchResults()
             self.callRefreshDelegates()
@@ -162,7 +163,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
     
     func postModified(notification: NSNotification){
-        if ConnectionHandler.Instance.status == .Connected, let post = notification.object as? Post, index =  self.allPosts.indexOf({$0.id == post.id}){
+        if ConnectionHandler.Instance.isNetworkConnected(), let post = notification.object as? Post, index =  self.allPosts.indexOf({$0.id == post.id}){
             self.allPosts.removeAtIndex(index)
             self.allPosts.insert(post, atIndex: index)
             self.refreshSearchResults()
@@ -181,11 +182,14 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         }
     }
     
+    func meteorNetworkConnected(){
+        if self.locationAcquired {
+            self.getNearby()
+        }
+    }
+    
     @objc private func meteorConnected(notification: NSNotification){
         if self.locationAcquired {
-            //self.subscribeToNearby()
-            self.getNearby()
-            
             if AccountHandler.Instance.isLoggedIn() && ConnectionHandler.Instance.status == .Connected && !self.staleLocation{
                 ThreadHelper.runOnBackgroundThread({
                     //ConnectionHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude, notify: false)
@@ -214,7 +218,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     func appDidBecomeActive(){
         self.loadingPosts = false
         self.locationHandler.getLocationOnce(false)
-        if ConnectionHandler.Instance.status == .Connected{
+        if ConnectionHandler.Instance.isNetworkConnected() {
             self.getNearby()
             self.checkPending(false)
         }
@@ -260,7 +264,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
      }*/
     
     func getMore(){
-        if ConnectionHandler.Instance.status == .Connected && !self.loadingPosts, let currentLocation = self.currentLocation {
+        if ConnectionHandler.Instance.isNetworkConnected() && !self.loadingPosts, let currentLocation = self.currentLocation {
             self.loadingPosts = true
             self.loadingMorePosts = true
             self.callDisplayLoadingMore()
@@ -305,7 +309,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     
     func getNearby(refreshing: Bool = false){
         self.noMorePosts = false
-        if ConnectionHandler.Instance.status == .Connected && !self.loadingPosts, let currentLocation = self.currentLocation {
+        if ConnectionHandler.Instance.isNetworkConnected() && !self.loadingPosts, let currentLocation = self.currentLocation {
             self.loadingPosts = true
             var take = AccountHandler.NEARBY_POSTS_PAGE_SIZE + 1
             if refreshing {

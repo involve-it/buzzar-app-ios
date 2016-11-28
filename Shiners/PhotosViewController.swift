@@ -94,7 +94,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     func doCreatePost(){
         self.setLoading(true)
-        if ConnectionHandler.Instance.status == .Connected {
+        if ConnectionHandler.Instance.isNetworkConnected() {
             NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
             let callback: MeteorMethodCallback = { (success, errorId, errorMessage, result) in
                 ThreadHelper.runOnMainThread({ 

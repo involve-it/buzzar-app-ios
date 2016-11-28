@@ -19,6 +19,7 @@ public class NotificationManager{
         case NetworkUnreachable = "shiners:networkUnrechable"
         case NetworkReachable = "shiners:networkReachable"
         case MeteorConnected = "shiners:meteorConnected"
+        case MeteorNetworkConnected = "shiners:meteorNetworkConnected"
         case OfflineCacheRestored = "shiners:offlineCacheRestored"
         case AccountUpdated = "shiners:AccountUpdated"
         case AccountLoaded = "shiners:AccountLoaded"

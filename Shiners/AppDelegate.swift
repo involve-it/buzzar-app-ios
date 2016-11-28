@@ -111,7 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         let token = PushNotificationsHandler.saveToken(deviceToken)
         if AccountHandler.Instance.isLoggedIn(){
-            if ConnectionHandler.Instance.isConnected() {
+            if ConnectionHandler.Instance.isNetworkConnected() {
                 self.savePushToken()
             } else {
                 NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.savePushToken), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)

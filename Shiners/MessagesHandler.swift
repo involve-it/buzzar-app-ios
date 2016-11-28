@@ -24,7 +24,7 @@ class MessagesHandler {
     func getMessagesAsync(chatId: String, skip: Int, take: Int = MessagesHandler.DEFAULT_PAGE_SIZE) -> String{
         let id = NSUUID().UUIDString
         let request = MessagesRequest(id: id, chatId: chatId, take: take, skip: skip)
-        if ConnectionHandler.Instance.status == .Connected {
+        if ConnectionHandler.Instance.isNetworkConnected() {
             self.processRequest(request)
         } else {
             if self.pendingRequests.count == 0 {

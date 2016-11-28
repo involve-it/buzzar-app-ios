@@ -227,7 +227,7 @@ class ProfileTableViewController: UITableViewController {
             self.modalSpinner = self.displayModalAlert(NSLocalizedString("Logging out...", comment: "Alert title, logging out..."))
         }
         
-        if ConnectionHandler.Instance.status == .Connected {
+        if ConnectionHandler.Instance.isNetworkConnected() {
             NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
             AccountHandler.Instance.logoff(){ success in
                 ThreadHelper.runOnMainThread({

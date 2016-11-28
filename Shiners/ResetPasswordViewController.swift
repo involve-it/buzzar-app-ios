@@ -99,7 +99,7 @@ class ResetPasswordViewController: UIViewController, UITextFieldDelegate {
     }
     
     func doResetPassword(){
-        if ConnectionHandler.Instance.status == .Connected {
+        if ConnectionHandler.Instance.isNetworkConnected() {
             NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
             ConnectionHandler.Instance.users.resetPassword(self.textFieldEmailAddress.text!, callback: { (success, errorId, errorMessage, result) in
                 ThreadHelper.runOnMainThread({ 
