@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-let SEARCH_TOOLBAR_HEIGHT = CGFloat(44)
+//let SEARCH_TOOLBAR_HEIGHT = CGFloat(44)
 
 class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISearchBarDelegate, UIToolbarDelegate {
     let locationHandler = LocationHandler()
@@ -47,6 +47,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     //Identifier postStyle
     private var listInitialized = false
     private var mapInitialized = false
+    private var searchToolbarHeight: CGFloat!
     
     lazy var listViewController: PostsViewController! = {
         let list = self.storyBoard.instantiateViewControllerWithIdentifier("postsViewController") as! PostsViewController
@@ -125,8 +126,8 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         self.searchBar.showsCancelButton = true
         self.searchBar.delegate = self
         self.searchCriteriaToolbar.delegate = self
-        
-        self.searchCriteriaView.frame = CGRectMake(0, -SEARCH_TOOLBAR_HEIGHT, self.navigationController!.navigationBar.frame.width, SEARCH_TOOLBAR_HEIGHT)
+        self.searchToolbarHeight = self.searchCriteriaToolbar.frame.size.height
+        self.searchCriteriaView.frame = CGRectMake(0, -self.searchToolbarHeight, self.navigationController!.navigationBar.frame.width, self.searchToolbarHeight)
         
         self.view.addSubview(self.searchCriteriaView)
         
@@ -469,8 +470,8 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         }
         
         UIView.animateWithDuration(0.2, animations: {
-            self.searchCriteriaView.frame.origin.y += SEARCH_TOOLBAR_HEIGHT
-            self.listViewController.tableView.frame.origin.y += SEARCH_TOOLBAR_HEIGHT
+            self.searchCriteriaView.frame.origin.y += self.searchToolbarHeight
+            self.listViewController.tableView.frame.origin.y += self.searchToolbarHeight
         })
         
         if let searchText = self.searchBar.text where searchText != ""{
@@ -490,8 +491,8 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
             self.navigationItem.titleView = self.typeSwitch
             self.typeSwitch.alpha = 1
             
-            self.searchCriteriaView.frame.origin.y -= SEARCH_TOOLBAR_HEIGHT
-            self.listViewController.tableView.frame.origin.y -= SEARCH_TOOLBAR_HEIGHT
+            self.searchCriteriaView.frame.origin.y -= self.searchToolbarHeight
+            self.listViewController.tableView.frame.origin.y -= self.searchToolbarHeight
         }
         
         self.posts = self.allPosts

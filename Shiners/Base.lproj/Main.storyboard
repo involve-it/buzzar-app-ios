@@ -3936,13 +3936,18 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8as-IE-ARw" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <view contentMode="scaleToFill" id="pbM-rs-6pc">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
+                    <rect key="frame" x="0.0" y="0.0" width="438" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dUc-oa-ATg">
-                            <rect key="frame" x="0.0" y="0.0" width="240" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="438" height="44"/>
                             <items>
-                                <barButtonItem title="Item" id="XBL-oD-Kr1"/>
+                                <barButtonItem title="Jobs" id="XBL-oD-Kr1"/>
+                                <barButtonItem title="Trainings" id="jHc-pK-Fgz"/>
+                                <barButtonItem title="Connect" id="Sai-6p-0Vk"/>
+                                <barButtonItem title="For sale" id="ZeA-vQ-I2N"/>
+                                <barButtonItem title="Housing" id="w5l-5c-6Rh"/>
+                                <barButtonItem title="Events" id="THi-dR-qC3"/>
                             </items>
                         </toolbar>
                     </subviews>
