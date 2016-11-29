@@ -37,6 +37,8 @@
 		617378C21D6DC5E100F10ABA /* NEWRegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */; };
 		617378C71D6ECFC700F10ABA /* cellAboutMe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617378C51D6ECFC700F10ABA /* cellAboutMe.swift */; };
 		617378C81D6ECFC700F10ABA /* cellAboutMe.xib in Resources */ = {isa = PBXBuildFile; fileRef = 617378C61D6ECFC700F10ABA /* cellAboutMe.xib */; };
+		618724EF1DEDC86500FA5B48 /* commentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 618724ED1DEDC86500FA5B48 /* commentCollectionViewCell.swift */; };
+		618724F01DEDC86500FA5B48 /* commentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 618724EE1DEDC86500FA5B48 /* commentCollectionViewCell.xib */; };
 		61A089291D70602700CABB8D /* ChangePasswordTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A089281D70602700CABB8D /* ChangePasswordTableViewController.swift */; };
 		61C6F9091D3BED100030CC81 /* TypePostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9041D3BED100030CC81 /* TypePostTableViewController.swift */; };
 		61C6F90A1D3BED100030CC81 /* WhereViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C6F9051D3BED100030CC81 /* WhereViewController.swift */; };
@@ -174,6 +176,8 @@
 		617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEWRegisterViewController.swift; sourceTree = "<group>"; };
 		617378C51D6ECFC700F10ABA /* cellAboutMe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = cellAboutMe.swift; sourceTree = "<group>"; };
 		617378C61D6ECFC700F10ABA /* cellAboutMe.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = cellAboutMe.xib; sourceTree = "<group>"; };
+		618724ED1DEDC86500FA5B48 /* commentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = commentCollectionViewCell.swift; sourceTree = "<group>"; };
+		618724EE1DEDC86500FA5B48 /* commentCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = commentCollectionViewCell.xib; sourceTree = "<group>"; };
 		61A089281D70602700CABB8D /* ChangePasswordTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordTableViewController.swift; sourceTree = "<group>"; };
 		61C6F9041D3BED100030CC81 /* TypePostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypePostTableViewController.swift; sourceTree = "<group>"; };
 		61C6F9051D3BED100030CC81 /* WhereViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WhereViewController.swift; sourceTree = "<group>"; };
@@ -364,6 +368,15 @@
 			name = WelcomeScreen;
 			sourceTree = "<group>";
 		};
+		618724EC1DEDC76500FA5B48 /* Comments */ = {
+			isa = PBXGroup;
+			children = (
+				618724ED1DEDC86500FA5B48 /* commentCollectionViewCell.swift */,
+				618724EE1DEDC86500FA5B48 /* commentCollectionViewCell.xib */,
+			);
+			name = Comments;
+			sourceTree = "<group>";
+		};
 		61C6F9011D3BEC150030CC81 /* wizard */ = {
 			isa = PBXGroup;
 			children = (
@@ -442,6 +455,7 @@
 		7BB2A7D71CCC18B000AD636D /* Posts */ = {
 			isa = PBXGroup;
 			children = (
+				618724EC1DEDC76500FA5B48 /* Comments */,
 				61C6F9011D3BEC150030CC81 /* wizard */,
 				7BC0A22E1CCC160C00DA2824 /* SearchViewController.swift */,
 				61F91F551D830A1900B9DF3C /* PostsMainViewController.swift */,
@@ -705,6 +719,7 @@
 				7BB2A7EA1CCC4DCF00AD636D /* clipping_picture.png in Resources */,
 				7BC0A23D1CCC164100DA2824 /* lock_open.png in Resources */,
 				7BC0A23E1CCC164100DA2824 /* lock_closed.png in Resources */,
+				618724F01DEDC86500FA5B48 /* commentCollectionViewCell.xib in Resources */,
 				61F960891D8021DB002FBAED /* Main.storyboard in Resources */,
 				7BF881D51DD94431005E927E /* UploadTakingLongView.xib in Resources */,
 				610671A71D5A0927007828BA /* CVCellNib.xib in Resources */,
@@ -864,6 +879,7 @@
 				7BC0A2321CCC160C00DA2824 /* PostsViewController.swift in Sources */,
 				613C6A4C1D645D5A00744076 /* SettingsProfileTableViewController.swift in Sources */,
 				610671561D588B7A007828BA /* LoadingCell.swift in Sources */,
+				618724EF1DEDC86500FA5B48 /* commentCollectionViewCell.swift in Sources */,
 				7B35655F1CE92C1F00012CA9 /* Reachability.swift in Sources */,
 				7B26B19F1CD688B7000495EE /* LocationHandler.swift in Sources */,
 				610671A61D5A0927007828BA /* CVCellNib.swift in Sources */,

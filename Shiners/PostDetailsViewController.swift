@@ -12,8 +12,14 @@ import CoreLocation
 
 let cssStyle = "<style> * {font-family: '-apple-system','HelveticaNeue'; font-size:10pt;} p {font-size:10pt;}  </style>"
 
-public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMapViewDelegate, UIViewControllerPreviewingDelegate {
+public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMapViewDelegate, UIViewControllerPreviewingDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     
+    
+    @IBOutlet weak var commentHeightCollectionView: NSLayoutConstraint!
+    @IBOutlet weak var collectionView: UICollectionView!
+    let commentCellId = "cellComment"
+    
+    var collectionViewHeight:CGFloat = 0.0
     
     @IBOutlet weak var webviewHeightConstraint: NSLayoutConstraint!
     
@@ -61,6 +67,12 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     @IBOutlet weak var txtPostLocationFormattedAddress: UILabel!
     @IBOutlet weak var avatarUser: UIImageView!
     @IBOutlet weak var btnSendMessage: UIButton!
+    
+    
+    
+    @IBOutlet weak var btnAddComment: UIButton!
+    @IBOutlet weak var btnLike: UIButton!
+    @IBOutlet weak var btnViewAllComments: UIButton!
     
     var phoneNumber: String?
     
@@ -146,6 +158,28 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         self.postDescription.dataDetectorTypes = .Link
         
         self.navigationItem.title = post?.title
+        
+        //Button View all comments
+        self.btnViewAllComments.setTitle("View all comments".uppercaseString, forState: .Normal)
+        //self.commentHeightCollectionView.constant = self.collectionViewHeight
+        
+        //Button likes
+        self.btnLike.setImage(UIImage(named: "icon_likes")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        self.btnLike.tintColor = UIColor(netHex: 0x4A4A4A)
+        self.btnLike.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 6)
+        
+        //Button add_comments
+        self.btnAddComment.setImage(UIImage(named: "add_comments")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        self.btnAddComment.tintColor = UIColor(netHex: 0x4A4A4A)
+        self.btnAddComment.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 6)
+        
+        //Comment Collection View
+        //collectionView.registerClass(commentCollectionViewCell.self, forCellWithReuseIdentifier: commentCellId)
+        collectionView.registerNib(UINib(nibName: "commentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: commentCellId)
+        collectionView.backgroundColor = UIColor.whiteColor()
+        
+        
+        
         
         //Check UserId & Post's user id
         let ownPost = post.user?.id == AccountHandler.Instance.userId
@@ -368,6 +402,60 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         }
     }
     
+    //Comment cell configure
+    public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(commentCellId, forIndexPath: indexPath) as! commentCollectionViewCell
+        
+        cell.userAvatar.backgroundColor = UIColor(netHex: 0x8F8E94)
+        
+        //let ss = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        
+        cell.contentView.setNeedsLayout()
+        cell.contentView.layoutIfNeeded()
+        
+        return cell
+    }
+    
+    public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        
+        if let cell = commentCollectionViewCell.fromNib() {
+            let size = CGSizeMake(collectionView.frame.width, 1000)
+            let options = NSStringDrawingOptions.UsesFontLeading.union(.UsesLineFragmentOrigin)
+            
+            let estimatedRect = NSString(string: cell.userComment.text!).boundingRectWithSize(size, options: options, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(13)], context: nil)
+            
+            self.commentHeightCollectionView.constant = (estimatedRect.height + 25) * 3
+            
+            return CGSize(width: collectionView.frame.width, height: estimatedRect.height + 25)
+        }
+        
+        
+        return CGSizeZero
+        //return CGSize(width: collectionView.frame.width, height: view.frame.height)
+    }
+    
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+        return 1
+    }
+    
+ 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     func goUserProfile() {
         AppAnalytics.logEvent(.PostDetailsScreen_UserProfile)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -436,8 +524,9 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         self.webviewHeightConstraint.constant = contentSize
     }
     
-    //fullMapSegue
     
+    
+    //fullMapSegue
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "editPost"{
             //let vc = segue.destinationViewController as! UINavigationController
