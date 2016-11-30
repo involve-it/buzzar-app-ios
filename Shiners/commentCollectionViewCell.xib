@@ -22,27 +22,8 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6yr-Yi-KjX">
                         <rect key="frame" x="52" y="77" width="315" height="18"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mNR-KU-NnM">
-                                <rect key="frame" x="58" y="8" width="3" height="3"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="3" id="DKR-8x-gjq"/>
-                                    <constraint firstAttribute="height" constant="3" id="ulx-tX-SyF"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.CornerRadius">
-                                        <integer key="value" value="2"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ziy-KF-hhg">
-                                <rect key="frame" x="0.0" y="2" width="52" height="14"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" text="1 hour ago" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8iu-MJ-tZH">
-                                <rect key="frame" x="67" y="2" width="55" height="14"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total information from user /username + commetn written/" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ziy-KF-hhg">
+                                <rect key="frame" x="0.0" y="2" width="307" height="14"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -52,10 +33,6 @@
                         <constraints>
                             <constraint firstItem="ziy-KF-hhg" firstAttribute="leading" secondItem="6yr-Yi-KjX" secondAttribute="leading" id="69b-EO-s0e"/>
                             <constraint firstItem="ziy-KF-hhg" firstAttribute="centerY" secondItem="6yr-Yi-KjX" secondAttribute="centerY" id="COb-qS-MuY"/>
-                            <constraint firstItem="8iu-MJ-tZH" firstAttribute="leading" secondItem="mNR-KU-NnM" secondAttribute="trailing" constant="6" id="GRZ-PA-dYT"/>
-                            <constraint firstItem="8iu-MJ-tZH" firstAttribute="centerY" secondItem="6yr-Yi-KjX" secondAttribute="centerY" id="IL4-Eg-WRb"/>
-                            <constraint firstItem="mNR-KU-NnM" firstAttribute="leading" secondItem="ziy-KF-hhg" secondAttribute="trailing" constant="6" id="OXf-UE-ADx"/>
-                            <constraint firstItem="mNR-KU-NnM" firstAttribute="centerY" secondItem="6yr-Yi-KjX" secondAttribute="centerY" id="iZ6-oo-iBg"/>
                             <constraint firstAttribute="height" constant="18" id="kkF-wl-ngQ"/>
                         </constraints>
                     </view>
@@ -92,6 +69,7 @@
             <size key="customSize" width="276" height="107"/>
             <connections>
                 <outlet property="btnReport" destination="O5G-Ya-mkq" id="Jim-TF-gps"/>
+                <outlet property="txtTotalInfoFromUser" destination="ziy-KF-hhg" id="cYm-ud-AsJ"/>
                 <outlet property="userAvatar" destination="Hh4-wq-tJi" id="iSb-Vc-jmG"/>
                 <outlet property="userComment" destination="j84-xM-nFA" id="wc6-vz-Blm"/>
             </connections>

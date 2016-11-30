@@ -10,10 +10,22 @@ import UIKit
 
 class commentCollectionViewCell: UICollectionViewCell {
     
-    
+    @IBOutlet weak var txtTotalInfoFromUser: UILabel!
     @IBOutlet weak var userAvatar: UIImageView!
     @IBOutlet weak var userComment: UILabel!
     @IBOutlet weak var btnReport: UIButton!
+    
+    var username: String {
+        get {
+            return "username"
+        }
+    }
+    
+    var commentWritten: String {
+        get {
+            return "1 hour ago"
+        }
+    }
     
     class func fromNib() -> commentCollectionViewCell? {
         var cell: commentCollectionViewCell?
@@ -31,7 +43,13 @@ class commentCollectionViewCell: UICollectionViewCell {
         
         userAvatar.layer.cornerRadius = userAvatar.frame.width / 2
         userAvatar.clipsToBounds = true
-
+        
+        labelUserInfoConfigure()
     }
-
+    
+    func labelUserInfoConfigure() {
+        self.txtTotalInfoFromUser.text = "\(username) • \(commentWritten)"
+    }
 }
+
+//•

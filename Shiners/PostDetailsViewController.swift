@@ -68,8 +68,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     @IBOutlet weak var avatarUser: UIImageView!
     @IBOutlet weak var btnSendMessage: UIButton!
     
-    
-    
+
     @IBOutlet weak var btnAddComment: UIButton!
     @IBOutlet weak var btnLike: UIButton!
     @IBOutlet weak var btnViewAllComments: UIButton!
@@ -140,7 +139,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         iconFavoritesCount.image = UIImage(named: "favorites_standart")?.imageWithRenderingMode(.AlwaysTemplate)
         iconFavoritesCount.tintColor = uiBlueColor
         
@@ -429,7 +428,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             
             let estimatedRect = NSString(string: cell.userComment.text!).boundingRectWithSize(size, options: options, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(13)], context: nil)
             
-            self.commentHeightCollectionView.constant = (estimatedRect.height + 25) * 3
+            self.commentHeightCollectionView.constant = (estimatedRect.height + 25) * CGFloat(collectionView.numberOfItemsInSection(0))
             
             return CGSize(width: collectionView.frame.width, height: estimatedRect.height + 25)
         }
