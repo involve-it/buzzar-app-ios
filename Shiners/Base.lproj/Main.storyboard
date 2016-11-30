@@ -702,7 +702,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z8Z-hG-Qe8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1276" y="-783"/>
+            <point key="canvasLocation" x="2088" y="-783"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="JOp-4c-IPT">
@@ -1975,19 +1975,19 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="mkV-lq-6Pf">
-                                    <rect key="frame" x="16" y="138" width="568" height="60"/>
+                                    <rect key="frame" x="16" y="138" width="568" height="70"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="ZtF-Ob-HQV" userLabel="Message">
-                                            <rect key="frame" x="0.0" y="0.0" width="272" height="60"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="272" height="70"/>
                                             <subviews>
                                                 <button opaque="NO" clipsSubviews="YES" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="59D-uq-1Be">
-                                                    <rect key="frame" x="192" y="0.0" width="80" height="60"/>
+                                                    <rect key="frame" x="192" y="0.0" width="80" height="70"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="80" id="AG1-TR-dVu"/>
-                                                        <constraint firstAttribute="height" constant="60" id="k8a-ht-nlO"/>
+                                                        <constraint firstAttribute="height" constant="70" id="k8a-ht-nlO"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <state key="normal" title="Message" image="message2">
+                                                    <state key="normal" title="Message" image="message">
                                                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <state key="highlighted" image="message-active">
@@ -2000,16 +2000,16 @@
                                             </subviews>
                                         </stackView>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="lIg-9e-Hup" userLabel="Call">
-                                            <rect key="frame" x="296" y="0.0" width="272" height="60"/>
+                                            <rect key="frame" x="296" y="0.0" width="272" height="70"/>
                                             <subviews>
                                                 <button opaque="NO" clipsSubviews="YES" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Nn-4L-XLc">
-                                                    <rect key="frame" x="0.0" y="0.0" width="80" height="60"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="80" height="70"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="60" id="U4g-bC-yyO"/>
+                                                        <constraint firstAttribute="height" constant="70" id="U4g-bC-yyO"/>
                                                         <constraint firstAttribute="width" constant="80" id="jon-Ka-F4B"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                    <state key="normal" title="Call" image="call2">
+                                                    <state key="normal" title="Call" image="call">
                                                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <state key="highlighted" image="call-active">
@@ -2023,7 +2023,7 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="60" id="Uuz-Ve-W5i"/>
+                                        <constraint firstAttribute="height" constant="70" id="Uuz-Ve-W5i"/>
                                     </constraints>
                                 </stackView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="online / offline" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OMx-iq-R9U">
@@ -3898,7 +3898,7 @@
                                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                 <state key="normal" title="View all comments"/>
                                                                 <connections>
-                                                                    <segue destination="KZk-Je-23a" kind="presentation" id="ZJS-vP-tPP"/>
+                                                                    <segue destination="bSO-lz-AtX" kind="presentation" id="ZJS-vP-tPP"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -4014,7 +4014,7 @@
                 <exit id="IKf-YR-aAu" userLabel="Exit" sceneMemberID="exit"/>
                 <tapGestureRecognizer id="P7E-82-Xr3"/>
             </objects>
-            <point key="canvasLocation" x="-704" y="-609"/>
+            <point key="canvasLocation" x="-1137" y="-583"/>
         </scene>
         <!--Posts Main View Controller-->
         <scene sceneID="Iu8-5h-2r4">
@@ -5900,7 +5900,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8yR-p8-NXn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="615" y="-783"/>
+            <point key="canvasLocation" x="1427" y="-783"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ACU-gE-AAF">
@@ -5920,24 +5920,6 @@
             </objects>
             <point key="canvasLocation" x="1475" y="3933"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="kmn-Xk-3UM">
-            <objects>
-                <viewController id="KZk-Je-23a" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="phP-Ra-uK7"/>
-                        <viewControllerLayoutGuide type="bottom" id="hou-Od-XpT"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="0LA-zD-ojk">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oY4-te-NcL" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-23" y="-809"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="LPJ-bi-On0">
             <objects>
@@ -5955,6 +5937,61 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ENu-vY-hvF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1475" y="-2289"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="HyR-QV-DKp">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bSO-lz-AtX" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Awd-0x-ynv">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="FlX-ZX-1QN" kind="relationship" relationship="rootViewController" id="MZd-e3-ht2"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sbE-JB-7vw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-465" y="-783"/>
+        </scene>
+        <!--Collection View Controller-->
+        <scene sceneID="HDF-J4-l6h">
+            <objects>
+                <collectionViewController id="FlX-ZX-1QN" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="a3z-bQ-wO3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mks-9f-kEh">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="6HL-ps-pZk">
+                                <rect key="frame" x="0.0" y="64" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="FlX-ZX-1QN" id="Iz7-As-knW"/>
+                            <outlet property="delegate" destination="FlX-ZX-1QN" id="lJV-iP-cf9"/>
+                        </connections>
+                    </collectionView>
+                    <navigationItem key="navigationItem" id="Oll-Pb-MEM">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="nOA-Dr-dQF"/>
+                    </navigationItem>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xvb-7d-nBc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="182" y="-783"/>
         </scene>
     </scenes>
     <resources>
@@ -5974,14 +6011,14 @@
         <image name="Trade" width="32" height="44"/>
         <image name="Trainings" width="50" height="44"/>
         <image name="bg_login_page" width="860" height="1210"/>
-        <image name="call-active" width="36" height="36"/>
-        <image name="call2" width="36" height="36"/>
+        <image name="call" width="44" height="44"/>
+        <image name="call-active" width="44" height="44"/>
         <image name="expand_arrow" width="30" height="17"/>
         <image name="facebook.png" width="128" height="128"/>
         <image name="home" width="22" height="22"/>
         <image name="medium-logo" width="70" height="70"/>
-        <image name="message-active" width="36" height="36"/>
-        <image name="message2" width="36" height="36"/>
+        <image name="message" width="44" height="44"/>
+        <image name="message-active" width="44" height="44"/>
         <image name="messages" width="22" height="22"/>
         <image name="mountains" width="1221" height="501"/>
         <image name="myPosts" width="22" height="22"/>
