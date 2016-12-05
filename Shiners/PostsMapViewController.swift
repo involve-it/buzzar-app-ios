@@ -44,6 +44,9 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
             post.outDistancePost = post.getDistanceFormatted(curLocation)
         }
         detailsViewController.post = post
+        //if !post.commentsRequested {
+            detailsViewController.pendingCommentsAsyncId = CommentsHandler.Instance.getCommentsAsync(post.id!, skip: 0)
+        //}
         self.mainViewController.navigationController?.pushViewController(detailsViewController, animated: true)
     }
     

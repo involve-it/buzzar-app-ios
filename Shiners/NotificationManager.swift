@@ -39,6 +39,9 @@ public class NotificationManager{
         //case MessageModified = "shiners:MessageModified"
         
         case MessagesAsyncRequestCompleted = "shiners:MessagesAsyncRequestCompleted"
+        case CommentsAsyncRequestCompleted = "shiners:CommentsAsyncRequestCompleted"
+        
+        case PostCommentsUpdated = "shiners:PostCommentsUpdated"
         
         case CommentsMySubscribed = "shiners:CommentsMySubscribed"
         case CommentAdded = "shiners:CommentAdded"

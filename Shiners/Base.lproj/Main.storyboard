@@ -3870,48 +3870,65 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iUp-4r-CnR" userLabel="comment content">
                                                         <rect key="frame" x="16" y="53" width="568" height="252"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J87-Oa-Xuo">
-                                                                <rect key="frame" x="0.0" y="8" width="75" height="21"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <color key="textColor" red="0.29019607843137252" green="0.29019607843137252" blue="0.29019607843137252" alpha="1" colorSpace="calibratedRGB"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Cgo-TV-2fR">
-                                                                <rect key="frame" x="0.0" y="49" width="568" height="160"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="CL5-RO-ubV"/>
-                                                                </constraints>
-                                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Srw-Gs-kMS">
-                                                                    <size key="itemSize" width="40" height="30"/>
-                                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                                </collectionViewFlowLayout>
-                                                                <cells/>
-                                                                <connections>
-                                                                    <outlet property="dataSource" destination="Qd9-Zx-awU" id="cKf-6b-hMA"/>
-                                                                    <outlet property="delegate" destination="Qd9-Zx-awU" id="d2T-xf-vyL"/>
-                                                                </connections>
-                                                            </collectionView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LZx-k4-Sfk">
                                                                 <rect key="frame" x="231" y="217" width="106" height="27"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                                 <state key="normal" title="View all comments"/>
                                                                 <connections>
-                                                                    <segue destination="bSO-lz-AtX" kind="presentation" id="ZJS-vP-tPP"/>
+                                                                    <segue destination="bSO-lz-AtX" kind="presentation" identifier="allComments" id="ZJS-vP-tPP"/>
                                                                 </connections>
                                                             </button>
+                                                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Cgo-TV-2fR">
+                                                                <rect key="frame" x="0.0" y="8" width="568" height="201"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="CL5-RO-ubV"/>
+                                                                </constraints>
+                                                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Srw-Gs-kMS">
+                                                                    <size key="itemSize" width="568" height="30"/>
+                                                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                                </collectionViewFlowLayout>
+                                                                <cells>
+                                                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cellCommentMessage" id="VTl-12-ZVD" customClass="CommentCollectionViewMessageCell" customModule="Shiners" customModuleProvider="target">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="568" height="30"/>
+                                                                        <autoresizingMask key="autoresizingMask"/>
+                                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="568" height="30"/>
+                                                                            <autoresizingMask key="autoresizingMask"/>
+                                                                            <subviews>
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8F6-ff-lgy">
+                                                                                    <rect key="frame" x="263" y="4" width="42" height="21"/>
+                                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                                    <nil key="highlightedColor"/>
+                                                                                </label>
+                                                                            </subviews>
+                                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                                        </view>
+                                                                        <constraints>
+                                                                            <constraint firstItem="8F6-ff-lgy" firstAttribute="centerX" secondItem="VTl-12-ZVD" secondAttribute="centerX" id="b6w-ZI-uHa"/>
+                                                                            <constraint firstItem="8F6-ff-lgy" firstAttribute="centerY" secondItem="VTl-12-ZVD" secondAttribute="centerY" id="lt6-eg-5yZ"/>
+                                                                        </constraints>
+                                                                        <connections>
+                                                                            <outlet property="lblMessage" destination="8F6-ff-lgy" id="rkG-m7-evC"/>
+                                                                        </connections>
+                                                                    </collectionViewCell>
+                                                                </cells>
+                                                                <connections>
+                                                                    <outlet property="dataSource" destination="Qd9-Zx-awU" id="cKf-6b-hMA"/>
+                                                                    <outlet property="delegate" destination="Qd9-Zx-awU" id="d2T-xf-vyL"/>
+                                                                </connections>
+                                                            </collectionView>
                                                         </subviews>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <constraints>
-                                                            <constraint firstItem="J87-Oa-Xuo" firstAttribute="leading" secondItem="iUp-4r-CnR" secondAttribute="leading" id="0Eq-e3-T7e"/>
                                                             <constraint firstAttribute="bottom" secondItem="LZx-k4-Sfk" secondAttribute="bottom" constant="8" id="Ebj-Pu-wgk"/>
+                                                            <constraint firstItem="Cgo-TV-2fR" firstAttribute="top" secondItem="iUp-4r-CnR" secondAttribute="top" constant="8" id="NOk-Ld-FDw"/>
                                                             <constraint firstItem="LZx-k4-Sfk" firstAttribute="top" secondItem="Cgo-TV-2fR" secondAttribute="bottom" constant="8" id="Nik-bA-cJN"/>
                                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="OeN-87-m8x"/>
                                                             <constraint firstItem="LZx-k4-Sfk" firstAttribute="centerX" secondItem="iUp-4r-CnR" secondAttribute="centerX" id="enu-3J-vTz"/>
                                                             <constraint firstItem="Cgo-TV-2fR" firstAttribute="leading" secondItem="iUp-4r-CnR" secondAttribute="leading" id="mrJ-pT-w1Q"/>
-                                                            <constraint firstItem="Cgo-TV-2fR" firstAttribute="top" secondItem="J87-Oa-Xuo" secondAttribute="bottom" constant="20" id="n9g-Hi-qbW"/>
-                                                            <constraint firstItem="J87-Oa-Xuo" firstAttribute="top" secondItem="iUp-4r-CnR" secondAttribute="top" constant="8" id="rbr-4O-ckr"/>
                                                             <constraint firstAttribute="trailing" secondItem="Cgo-TV-2fR" secondAttribute="trailing" id="y1L-Bo-9hP"/>
                                                         </constraints>
                                                     </view>
@@ -5956,28 +5973,43 @@
             </objects>
             <point key="canvasLocation" x="-465" y="-783"/>
         </scene>
-        <!--Collection View Controller-->
+        <!--Comments-->
         <scene sceneID="HDF-J4-l6h">
             <objects>
-                <collectionViewController id="FlX-ZX-1QN" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="a3z-bQ-wO3">
+                <collectionViewController id="FlX-ZX-1QN" customClass="CommentsViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="prototypes" id="a3z-bQ-wO3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mks-9f-kEh">
-                            <size key="itemSize" width="50" height="50"/>
+                            <size key="itemSize" width="584" height="50"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="sectionInset" minX="8" minY="8" maxX="8" maxY="8"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="6HL-ps-pZk">
-                                <rect key="frame" x="0.0" y="64" width="50" height="50"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="6HL-ps-pZk" customClass="CommentCollectionViewMessageCell" customModule="Shiners" customModuleProvider="target">
+                                <rect key="frame" x="8" y="72" width="584" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="584" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aAa-3U-whN">
+                                            <rect key="frame" x="279" y="14" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <constraints>
+                                    <constraint firstItem="aAa-3U-whN" firstAttribute="centerY" secondItem="6HL-ps-pZk" secondAttribute="centerY" id="5HO-UO-uVN"/>
+                                    <constraint firstItem="aAa-3U-whN" firstAttribute="centerX" secondItem="6HL-ps-pZk" secondAttribute="centerX" id="yiR-5j-vAc"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="lblMessage" destination="aAa-3U-whN" id="h33-gE-oUg"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -5985,11 +6017,59 @@
                             <outlet property="delegate" destination="FlX-ZX-1QN" id="lJV-iP-cf9"/>
                         </connections>
                     </collectionView>
-                    <navigationItem key="navigationItem" id="Oll-Pb-MEM">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="nOA-Dr-dQF"/>
+                    <navigationItem key="navigationItem" title="Comments" id="Oll-Pb-MEM">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="nOA-Dr-dQF">
+                            <connections>
+                                <action selector="btnCancel_Click:" destination="FlX-ZX-1QN" id="8ob-CV-tht"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="accessoryView" destination="PJe-cX-Shz" id="1Bm-ec-IRV"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xvb-7d-nBc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="PJe-cX-Shz" customClass="AddCommentView" customModule="Shiners" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="564" height="75"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="72D-M4-i6E">
+                            <rect key="frame" x="8" y="5" width="504" height="65"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E9x-iK-5j4">
+                            <rect key="frame" x="520" y="8" width="36" height="30"/>
+                            <state key="normal" title="Send"/>
+                            <connections>
+                                <action selector="btnSend_Click:" destination="PJe-cX-Shz" eventType="touchUpInside" id="dRU-Ok-5DL"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add comment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DZC-aE-Pvf">
+                            <rect key="frame" x="16" y="27" width="108" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="72D-M4-i6E" secondAttribute="bottom" constant="5" id="5gT-mS-5AV"/>
+                        <constraint firstItem="72D-M4-i6E" firstAttribute="top" secondItem="PJe-cX-Shz" secondAttribute="top" constant="5" id="767-Az-Rnv"/>
+                        <constraint firstItem="72D-M4-i6E" firstAttribute="leading" secondItem="PJe-cX-Shz" secondAttribute="leading" constant="8" id="ELe-HZ-2BF"/>
+                        <constraint firstItem="E9x-iK-5j4" firstAttribute="leading" secondItem="72D-M4-i6E" secondAttribute="trailing" constant="8" id="GUb-d1-3Xc"/>
+                        <constraint firstAttribute="trailing" secondItem="E9x-iK-5j4" secondAttribute="trailing" constant="8" id="aGv-DS-r3I"/>
+                        <constraint firstItem="E9x-iK-5j4" firstAttribute="top" secondItem="PJe-cX-Shz" secondAttribute="top" constant="8" id="sYp-IY-hih"/>
+                        <constraint firstItem="DZC-aE-Pvf" firstAttribute="centerY" secondItem="PJe-cX-Shz" secondAttribute="centerY" id="xaq-sk-imU"/>
+                        <constraint firstItem="DZC-aE-Pvf" firstAttribute="leading" secondItem="PJe-cX-Shz" secondAttribute="leading" constant="16" id="zHp-7x-5Bc"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="btnSend" destination="E9x-iK-5j4" id="xhN-7E-PFR"/>
+                        <outlet property="lblPlaceholder" destination="DZC-aE-Pvf" id="ghz-Vu-bgD"/>
+                        <outlet property="txtComment" destination="72D-M4-i6E" id="b81-gE-bQx"/>
+                    </connections>
+                </view>
             </objects>
             <point key="canvasLocation" x="182" y="-783"/>
         </scene>

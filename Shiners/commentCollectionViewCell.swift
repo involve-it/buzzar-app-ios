@@ -15,17 +15,9 @@ class commentCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var userComment: UILabel!
     @IBOutlet weak var btnReport: UIButton!
     
-    var username: String {
-        get {
-            return "username"
-        }
-    }
+    var username: String!
     
-    var commentWritten: String {
-        get {
-            return "1 hour ago"
-        }
-    }
+    var commentWritten: String!
     
     class func fromNib() -> commentCollectionViewCell? {
         var cell: commentCollectionViewCell?

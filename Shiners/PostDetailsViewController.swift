@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import JSQMessagesViewController
 
 let cssStyle = "<style> * {font-family: '-apple-system','HelveticaNeue'; font-size:10pt;} p {font-size:10pt;}  </style>"
 
@@ -73,6 +74,8 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     @IBOutlet weak var btnLike: UIButton!
     @IBOutlet weak var btnViewAllComments: UIButton!
     
+    var pendingCommentsAsyncId: String?
+    
     var phoneNumber: String?
     
     func map_Clicked(sender: AnyObject) {
@@ -87,7 +90,6 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         
         self.presentViewController(nc, animated: true, completion: nil)
     }
-    
     
     @IBAction func btnCall_Click(sender: AnyObject) {
         AppAnalytics.logEvent(.PostDetailsScreen_BtnCall_Clicked)
@@ -176,9 +178,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         //collectionView.registerClass(commentCollectionViewCell.self, forCellWithReuseIdentifier: commentCellId)
         collectionView.registerNib(UINib(nibName: "commentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: commentCellId)
         collectionView.backgroundColor = UIColor.whiteColor()
-        
-        
-        
+        collectionView.delegate = self
         
         //Check UserId & Post's user id
         let ownPost = post.user?.id == AccountHandler.Instance.userId
@@ -396,64 +396,117 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             LocalNotificationsHandler.Instance.reportEventSeen(.MyPosts, id: self.post.id)
         }
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(newCommentReceived), name: NotificationManager.Name.CommentAdded.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentsPageReceived), name: NotificationManager.Name.CommentsAsyncRequestCompleted.rawValue, object: nil)
+        self.btnViewAllComments.hidden = true
+        if let pendingCommentsAsyncId = self.pendingCommentsAsyncId {
+            if let isCompleted = CommentsHandler.Instance.isCompleted(pendingCommentsAsyncId) where isCompleted {
+                self.pendingCommentsAsyncId = nil
+                if let comments = CommentsHandler.Instance.getCommentsByRequestId(pendingCommentsAsyncId) {
+                    self.post.comments = comments
+                    if comments.count > 3 {
+                        self.btnViewAllComments.hidden = false
+                    }
+                }
+            }
+        }
+        
         if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
     }
     
+    func newCommentReceived(notification: NSNotification){
+        if let comment = notification.object as? Comment where comment.entityId == self.post.id {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func commentsPageReceived(notification: NSNotification){
+        if let pendingCommentsAsyncId = self.pendingCommentsAsyncId where pendingCommentsAsyncId == notification.object as! String, let comments = CommentsHandler.Instance.getCommentsByRequestId(pendingCommentsAsyncId) {
+            self.post.commentsRequested = true
+            self.pendingCommentsAsyncId = nil
+            self.post.comments = comments
+            NotificationManager.sendNotification(.PostCommentsUpdated, object: self.post.id)
+            ThreadHelper.runOnMainThread({
+                self.collectionView.reloadData()
+                //self.commentHeightCollectionView.constant = self.collectionView.contentSize.height
+                if comments.count > 3 {
+                    self.btnViewAllComments.hidden = false
+                }
+            })
+        }
+    }
+    
     //Comment cell configure
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(commentCellId, forIndexPath: indexPath) as! commentCollectionViewCell
+        self.commentHeightCollectionView.constant = self.collectionView.contentSize.height
+        if self.pendingCommentsAsyncId == nil {
+            if post.comments.count == 0{
+                let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cellCommentMessage", forIndexPath: indexPath) as! CommentCollectionViewMessageCell
+                cell.lblMessage.text = NSLocalizedString("There are no comments to this post", comment: "There are no comments to this post")
+                return cell
+            } else {
+                let cell = collectionView.dequeueReusableCellWithReuseIdentifier(commentCellId, forIndexPath: indexPath) as! commentCollectionViewCell
+                
+                cell.userAvatar.backgroundColor = UIColor(netHex: 0x8F8E94)
+                cell.userAvatar.image = ImageCachingHandler.defaultAccountImage
+                
+                let comment = self.post.comments[indexPath.row]
+                cell.userComment.text = comment.text
+                cell.username = comment.username!
+                cell.commentWritten = JSQMessagesTimestampFormatter.sharedFormatter().timestampForDate(comment.timestamp!)
+                cell.labelUserInfoConfigure()
+                
+                //let ss = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+                
+                cell.contentView.setNeedsLayout()
+                cell.contentView.layoutIfNeeded()
+                   
+                return cell
+            }
+        } else {
+            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cellCommentMessage", forIndexPath: indexPath) as! CommentCollectionViewMessageCell
+            cell.lblMessage.text = NSLocalizedString("Loading comments", comment: "Loading comments")
+            return cell
+        }
         
-        cell.userAvatar.backgroundColor = UIColor(netHex: 0x8F8E94)
-        
-        //let ss = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-        
-        cell.contentView.setNeedsLayout()
-        cell.contentView.layoutIfNeeded()
-        
-        return cell
     }
     
     public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        if self.pendingCommentsAsyncId == nil {
+            return max(1, min(self.post.comments.count, 3))
+        } else {
+            return 1
+        }
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
-        
         if let cell = commentCollectionViewCell.fromNib() {
-            let size = CGSizeMake(collectionView.frame.width, 1000)
-            let options = NSStringDrawingOptions.UsesFontLeading.union(.UsesLineFragmentOrigin)
-            
-            let estimatedRect = NSString(string: cell.userComment.text!).boundingRectWithSize(size, options: options, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(13)], context: nil)
-            
-            self.commentHeightCollectionView.constant = (estimatedRect.height + 25) * CGFloat(collectionView.numberOfItemsInSection(0))
-            
-            return CGSize(width: collectionView.frame.width, height: estimatedRect.height + 25)
+            if self.post.comments.count > 0 {
+                let comment = self.post.comments[indexPath.row]
+                let size = CGSizeMake(collectionView.frame.width - 60, 1000)
+                let options = NSStringDrawingOptions.UsesFontLeading.union(.UsesLineFragmentOrigin)
+                
+                let estimatedRect = NSString(string: comment.text!).boundingRectWithSize(size, options: options, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(13)], context: nil)
+                
+                let newSize = CGSize(width: collectionView.frame.width, height: max(estimatedRect.height, cell.userAvatar.frame.size.height) + 20)
+                
+                return newSize
+            }
+            else {
+                return CGSize(width: collectionView.frame.width, height: 44)
+            }
         }
         
         
-        return CGSizeZero
+        return CGSize(width: collectionView.frame.width, height: 44)
         //return CGSize(width: collectionView.frame.width, height: view.frame.height)
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 1
     }
-    
- 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     func goUserProfile() {
         AppAnalytics.logEvent(.PostDetailsScreen_UserProfile)
@@ -469,7 +522,6 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             //error alert
             print("TAP USER ERRRORRRRR")
         }
-        
     }
     
     public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
@@ -538,9 +590,13 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             vc.geocoderInfo = GeocoderInfo()
             vc.geocoderInfo.address = self.postLocationDisplayed!.name
             vc.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
+        } else if segue.identifier == "allComments" {
+            let nc = segue.destinationViewController as! UINavigationController
+            let vc = nc.viewControllers[0] as! CommentsViewController
+            vc.post = self.post
+            vc.loadingComments = (self.pendingCommentsAsyncId != nil)
         }
     }
-
 }
 
 

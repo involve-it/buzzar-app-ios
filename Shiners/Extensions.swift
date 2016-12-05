@@ -40,8 +40,6 @@ extension String{
         } else {
             return self
         }
-        
-        return ""
     }
 }
 
