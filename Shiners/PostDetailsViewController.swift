@@ -399,6 +399,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(newCommentReceived), name: NotificationManager.Name.CommentAdded.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentUpdated), name: NotificationManager.Name.CommentUpdated.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentsPageReceived), name: NotificationManager.Name.CommentsAsyncRequestCompleted.rawValue, object: nil)
         self.btnViewAllComments.hidden = true
         if let pendingCommentsAsyncId = self.pendingCommentsAsyncId {
@@ -417,6 +418,14 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
+    }
+    
+    func commentUpdated(notification: NSNotification){
+        if let comment = notification.object as? Comment where comment.entityId == self.post.id!, let index = self.post.comments.indexOf({$0.id == comment.id}) where index < 3 {
+            ThreadHelper.runOnMainThread({ 
+                self.collectionView.reloadItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+            })
+        }
     }
     
     func appDidBecomeActive(){

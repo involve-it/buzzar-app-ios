@@ -21,6 +21,7 @@ public class AccountHandler{
     public private(set) var myPosts: [Post]?
     public private(set) var currentUser: User?
     public private(set) var userId: String?
+    public var allUsers = [User]()
     
     public var postsCollection = PostsCollection()
     private var nearbyPostsId: String?
@@ -143,11 +144,24 @@ public class AccountHandler{
         return sorted
     }
     
+    public func mergeNewUsers(users: [User]){
+        users.forEach { (user) in
+            if let index = self.allUsers.indexOf({$0.id == user.id}) {
+                self.allUsers.removeAtIndex(index)
+            }
+            self.allUsers.append(user)
+        }
+    }
+    
     public func getNearbyPosts(lat: Double, lng: Double, radius: Double, skip: Int, take: Int, callback: MeteorMethodCallback){
         ConnectionHandler.Instance.posts.getNearbyPosts(lat, lng: lng, radius: radius, skip: skip, take: take){ (success, errorId, errorMessage, result) in
             if success {
                 var posts = result as! [Post]
                 posts = self.sortNearbyPosts(posts)
+                let users = posts.map({ (post) -> User in
+                    return post.user!
+                })
+                self.mergeNewUsers(users)
                 
                 if posts.count <= AccountHandler.NEARBY_POSTS_PAGE_SIZE + 1 {
                     ThreadHelper.runOnBackgroundThread(){

@@ -43,6 +43,7 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         
         self.collectionView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
         self.updateInsets(self.accessoryView.frame.height)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentUpdated), name: NotificationManager.Name.CommentUpdated.rawValue, object: nil)
     }
     
     func newCommentReceived(notification: NSNotification){
@@ -66,6 +67,14 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         super.viewDidAppear(animated)
         if self.addingComment {
             self.accessoryView.txtComment.becomeFirstResponder()
+        }
+    }
+    
+    func commentUpdated(notification: NSNotification){
+        if let comment = notification.object as? Comment where comment.entityId == self.post.id!, let index = self.post.comments.indexOf({$0.id == comment.id}) {
+            ThreadHelper.runOnMainThread({
+                self.collectionView!.reloadItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+            })
         }
     }
     

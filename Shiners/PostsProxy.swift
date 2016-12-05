@@ -28,7 +28,13 @@ public class PostsProxy{
         
         Meteor.call("getNearbyPostsTest", params: [dict]) {result, error in
             if error == nil {
-                ResponseHelper.callHandlerArray(result, handler: callback) as [Post]?
+                if let posts = ResponseHelper.callHandlerArray(result, handler: callback) as [Post]? {
+                    let users = posts.map({ (post) -> User in
+                        return post.user!
+                    })
+                    AccountHandler.Instance.mergeNewUsers(users)
+                }
+                
             } else {
                 callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
             }

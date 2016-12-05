@@ -75,7 +75,9 @@ public class UsersProxy{
     public func getUser(userId: String, callback: MeteorMethodCallback){
         Meteor.call("getUser", params: [Meteor.client.userId()!]){ result, error in
             if (error == nil){
-                ResponseHelper.callHandler(result, handler: callback) as User?
+                if let user = ResponseHelper.callHandler(result, handler: callback) as User?{
+                    AccountHandler.Instance.mergeNewUsers([user])
+                }
             } else {
                 callback(success: false, errorId: nil, errorMessage: error?.reason, result: nil)
             }

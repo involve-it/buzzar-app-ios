@@ -20,6 +20,22 @@ class CommentsCollection: AbstractCollection {
         let comment = Comment(id: id, fields: fields)
         self.comments.append(comment)
         
+        if let index = AccountHandler.Instance.allUsers.indexOf({$0.id == comment.userId!}){
+            let user = AccountHandler.Instance.allUsers[index]
+            comment.user = user
+        } else {
+            if ConnectionHandler.Instance.isNetworkConnected() {
+                print ("loading user id: \(comment.userId!)")
+                ConnectionHandler.Instance.users.getUser(comment.userId!, callback: { (success, errorId, errorMessage, result) in
+                    if success {
+                        comment.user = result as? User
+                        AccountHandler.Instance.mergeNewUsers([comment.user!])
+                        NotificationManager.sendNotification(NotificationManager.Name.CommentUpdated, object: comment)
+                    }
+                })
+            }
+        }
+        
         if let myPostIndex = AccountHandler.Instance.myPosts?.indexOf({$0.id == comment.entityId}), post = AccountHandler.Instance.myPosts?[myPostIndex]{
             post.comments.append(comment)
             if comment.userId != AccountHandler.Instance.userId {

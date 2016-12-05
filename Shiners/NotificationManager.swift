@@ -47,6 +47,7 @@ public class NotificationManager{
         case CommentsMySubscribed = "shiners:CommentsMySubscribed"
         case CommentAdded = "shiners:CommentAdded"
         case CommentRemoved = "shiners:CommentRemoved"
+        case CommentUpdated = "shiners:CommentUpdated"
         
         case CommentsForPostSubscribed = "shiners:CommentsForPostSubscribed"
         //case MyCommentAdded = "shiners:MyCommentAdded"
