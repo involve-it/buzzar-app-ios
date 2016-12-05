@@ -69,9 +69,10 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
             
             vc.post = post;
             
-            //if !post.commentsRequested {
-                vc.pendingCommentsAsyncId = CommentsHandler.Instance.getCommentsAsync(post.id!, skip: 0)
-            //}
+            
+            vc.pendingCommentsAsyncId = CommentsHandler.Instance.getCommentsAsync(post.id!, skip: 0)
+            vc.subscriptionId = AccountHandler.Instance.subscribeToCommentsForPost(post.id!)
+            
         } else if (segue.identifier == "searchSegue"){
             self.searchViewController = segue.destinationViewController as? NewSearchViewController
             self.searchViewController?.delegate = self

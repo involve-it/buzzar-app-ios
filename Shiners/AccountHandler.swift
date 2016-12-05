@@ -30,6 +30,7 @@ public class AccountHandler{
     
     var commentsCollection = CommentsCollection()
     private var commentsId: String?
+    private var commentsForPostId: String?
     
     private var lastLocationReport: NSDate?
     //2 minutes
@@ -48,6 +49,31 @@ public class AccountHandler{
     class func setSeenWelcomeScreen(seen: Bool){
         let defaults = NSUserDefaults.standardUserDefaults()
         defaults.setBool(seen, forKey: AccountHandler.SEEN_WELCOME_SCREEN)
+    }
+    
+    func subscribeToCommentsForPost(id: String) -> String {
+        if let commentsForPostId = self.commentsForPostId {
+            Meteor.unsubscribe(withId: commentsForPostId)
+        }
+        self.commentsForPostId = Meteor.subscribe("comments-post", params: [id]) {
+            print ("subscribed for comments for post id: \(id)")
+            NotificationManager.sendNotification(NotificationManager.Name.CommentsForPostSubscribed, object: id)
+        }
+        return self.commentsForPostId!
+    }
+    
+    func unsubscribeFromCommentsForPost(subscriptionId: String){
+        if self.commentsForPostId == subscriptionId {
+            Meteor.unsubscribe(withId: subscriptionId)
+            self.commentsForPostId = nil
+        }
+    }
+    
+    func unsubscribeFromCommentsForPost(){
+        if let subscrptionId = self.commentsForPostId {
+            Meteor.unsubscribe(withId: subscrptionId)
+            self.commentsForPostId = nil
+        }
     }
     
     func subscribe(){

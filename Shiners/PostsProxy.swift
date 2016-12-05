@@ -134,7 +134,11 @@ public class PostsProxy{
         Meteor.call("addComment", params: [dict]) { (result, error) in
             if error == nil {
                 let errorId = ResponseHelper.getErrorId(result);
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+                var id: String? = nil
+                if let fields = result as? NSDictionary {
+                    id = fields.valueForKey("result") as? String
+                }
+                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: id)
             } else {
                 callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
             }

@@ -12,9 +12,10 @@ import JSQMessagesViewController
 
 let commentCellId = "cellComment"
 
-class CommentsViewController: UICollectionViewController, UITextViewDelegate, AddCommentDelegate {
+class CommentsViewController: UICollectionViewController, AddCommentDelegate {
     var post: Post!
     var loadingComments = false
+    var addingComment = false
     
     @IBOutlet var accessoryView: AddCommentView!
     
@@ -28,6 +29,7 @@ class CommentsViewController: UICollectionViewController, UITextViewDelegate, Ad
         if self.loadingComments{
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(notifyCommentsLoaded), name: NotificationManager.Name.PostCommentsUpdated.rawValue, object: nil)
         }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(newCommentReceived), name: NotificationManager.Name.PostCommentAddedLocally.rawValue, object: nil)
         
         self.accessoryView.frame = CGRectMake(0, self.view.frame.height - 43, self.view.frame.width, 43)
         self.accessoryView.setupView(self.view.frame.size.height, delegate: self)
@@ -38,11 +40,33 @@ class CommentsViewController: UICollectionViewController, UITextViewDelegate, Ad
             self.accessoryView.enableControls(false)
         }
         self.collectionView?.alwaysBounceVertical = true
+        
+        self.collectionView!.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard)))
+        self.updateInsets(self.accessoryView.frame.height)
+    }
+    
+    func newCommentReceived(notification: NSNotification){
+        if let comment = notification.object as? Comment where comment.entityId == self.post.id,
+            let index = self.post.comments.indexOf({$0.id == comment.id}) {
+            ThreadHelper.runOnMainThread({
+                self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+            })
+        }
+    }
+    
+    func dismissKeyboard(){
+        self.view.endEditing(true)
     }
     
     func updateInsets(height: CGFloat){
         self.collectionView?.contentInset.bottom = height
-        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if self.addingComment {
+            self.accessoryView.txtComment.becomeFirstResponder()
+        }
     }
     
     func sendButtonPressed(comment: String) {
@@ -64,6 +88,7 @@ class CommentsViewController: UICollectionViewController, UITextViewDelegate, Ad
             comment.userId = AccountHandler.Instance.userId
             comment.username = AccountHandler.Instance.currentUser!.username
             comment.user = AccountHandler.Instance.currentUser
+            comment.timestamp = NSDate()
             
             ConnectionHandler.Instance.posts.addComment(comment, callback: { (success, errorId, errorMessage, result) in
                 ThreadHelper.runOnMainThread({ 
@@ -71,8 +96,13 @@ class CommentsViewController: UICollectionViewController, UITextViewDelegate, Ad
                     self.accessoryView.setSendButtonEnabled(true)
                     if success {
                         self.accessoryView.clearMessageText()
-                        self.post.comments.append(comment)
-                        self.collectionView?.insertItemsAtIndexPaths([NSIndexPath(forRow: self.post.comments.count - 1, inSection: 0)])
+                        comment.id = result as? String
+                        
+                        if self.post.comments.indexOf({$0.id == comment.id}) == nil {
+                            self.post.comments.insert(comment, atIndex: 0)
+                            self.collectionView?.insertItemsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
+                        }
+                        
                     } else {
                         self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
                     }
@@ -80,14 +110,6 @@ class CommentsViewController: UICollectionViewController, UITextViewDelegate, Ad
             })
         } else {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(doComment), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
-        }
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if self.post.comments.count > 0 {
-            self.collectionView!.scrollToItemAtIndexPath(NSIndexPath(forRow: self.post.comments.count - 1, inSection: 0), atScrollPosition: .Bottom, animated: true)
         }
     }
     
@@ -102,6 +124,11 @@ class CommentsViewController: UICollectionViewController, UITextViewDelegate, Ad
     
     @IBAction func btnCancel_Click(sender: AnyObject) {
         self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.view.endEditing(true)
     }
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -123,18 +150,11 @@ class CommentsViewController: UICollectionViewController, UITextViewDelegate, Ad
                 cell.labelUserInfoConfigure()
                 if let user = comment.user {
                     ImageCachingHandler.Instance.getImageFromUrl(user.imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
-                        ThreadHelper.runOnMainThread({ 
-                            if let cell = collectionView.cellForItemAtIndexPath(indexPath) as? commentCollectionViewCell {
-                                cell.userAvatar.image = image
-                            }
+                        ThreadHelper.runOnMainThread({
+                            cell.userAvatar.image = image
                         })
                     })
                 }
-                
-                //let ss = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-                
-                cell.contentView.setNeedsLayout()
-                cell.contentView.layoutIfNeeded()
                 
                 return cell
             }
@@ -155,24 +175,20 @@ class CommentsViewController: UICollectionViewController, UITextViewDelegate, Ad
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if let cell = commentCollectionViewCell.fromNib() {
-            if self.post.comments.count > 0 {
-                let comment = self.post.comments[indexPath.row]
-                let size = CGSizeMake(collectionView.frame.width - 60 - 16, 1000)
-                let options = NSStringDrawingOptions.UsesFontLeading.union(.UsesLineFragmentOrigin)
-                
-                let estimatedRect = NSString(string: comment.text!).boundingRectWithSize(size, options: options, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(13)], context: nil)
-                
-                let newSize = CGSize(width: collectionView.frame.width - 16, height: max(estimatedRect.height, cell.userAvatar.frame.size.height) + 20)
-                
-                return newSize
-            }
-            else {
-                return CGSize(width: collectionView.frame.width, height: 44)
-            }
+        if self.post.comments.count > 0 {
+            let comment = self.post.comments[indexPath.row]
+            let size = CGSizeMake(collectionView.frame.width - 60 - 16, 1000)
+            let options = NSStringDrawingOptions.UsesFontLeading.union(.UsesLineFragmentOrigin)
+            
+            let estimatedRect = NSString(string: comment.text!).boundingRectWithSize(size, options: options, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(13)], context: nil)
+            
+            let newSize = CGSize(width: collectionView.frame.width - 16, height: max(estimatedRect.height, 40) + 20)
+            
+            return newSize
         }
-        
-        return CGSize(width: collectionView.frame.width, height: 44)
+        else {
+            return CGSize(width: collectionView.frame.width, height: 44)
+        }
     }
     
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {

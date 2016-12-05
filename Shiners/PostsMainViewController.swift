@@ -79,6 +79,8 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         if filtering {
             self.searchBar.becomeFirstResponder()
         }
+        
+        AccountHandler.Instance.unsubscribeFromCommentsForPost()
     }
     
     override func viewDidAppear(animated: Bool) {

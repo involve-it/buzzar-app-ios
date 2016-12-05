@@ -22,10 +22,10 @@ class Comment: NSObject, DictionaryInitializable, NSCoding {
     }
     
     init(id: String, fields: NSDictionary?){
-        self.id = id
         super.init()
         
         self.update(fields)
+        self.id = id
     }
     
     required init (fields: NSDictionary?){

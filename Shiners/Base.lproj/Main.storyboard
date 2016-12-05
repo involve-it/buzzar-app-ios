@@ -406,7 +406,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rvE-sr-73J" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7375" y="39"/>
+            <point key="canvasLocation" x="8999" y="39"/>
         </scene>
         <!--My Posts-->
         <scene sceneID="M19-Uq-xoM">
@@ -718,7 +718,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VxU-Bh-t8D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6712" y="39"/>
+            <point key="canvasLocation" x="8336" y="39"/>
         </scene>
         <!--Profile-->
         <scene sceneID="Isz-Bn-QR4">
@@ -3837,6 +3837,9 @@
                                                                         <state key="normal" title="Add a comment">
                                                                             <color key="titleColor" red="0.2901960784" green="0.2901960784" blue="0.2901960784" alpha="1" colorSpace="calibratedRGB"/>
                                                                         </state>
+                                                                        <connections>
+                                                                            <segue destination="bSO-lz-AtX" kind="presentation" identifier="allCommentsNew" id="SFg-II-FGA"/>
+                                                                        </connections>
                                                                     </button>
                                                                 </subviews>
                                                                 <constraints>
@@ -4375,7 +4378,7 @@
                     </connections>
                 </containerView>
             </objects>
-            <point key="canvasLocation" x="4200" y="-11"/>
+            <point key="canvasLocation" x="5824" y="-11"/>
         </scene>
         <!--More Filters Search View Controller-->
         <scene sceneID="0kz-cH-kNT">
@@ -5307,7 +5310,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Idr-vb-Vuy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8013" y="39"/>
+            <point key="canvasLocation" x="9637" y="39"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="wSS-ic-Iks">
@@ -5325,7 +5328,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="shh-ev-tcW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3410" y="-11"/>
+            <point key="canvasLocation" x="5034" y="-11"/>
         </scene>
         <!--Settings-->
         <scene sceneID="Ohm-Es-yhj">
@@ -5987,7 +5990,7 @@
                             <inset key="sectionInset" minX="8" minY="8" maxX="8" maxY="8"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="6HL-ps-pZk" customClass="CommentCollectionViewMessageCell" customModule="Shiners" customModuleProvider="target">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="cellCommentMessage" id="6HL-ps-pZk" customClass="CommentCollectionViewMessageCell" customModule="Shiners" customModuleProvider="target">
                                 <rect key="frame" x="8" y="72" width="584" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -6115,6 +6118,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="TcT-8i-Eq0"/>
         <segue reference="EKW-F4-b1d"/>
+        <segue reference="SFg-II-FGA"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.35294117650000001" green="0.69411764710000001" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
 </document>

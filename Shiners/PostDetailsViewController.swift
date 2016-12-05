@@ -69,6 +69,8 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     @IBOutlet weak var avatarUser: UIImageView!
     @IBOutlet weak var btnSendMessage: UIButton!
     
+    var subscriptionId: String?
+    
 
     @IBOutlet weak var btnAddComment: UIButton!
     @IBOutlet weak var btnLike: UIButton!
@@ -414,11 +416,28 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
+    }
+    
+    func appDidBecomeActive(){
+        if ConnectionHandler.Instance.isNetworkConnected() {
+            NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorNetworkConnected.rawValue, object: nil)
+            self.subscriptionId = AccountHandler.Instance.subscribeToCommentsForPost(self.post.id!)
+        } else {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: NotificationManager.Name.MeteorNetworkConnected.rawValue, object: nil)
+        }
     }
     
     func newCommentReceived(notification: NSNotification){
         if let comment = notification.object as? Comment where comment.entityId == self.post.id {
-            self.collectionView.reloadData()
+            if self.post.comments.indexOf({$0.id == comment.id}) == nil {
+                self.post.comments.insert(comment, atIndex: 0)
+            }
+            
+            ThreadHelper.runOnMainThread({
+                self.collectionView.reloadData()
+            })
+            NotificationManager.sendNotification(NotificationManager.Name.PostCommentAddedLocally, object: comment)
         }
     }
     
@@ -457,12 +476,14 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                 cell.username = comment.username!
                 cell.commentWritten = JSQMessagesTimestampFormatter.sharedFormatter().timestampForDate(comment.timestamp!)
                 cell.labelUserInfoConfigure()
+                if let user = comment.user {
+                    ImageCachingHandler.Instance.getImageFromUrl(user.imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
+                        ThreadHelper.runOnMainThread({
+                            cell.userAvatar.image = image
+                        })
+                    })
+                }
                 
-                //let ss = cell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-                
-                cell.contentView.setNeedsLayout()
-                cell.contentView.layoutIfNeeded()
-                   
                 return cell
             }
         } else {
@@ -482,26 +503,20 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        if let cell = commentCollectionViewCell.fromNib() {
-            if self.post.comments.count > 0 {
-                let comment = self.post.comments[indexPath.row]
-                let size = CGSizeMake(collectionView.frame.width - 60, 1000)
-                let options = NSStringDrawingOptions.UsesFontLeading.union(.UsesLineFragmentOrigin)
-                
-                let estimatedRect = NSString(string: comment.text!).boundingRectWithSize(size, options: options, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(13)], context: nil)
-                
-                let newSize = CGSize(width: collectionView.frame.width, height: max(estimatedRect.height, cell.userAvatar.frame.size.height) + 20)
-                
-                return newSize
-            }
-            else {
-                return CGSize(width: collectionView.frame.width, height: 44)
-            }
+        if self.post.comments.count > 0 {
+            let comment = self.post.comments[indexPath.row]
+            let size = CGSizeMake(collectionView.frame.width - 60, 1000)
+            let options = NSStringDrawingOptions.UsesFontLeading.union(.UsesLineFragmentOrigin)
+            
+            let estimatedRect = NSString(string: comment.text!).boundingRectWithSize(size, options: options, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(13)], context: nil)
+            
+            let newSize = CGSize(width: collectionView.frame.width, height: max(estimatedRect.height, 40) + 20)
+            
+            return newSize
         }
-        
-        
-        return CGSize(width: collectionView.frame.width, height: 44)
-        //return CGSize(width: collectionView.frame.width, height: view.frame.height)
+        else {
+            return CGSize(width: collectionView.frame.width, height: 44)
+        }
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
@@ -590,11 +605,14 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             vc.geocoderInfo = GeocoderInfo()
             vc.geocoderInfo.address = self.postLocationDisplayed!.name
             vc.geocoderInfo.coordinate = CLLocationCoordinate2D(latitude: self.postLocationDisplayed!.lat!, longitude: self.postLocationDisplayed!.lng!)
-        } else if segue.identifier == "allComments" {
+        } else if segue.identifier == "allComments" || segue.identifier == "allCommentsNew" {
             let nc = segue.destinationViewController as! UINavigationController
             let vc = nc.viewControllers[0] as! CommentsViewController
             vc.post = self.post
             vc.loadingComments = (self.pendingCommentsAsyncId != nil)
+            if segue.identifier == "allCommentsNew" {
+                vc.addingComment = true
+            }
         }
     }
 }

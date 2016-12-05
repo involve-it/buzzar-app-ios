@@ -19,29 +19,14 @@ class commentCollectionViewCell: UICollectionViewCell {
     
     var commentWritten: String!
     
-    class func fromNib() -> commentCollectionViewCell? {
-        var cell: commentCollectionViewCell?
-        let nibViews = NSBundle.mainBundle().loadNibNamed("commentCollectionViewCell", owner: nil, options: nil)
-        for nibView in nibViews {
-            if let cellView = nibView as? commentCollectionViewCell {
-                cell = cellView
-            }
-        }
-        return cell
-    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
         
         userAvatar.layer.cornerRadius = userAvatar.frame.width / 2
         userAvatar.clipsToBounds = true
-        
-        labelUserInfoConfigure()
     }
     
     func labelUserInfoConfigure() {
         self.txtTotalInfoFromUser.text = "\(username) • \(commentWritten)"
     }
 }
-
-//•

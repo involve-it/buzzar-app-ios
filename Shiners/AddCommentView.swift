@@ -35,6 +35,7 @@ class AddCommentView: UIView, UITextViewDelegate {
     func clearMessageText(){
         self.txtComment.text = ""
         self.lblPlaceholder.hidden = false
+        self.textViewDidChange(self.txtComment)
     }
     
     func setupView(parentViewHeight: CGFloat, delegate: AddCommentDelegate? = nil){
@@ -57,6 +58,8 @@ class AddCommentView: UIView, UITextViewDelegate {
                                                          selector: #selector(self.keyboardNotification(_:)),
                                                          name: UIKeyboardWillChangeFrameNotification,
                                                          object: nil)
+        
+        
         //self.layoutSubviews()
     }
     
@@ -67,18 +70,22 @@ class AddCommentView: UIView, UITextViewDelegate {
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
             let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
+            var originY: CGFloat!
             if endFrame?.origin.y >= UIScreen.mainScreen().bounds.size.height {
                 //self.keyboardHeightLayoutConstraint?.constant = 0.0
-                self.frame.origin.y = 0
+                originY = self.parentViewHeight - self.frame.height
+                //self.frame.origin.y = 0
             } else {
-                self.frame.origin.y = self.parentViewHeight - (endFrame?.size.height ?? 0) - self.frame.height
+                originY = self.parentViewHeight - (endFrame?.size.height ?? 0) - self.frame.height
             }
+            
             self.keyboardHeight = endFrame?.size.height ?? 0
             UIView.animateWithDuration(duration,
                                        delay: NSTimeInterval(0),
                                        options: animationCurve,
                                        animations: {
-                                        self.frame.origin.y = self.parentViewHeight - (endFrame?.size.height ?? 0) - self.frame.height
+                                        self.frame.origin.y = originY
+                                            //self.parentViewHeight - (endFrame?.size.height ?? 0) - self.frame.height
                                         self.delegate?.updateInsets(self.frame.height)
                 },
                                        completion: nil)
@@ -101,7 +108,7 @@ class AddCommentView: UIView, UITextViewDelegate {
             self.frame.size.height = contentHeight + 10
             self.frame.origin.y = self.parentViewHeight - contentHeight - 10 - self.keyboardHeight
             self.txtComment.scrollEnabled = false
-            self.delegate?.updateInsets(contentHeight + 10)
+            self.delegate?.updateInsets(self.keyboardHeight + contentHeight + 10)
         } else {
             self.txtComment.scrollEnabled = true
         }
