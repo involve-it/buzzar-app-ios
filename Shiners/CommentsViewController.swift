@@ -16,6 +16,7 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
     var post: Post!
     var loadingComments = false
     var addingComment = false
+    var addedLocally = [String]()
     
     @IBOutlet var accessoryView: AddCommentView!
     var imagesCache = NSCache()
@@ -51,7 +52,9 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         if let comment = notification.object as? Comment where comment.entityId == self.post.id,
             let index = self.post.comments.indexOf({$0.id == comment.id}) {
             ThreadHelper.runOnMainThread({
-                self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                if self.addedLocally.indexOf(comment.id!) == nil {
+                    self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                }
             })
         }
     }
@@ -109,6 +112,7 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
                         comment.id = result as? String
                         
                         if self.post.comments.indexOf({$0.id == comment.id}) == nil {
+                            self.addedLocally.append(comment.id!)
                             self.post.comments.insert(comment, atIndex: 0)
                             self.collectionView?.insertItemsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
                         }

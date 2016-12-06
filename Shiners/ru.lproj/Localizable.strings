@@ -21,6 +21,15 @@
    Title message, an error occurred while saving. */
 "An error occurred while saving." = "Произошла ошибка при сохранении";
 
+/* An error occurred. */
+"An error occurred." = "Произошла ошибка.";
+
+/* Alert message, Are you sure you want to delete selected dialogs? */
+"Are you sure you want to delete selected dialog(s)?" = "Вы уверены, что хотите удалить выбранные диалоги?";
+
+/* Alert message, Are you sure you want to delete selected posts? */
+"Are you sure you want to delete selected post(s)?" = "Вы уверены, что хотите удалить выбранные посты?";
+
 /* Alert title, Are you sure? */
 "Are you sure?" = "Вы уверены?";
 
@@ -35,7 +44,8 @@
 
 /* Alert title, Cancel
    Alert, title, Cancel
-   Button, Cancel */
+   Button, Cancel
+   Cancel */
 "Cancel" = "Отменить";
 
 /* Cellular */
@@ -65,7 +75,8 @@
 /* No comment provided by engineer. */
 "Create your post" = "Создай свое объявление";
 
-/* Title, Delete */
+/* Delete
+   Title, Delete */
 "Delete" = "Удалить";
 
 /* Delete Messages */
@@ -80,8 +91,14 @@
 /* Alert message, Do you wish to log out? */
 "Do you wish to log out?" = "Вы хотите выйти из аккаунта?";
 
+/* Done */
+"Done" = "Готово";
+
 /* Post status, Dynamic */
 "Dynamic" = "Динамический";
+
+/* Edit */
+"Edit" = "Изменить";
 
 /* Alert message, email address cannot be empty */
 "Email address is not valid" = "Адрес электронной почты не верен";
@@ -121,6 +138,9 @@
 /* No comment provided by engineer. */
 "Find and get found" = "Ты находишь / тебя находят";
 
+/* Alert message, Form validation failed */
+"Form validation failed" = "Ошибки при заполнении полей";
+
 /* Title, Hide */
 "Hide" = "Скрыть";
 
@@ -129,6 +149,12 @@
 
 /* No comment provided by engineer. */
 "It will move with you, showing your availability to people around you" = "Оно будет перемещаться вместе с тобой, как твоя виртуальная визитка, которую могут увидеть люди вокруг";
+
+/* Like */
+"Like" = "Нравится";
+
+/* Loading comments */
+"Loading comments" = "Загружаем комментарии";
 
 /* Text, Location is hidden */
 "Location is hidden" = "Местоположение скрыто";
@@ -144,6 +170,9 @@
 
 /* Alert title, logging out... */
 "Logging out..." = "Выполняем выход...";
+
+/* Login */
+"Login" = "Войти";
 
 /* Alert message, Looks like upload is taking longer then usual. We are still trying to upload, but if you wish, you may continue waiting, cancel, retry and attempt to upload image with lower quality. */
 "Looks like upload is taking longer then usual. We are still trying to upload, but if you wish, you may continue waiting, cancel, retry and attempt to upload image with lower quality." = "Похоже, что загрузка фотографии занимает дольше, чем обычно. Мы все продолжаем пытаться загрузить, а вы можете подождать еще, отменить, попробовать еще раз или использовать фото с меньшим качеством.";
@@ -221,6 +250,9 @@
 /* Alert message, please fill in both, username and password */
 "Please fill in both, username and password" = "Оба поля - имя пользователя и пароль - обязательны для ввода";
 
+/* Please log in to leave a comment or like a post */
+"Please log in to leave a comment or like a post" = "Пожалуйста, зарегистрируйтесь или войдите, чтобы комментировать или лайкать посты.";
+
 /* Button title, Register */
 "Register" = "Регистрация";
 
@@ -233,7 +265,8 @@
 /* Search placeholder, Search posts */
 "Search posts" = "Найти посты";
 
-/* Alert title, Send */
+/* Alert title, Send
+   Send comment */
 "Send" = "Отправить";
 
 /* Navigation title, Settings */
@@ -250,6 +283,9 @@
 
 /* Alert title, Yes */
 "Sure!" = "Конечно!";
+
+/* There are no comments to this post */
+"There are no comments to this post" = "Нет комментариев к этому посту";
 
 /* There are no posts around you */
 "There are no posts around you" = "Вокруг вас постов нет";
@@ -280,13 +316,12 @@
 /* Message, We are still trying */
 "We are still trying..." = "Загрузка продолжается...";
 
+/* Alert title, you are not logged in */
+"You are not logged in" = "Вы не вошли в свой аккаунт";
+
 /* Post info, post closed */
 "post closed" = "Пост закрыт";
 
-"Edit" = "Изменить";
+"View all comments" = "Посмотреть все комментарии";
 
-"Done" = "Готово";
-
-"Are you sure you want to delete selected dialog(s)?" = "Вы уверены, что хотите удалить выбранные диалоги?";
-
-"Are you sure you want to delete selected post(s)?" = "Вы уверены, что хотите удалить выбранные посты?";
+"Please log in to comment" = "Войдите, чтобы комментировать";

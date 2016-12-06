@@ -139,6 +139,9 @@
 /* (No Commment) */
 "CzY-aY-JiS.normalTitle" = "У Вас уже есть аккаунт? Авторизоваться";
 
+/* Class = "UILabel"; text = "Add comment"; ObjectID = "DZC-aE-Pvf"; */
+"DZC-aE-Pvf.text" = "Новый комментарий";
+
 /* Class = "UILabel"; text = "1 day"; ObjectID = "DeZ-ZQ-haT"; */
 "DeZ-ZQ-haT.text" = "1 день";
 
@@ -153,6 +156,9 @@
 
 /* Class = "UILabel"; text = "Looking for connections"; ObjectID = "Dl7-UP-Vb3"; */
 "Dl7-UP-Vb3.text" = "Связи и знакомства";
+
+/* Class = "UIButton"; normalTitle = "Send"; ObjectID = "E9x-iK-5j4"; */
+"E9x-iK-5j4.normalTitle" = "Отправить";
 
 /* Class = "UINavigationItem"; title = "My Posts"; ObjectID = "EGv-is-buT"; */
 "EGv-is-buT.title" = "Мои посты";
@@ -220,6 +226,9 @@
 /* Class = "UILabel"; text = "Aquiring nearby posts..."; ObjectID = "JWV-A9-ZJy"; */
 "JWV-A9-ZJy.text" = "Запрос постов...";
 
+/* Class = "UIButton"; normalTitle = "Add a comment"; ObjectID = "JdJ-Gk-wzT"; */
+"JdJ-Gk-wzT.normalTitle" = "Новый комментарий";
+
 /* (No Commment) */
 "JoR-1X-WND.title" = "Зарегистрироваться";
 
@@ -255,6 +264,9 @@
 
 /* Class = "UILabel"; text = "Notifications"; ObjectID = "LHk-fd-XqA"; */
 "LHk-fd-XqA.text" = "Уведомления";
+
+/* Class = "UIButton"; normalTitle = "View all comments"; ObjectID = "LZx-k4-Sfk"; */
+"LZx-k4-Sfk.normalTitle" = "Посмотреть все комментарии";
 
 /* Class = "UIButton"; normalTitle = "Forgot password?"; ObjectID = "LkP-g7-Q10"; */
 "LkP-g7-Q10.normalTitle" = "Забыли пароль?";
@@ -300,6 +312,9 @@
 
 /* Class = "UIViewController"; title = "When View Controller"; ObjectID = "OQd-hp-ELm"; */
 "OQd-hp-ELm.title" = "When View Controller";
+
+/* Class = "UINavigationItem"; title = "Comments"; ObjectID = "Oll-Pb-MEM"; */
+"Oll-Pb-MEM.title" = "Комментарии";
 
 /* Class = "UILabel"; text = "Don’t have an account?"; ObjectID = "P1d-nD-1BQ"; */
 "P1d-nD-1BQ.text" = "Нет аккаунта?";
@@ -490,6 +505,9 @@
 /* Class = "UITableViewController"; title = "Change password"; ObjectID = "c7O-lc-cfj"; */
 "c7O-lc-cfj.title" = "Поменять пароль";
 
+/* Class = "UITextField"; placeholder = "Your e-mail"; ObjectID = "cJB-nf-QmB"; */
+"cJB-nf-QmB.placeholder" = "Ваш email";
+
 /* (No Commment) */
 "coy-YR-Z4E.headerTitle" = "Что";
 
@@ -654,6 +672,9 @@
 
 /* Class = "UILabel"; text = "666"; ObjectID = "l6I-mw-bBv"; */
 "l6I-mw-bBv.text" = "666";
+
+/* Class = "UILabel"; text = "First name / Last name"; ObjectID = "l7X-wQ-Eby"; */
+"l7X-wQ-Eby.text" = "Имя / фамилия";
 
 /* Class = "UITextField"; placeholder = "Email address"; ObjectID = "lGH-xx-W4y"; */
 "lGH-xx-W4y.placeholder" = "Электронная почта";

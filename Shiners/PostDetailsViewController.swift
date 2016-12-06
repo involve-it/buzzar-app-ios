@@ -167,7 +167,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         self.navigationItem.title = post?.title
         
         //Button View all comments
-        self.btnViewAllComments.setTitle("View all comments".uppercaseString, forState: .Normal)
+        self.btnViewAllComments.setTitle(NSLocalizedString("View all comments", comment: "View all comments").uppercaseString, forState: .Normal)
         //self.commentHeightCollectionView.constant = self.collectionViewHeight
         
         //Button likes
