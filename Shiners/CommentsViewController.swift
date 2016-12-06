@@ -18,6 +18,7 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
     var addingComment = false
     
     @IBOutlet var accessoryView: AddCommentView!
+    var imagesCache = NSCache()
     
     override func viewDidLoad() {
         super.viewDidLoad();
@@ -157,12 +158,22 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
                 cell.username = comment.username!
                 cell.commentWritten = JSQMessagesTimestampFormatter.sharedFormatter().timestampForDate(comment.timestamp!)
                 cell.labelUserInfoConfigure()
-                if let user = comment.user {
-                    ImageCachingHandler.Instance.getImageFromUrl(user.imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
-                        ThreadHelper.runOnMainThread({
-                            cell.userAvatar.image = image
+                if let user = comment.user, url = user.imageUrl {
+                    if let cachedImage = self.imagesCache.objectForKey(url) as? UIImage {
+                        cell.userAvatar.image = cachedImage
+                    } else {
+                        ImageCachingHandler.Instance.getImageFromUrl(url, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
+                            if let img = image where img != ImageCachingHandler.defaultAccountImage {
+                                ThreadHelper.runOnBackgroundThread({
+                                    let newImage = img.resizeImage(200, maxHeight: 200, quality: 0.4)
+                                    self.imagesCache.setObject(newImage, forKey: url)
+                                    ThreadHelper.runOnMainThread({ 
+                                        cell.userAvatar.image = newImage
+                                    })
+                                })
+                            }
                         })
-                    })
+                    }
                 }
                 
                 return cell

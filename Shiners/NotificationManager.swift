@@ -62,5 +62,7 @@ public class NotificationManager{
         case ServerEventNotification = "shiners:ServerEventNotification"
         
         case PostUpdated = "shiners:PostUpdated"
+        
+        case DisplaySettings = "shiners:DisplaySettings"
     }
 }

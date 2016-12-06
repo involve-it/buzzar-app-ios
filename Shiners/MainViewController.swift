@@ -25,8 +25,16 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pushRegistrationFailed), name: NotificationManager.Name.PushRegistrationFailed.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateLoggedIn), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedLocalNotification), name: NotificationManager.Name.ServerEventNotification.rawValue, object: nil)
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(displaySettings), name: NotificationManager.Name.DisplaySettings.rawValue, object: nil)
         //buttonCreatePost()
+    }
+    
+    func displaySettings(){
+        if AccountHandler.Instance.isLoggedIn() {
+            self.selectedIndex = 4
+        } else {
+            self.selectedIndex = 2
+        }
     }
     
     override func viewDidAppear(animated: Bool) {

@@ -28,6 +28,8 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
     public var trainingCategory: String?
     public var sectionLearning: String?
     public var near: Bool?
+    public var likes: Int?
+    public var liked: Bool?
     
     public var outDistancePost: String?
     
@@ -113,6 +115,9 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
             self.price = details.valueForKey(PropertyKey.price) as? String
         }
         
+        self.likes = fields?.valueForKey(PropertyKey.likes) as? Int
+        self.liked = fields?.valueForKey(PropertyKey.liked) as? Bool
+        
         if let stats = fields?.valueForKey(PropertyKey.stats) as? NSDictionary{
             if let seenTotal = stats.valueForKey(PropertyKey.seenTotal)as? Int{
                 self.seenTotal = seenTotal;
@@ -190,6 +195,12 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
             self.near = aDecoder.decodeBoolForKey(PropertyKey.near)
         }
         self.timestamp = aDecoder.decodeObjectForKey(PropertyKey.timestamp) as? NSDate
+        if aDecoder.containsValueForKey(PropertyKey.likes){
+            self.likes = aDecoder.decodeObjectForKey(PropertyKey.likes) as? Int
+        }
+        if aDecoder.containsValueForKey(PropertyKey.liked){
+            self.liked = aDecoder.decodeBoolForKey(PropertyKey.liked)
+        }
         
         super.init()
     }
@@ -223,6 +234,12 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         }
         
         aCoder.encodeObject(timestamp, forKey: PropertyKey.timestamp)
+        if let likes = self.likes {
+            aCoder.encodeInteger(likes, forKey: PropertyKey.likes)
+        }
+        if let liked = self.liked {
+            aCoder.encodeBool(liked, forKey: PropertyKey.liked)
+        }
     }
     
     func getDistanceFormatted(currentLocation: CLLocation) -> String? {
@@ -335,6 +352,8 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         static let jobDetails = "jobsDetails"
         static let photoUrls = "photosUrls"
         static let near = "near"
+        static let likes = "likes"
+        static let liked = "liked"
     }
     
     public enum AdType: String {

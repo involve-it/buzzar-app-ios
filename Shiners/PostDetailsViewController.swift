@@ -143,6 +143,10 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if !AccountHandler.Instance.isLoggedIn(){
+            self.post.liked = false
+        }
     
         iconFavoritesCount.image = UIImage(named: "favorites_standart")?.imageWithRenderingMode(.AlwaysTemplate)
         iconFavoritesCount.tintColor = uiBlueColor
@@ -167,9 +171,8 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         //self.commentHeightCollectionView.constant = self.collectionViewHeight
         
         //Button likes
-        self.btnLike.setImage(UIImage(named: "icon_likes")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
-        self.btnLike.tintColor = UIColor(netHex: 0x4A4A4A)
         self.btnLike.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 6)
+        self.updateLikeButton()
         
         //Button add_comments
         self.btnAddComment.setImage(UIImage(named: "add_comments")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
@@ -420,6 +423,22 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
     
+    func updateLikeButton(){
+        if (self.post.liked ?? false){
+            self.btnLike.setImage(UIImage(named: "favorites_filled")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+            self.btnLike.tintColor = UITabBar.appearance().tintColor
+        } else {
+            self.btnLike.setImage(UIImage(named: "icon_likes")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+            self.btnLike.tintColor = UIColor(netHex: 0x4A4A4A)
+        }
+        
+        var likeTitle = NSLocalizedString("Like", comment: "Like")
+        if let likes = self.post.likes where likes > 0 {
+            likeTitle += " (\(likes))"
+        }
+        self.btnLike.setTitle(likeTitle, forState: .Normal)
+    }
+    
     func commentUpdated(notification: NSNotification){
         if let comment = notification.object as? Comment where comment.entityId == self.post.id!, let index = self.post.comments.indexOf({$0.id == comment.id}) where index < 3 {
             ThreadHelper.runOnMainThread({ 
@@ -588,9 +607,26 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     public override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
         if identifier == "fullMapSegue"{
             return self.postLocationDisplayed != nil && self.postLocationDisplayed!.lat != nil && self.postLocationDisplayed!.lng != nil
+        } else if identifier == "allCommentsNew" && !AccountHandler.Instance.isLoggedIn(){
+            self.displayNotLoggedInMessage()
+            return false
         } else {
             return true
         }
+    }
+    
+    func displayNotLoggedInMessage(){
+        let alertController = UIAlertController(title: NSLocalizedString("You are not logged in", comment: "Alert title, you are not logged in"), message: NSLocalizedString("Please log in to leave a comment or like a post", comment: "Please log in to leave a comment or like a post"), preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Login", comment: "Login"), style: .Default, handler: { (action) in
+            CATransaction.begin()
+            CATransaction.setCompletionBlock({ 
+                NotificationManager.sendNotification(NotificationManager.Name.DisplaySettings, object: nil)
+            })
+            self.navigationController?.popToRootViewControllerAnimated(true)
+            CATransaction.commit()
+        }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .Cancel, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     //After load content
@@ -598,8 +634,6 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         let contentSize = self.postDescription.scrollView.contentSize.height
         self.webviewHeightConstraint.constant = contentSize
     }
-    
-    
     
     //fullMapSegue
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -622,6 +656,42 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             if segue.identifier == "allCommentsNew" {
                 vc.addingComment = true
             }
+        }
+    }
+    
+    @IBAction func btnLike_Click(sender: AnyObject) {
+        if AccountHandler.Instance.isLoggedIn() {
+            if (self.post.liked ?? false) {
+                self.post.liked = false
+                self.post.likes = (self.post.likes ?? 0) - 1
+                
+                ConnectionHandler.Instance.posts.unlikePost(self.post.id!, callback: { (success, errorId, errorMessage, result) in
+                    if !success {
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert title, error"), message: NSLocalizedString("An error occurred.", comment: "An error occurred."))
+                        self.post.liked = true
+                        self.post.likes = (self.post.likes ?? 0) + 1
+                        ThreadHelper.runOnMainThread({ 
+                            self.updateLikeButton()
+                        })
+                    }
+                })
+            } else {
+                self.post.liked = true
+                self.post.likes = (self.post.likes ?? 0) + 1
+                ConnectionHandler.Instance.posts.likePost(self.post.id!, callback: { (success, errorId, errorMessage, result) in
+                    if !success {
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert title, error"), message: NSLocalizedString("An error occurred.", comment: "An error occurred."))
+                        self.post.liked = false
+                        self.post.likes = (self.post.likes ?? 0) - 1
+                        ThreadHelper.runOnMainThread({
+                            self.updateLikeButton()
+                        })
+                    }
+                })
+            }
+            self.updateLikeButton()
+        } else {
+            self.displayNotLoggedInMessage()
         }
     }
 }

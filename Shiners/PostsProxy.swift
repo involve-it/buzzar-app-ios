@@ -150,4 +150,32 @@ public class PostsProxy{
             }
         }
     }
+    
+    func likePost(postId: String, callback: MeteorMethodCallback?){
+        var dict = Dictionary<String, AnyObject>()
+        dict["userId"] = AccountHandler.Instance.userId!
+        dict["postId"] = postId
+        Meteor.call("likePost", params: [dict]) { (result, error) in
+            if error == nil {
+                let errorId = ResponseHelper.getErrorId(result);
+                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
+    
+    func unlikePost(postId: String, callback: MeteorMethodCallback?){
+        var dict = Dictionary<String, AnyObject>()
+        dict["userId"] = AccountHandler.Instance.userId!
+        dict["postId"] = postId
+        Meteor.call("unlikePost", params: [dict]) { (result, error) in
+            if error == nil {
+                let errorId = ResponseHelper.getErrorId(result);
+                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
 }
