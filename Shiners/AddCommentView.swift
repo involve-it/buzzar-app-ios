@@ -55,7 +55,7 @@ class AddCommentView: UIView, UITextViewDelegate {
         self.txtComment.scrollEnabled = false
         
         NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(self.keyboardNotification(_:)),
+                                                         selector: #selector(self.keyboardNotification),
                                                          name: UIKeyboardWillChangeFrameNotification,
                                                          object: nil)
         

@@ -66,7 +66,6 @@ public class ConnectionHandler{
     @objc private func accountLoaded(){
         self.dependenciesResolved += 1
         self.executeHandlers(self.dependenciesResolved)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
     }
     
     public func connect() {
@@ -83,6 +82,7 @@ public class ConnectionHandler{
             
             Meteor.connect(url) { (session) in
                 NSLog("Meteor connected")
+                self.dependenciesResolved = 0
                 self.status = .NetworkConnected
                 NotificationManager.sendNotification(.MeteorNetworkConnected, object: nil)
                 
@@ -115,6 +115,7 @@ public class ConnectionHandler{
     }
     
     private func executeHandlers(count: Int){
+        print("execute handlers: \(count)")
         if (count == self.totalDependencies && self.status != .Connected){
             self.status = ConnectionStatus.Connected;
             NotificationManager.sendNotification(NotificationManager.Name.MeteorConnected, object: nil)

@@ -53,7 +53,11 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
             let index = self.post.comments.indexOf({$0.id == comment.id}) {
             ThreadHelper.runOnMainThread({
                 if self.addedLocally.indexOf(comment.id!) == nil {
-                    self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                    if self.post.comments.count == 1{
+                        self.collectionView!.reloadData()
+                    } else {
+                        self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                    }
                 }
             })
         }
@@ -89,10 +93,11 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         
         self.setLoading(true)
         self.accessoryView.setSendButtonEnabled(false)
-        self.doComment(comment)
+        self.doComment()
     }
     
-    func doComment(commentText: String){
+    func doComment(){
+        let commentText = self.accessoryView.txtComment.text
         if ConnectionHandler.Instance.isConnected() {
             NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
             let comment = Comment()
@@ -114,7 +119,11 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
                         if self.post.comments.indexOf({$0.id == comment.id}) == nil {
                             self.addedLocally.append(comment.id!)
                             self.post.comments.insert(comment, atIndex: 0)
-                            self.collectionView?.insertItemsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
+                            if self.post.comments.count == 1 {
+                                self.collectionView!.reloadData()
+                            } else {
+                                self.collectionView?.insertItemsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
+                            }
                         }
                         
                     } else {
