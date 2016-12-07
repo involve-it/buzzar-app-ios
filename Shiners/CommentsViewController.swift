@@ -49,9 +49,9 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
     }
     
     func newCommentReceived(notification: NSNotification){
-        if let comment = notification.object as? Comment where comment.entityId == self.post.id,
-            let index = self.post.comments.indexOf({$0.id == comment.id}) {
-            ThreadHelper.runOnMainThread({
+        ThreadHelper.runOnMainThread({
+            if self.isVisible(), let comment = notification.object as? Comment where comment.entityId == self.post.id,
+                let index = self.post.comments.indexOf({$0.id == comment.id}) {
                 if self.addedLocally.indexOf(comment.id!) == nil {
                     if self.post.comments.count == 1{
                         self.collectionView!.reloadData()
@@ -59,8 +59,8 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
                         self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
                     }
                 }
-            })
-        }
+            }
+        })
     }
     
     func dismissKeyboard(){
@@ -109,27 +109,28 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
             comment.timestamp = NSDate()
             
             ConnectionHandler.Instance.posts.addComment(comment, callback: { (success, errorId, errorMessage, result) in
-                ThreadHelper.runOnMainThread({ 
-                    self.setLoading(false)
-                    self.accessoryView.setSendButtonEnabled(true)
-                    if success {
-                        self.accessoryView.clearMessageText()
-                        comment.id = result as? String
-                        
-                        if self.post.comments.indexOf({$0.id == comment.id}) == nil {
-                            self.addedLocally.append(comment.id!)
-                            self.post.comments.insert(comment, atIndex: 0)
-                            if self.post.comments.count == 1 {
-                                self.collectionView!.reloadData()
-                            } else {
-                                self.collectionView?.insertItemsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
+                if self.isVisible() {
+                    ThreadHelper.runOnMainThread({
+                        self.setLoading(false)
+                        self.accessoryView.setSendButtonEnabled(true)
+                        if success {
+                            self.accessoryView.clearMessageText()
+                            comment.id = result as? String
+                            
+                            if self.post.comments.indexOf({$0.id == comment.id}) == nil {
+                                self.addedLocally.append(comment.id!)
+                                self.post.comments.insert(comment, atIndex: 0)
+                                if self.post.comments.count == 1 {
+                                    self.collectionView!.reloadData()
+                                } else {
+                                    self.collectionView?.insertItemsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
+                                }
                             }
+                        } else {
+                            self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
                         }
-                        
-                    } else {
-                        self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
-                    }
-                })
+                    })
+                }
             })
         } else {
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(doComment), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)

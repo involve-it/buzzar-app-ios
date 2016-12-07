@@ -227,7 +227,7 @@
 "JWV-A9-ZJy.text" = "Запрос постов...";
 
 /* Class = "UIButton"; normalTitle = "Add a comment"; ObjectID = "JdJ-Gk-wzT"; */
-"JdJ-Gk-wzT.normalTitle" = "Новый комментарий";
+"JdJ-Gk-wzT.normalTitle" = "Комментировать";
 
 /* (No Commment) */
 "JoR-1X-WND.title" = "Зарегистрироваться";

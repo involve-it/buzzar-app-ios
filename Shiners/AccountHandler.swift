@@ -217,6 +217,7 @@ public class AccountHandler{
     
     public func login(userName: String, password: String, callback: MeteorMethodCallback){
         ConnectionHandler.Instance.users.login(userName, password: password) { (success, errorId, errorMessage, result) in
+            self.lastLocationReport = nil
             callback(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
             if (success){
                 NSUserDefaults.standardUserDefaults().setObject(Meteor.client.userId(), forKey: AccountHandler.USER_ID)
@@ -411,6 +412,8 @@ public class AccountHandler{
                 }
                 
             }
+        } else {
+            callback?(success: true, errorId: nil, errorMessage: nil, result: nil)
         }
     }
     

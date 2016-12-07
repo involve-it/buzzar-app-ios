@@ -3579,7 +3579,7 @@
                                                             <constraint firstAttribute="bottom" secondItem="lkH-3l-Vgg" secondAttribute="bottom" id="vgz-3z-c77"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ut0-YR-df1" userLabel="Call, Write">
+                                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="700" translatesAutoresizingMaskIntoConstraints="NO" id="Ut0-YR-df1" userLabel="Call, Write">
                                                         <rect key="frame" x="0.0" y="141" width="600" height="76"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cfv-kC-wgE" userLabel="top line">
@@ -3698,9 +3698,6 @@
                                                                     </stackView>
                                                                 </subviews>
                                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="74" id="xtg-q0-YMV"/>
-                                                                </constraints>
                                                             </stackView>
                                                         </subviews>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3714,6 +3711,7 @@
                                                             <constraint firstItem="3Q2-5a-I7s" firstAttribute="leading" secondItem="Ut0-YR-df1" secondAttribute="leading" id="d3F-YU-mAp"/>
                                                             <constraint firstAttribute="trailing" secondItem="tUJ-0f-cuT" secondAttribute="trailing" constant="16" id="mga-4O-0Bb"/>
                                                             <constraint firstItem="Cfv-kC-wgE" firstAttribute="leading" secondItem="Ut0-YR-df1" secondAttribute="leading" constant="16" id="rOY-ao-RuY"/>
+                                                            <constraint firstAttribute="height" constant="76" id="uDU-ke-Jtk"/>
                                                             <constraint firstAttribute="bottom" secondItem="tUJ-0f-cuT" secondAttribute="bottom" id="upM-QD-Bqo"/>
                                                             <constraint firstItem="tUJ-0f-cuT" firstAttribute="leading" secondItem="Ut0-YR-df1" secondAttribute="leading" constant="16" id="zpi-2u-4nm"/>
                                                         </constraints>
@@ -3743,6 +3741,8 @@
                                                     <constraint firstItem="Ut0-YR-df1" firstAttribute="leading" secondItem="X73-bN-Ueg" secondAttribute="leading" id="jQI-ji-1aV"/>
                                                     <constraint firstItem="FCL-Kj-ncV" firstAttribute="top" secondItem="mMH-4g-vXl" secondAttribute="bottom" constant="2" id="jhL-tK-2nL"/>
                                                     <constraint firstItem="Jsc-SN-pA4" firstAttribute="top" secondItem="Ut0-YR-df1" secondAttribute="bottom" constant="8" id="lMQ-uo-hPW"/>
+                                                    <constraint firstItem="Jsc-SN-pA4" firstAttribute="top" secondItem="UTk-FH-b9a" secondAttribute="bottom" priority="900" constant="8" id="nNr-rk-qZh"/>
+                                                    <constraint firstItem="Jsc-SN-pA4" firstAttribute="top" relation="greaterThanOrEqual" secondItem="UTk-FH-b9a" secondAttribute="bottom" constant="8" id="nx2-PJ-csg"/>
                                                     <constraint firstItem="FCL-Kj-ncV" firstAttribute="leading" secondItem="X73-bN-Ueg" secondAttribute="leading" constant="16" id="oLH-PI-gjC"/>
                                                     <constraint firstItem="Ut0-YR-df1" firstAttribute="top" secondItem="UTk-FH-b9a" secondAttribute="bottom" constant="8" id="obV-XE-sPx"/>
                                                     <constraint firstItem="UTk-FH-b9a" firstAttribute="top" secondItem="FCL-Kj-ncV" secondAttribute="bottom" constant="8" id="s9S-Db-ODw"/>
@@ -4009,7 +4009,6 @@
                         <outlet property="btnViewAllComments" destination="LZx-k4-Sfk" id="bhu-pt-5XB"/>
                         <outlet property="callStack" destination="tRQ-qu-REd" id="ya4-dt-MNn"/>
                         <outlet property="callWriteView" destination="Ut0-YR-df1" id="3FX-QH-hfE"/>
-                        <outlet property="callWriteViewHeight" destination="xtg-q0-YMV" id="kai-V7-WQ1"/>
                         <outlet property="collectionView" destination="Cgo-TV-2fR" id="l5k-An-HuW"/>
                         <outlet property="commentHeightCollectionView" destination="CL5-RO-ubV" id="ElB-wy-cJa"/>
                         <outlet property="gradientView" destination="REm-Uk-WRJ" id="vmc-eq-KxN"/>

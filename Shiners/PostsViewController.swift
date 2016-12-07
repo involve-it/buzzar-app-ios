@@ -279,8 +279,10 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     }
     
     func displayLoadingMore() {
-        ThreadHelper.runOnMainThread { 
-            self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.mainViewController.posts.count, inSection: 0)], withRowAnimation: .Automatic)
+        ThreadHelper.runOnMainThread {
+            if self.tableView(self.tableView, numberOfRowsInSection: 0) == self.mainViewController.posts.count {
+                self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.mainViewController.posts.count, inSection: 0)], withRowAnimation: .Automatic)
+            }
         }
     }
     

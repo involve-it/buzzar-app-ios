@@ -47,7 +47,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     @IBOutlet weak var writeStack: UIStackView!
     
     @IBOutlet weak var callWriteView: UIView!
-    @IBOutlet weak var callWriteViewHeight: NSLayoutConstraint!
+    //@IBOutlet weak var callWriteViewHeight: NSLayoutConstraint!
     
     @IBOutlet weak var txtPostStatus: UILabel!
     
@@ -143,6 +143,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        self.webviewHeightConstraint.constant = 1
         
         if !AccountHandler.Instance.isLoggedIn(){
             self.post.liked = false
@@ -189,9 +190,10 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         let ownPost = post.user?.id == AccountHandler.Instance.userId
         
         if ownPost {
-            self.callWriteView.hidden = true
-            self.callWriteViewHeight.constant = 0
-            self.view.layoutIfNeeded()
+            self.callWriteView.removeFromSuperview()
+            //self.callWriteView.hidden = true
+            //self.callWriteViewHeight.constant = 0.1
+            //self.view.layoutIfNeeded()
         } else {
             if let phoneNumberDetail = post.user?.getProfileDetail(.Phone), phoneNumber = phoneNumberDetail.value where !ownPost{
                 self.phoneNumber = phoneNumber
@@ -229,28 +231,27 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         }
         
         //Username
-        if let username = post.user?.username {
-            self.txtUsername.text = username
-        }
-        
-        //GestureRecognizer on the username and on the avatar
-        let tap = UITapGestureRecognizer(target: self, action: #selector(goUserProfile))
-        let tap1 = UITapGestureRecognizer(target: self, action: #selector(goUserProfile))
-        self.txtUsername.addGestureRecognizer(tap)
-        self.avatarUser.addGestureRecognizer(tap1)
-        
-        //Avatar image
-        self.avatarUser.contentMode = .ScaleToFill
-        if let avatarUrlString = post.user?.imageUrl{
-            if ImageCachingHandler.Instance.getImageFromUrl(avatarUrlString, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
-                ThreadHelper.runOnMainThread({
-                    self.avatarUser.image = image
-                })
-            }){
+        if !ownPost {
+            if let username = post.user?.username {
+                self.txtUsername.text = username
+            }
+            let tap = UITapGestureRecognizer(target: self, action: #selector(goUserProfile))
+            let tap1 = UITapGestureRecognizer(target: self, action: #selector(goUserProfile))
+            self.txtUsername.addGestureRecognizer(tap)
+            self.avatarUser.addGestureRecognizer(tap1)
+            
+            self.avatarUser.contentMode = .ScaleToFill
+            if let avatarUrlString = post.user?.imageUrl{
+                if ImageCachingHandler.Instance.getImageFromUrl(avatarUrlString, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
+                    ThreadHelper.runOnMainThread({
+                        self.avatarUser.image = image
+                    })
+                }){
+                    self.avatarUser.image = ImageCachingHandler.defaultAccountImage
+                }
+            } else {
                 self.avatarUser.image = ImageCachingHandler.defaultAccountImage
             }
-        } else {
-            self.avatarUser.image = ImageCachingHandler.defaultAccountImage
         }
         
         //Seen total

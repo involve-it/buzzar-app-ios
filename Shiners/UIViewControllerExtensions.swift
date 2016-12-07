@@ -60,4 +60,8 @@ public extension UIViewController{
         return true
     }
     
+    func isVisible() -> Bool{
+        return self.isViewLoaded() && self.view.window != nil
+    }
+    
 }
