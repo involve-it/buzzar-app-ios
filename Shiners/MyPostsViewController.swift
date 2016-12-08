@@ -302,6 +302,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
             let post = myPosts[index];
             vc.isOwnPost = true
             vc.post = post;
+            vc.pendingCommentsAsyncId = CommentsHandler.Instance.getCommentsAsync(post.id!, skip: 0)
         } else if segue.identifier == "myPosts_CreatePost"{
             AppAnalytics.logEvent(.MyPostsScreen_BtnNewPost_Click)
         }

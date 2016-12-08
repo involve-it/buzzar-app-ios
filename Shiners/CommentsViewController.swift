@@ -34,10 +34,11 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         if self.loadingComments{
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(notifyCommentsLoaded), name: NotificationManager.Name.PostCommentsUpdated.rawValue, object: nil)
         }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(newCommentReceived), name: NotificationManager.Name.PostCommentAddedLocally.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(newCommentReceived), name: NotificationManager.Name.CommentAdded.rawValue, object: nil)
         
-        self.accessoryView.frame = CGRectMake(0, self.view.frame.height - 43, self.view.frame.width, 43)
-        self.accessoryView.setupView(self.view.frame.size.height, delegate: self)
+        
+        //self.accessoryView.frame = CGRectMake(0, self.view.frame.height - 43, self.view.frame.width, 43)
+        self.accessoryView.setupView(self.view.frame.size.height, parentViewWidth: self.view.frame.size.width, delegate: self)
         self.view.addSubview(self.accessoryView)
         
         if !AccountHandler.Instance.isLoggedIn() {
@@ -63,6 +64,7 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         ThreadHelper.runOnMainThread({
             if self.isVisible(), let comment = notification.object as? Comment where comment.entityId == self.post.id,
                 let index = self.post.comments.indexOf({$0.id == comment.id}) {
+                self.post.comments.removeAtIndex(index)
                 if self.post.comments.count > 1 {
                     self.collectionView!.deleteItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
                 } else {

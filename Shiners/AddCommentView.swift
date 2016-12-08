@@ -20,6 +20,7 @@ class AddCommentView: UIView, UITextViewDelegate {
     private var timer:NSTimer?
     
     var delegate: AddCommentDelegate?
+    var statusBarHeight:CGFloat = 0
     
     @IBAction func btnSend_Click(sender: AnyObject) {
         self.delegate?.sendButtonPressed(self.txtComment.text)
@@ -40,7 +41,12 @@ class AddCommentView: UIView, UITextViewDelegate {
         self.textViewDidChange(self.txtComment)
     }
     
-    func setupView(parentViewHeight: CGFloat, delegate: AddCommentDelegate? = nil){
+    func statusBarHeightChanged(){
+        self.statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height - 20
+        self.frame.origin.y = self.parentViewHeight - self.keyboardHeight - self.statusBarHeight - self.frame.height
+    }
+    
+    func setupView(parentViewHeight: CGFloat, parentViewWidth: CGFloat, delegate: AddCommentDelegate? = nil){
         self.delegate = delegate
         self.parentViewHeight = parentViewHeight
         self.backgroundColor = UIColor.whiteColor()
@@ -61,8 +67,15 @@ class AddCommentView: UIView, UITextViewDelegate {
                                                          name: UIKeyboardWillChangeFrameNotification,
                                                          object: nil)
         
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(self.statusBarHeightChanged),
+                                                         name: UIApplicationDidChangeStatusBarFrameNotification,
+                                                         object: nil)
         
         //self.layoutSubviews()
+        self.frame.size.height = 43
+        self.frame.size.width = parentViewWidth
+        self.statusBarHeightChanged()
     }
     
     func setNotTyping(){
@@ -76,10 +89,10 @@ class AddCommentView: UIView, UITextViewDelegate {
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
             let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
-            var originY: CGFloat!
+            //var originY: CGFloat!
             if endFrame?.origin.y >= UIScreen.mainScreen().bounds.size.height {
                 //self.keyboardHeightLayoutConstraint?.constant = 0.0
-                originY = self.parentViewHeight - self.frame.height
+                //originY = self.parentViewHeight - self.frame.height
                 //self.frame.origin.y = 0
                 self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(setNotTyping), userInfo: nil, repeats: false)
             } else {
@@ -88,10 +101,11 @@ class AddCommentView: UIView, UITextViewDelegate {
                     self.timer = nil
                 }
                 self.typing = true
-                originY = self.parentViewHeight - (endFrame?.size.height ?? 0) - self.frame.height
+                //originY = self.parentViewHeight - (endFrame?.size.height ?? 0) - self.frame.height
             }
             
             self.keyboardHeight = endFrame?.size.height ?? 0
+            let originY = self.parentViewHeight - self.keyboardHeight - self.statusBarHeight - self.frame.height
             UIView.animateWithDuration(duration,
                                        delay: NSTimeInterval(0),
                                        options: animationCurve,

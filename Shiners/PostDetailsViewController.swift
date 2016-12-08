@@ -449,6 +449,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             if self.isVisible() {
                 if let comment = notification.object as? Comment where comment.entityId == self.post.id,
                     let index = self.post.comments.indexOf({$0.id == comment.id}) {
+                    self.post.comments.removeAtIndex(index)
                     if self.post.comments.count > 1 {
                         self.collectionView!.deleteItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
                     } else {
@@ -512,8 +513,6 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                 } else {
                     self.btnViewAllComments.hidden = true
                 }
-            
-                NotificationManager.sendNotification(NotificationManager.Name.PostCommentAddedLocally, object: comment)
             }
         })
     }
