@@ -10,8 +10,6 @@ import UIKit
 import Foundation
 
 class SelectCategoryTableViewController: UITableViewController {
-    let categories = ["jobs", "trainings", "connect", "trade", "housing", "events", "services", "help"];
-    
     var currentCategory: String?
     var selectCategoryDelegate: SelectCategoryViewControllerDelegate?
     
@@ -22,7 +20,7 @@ class SelectCategoryTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let currentCategory = self.currentCategory, index = self.categories.indexOf(currentCategory) {
+        if let currentCategory = self.currentCategory, index = ConstantValuesHandler.Instance.categories.indexOf(currentCategory) {
             self.tableView.visibleCells.forEach { (cell) in
                 cell.accessoryType = .None
             }
@@ -39,7 +37,7 @@ class SelectCategoryTableViewController: UITableViewController {
         var category:String? = nil
         var value = NSLocalizedString("None", comment: "None")
         if indexPath.section == 1{
-            category = self.categories[indexPath.row]
+            category = ConstantValuesHandler.Instance.categories[indexPath.row]
             value = cell.textLabel!.text!
         }
         self.selectCategoryDelegate?.categorySelected(category, value: value)

@@ -63,6 +63,8 @@ public class ConstantValuesHandler {
         Post.HelpType.Other.rawValue: "Other"
     ]
     
+    public let categories = ["jobs", "trainings", "connect", "trade", "housing", "events", "services", "help"];
+    
     public let postDateRanges = [
         "One day": 1.0 * 60 * 60 * 24, "Two days": 2.0 * 60 * 60 * 24, "Week": 7.0 * 60 * 60 * 24, "Two weeks": 14.0 * 60 * 60 * 24, "Month": 30.0 * 60 * 60 * 24, "Year": 365.0 * 60 * 60 * 24
     ]

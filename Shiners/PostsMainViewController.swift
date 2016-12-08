@@ -66,6 +66,20 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         case Map
     }
     
+    var filterCategories = [String]()
+    
+    @IBAction func btnCategory_Click(sender: UIBarButtonItem) {
+        let category = ConstantValuesHandler.Instance.categories[sender.tag]
+        if let index = self.filterCategories.indexOf(category){
+            self.filterCategories.removeAtIndex(index)
+            sender.tintColor = UITabBar.appearance().tintColor
+        } else {
+            self.filterCategories.append(category)
+            sender.tintColor = UIColor.redColor()
+        }
+        self.refreshSearchResults()
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.locationHandler.monitorSignificantLocationChanges()
@@ -503,11 +517,14 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         let searchTextLowered = searchText.lowercaseString
+        var posts = self.allPosts
         if searchTextLowered != ""{
-            self.posts = self.allPosts.filter({$0.title!.lowercaseString.containsString(searchTextLowered) || ($0.descr ?? "").lowercaseString.containsString(searchTextLowered)})
-        } else {
-            self.posts = self.allPosts
+            posts = posts.filter({($0.title!.lowercaseString.containsString(searchTextLowered) || ($0.descr ?? "").lowercaseString.containsString(searchTextLowered))})
         }
+        if self.filterCategories.count > 0 {
+            posts = posts.filter({$0.type != nil && self.filterCategories.indexOf($0.type!.rawValue) != nil})
+        }
+        self.posts = posts
         self.listViewController.tableView.reloadData()
     }
     

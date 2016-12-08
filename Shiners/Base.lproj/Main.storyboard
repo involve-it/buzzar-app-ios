@@ -4087,18 +4087,52 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8as-IE-ARw" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <view contentMode="scaleToFill" id="pbM-rs-6pc">
-                    <rect key="frame" x="0.0" y="0.0" width="438" height="44"/>
+                    <rect key="frame" x="0.0" y="0.0" width="438" height="52"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dUc-oa-ATg">
-                            <rect key="frame" x="0.0" y="0.0" width="438" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="438" height="52"/>
                             <items>
-                                <barButtonItem title="Jobs" id="XBL-oD-Kr1"/>
-                                <barButtonItem title="Trainings" id="jHc-pK-Fgz"/>
-                                <barButtonItem title="Connect" id="Sai-6p-0Vk"/>
-                                <barButtonItem title="For sale" id="ZeA-vQ-I2N"/>
-                                <barButtonItem title="Housing" id="w5l-5c-6Rh"/>
-                                <barButtonItem title="Events" id="THi-dR-qC3"/>
+                                <barButtonItem image="Jobs" id="XBL-oD-Kr1">
+                                    <connections>
+                                        <action selector="btnCategory_Click:" destination="24b-NI-Og3" id="oCX-Wc-7St"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem tag="1" image="Trainings" id="jHc-pK-Fgz">
+                                    <connections>
+                                        <action selector="btnCategory_Click:" destination="24b-NI-Og3" id="Lta-Mz-tAO"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem tag="2" image="Connect" id="Sai-6p-0Vk">
+                                    <connections>
+                                        <action selector="btnCategory_Click:" destination="24b-NI-Og3" id="3i9-EB-whA"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem tag="3" image="Trade" id="ZeA-vQ-I2N">
+                                    <connections>
+                                        <action selector="btnCategory_Click:" destination="24b-NI-Og3" id="pdc-lk-yrO"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem tag="4" title="HSE" id="w5l-5c-6Rh">
+                                    <connections>
+                                        <action selector="btnCategory_Click:" destination="24b-NI-Og3" id="iKi-fz-wCA"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem tag="5" title="EVS" id="THi-dR-qC3">
+                                    <connections>
+                                        <action selector="btnCategory_Click:" destination="24b-NI-Og3" id="7Kf-uC-3y0"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem tag="6" title="SRV" id="ytB-AE-aaK">
+                                    <connections>
+                                        <action selector="btnCategory_Click:" destination="24b-NI-Og3" id="mMc-CX-HAM"/>
+                                    </connections>
+                                </barButtonItem>
+                                <barButtonItem tag="7" title="HLP" id="EDA-dM-wZh">
+                                    <connections>
+                                        <action selector="btnCategory_Click:" destination="24b-NI-Og3" id="0Cm-eB-6aP"/>
+                                    </connections>
+                                </barButtonItem>
                             </items>
                         </toolbar>
                     </subviews>
