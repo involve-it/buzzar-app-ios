@@ -55,4 +55,14 @@ class CommentsCollection: AbstractCollection {
             NotificationManager.sendNotification(NotificationManager.Name.CommentRemoved, object: comment)
         }
     }
+    
+    override func documentWasChanged(collection: String, id: String, fields: NSDictionary?, cleared: [String]?) {
+        if let index = self.comments.indexOf({$0.id == id}) {
+            let comment = self.comments[index]
+            comment.update(fields)
+            comment.id = id
+            
+            NotificationManager.sendNotification(NotificationManager.Name.CommentUpdated, object: comment)
+        }
+    }
 }

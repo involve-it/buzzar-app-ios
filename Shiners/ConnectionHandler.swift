@@ -81,18 +81,20 @@ public class ConnectionHandler{
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.accountLoaded), name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
             
             Meteor.connect(url) { (session) in
-                NSLog("Meteor connected")
-                self.dependenciesResolved = 0
-                self.status = .NetworkConnected
-                NotificationManager.sendNotification(.MeteorNetworkConnected, object: nil)
-                
-                if AccountHandler.Instance.isLoggedIn(){
-                    AccountHandler.Instance.loadAccount()
-                } else {
-                    AccountHandler.Instance.processLogoff()
-                    self.dependenciesResolved += 1
+                if self.status != .NetworkConnected && self.status != .Connected {
+                    NSLog("Meteor connected")
+                    self.dependenciesResolved = 0
+                    self.status = .NetworkConnected
+                    NotificationManager.sendNotification(.MeteorNetworkConnected, object: nil)
+                    
+                    if AccountHandler.Instance.isLoggedIn(){
+                        AccountHandler.Instance.loadAccount()
+                    } else {
+                        AccountHandler.Instance.processLogoff()
+                        self.dependenciesResolved += 1
+                    }
+                    self.executeHandlers(self.dependenciesResolved)
                 }
-                self.executeHandlers(self.dependenciesResolved)
             }
         }
     }

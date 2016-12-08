@@ -16,6 +16,8 @@ class AddCommentView: UIView, UITextViewDelegate {
     @IBOutlet weak var lblPlaceholder: UILabel!
     @IBOutlet weak var btnSend: UIButton!
     @IBOutlet weak var txtComment: UITextView!
+    var typing = false
+    private var timer:NSTimer?
     
     var delegate: AddCommentDelegate?
     
@@ -63,6 +65,10 @@ class AddCommentView: UIView, UITextViewDelegate {
         //self.layoutSubviews()
     }
     
+    func setNotTyping(){
+        self.typing = false
+    }
+    
     func keyboardNotification(notification: NSNotification) {
         if let userInfo = notification.userInfo {
             let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as?     NSValue)?.CGRectValue()
@@ -75,7 +81,13 @@ class AddCommentView: UIView, UITextViewDelegate {
                 //self.keyboardHeightLayoutConstraint?.constant = 0.0
                 originY = self.parentViewHeight - self.frame.height
                 //self.frame.origin.y = 0
+                self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(setNotTyping), userInfo: nil, repeats: false)
             } else {
+                if let timer = self.timer {
+                    timer.invalidate()
+                    self.timer = nil
+                }
+                self.typing = true
                 originY = self.parentViewHeight - (endFrame?.size.height ?? 0) - self.frame.height
             }
             

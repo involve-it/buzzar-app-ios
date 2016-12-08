@@ -15,6 +15,8 @@ class Comment: NSObject, DictionaryInitializable, NSCoding {
     var timestamp: NSDate?
     var username: String?
     var entityId: String?
+    var likes: Int?
+    var liked: Bool?
     var user: User?
     
     override init() {
@@ -39,6 +41,8 @@ class Comment: NSObject, DictionaryInitializable, NSCoding {
         self.userId = fields?.valueForKey(PropertyKeys.userId) as? String
         self.username = fields?.valueForKey(PropertyKeys.username) as? String
         self.entityId = fields?.valueForKey(PropertyKeys.entityId) as? String
+        self.likes = fields?.valueForKey(PropertyKeys.likes) as? Int
+        self.liked = fields?.valueForKey(PropertyKeys.liked) as? Bool
         
         if let timestamp = fields?.valueForKey(PropertyKeys.timestamp) as? Double {
             self.timestamp = NSDate(timeIntervalSince1970: timestamp / 1000)
@@ -62,6 +66,12 @@ class Comment: NSObject, DictionaryInitializable, NSCoding {
         self.username = aDecoder.decodeObjectForKey(PropertyKeys.username) as? String
         self.entityId = aDecoder.decodeObjectForKey(PropertyKeys.entityId) as? String
         self.user = aDecoder.decodeObjectForKey(PropertyKeys.user) as? User
+        if aDecoder.containsValueForKey(PropertyKeys.likes){
+            self.likes = aDecoder.decodeObjectForKey(PropertyKeys.likes) as? Int
+        }
+        if aDecoder.containsValueForKey(PropertyKeys.liked) {
+            self.liked = aDecoder.decodeBoolForKey(PropertyKeys.liked)
+        }
     }
     
     func encodeWithCoder(aCoder: NSCoder) {
@@ -72,6 +82,10 @@ class Comment: NSObject, DictionaryInitializable, NSCoding {
         aCoder.encodeObject(self.username, forKey: PropertyKeys.username)
         aCoder.encodeObject(self.entityId, forKey: PropertyKeys.entityId)
         aCoder.encodeObject(self.user, forKey: PropertyKeys.user)
+        aCoder.encodeObject(self.likes, forKey: PropertyKeys.likes)
+        if let liked = self.liked {
+            aCoder.encodeBool(liked, forKey: PropertyKeys.liked)
+        }
     }
     
     private struct PropertyKeys{
@@ -82,6 +96,8 @@ class Comment: NSObject, DictionaryInitializable, NSCoding {
         static let username = "username"
         static let entityId = "entityId"
         static let user = "user"
+        static let likes = "likes"
+        static let liked = "liked"
     }
     
     func toDictionary() -> Dictionary<String, AnyObject> {

@@ -79,7 +79,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     var pendingCommentsAsyncId: String?
     
     var phoneNumber: String?
-    
+        
     func map_Clicked(sender: AnyObject) {
         AppAnalytics.logEvent(.PostDetailsScreen_FullScreenMap)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -396,14 +396,13 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         if let index = self.navigationItem.rightBarButtonItems?.indexOf(self.btnEdit){
             self.navigationItem.rightBarButtonItems?.removeAtIndex(index)
         }
-        if self.post?.user?.id == AccountHandler.Instance.userId {
+        if ownPost {
             //TODO: uncomment when Edit functionality is ready
             //self.navigationItem.rightBarButtonItems?.append(self.btnEdit)
             LocalNotificationsHandler.Instance.reportEventSeen(.MyPosts, id: self.post.id)
+            LocalNotificationsHandler.Instance.reportActiveView(.MyPosts, id: self.post.id)
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(newCommentReceived), name: NotificationManager.Name.CommentAdded.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentUpdated), name: NotificationManager.Name.CommentUpdated.rawValue, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentsPageReceived), name: NotificationManager.Name.CommentsAsyncRequestCompleted.rawValue, object: nil)
         self.btnViewAllComments.hidden = true
         if let pendingCommentsAsyncId = self.pendingCommentsAsyncId {
@@ -417,11 +416,52 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                 }
             }
         }
+        if self.subscriptionId == nil {
+            if ConnectionHandler.Instance.isNetworkConnected() {
+                self.subscriptionId = AccountHandler.Instance.subscribeToCommentsForPost(self.post.id!)
+            } else {
+                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorNetworkConnected), name: NotificationManager.Name.MeteorNetworkConnected.rawValue, object: nil)
+            }
+        }
         
         if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
+    }
+    
+    public override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.CommentAdded.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.CommentUpdated.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.CommentRemoved.rawValue, object: nil)
+    }
+    
+    func meteorNetworkConnected(){
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorNetworkConnected.rawValue, object: nil)
+        if self.subscriptionId == nil {
+            self.subscriptionId = AccountHandler.Instance.subscribeToCommentsForPost(self.post.id!)
+        }
+    }
+    
+    func commentRemoved(notification: NSNotification){
+        ThreadHelper.runOnMainThread({
+            if self.isVisible() {
+                if let comment = notification.object as? Comment where comment.entityId == self.post.id,
+                    let index = self.post.comments.indexOf({$0.id == comment.id}) {
+                    if self.post.comments.count > 1 {
+                        self.collectionView!.deleteItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                    } else {
+                        self.collectionView!.reloadData()
+                    }
+                }
+                if self.post.comments.count > 3 {
+                    self.btnViewAllComments.hidden = false
+                } else {
+                    self.btnViewAllComments.hidden = true
+                }
+            }
+        })
     }
     
     func updateLikeButton(){
@@ -442,8 +482,10 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     
     func commentUpdated(notification: NSNotification){
         if let comment = notification.object as? Comment where comment.entityId == self.post.id!, let index = self.post.comments.indexOf({$0.id == comment.id}) where index < 3 {
-            ThreadHelper.runOnMainThread({ 
-                self.collectionView.reloadItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+            ThreadHelper.runOnMainThread({
+                if self.isVisible(){
+                    self.collectionView.reloadItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                }
             })
         }
     }
@@ -458,16 +500,22 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     }
     
     func newCommentReceived(notification: NSNotification){
-        if let comment = notification.object as? Comment where comment.entityId == self.post.id {
-            if self.post.comments.indexOf({$0.id == comment.id}) == nil {
-                self.post.comments.insert(comment, atIndex: 0)
-            }
-            
-            ThreadHelper.runOnMainThread({
+        ThreadHelper.runOnMainThread({
+            if self.isVisible(), let comment = notification.object as? Comment where comment.entityId == self.post.id {
+                if self.post.comments.indexOf({$0.id == comment.id}) == nil {
+                    self.post.comments.insert(comment, atIndex: 0)
+                }
+                
                 self.collectionView.reloadData()
-            })
-            NotificationManager.sendNotification(NotificationManager.Name.PostCommentAddedLocally, object: comment)
-        }
+                if self.post.comments.count > 3 {
+                    self.btnViewAllComments.hidden = false
+                } else {
+                    self.btnViewAllComments.hidden = true
+                }
+            
+                NotificationManager.sendNotification(NotificationManager.Name.PostCommentAddedLocally, object: comment)
+            }
+        })
     }
     
     func commentsPageReceived(notification: NSNotification){
@@ -475,6 +523,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
             self.post.commentsRequested = true
             self.pendingCommentsAsyncId = nil
             self.post.comments = comments
+        
             NotificationManager.sendNotification(.PostCommentsUpdated, object: self.post.id)
             ThreadHelper.runOnMainThread({
                 self.collectionView.reloadData()
@@ -503,8 +552,14 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
                 let comment = self.post.comments[indexPath.row]
                 cell.userComment.text = comment.text
                 cell.username = comment.username!
+                cell.commentId = comment.id!
                 cell.commentWritten = JSQMessagesTimestampFormatter.sharedFormatter().timestampForDate(comment.timestamp!)
                 cell.labelUserInfoConfigure()
+                cell.commentId = comment.id!
+                cell.btnLike.tag = indexPath.row
+                cell.btnLike.removeTarget(self, action: #selector(self.btnLikeComment_Click(_:)), forControlEvents: .TouchUpInside)
+                cell.btnLike.addTarget(self, action: #selector(self.btnLikeComment_Click(_:)), forControlEvents: .TouchUpInside)
+                cell.setLikes(AccountHandler.Instance.isLoggedIn(), count: comment.likes ?? 0, liked: comment.liked ?? false)
                 if let user = comment.user {
                     ImageCachingHandler.Instance.getImageFromUrl(user.imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
                         ThreadHelper.runOnMainThread({
@@ -552,6 +607,101 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         return 1
     }
     
+    public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+        if AccountHandler.Instance.isLoggedIn() {
+            let comment = self.post.comments[indexPath.row]
+            let actionController = UIAlertController(title: NSLocalizedString("Comment", comment: "Comment"), message: NSLocalizedString("What would you like to do?", comment: "What would you like to do?"), preferredStyle: .ActionSheet)
+            var title = NSLocalizedString("Like", comment: "Like")
+            if comment.liked ?? false {
+                title = NSLocalizedString("Unlike", comment: "Unlike")
+            }
+            
+            actionController.addAction(UIAlertAction(title: title, style: .Default, handler: { (action) in
+                self.doLikeComment(indexPath.row)
+            }))
+            
+            if comment.userId == AccountHandler.Instance.userId || self.post.user!.id! == AccountHandler.Instance.userId {
+                actionController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: "Delete"), style: .Destructive, handler: { (action) in
+                    if self.isNetworkReachable() {
+                        self.doDeleteComment(indexPath.row)
+                    }
+                }))
+            }
+            actionController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .Cancel, handler: nil))
+            
+            self.presentViewController(actionController, animated: true, completion: nil)
+        }
+    }
+    
+    func btnLikeComment_Click(sender: UIButton){
+        let row = sender.tag
+        if self.isNetworkReachable() {
+            self.doLikeComment(row)
+        }
+    }
+    
+    func doLikeComment(index: Int){
+        let comment = self.post.comments[index]
+        if comment.liked ?? false {
+            comment.liked = false
+            comment.likes = (comment.likes ?? 0) - 1
+            
+            self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+            
+            ConnectionHandler.Instance.posts.unlikeComment(comment.id!) { (success, errorId, errorMessage, result) in
+                if !success {
+                    comment.liked = true
+                    comment.likes = (comment.likes ?? 0) + 1
+                    ThreadHelper.runOnMainThread({
+                        if self.isVisible() {
+                            self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                            self.showAlert(NSLocalizedString("Error", comment: "Alert title, error"), message: NSLocalizedString("An error occurred.", comment: "An error occurred."))
+                        }
+                    })
+                }
+            }
+        } else {
+            comment.liked = true
+            comment.likes = (comment.likes ?? 0) + 1
+            
+            self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+            
+            ConnectionHandler.Instance.posts.likeComment(comment.id!) { (success, errorId, errorMessage, result) in
+                if !success {
+                    comment.liked = false
+                    comment.likes = (comment.likes ?? 0) - 1
+                    ThreadHelper.runOnMainThread({
+                        if self.isVisible(){
+                            self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                            self.showAlert(NSLocalizedString("Error", comment: "Alert title, error"), message: NSLocalizedString("An error occurred.", comment: "An error occurred."))
+                        }
+                    })
+                }
+            }
+        }
+        
+    }
+    
+    func doDeleteComment(index: Int){
+        let comment = self.post.comments.removeAtIndex(index)
+        
+        self.collectionView!.reloadData()
+        
+        ConnectionHandler.Instance.posts.deleteComment(comment.id!) { (success, errorId, errorMessage, result) in
+            if !success {
+                ThreadHelper.runOnMainThread({
+                    self.post.comments.insert(comment, atIndex: index)
+                    if self.isVisible() {
+                        self.collectionView!.reloadData()
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert title, error"), message: NSLocalizedString("An error occurred.", comment: "An error occurred."))
+                    }
+                })
+            }
+        }
+    }
+
+    
     func goUserProfile() {
         AppAnalytics.logEvent(.PostDetailsScreen_UserProfile)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -588,8 +738,17 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(newCommentReceived), name: NotificationManager.Name.CommentAdded.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentUpdated), name: NotificationManager.Name.CommentUpdated.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentRemoved), name: NotificationManager.Name.CommentRemoved.rawValue, object: nil)
         if let annotation = self.annotation{
             self.postMapLocation.selectAnnotation(annotation, animated: false)
+        }
+        self.collectionView.reloadData()
+        if self.post.comments.count > 3 {
+            self.btnViewAllComments.hidden = false
+        } else {
+            self.btnViewAllComments.hidden = true
         }
     }
     
@@ -652,6 +811,10 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         } else if segue.identifier == "allComments" || segue.identifier == "allCommentsNew" {
             let nc = segue.destinationViewController as! UINavigationController
             let vc = nc.viewControllers[0] as! CommentsViewController
+            if self.post.comments.count > CommentsHandler.DEFAULT_PAGE_SIZE {
+                self.post.comments.removeLast()
+                vc.moreCommentsAvailable = true
+            }
             vc.post = self.post
             vc.loadingComments = (self.pendingCommentsAsyncId != nil)
             if segue.identifier == "allCommentsNew" {

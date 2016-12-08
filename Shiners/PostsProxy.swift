@@ -151,11 +151,23 @@ public class PostsProxy{
         }
     }
     
+    func deleteComment(commentId: String, callback: MeteorMethodCallback? = nil){
+        Meteor.call("deleteComment", params: [commentId]) {(result, error) in
+            if error == nil {
+                let errorId = ResponseHelper.getErrorId(result);
+                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
+    
     func likePost(postId: String, callback: MeteorMethodCallback?){
         var dict = Dictionary<String, AnyObject>()
         dict["userId"] = AccountHandler.Instance.userId!
-        dict["postId"] = postId
-        Meteor.call("likePost", params: [dict]) { (result, error) in
+        dict["entityId"] = postId
+        dict["entityType"] = "post"
+        Meteor.call("likeEntity", params: [dict]) { (result, error) in
             if error == nil {
                 let errorId = ResponseHelper.getErrorId(result);
                 callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
@@ -168,8 +180,39 @@ public class PostsProxy{
     func unlikePost(postId: String, callback: MeteorMethodCallback?){
         var dict = Dictionary<String, AnyObject>()
         dict["userId"] = AccountHandler.Instance.userId!
-        dict["postId"] = postId
-        Meteor.call("unlikePost", params: [dict]) { (result, error) in
+        dict["entityId"] = postId
+        dict["entityType"] = "post"
+        Meteor.call("unlikeEntity", params: [dict]) { (result, error) in
+            if error == nil {
+                let errorId = ResponseHelper.getErrorId(result);
+                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
+    
+    func likeComment(commentId: String, callback: MeteorMethodCallback?){
+        var dict = Dictionary<String, AnyObject>()
+        dict["userId"] = AccountHandler.Instance.userId!
+        dict["entityId"] = commentId
+        dict["entityType"] = "comment"
+        Meteor.call("likeEntity", params: [dict]) { (result, error) in
+            if error == nil {
+                let errorId = ResponseHelper.getErrorId(result);
+                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+            } else {
+                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            }
+        }
+    }
+    
+    func unlikeComment(commentId: String, callback: MeteorMethodCallback?){
+        var dict = Dictionary<String, AnyObject>()
+        dict["userId"] = AccountHandler.Instance.userId!
+        dict["entityId"] = commentId
+        dict["entityType"] = "comment"
+        Meteor.call("unlikeEntity", params: [dict]) { (result, error) in
             if error == nil {
                 let errorId = ResponseHelper.getErrorId(result);
                 callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)

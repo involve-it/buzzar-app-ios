@@ -426,21 +426,25 @@ public class AccountHandler{
         })
     }
     
+    let lockQueue = dispatch_queue_create("handleCompletedLock", nil)
     private func handleCompleted(callId: Int){
-        if callId == self.latestCallId && self.resolvedDependencies == self.totalDependencies {
-            self.resolvedDependencies = 0
-            self.status = .Completed
-            
-            self.requestPushNotifications()
-            
-            NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
-            NotificationManager.sendNotification(NotificationManager.Name.AccountLoaded, object: nil)
-            
-            /*if let location = LocationHandler.lastLocation {
-                self.reportLocation(location.coordinate.latitude, lng: location.coordinate.longitude)
-            }*/
-            
-            self.processLocalNotifications()
+        dispatch_sync(lockQueue){
+            if callId == self.latestCallId && self.resolvedDependencies == self.totalDependencies {
+                print("account loaded")
+                self.resolvedDependencies = 0
+                self.status = .Completed
+                
+                self.requestPushNotifications()
+                
+                NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
+                NotificationManager.sendNotification(NotificationManager.Name.AccountLoaded, object: nil)
+                
+                /*if let location = LocationHandler.lastLocation {
+                    self.reportLocation(location.coordinate.latitude, lng: location.coordinate.longitude)
+                }*/
+                
+                self.processLocalNotifications()
+            }
         }
     }
     
