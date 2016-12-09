@@ -64,6 +64,7 @@ public class ConnectionHandler{
     }
     
     @objc private func accountLoaded(){
+        Logger.log("account loaded callback")
         self.dependenciesResolved += 1
         self.executeHandlers(self.dependenciesResolved)
     }
@@ -79,20 +80,19 @@ public class ConnectionHandler{
             //Meteor.client.logLevel = .Debug;
             
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.accountLoaded), name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
-            
+            Logger.log("connect() called")
             Meteor.connect(url) { (session) in
                 NSLog("Meteor connected")
+                Logger.log("Meteor.connect callback, current status: \(self.status)")
                 self.dependenciesResolved = 0
-                if self.status == .Failed{
-                    self.status = .Connected
-                } else {
-                    self.status = .NetworkConnected
-                }
+                self.status = .NetworkConnected
                 NotificationManager.sendNotification(.MeteorNetworkConnected, object: nil)
                 
                 if AccountHandler.Instance.isLoggedIn(){
+                    Logger.log("Meteor.connect callback: invoke loadAccount")
                     AccountHandler.Instance.loadAccount()
                 } else {
+                    Logger.log("Meteor.connect callback: invoke processLogoff")
                     AccountHandler.Instance.processLogoff()
                     self.dependenciesResolved += 1
                 }
@@ -120,7 +120,9 @@ public class ConnectionHandler{
     
     private func executeHandlers(count: Int){
         print("execute handlers: \(count)")
+        Logger.log("execute handlers. count: \(count)")
         if (count == self.totalDependencies && self.status != .Connected){
+            Logger.log("execute handlers: executing")
             self.status = ConnectionStatus.Connected;
             NotificationManager.sendNotification(NotificationManager.Name.MeteorConnected, object: nil)
         }
@@ -141,6 +143,7 @@ public class ConnectionHandler{
     }
     
     @objc func clientDisconnected(){
+        Logger.log("Client disconnected, current status: \(self.status). Setting to: .Failed")
         self.status = .Failed
         self.dependenciesResolved = 0
         NotificationManager.sendNotification(.MeteorConnectionFailed, object: nil)

@@ -77,12 +77,13 @@ public class AccountHandler{
         }
     }
     
-    func subscribe(){
-        self.subscribeToNewMessages()
-        self.subscribeToNewComments()
+    func subscribe(callId: Int){
+        Logger.log("loadAccount: subscribe")
+        self.subscribeToNewMessages(callId)
+        self.subscribeToNewComments(callId)
     }
     
-    func subscribeToNewMessages(){
+    func subscribeToNewMessages(callId: Int){
         if let messagesId = self.messagesId {
             Meteor.unsubscribe(withId: messagesId)
         } else {
@@ -90,13 +91,15 @@ public class AccountHandler{
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveMyChats), name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
         }
         self.messagesId = Meteor.subscribe("messages-new") {
+            Logger.log("loadAccount: susbcribeToNewMessages callback")
             NSLog("messages-new subscribed");
             self.resolvedDependencies += 1
+            self.handleCompleted(callId)
             NotificationManager.sendNotification(NotificationManager.Name.MessagesNewSubscribed, object: nil)
         }
     }
     
-    func subscribeToNewComments(){
+    func subscribeToNewComments(callId: Int){
         if let commentsId = self.commentsId {
             Meteor.unsubscribe(withId: commentsId)
         } else {
@@ -104,8 +107,10 @@ public class AccountHandler{
             NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(savePosts), name: NotificationManager.Name.CommentRemoved.rawValue, object: nil)
         }
         self.commentsId = Meteor.subscribe("comments-my") {
+            Logger.log("loadAccount: susbcribeToNewComments callback")
             print("comments-my subscribed")
             self.resolvedDependencies += 1
+            self.handleCompleted(callId)
             NotificationManager.sendNotification(NotificationManager.Name.CommentsMySubscribed, object: nil)
         }
     }
@@ -295,8 +300,10 @@ public class AccountHandler{
         
         if self.isLoggedIn(){
             self.userId = Meteor.client.userId()
-            self.subscribe()
+            self.subscribe(callId)
+            Logger.log("loadAccount: invoke getCurrentUser")
             ConnectionHandler.Instance.users.getCurrentUser({ (success, errorId, errorMessage, result) in
+                Logger.log("loadAccount: getCurrentUser callback")
                 if (self.latestCallId == callId){
                     if (success){
                         self.currentUser = result as? User
@@ -310,8 +317,9 @@ public class AccountHandler{
                     self.handleCompleted(callId)
                 }
             })
-
+            Logger.log("loadAccount: invoke getMyPosts")
             ConnectionHandler.Instance.posts.getMyPosts(0, take: 1000, callback: { (success, errorId, errorMessage, result) in
+                Logger.log("loadAccount: getMyPosts callback")
                 if self.latestCallId == callId {
                     if (success){
                         self.myPosts = result as? [Post]
@@ -327,8 +335,9 @@ public class AccountHandler{
                     }
                 }
             })
-            
+            Logger.log("loadAccount: invoke getChats")
             ConnectionHandler.Instance.messages.getChats(0, take: MessagesHandler.DEFAULT_PAGE_SIZE, callback: { (success, errorId, errorMessage, result) in
+                Logger.log("loadAccount: getChats callback")
                 if self.latestCallId == callId {
                     if (success){
                         self.myChats = result as? [Chat]
@@ -428,8 +437,10 @@ public class AccountHandler{
     
     let lockQueue = dispatch_queue_create("handleCompletedLock", nil)
     private func handleCompleted(callId: Int){
+        Logger.log("loadAccount: handleCompleted. count: \(self.resolvedDependencies), total: \(self.totalDependencies)")
         dispatch_sync(lockQueue){
             if callId == self.latestCallId && self.resolvedDependencies == self.totalDependencies {
+                Logger.log("handleCompleted: account loaded")
                 print("account loaded")
                 self.resolvedDependencies = 0
                 self.status = .Completed

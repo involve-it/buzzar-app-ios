@@ -20,6 +20,7 @@ public class DialogViewController : JSQMessagesViewController{
     var isPeeking = false
     var initialPage = false
     var dataFromCache: Bool!
+    var shownMessageIds = [String]()
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,11 +122,12 @@ public class DialogViewController : JSQMessagesViewController{
                 return $0.timestamp!.compare($1.timestamp!) == NSComparisonResult.OrderedAscending
             })
             if self.initialPage {
+                self.shownMessageIds.removeAll()
                 chat.messages = messagesSorted
                 self.messages = [JSQMessage]()
                 self.chat.messages.forEach { (message) in
                     if let userId = message.userId, text = message.text, timestamp = message.timestamp where self.chat.messages.count <= MessagesHandler.DEFAULT_PAGE_SIZE || message != self.chat.messages.first!{
-                        addMessage(userId, text: text, timestamp: timestamp)
+                        addMessage(message.id!, senderId: userId, text: text, timestamp: timestamp)
                     }
                 }
                 ThreadHelper.runOnMainThread({ 
@@ -189,9 +191,9 @@ public class DialogViewController : JSQMessagesViewController{
     }
     
     func messageAdded(notification: NSNotification){
-        if let message = notification.object as? Message where message.chatId == self.chat.id && !self.chat.messages.contains({$0.id! == message.id!}) {
+        if let message = notification.object as? Message where message.chatId == self.chat.id /*&& !self.chat.messages.contains({$0.id! == message.id!})*/ {
             ThreadHelper.runOnMainThread({ 
-                self.addMessage(message.userId!, text: message.text!, timestamp: message.timestamp!, callFinish: true)
+                self.addMessage(message.id!, senderId: message.userId!, text: message.text!, timestamp: message.timestamp!, callFinish: true)
             })
             if UIApplication.sharedApplication().applicationState == .Active {
                 if message.toUserId == AccountHandler.Instance.userId {
@@ -315,17 +317,20 @@ public class DialogViewController : JSQMessagesViewController{
         return nil
     }
     
-    func addMessage(id: String, text: String, timestamp: NSDate, callFinish: Bool = false){
+    func addMessage(id: String, senderId: String, text: String, timestamp: NSDate, callFinish: Bool = false){
         //let message = JSQMessage(senderId: id, displayName: "", text: text)
-        let message = JSQMessage(senderId: id, senderDisplayName: "", date: timestamp, text: text)
-        messages.append(message)
-        if callFinish{
-            if id == self.senderId {
-                JSQSystemSoundPlayer.jsq_playMessageSentSound()
-                finishSendingMessage()
-            } else {
-                JSQSystemSoundPlayer.jsq_playMessageReceivedSound()
-                finishReceivingMessage()
+        if self.shownMessageIds.indexOf(id) == nil {
+            self.shownMessageIds.append(id)
+            let message = JSQMessage(senderId: senderId, senderDisplayName: "", date: timestamp, text: text)
+            messages.append(message)
+            if callFinish{
+                if id == self.senderId {
+                    JSQSystemSoundPlayer.jsq_playMessageSentSound()
+                    finishSendingMessage()
+                } else {
+                    JSQSystemSoundPlayer.jsq_playMessageReceivedSound()
+                    finishReceivingMessage()
+                }
             }
         }
     }

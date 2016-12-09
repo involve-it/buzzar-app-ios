@@ -94,6 +94,7 @@ class AddCommentView: UIView, UITextViewDelegate {
                 //self.keyboardHeightLayoutConstraint?.constant = 0.0
                 //originY = self.parentViewHeight - self.frame.height
                 //self.frame.origin.y = 0
+                self.keyboardHeight = 0
                 self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(setNotTyping), userInfo: nil, repeats: false)
             } else {
                 if let timer = self.timer {
@@ -102,9 +103,10 @@ class AddCommentView: UIView, UITextViewDelegate {
                 }
                 self.typing = true
                 //originY = self.parentViewHeight - (endFrame?.size.height ?? 0) - self.frame.height
+                self.keyboardHeight = endFrame?.size.height ?? 0
             }
             
-            self.keyboardHeight = endFrame?.size.height ?? 0
+            
             let originY = self.parentViewHeight - self.keyboardHeight - self.statusBarHeight - self.frame.height
             UIView.animateWithDuration(duration,
                                        delay: NSTimeInterval(0),
