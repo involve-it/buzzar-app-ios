@@ -37,7 +37,7 @@ class CommentsCollection: AbstractCollection {
         }
         
         if let myPostIndex = AccountHandler.Instance.myPosts?.indexOf({$0.id == comment.entityId}), post = AccountHandler.Instance.myPosts?[myPostIndex]{
-            post.comments.append(comment)
+            post.comments.insert(comment, atIndex: 0)
             if comment.userId != AccountHandler.Instance.userId {
                 LocalNotificationsHandler.Instance.reportNewEvent(.MyPosts, count: 1, id: comment.entityId, messageTitle: "New comment on your post from \(comment.username ?? "Unknown")", messageSubtitle: (comment.text?.shortMessageForNotification() ?? ""))
             }
