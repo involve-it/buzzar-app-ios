@@ -68,9 +68,9 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
             case .Posts:
                 index = 0
             case .Messages:
-                index = 1
-            case .MyPosts:
                 index = 3
+            case .MyPosts:
+                index = 1
             default:
                 index = -1
             }
@@ -194,12 +194,12 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
                 LocalNotificationsHandler.Instance.reportActiveView(.Posts)
             }
             self.setBadgeValue(0, count: 0)
-        case 1:
+        case 3:
             AppAnalytics.logEvent(.Main_MessagesTab_Display)
             if AccountHandler.Instance.isLoggedIn(){
                 LocalNotificationsHandler.Instance.reportActiveView(.Messages)
             }
-        case 3:
+        case 1:
             AppAnalytics.logEvent(.Main_MyPostsTab_Display)
             if AccountHandler.Instance.isLoggedIn(){
                 LocalNotificationsHandler.Instance.reportActiveView(.MyPosts)

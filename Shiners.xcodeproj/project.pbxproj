@@ -73,6 +73,8 @@
 		7B26B1A91CD6DDA8000495EE /* SmallImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B1A81CD6DDA8000495EE /* SmallImageView.swift */; };
 		7B26B1AB1CD6DE52000495EE /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 7B26B1AA1CD6DE52000495EE /* cancel.png */; };
 		7B26B1AF1CD99D25000495EE /* NewSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B26B1AE1CD99D25000495EE /* NewSearchViewController.swift */; };
+		7B2815ED1E00CC4E0053469D /* ProfileMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2815EC1E00CC4E0053469D /* ProfileMainViewController.swift */; };
+		7B2815EF1E00DF9E0053469D /* SettingsMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2815EE1E00DF9E0053469D /* SettingsMainViewController.swift */; };
 		7B3564911CDAFDCE00012CA9 /* UsersProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3564901CDAFDCE00012CA9 /* UsersProxy.swift */; };
 		7B3565301CDD95F900012CA9 /* CustomPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B35652F1CDD95F900012CA9 /* CustomPhoto.swift */; };
 		7B3565321CE1747500012CA9 /* ResponseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3565311CE1747500012CA9 /* ResponseHelper.swift */; };
@@ -223,6 +225,8 @@
 		7B26B1A81CD6DDA8000495EE /* SmallImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmallImageView.swift; sourceTree = "<group>"; };
 		7B26B1AA1CD6DE52000495EE /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel.png; sourceTree = "<group>"; };
 		7B26B1AE1CD99D25000495EE /* NewSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewSearchViewController.swift; sourceTree = "<group>"; };
+		7B2815EC1E00CC4E0053469D /* ProfileMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileMainViewController.swift; sourceTree = "<group>"; };
+		7B2815EE1E00DF9E0053469D /* SettingsMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsMainViewController.swift; sourceTree = "<group>"; };
 		7B3564901CDAFDCE00012CA9 /* UsersProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersProxy.swift; sourceTree = "<group>"; };
 		7B35652F1CDD95F900012CA9 /* CustomPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPhoto.swift; sourceTree = "<group>"; };
 		7B3565311CE1747500012CA9 /* ResponseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseHelper.swift; sourceTree = "<group>"; };
@@ -570,6 +574,8 @@
 				617378C11D6DC5E100F10ABA /* NEWRegisterViewController.swift */,
 				617378A11D6B290D00F10ABA /* ResetPasswordViewController.swift */,
 				6127369A1DC9E8FD009EDBD6 /* ContactUsViewController.swift */,
+				7B2815EC1E00CC4E0053469D /* ProfileMainViewController.swift */,
+				7B2815EE1E00DF9E0053469D /* SettingsMainViewController.swift */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -831,6 +837,8 @@
 				7BB2A7F41CCD17A000AD636D /* ImagesScrollViewDelegate.swift in Sources */,
 				7B3565611CE93E0800012CA9 /* CachingHandler.swift in Sources */,
 				7B35655B1CE9259E00012CA9 /* MessagesProvider.swift in Sources */,
+				7B2815EF1E00DF9E0053469D /* SettingsMainViewController.swift in Sources */,
+				7B2815ED1E00CC4E0053469D /* ProfileMainViewController.swift in Sources */,
 				7BB2A7DF1CCC1BF900AD636D /* ConnectionHandler.swift in Sources */,
 				7B3565451CE7B99C00012CA9 /* MessagesTableViewCell.swift in Sources */,
 				7B13905F1DF9148200598FF4 /* LikeButton.swift in Sources */,

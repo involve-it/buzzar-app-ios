@@ -49,7 +49,10 @@ class PushNotificationsHandler{
                     AccountHandler.Instance.updateMyPosts()
                     rootViewController.selectedIndex = 3
                     let navigationController = rootViewController.viewControllers![3] as! UINavigationController
-                    let myPostsViewController = navigationController.viewControllers[0] as? MyPostsViewController
+                    //let myPostsViewController = navigationController.viewControllers[0] as? MyPostsViewController
+                    let mainViewController = navigationController.viewControllers[0] as? ProfileMainViewController
+                    mainViewController?.typeSwitch.selectedSegmentIndex = 0
+                    let myPostsViewController = mainViewController?.myPostsViewController
                     myPostsViewController?.pendingPostId = postId
                     
                     if navigationController.visibleViewController !== myPostsViewController {

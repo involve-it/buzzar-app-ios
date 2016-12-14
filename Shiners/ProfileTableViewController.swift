@@ -22,7 +22,6 @@ class ProfileTableViewController: UITableViewController {
     @IBOutlet weak var btnCallToUser: UIButton!
     @IBOutlet weak var isStatusLabel: UILabel!
     @IBOutlet weak var btnCloseVC: UIBarButtonItem!
-    @IBOutlet weak var editProfile: UIBarButtonItem!
     
     @IBOutlet weak var profileImageWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var profileImageHeightConstraint: NSLayoutConstraint!
@@ -41,13 +40,13 @@ class ProfileTableViewController: UITableViewController {
     @IBOutlet weak var skypeRowVisible: UITableViewCell!
     //@IBOutlet weak var vkRowVisible: UITableViewCell!
     //@IBOutlet weak var facebookRowVisible: UITableViewCell!
-    @IBOutlet weak var cbNearbyNotifications: UISwitch!
+    
     var modalSpinner: UIAlertController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = NSLocalizedString("Settings", comment: "Navigation title, Settings")
+        //self.navigationItem.title = NSLocalizedString("Settings", comment: "Navigation title, Settings")
         
         self.btnCallToUser.enabled = false
         self.btnMessageToUser.enabled = false
@@ -73,37 +72,20 @@ class ProfileTableViewController: UITableViewController {
             self.profileImageHeightConstraint.constant = 140
             self.profileImageWidthConstraint.constant = 140
         } else {
-            if let index = self.navigationItem.rightBarButtonItems?.indexOf(self.editProfile){
-                self.navigationItem.rightBarButtonItems?.removeAtIndex(index)
+            if let firstName = self.extUser!.getProfileDetailValue(.FirstName), lastName = self.extUser!.getProfileDetailValue(.LastName){
+                self.navigationItem.title = "\(firstName) \(lastName)"
+            } else {
+                self.navigationItem.title = self.extUser!.username
             }
         }
         
         self.imgUserAvatar.layer.cornerRadius = self.profileImageHeightConstraint.constant / 2
         self.imgUserAvatar.clipsToBounds = true
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorLoaded), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorLoaded), name: NotificationManager.Name.UserUpdated.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(fillUserData), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(fillUserData), name: NotificationManager.Name.UserUpdated.rawValue, object: nil)
     }
     
-    func meteorLoaded(){
-        self.fillUserData()
-        if let editPorfileButton = self.editProfile{
-            editPorfileButton.enabled = true
-        }
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if let editPorfileButton = self.editProfile {
-            if AccountHandler.Instance.status != .Completed {
-                editPorfileButton.enabled = false
-            } else {
-                editPorfileButton.enabled = true
-            }
-        }
-    }
-
     @IBAction func cendMessageToUser(sender: UIButton) {
         AppAnalytics.logEvent(.ProfileScreen_Message)
         let alertController = UIAlertController(title: NSLocalizedString("New message", comment: "Alert title, New message"), message: nil, preferredStyle: .Alert);
@@ -194,7 +176,7 @@ class ProfileTableViewController: UITableViewController {
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return !(self.extUser != nil) ? 4 : 1
+        return !(self.extUser != nil) ? 3 : 1
     }
     
     func tabelViewEstimatedRowHeight() {
@@ -203,7 +185,8 @@ class ProfileTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 3 {
+        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        if indexPath.section == 2 {
             AppAnalytics.logEvent(.SettingsLoggedInScreen_Logout)
             let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .ActionSheet)
             alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
@@ -227,14 +210,19 @@ class ProfileTableViewController: UITableViewController {
             self.modalSpinner = self.displayModalAlert(NSLocalizedString("Logging out...", comment: "Alert title, logging out..."))
         }
         
-        if ConnectionHandler.Instance.isNetworkConnected() {
+        if ConnectionHandler.Instance.isConnected() {
             NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
             AccountHandler.Instance.logoff(){ success in
                 ThreadHelper.runOnMainThread({
-                    self.modalSpinner?.dismissViewControllerAnimated(true, completion: nil)
-                    if (!success){
-                        self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("An error occurred", comment: "Alert message, An error occurred"))
-                    }
+                    self.modalSpinner!.dismissViewControllerAnimated(true, completion: { 
+                        if (success){
+                            let mainViewController = (self.parentViewController as! ProfileMainViewController)
+                            mainViewController.typeSwitch.selectedSegmentIndex = 0
+                            mainViewController.switch_ValueChanged(mainViewController.typeSwitch)
+                        } else {
+                            self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("An error occurred", comment: "Alert message, An error occurred"))
+                        }
+                    })
                 })
             }
         } else {
@@ -248,12 +236,6 @@ class ProfileTableViewController: UITableViewController {
         
         if user != nil {
             self.currentUser = user
-            
-            if UIApplication.sharedApplication().isRegisteredForRemoteNotifications() && (currentUser.enableNearbyNotifications ?? false){
-                self.cbNearbyNotifications.on = true
-            } else {
-                self.cbNearbyNotifications.on = false
-            }
             
             //Username
             if let firstName = self.currentUser?.getProfileDetailValue(.FirstName),
@@ -342,5 +324,13 @@ class ProfileTableViewController: UITableViewController {
             self.phoneRowVisible.layoutMargins = UIEdgeInsetsZero
             //self.phoneRowVisible.preservesSuperviewLayoutMargins = false
         }
+    }
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        if identifier == "editProfile"{
+            return self.isNetworkReachable() && AccountHandler.Instance.status == .Completed
+        }
+        
+        return true
     }
 }

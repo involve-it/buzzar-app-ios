@@ -96,7 +96,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
             self.registerForPreviewingWithDelegate(self, sourceView: view)
         }
-        self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        //self.navigationItem.rightBarButtonItem = self.editButtonItem()
         self.editButtonItem().action = #selector(editAction)
         
         if self.myPosts.count > 0{
@@ -114,11 +114,12 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         AppAnalytics.logEvent(.MyPostsScreen_BtnEdit_Click)
         if self.tableView.editing{
             self.tableView.setEditing(false, animated: true)
-            self.navigationItem.leftBarButtonItem = self.btnAdd
+            self.parentViewController!.navigationItem.rightBarButtonItem = (self.parentViewController as! ProfileMainViewController).btnAdd
+            
             sender.title = NSLocalizedString("Edit", comment: "Edit")
         } else {
             self.tableView.setEditing(true, animated: true)
-            self.navigationItem.leftBarButtonItem = self.btnDelete
+            self.parentViewController!.navigationItem.rightBarButtonItem = self.btnDelete
             sender.title = NSLocalizedString("Done", comment: "Done")
         }
     }
@@ -222,7 +223,8 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (myPosts.count == 0){
-            if ConnectionHandler.Instance.status == .Connected{
+            if self.meteorLoaded
+            {
                 return tableView.dequeueReusableCellWithIdentifier("noPosts")!
             } else {
                 return tableView.dequeueReusableCellWithIdentifier("waitingPosts")!

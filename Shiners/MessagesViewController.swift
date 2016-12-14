@@ -56,7 +56,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         
         self.btnDelete = UIBarButtonItem(title: NSLocalizedString("Delete", comment: "Delete"), style: UIBarButtonItemStyle.Done, target: self, action: #selector(deleteMessages))
         
-        self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        self.navigationItem.leftBarButtonItem = self.editButtonItem()
         self.editButtonItem().action = #selector(editAction)
         
         if self.dialogs.count > 0{
@@ -74,11 +74,11 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         AppAnalytics.logEvent(.MessagesScreen_BtnEdit_Click)
         if self.tableView.editing{
             self.tableView.setEditing(false, animated: true)
-            self.navigationItem.leftBarButtonItem = nil
+            self.navigationItem.rightBarButtonItem = nil
             sender.title = NSLocalizedString("Edit", comment: "Edit")
         } else {
             self.tableView.setEditing(true, animated: true)
-            self.navigationItem.leftBarButtonItem = self.btnDelete
+            self.navigationItem.rightBarButtonItem = self.btnDelete
             sender.title = NSLocalizedString("Done", comment: "Done")
         }
     }
