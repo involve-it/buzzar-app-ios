@@ -57,6 +57,9 @@
 /* Alert title, Cancel */
 "Close" = "Закрыть";
 
+/* Comment */
+"Comment" = "Комментарий";
+
 /* No comment provided by engineer. */
 "Connect and meet" = "Договаривайся / встречайся";
 
@@ -250,6 +253,9 @@
 /* Alert message, please fill in both, username and password */
 "Please fill in both, username and password" = "Оба поля - имя пользователя и пароль - обязательны для ввода";
 
+/* Please log in to comment */
+"Please log in to comment" = "Войдите, чтобы комментировать";
+
 /* Please log in to leave a comment or like a post */
 "Please log in to leave a comment or like a post" = "Пожалуйста, зарегистрируйтесь или войдите, чтобы комментировать или лайкать посты.";
 
@@ -313,8 +319,14 @@
 /* Alert title, Validation failed */
 "Validation failed" = "Проверьте все поля формы";
 
+/* View all comments */
+"View all comments" = "Посмотреть все комментарии";
+
 /* Message, We are still trying */
 "We are still trying..." = "Загрузка продолжается...";
+
+/* What would you like to do? */
+"What would you like to do?" = "Что бы вы хотели сделать?";
 
 /* Alert title, you are not logged in */
 "You are not logged in" = "Вы не вошли в свой аккаунт";
@@ -322,6 +334,3 @@
 /* Post info, post closed */
 "post closed" = "Пост закрыт";
 
-"View all comments" = "Посмотреть все комментарии";
-
-"Please log in to comment" = "Войдите, чтобы комментировать";

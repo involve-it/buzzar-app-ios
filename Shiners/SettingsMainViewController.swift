@@ -18,7 +18,7 @@ class SettingsMainViewController: UITableViewController {
     
     @IBOutlet weak var sendNearbyNotificationsSwitch: UISwitch!
     func fillUserData(){
-        if UIApplication.sharedApplication().isRegisteredForRemoteNotifications() && (AccountHandler.Instance.currentUser!.enableNearbyNotifications ?? false){
+        if UIApplication.sharedApplication().isRegisteredForRemoteNotifications(), let currentUser = AccountHandler.Instance.currentUser where (currentUser.enableNearbyNotifications ?? false) {
             self.sendNearbyNotificationsSwitch.on = true
         } else {
             self.sendNearbyNotificationsSwitch.on = false

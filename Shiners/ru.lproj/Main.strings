@@ -28,6 +28,12 @@
 /* Class = "UIBarButtonItem"; title = "Done"; ObjectID = "2Xz-4m-stt"; */
 "2Xz-4m-stt.title" = "Готово";
 
+/* Class = "UISegmentedControl"; 3GY-ia-e1z.segmentTitles[0] = "My Posts"; ObjectID = "3GY-ia-e1z"; */
+"3GY-ia-e1z.segmentTitles[0]" = "Мои Посты";
+
+/* Class = "UISegmentedControl"; 3GY-ia-e1z.segmentTitles[1] = "Profile"; ObjectID = "3GY-ia-e1z"; */
+"3GY-ia-e1z.segmentTitles[1]" = "Профиль";
+
 /* Class = "UITextField"; placeholder = "Password"; ObjectID = "3yk-eq-aYb"; */
 "3yk-eq-aYb.placeholder" = "Пароль";
 
@@ -127,7 +133,7 @@
 /* (No Commment) */
 "C2s-lm-Dpe.text" = "Изображения не выбраны";
 
-/* Class = "UITableViewSection"; footerTitle = "Keep this switch on to be notified of events near you."; ObjectID = "C8v-2i-i1t"; */
+/* (No Commment) */
 "C8v-2i-i1t.footerTitle" = "Включите, чтобы получать уведомления о событиях рядом с вами";
 
 /* (No Commment) */
@@ -195,6 +201,9 @@
 
 /* Class = "UILabel"; text = "Test - Select this to close"; ObjectID = "GLk-Vj-hIx"; */
 "GLk-Vj-hIx.text" = "Test - Select this to close";
+
+/* Class = "UITabBarItem"; title = "Settings"; ObjectID = "GbQ-Cn-M88"; */
+"GbQ-Cn-M88.title" = "Настройки";
 
 /* Class = "UIButton"; normalTitle = "Create"; ObjectID = "GiD-Bd-9Z9"; */
 "GiD-Bd-9Z9.normalTitle" = "Создать";
@@ -388,7 +397,7 @@
 /* Class = "UITextField"; placeholder = "Phone number (optional)"; ObjectID = "UAy-DO-yP7"; */
 "UAy-DO-yP7.placeholder" = "Номер телефона (не обаязательно)";
 
-/* Class = "UILabel"; text = "Log out"; ObjectID = "UyQ-sd-lSX"; */
+/* (No Commment) */
 "UyQ-sd-lSX.text" = "Выйти";
 
 /* Class = "UILabel"; text = "VK"; ObjectID = "V0b-0k-AGM"; */
@@ -475,7 +484,7 @@
 /* Class = "UINavigationItem"; title = "Contact Us"; ObjectID = "aLh-il-hui"; */
 "aLh-il-hui.title" = "Обратная связь";
 
-/* Class = "UILabel"; text = "About us"; ObjectID = "aU2-x1-9Dr"; */
+/* (No Commment) */
 "aU2-x1-9Dr.text" = "О нас";
 
 /* (No Commment) */
@@ -508,6 +517,9 @@
 /* Class = "UITextField"; placeholder = "Your e-mail"; ObjectID = "cJB-nf-QmB"; */
 "cJB-nf-QmB.placeholder" = "Ваш email";
 
+/* Class = "UITableViewSection"; footerTitle = "Keep this switch on to be notified of events near you."; ObjectID = "coQ-ee-sv8"; */
+"coQ-ee-sv8.footerTitle" = "Включите, чтобы получать уведомления о событиях вокруг вас";
+
 /* (No Commment) */
 "coy-YR-Z4E.headerTitle" = "Что";
 
@@ -516,6 +528,9 @@
 
 /* Class = "UILabel"; text = "+7 (999) 999-21-22"; ObjectID = "d8V-Uv-fzK"; */
 "d8V-Uv-fzK.text" = "+7 (999) 999-21-22";
+
+/* Class = "UILabel"; text = "Contact Us"; ObjectID = "dCJ-EP-nyn"; */
+"dCJ-EP-nyn.text" = "Обратная связь";
 
 /* (No Commment) */
 "dHI-Cm-ri6.title" = "Создать";
@@ -547,6 +562,9 @@
 /* Class = "UILabel"; text = "There are no posts around you"; ObjectID = "eD7-KZ-RzE"; */
 "eD7-KZ-RzE.text" = "Рядом с вами нет постов";
 
+/* Class = "UILabel"; text = "Log out"; ObjectID = "eGg-kQ-hqC"; */
+"eGg-kQ-hqC.text" = "Выйти";
+
 /* Class = "UITextField"; placeholder = "Enter your password"; ObjectID = "eGv-PG-E7f"; */
 "eGv-PG-E7f.placeholder" = "Введите ваш пароль";
 
@@ -558,6 +576,9 @@
 
 /* Class = "UILabel"; text = "Left:"; ObjectID = "fBg-3H-iN5"; */
 "fBg-3H-iN5.text" = "Осталось:";
+
+/* Class = "UILabel"; text = "Notify me of nearby events"; ObjectID = "fQn-La-PYO"; */
+"fQn-La-PYO.text" = "Уведомления";
 
 /* Class = "UILabel"; text = "You have no posts"; ObjectID = "fZh-j2-ptF"; */
 "fZh-j2-ptF.text" = "У вас нет постов";
@@ -637,6 +658,9 @@
 /* Class = "UITableViewSection"; headerTitle = "Select the type of post"; ObjectID = "jdo-n3-fhf"; */
 "jdo-n3-fhf.headerTitle" = "Выберите тип поста";
 
+/* Class = "UIButton"; normalTitle = "Like"; ObjectID = "jgq-1h-rD5"; */
+"jgq-1h-rD5.normalTitle" = "Нравится";
+
 /* Class = "UIButton"; normalTitle = "Add photo"; ObjectID = "jlh-i9-wL1"; */
 "jlh-i9-wL1.normalTitle" = "Добавить фото";
 
@@ -669,6 +693,9 @@
 
 /* Class = "UIButton"; normalTitle = "Tap here to LOG IN"; ObjectID = "kzT-iH-Jki"; */
 "kzT-iH-Jki.normalTitle" = "Нажмите здесь, чтобы войти";
+
+/* Class = "UILabel"; text = "Edit profile"; ObjectID = "l1H-qT-eud"; */
+"l1H-qT-eud.text" = "Редактировать профиль";
 
 /* Class = "UILabel"; text = "666"; ObjectID = "l6I-mw-bBv"; */
 "l6I-mw-bBv.text" = "666";
@@ -709,7 +736,7 @@
 /* Class = "UILabel"; text = "Edit profile"; ObjectID = "m3Q-HH-LBJ"; */
 "m3Q-HH-LBJ.text" = "Редактировать профиль";
 
-/* Class = "UILabel"; text = "Notify me of nearby events"; ObjectID = "nF0-Kk-gEa"; */
+/* (No Commment) */
 "nF0-Kk-gEa.text" = "Оповещайте меня о событиях рядом";
 
 /* (No Commment) */
@@ -754,6 +781,9 @@
 /* Class = "UILabel"; text = "Acquiring location..."; ObjectID = "rWD-VU-Bnb"; */
 "rWD-VU-Bnb.text" = "Определяется локация...";
 
+/* Class = "UINavigationItem"; title = "Settings"; ObjectID = "rXJ-0O-7Uj"; */
+"rXJ-0O-7Uj.title" = "Настройки";
+
 /* Class = "UILabel"; text = "email"; ObjectID = "s7z-7t-bod"; */
 "s7z-7t-bod.text" = "Электронная почта";
 
@@ -778,7 +808,7 @@
 /* Class = "UILabel"; text = "Log in with Facebook"; ObjectID = "tUC-3K-QXx"; */
 "tUC-3K-QXx.text" = "Авторизоваться через Facebook";
 
-/* Class = "UILabel"; text = "Contact Us"; ObjectID = "tVB-OW-NCc"; */
+/* (No Commment) */
 "tVB-OW-NCc.text" = "Связаться с нами";
 
 /* Class = "UILabel"; text = "365 days"; ObjectID = "ttN-lV-xSZ"; */
@@ -790,8 +820,14 @@
 /* Class = "UINavigationItem"; title = "Profile"; ObjectID = "uAC-Vy-9zC"; */
 "uAC-Vy-9zC.title" = "Профиль";
 
+/* Class = "UITabBarItem"; title = "Me"; ObjectID = "uL4-qV-Dco"; */
+"uL4-qV-Dco.title" = "Я";
+
 /* Class = "UINavigationItem"; title = "Messages"; ObjectID = "uX0-i6-PlM"; */
 "uX0-i6-PlM.title" = "Сообщения";
+
+/* Class = "UILabel"; text = "About us"; ObjectID = "uXG-Lf-0Tt"; */
+"uXG-Lf-0Tt.text" = "О нас";
 
 /* Class = "UILabel"; text = "Your status"; ObjectID = "ujW-Q1-sMn"; */
 "ujW-Q1-sMn.text" = "Ваш статус";
@@ -802,7 +838,7 @@
 /* (No Commment) */
 "vC4-YX-TB7.text" = "Опишите";
 
-/* Class = "UITabBarItem"; title = "Settings"; ObjectID = "vCI-Of-c03"; */
+/* Class = "UITabBarItem"; title = "Me"; ObjectID = "vCI-Of-c03"; */
 "vCI-Of-c03.title" = "Настройки";
 
 /* Class = "UILabel"; text = "No images were added"; ObjectID = "vJ3-R2-TNg"; */
@@ -840,6 +876,9 @@
 
 /* (No Commment) */
 "zbV-Kk-5ML.placeholder" = "123.45";
+
+/* Class = "UILabel"; text = "Title"; ObjectID = "zge-Ha-lxo"; */
+"zge-Ha-lxo.text" = "Название";
 
 /* Class = "UITextField"; placeholder = "Subject"; ObjectID = "zvX-Sf-D0c"; */
 "zvX-Sf-D0c.placeholder" = "Заголовок";
