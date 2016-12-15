@@ -8,6 +8,14 @@
 
 import UIKit
 
+//Устанавливаем лимит символов для текстового поля
+var titleAllowCount:String = "50"
+//Устанавливаем лимит символов для поля с описанием
+var descriptionAllowCount:String = "1000"
+
+let descriptionPlaceholderText = NSLocalizedString("Optional: Provide more details", comment: "Placeholder, Description (optional)")
+let descriptionPlaceholderColor = UIColor.lightGrayColor()
+
 class CreatePostTableViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, LocationHandlerDelegate, SelectCategoryViewControllerDelegate {
 
     //Title
@@ -20,11 +28,6 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     
     var post = Post()
     
-    //Устанавливаем лимит символов для текстового поля
-    var titleAllowCount:String = "50"
-    //Устанавливаем лимит символов для поля с описанием
-    var descriptionAllowCount:String = "1000"
-    
     @IBOutlet weak var cellDescription: UITableViewCell!
     
     @IBOutlet weak var cellCategory: UITableViewCell!
@@ -32,8 +35,6 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     //Description
     @IBOutlet weak var titleCountOfDescription: UILabel!
     @IBOutlet weak var fieldDescriptionOfPost: UITextView!
-    let descriptionPlaceholderText = NSLocalizedString("Optional: Provide more details", comment: "Placeholder, Description (optional)")
-    let descriptionPlaceholderColor = UIColor.lightGrayColor()
     
     
     @IBAction func titleFieldChanged(sender: UITextField) {

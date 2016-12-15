@@ -14,8 +14,8 @@ class commentCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var userAvatar: UIImageView!
     @IBOutlet weak var userComment: UILabel!
     @IBOutlet weak var btnReport: UIButton!
-    
     @IBOutlet weak var btnLike: LikeButton!
+    
     var username: String!
     var commentId: String!
     
@@ -30,6 +30,12 @@ class commentCollectionViewCell: UICollectionViewCell {
         
         userAvatar.layer.cornerRadius = userAvatar.frame.width / 2
         userAvatar.clipsToBounds = true
+        
+        /*
+        self.btnLike.setImage(UIImage(named: "icon_likes")?.imageWithRenderingMode(.AlwaysTemplate), forState: .Normal)
+        self.btnLike.tintColor = UIColor(netHex: 0x4A4A4A)
+        self.btnLike.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 6)
+         */
     }
     
     func labelUserInfoConfigure() {

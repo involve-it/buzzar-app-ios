@@ -29,6 +29,7 @@
 		613C6A4C1D645D5A00744076 /* SettingsProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A4B1D645D5A00744076 /* SettingsProfileTableViewController.swift */; };
 		613C6A701D660A0000744076 /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */; };
 		6147E77D1DAA7A6B0014F7DD /* CreatePostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6147E77C1DAA7A6B0014F7DD /* CreatePostTableViewController.swift */; };
+		614DDB111E018769005601AF /* editMyPostTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614DDB101E018769005601AF /* editMyPostTableViewController.swift */; };
 		6167D8211DD08C5400A56864 /* WSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6167D8201DD08C5300A56864 /* WSViewController.swift */; };
 		6167D8231DD094BA00A56864 /* cellPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6167D8221DD094BA00A56864 /* cellPage.swift */; };
 		6167D8251DD0A55F00A56864 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6167D8241DD0A55F00A56864 /* Page.swift */; };
@@ -177,6 +178,7 @@
 		613C6A4B1D645D5A00744076 /* SettingsProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsProfileTableViewController.swift; sourceTree = "<group>"; };
 		613C6A6F1D660A0000744076 /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewController.swift; sourceTree = "<group>"; };
 		6147E77C1DAA7A6B0014F7DD /* CreatePostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePostTableViewController.swift; sourceTree = "<group>"; };
+		614DDB101E018769005601AF /* editMyPostTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = editMyPostTableViewController.swift; sourceTree = "<group>"; };
 		6167D8201DD08C5300A56864 /* WSViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WSViewController.swift; sourceTree = "<group>"; };
 		6167D8221DD094BA00A56864 /* cellPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = cellPage.swift; sourceTree = "<group>"; };
 		6167D8241DD0A55F00A56864 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
@@ -375,6 +377,14 @@
 			name = Profile;
 			sourceTree = "<group>";
 		};
+		614DDB0D1E015F3C005601AF /* edit */ = {
+			isa = PBXGroup;
+			children = (
+				614DDB101E018769005601AF /* editMyPostTableViewController.swift */,
+			);
+			name = edit;
+			sourceTree = "<group>";
+		};
 		6167D81F1DD0899800A56864 /* WelcomeScreen */ = {
 			isa = PBXGroup;
 			children = (
@@ -386,7 +396,7 @@
 			name = WelcomeScreen;
 			sourceTree = "<group>";
 		};
-		618724EC1DEDC76500FA5B48 /* Comments */ = {
+		618724EC1DEDC76500FA5B48 /* comments */ = {
 			isa = PBXGroup;
 			children = (
 				618724ED1DEDC86500FA5B48 /* commentCollectionViewCell.swift */,
@@ -396,7 +406,7 @@
 				7BA063031DF49896001BF2A1 /* AddCommentView.swift */,
 				7B13905E1DF9148200598FF4 /* LikeButton.swift */,
 			);
-			name = Comments;
+			name = comments;
 			sourceTree = "<group>";
 		};
 		61C6F9011D3BEC150030CC81 /* wizard */ = {
@@ -477,7 +487,8 @@
 		7BB2A7D71CCC18B000AD636D /* Posts */ = {
 			isa = PBXGroup;
 			children = (
-				618724EC1DEDC76500FA5B48 /* Comments */,
+				614DDB0D1E015F3C005601AF /* edit */,
+				618724EC1DEDC76500FA5B48 /* comments */,
 				61C6F9011D3BEC150030CC81 /* wizard */,
 				7BC0A22E1CCC160C00DA2824 /* SearchViewController.swift */,
 				61F91F551D830A1900B9DF3C /* PostsMainViewController.swift */,
@@ -905,6 +916,7 @@
 				7B1C12481D0CD1CA001355AB /* MessagesCollection.swift in Sources */,
 				6147E77D1DAA7A6B0014F7DD /* CreatePostTableViewController.swift in Sources */,
 				7BB2A8131CD30AD700AD636D /* ProfileViewController.swift in Sources */,
+				614DDB111E018769005601AF /* editMyPostTableViewController.swift in Sources */,
 				7BFDC67D1D9B5AFB00DE66A6 /* CWStatusBarNotificationUtils.swift in Sources */,
 				61A089291D70602700CABB8D /* ChangePasswordTableViewController.swift in Sources */,
 				7B3565591CE922DE00012CA9 /* NavigationControllerBase.swift in Sources */,
