@@ -74,6 +74,7 @@ class CommentsHandler {
         func setSuccess(success: Bool, comments: Array<Comment>?){
             self.success = success
             self.comments = comments
+            self.done = true
         }
     }
     

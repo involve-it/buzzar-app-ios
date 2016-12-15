@@ -208,7 +208,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
     
     private func checkPending(stopAfter: Bool){
         if let pendingChatId = self.pendingChatId, chatIndex = self.dialogs.indexOf({$0.id == pendingChatId}){
-            self.navigationController?.popToViewController(self, animated: true)
+            //self.navigationController?.popToViewController(self, animated: true)
             let indexPath = NSIndexPath(forRow: chatIndex, inSection: 0)
             self.tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: .Bottom)
             self.performSegueWithIdentifier("dialog", sender: self)

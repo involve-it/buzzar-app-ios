@@ -124,6 +124,16 @@ public class AccountHandler{
     }
     
     @objc public func saveMyChats(){
+        if let cachedChats = CachingHandler.Instance.chats, myChats = self.myChats {
+            myChats.forEach({ (chat) in
+                if chat.messages.count == 0, let cachedIndex = cachedChats.indexOf({$0.id == chat.id!}) {
+                    let cachedChat = cachedChats[cachedIndex]
+                    if cachedChat.messages.count > 0 {
+                        chat.messages = cachedChat.messages
+                    }
+                }
+            })
+        }
         if self.status == .Completed {
             CachingHandler.Instance.saveChats(self.myChats!)
         }

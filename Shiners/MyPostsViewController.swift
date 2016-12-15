@@ -153,17 +153,13 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         self.refreshControl?.endRefreshing()
     }
     
-    @IBAction func unwindMyPosts(segue: UIStoryboardSegue){
-        
-    }
-    
     @IBAction func btnEdit_Click(sender: AnyObject) {
         self.tableView.setEditing(true, animated: true)
     }
     
     func checkPending(){
         if let pendingPostId = self.pendingPostId, postIndex = self.myPosts.indexOf({$0.id == pendingPostId}){
-            self.navigationController?.popToViewController(self, animated: false)
+            //self.navigationController?.popToViewController(self, animated: false)
             let indexPath = NSIndexPath(forRow: postIndex, inSection: 0)
             self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
             self.performSegueWithIdentifier("myPostDetails", sender: self)
@@ -305,6 +301,9 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
             vc.isOwnPost = true
             vc.post = post;
             vc.pendingCommentsAsyncId = CommentsHandler.Instance.getCommentsAsync(post.id!, skip: 0)
+            if (sender as? MyPostsViewController) == self {
+                vc.scrollToComments = true
+            }
         } else if segue.identifier == "myPosts_CreatePost"{
             AppAnalytics.logEvent(.MyPostsScreen_BtnNewPost_Click)
         }
