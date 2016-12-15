@@ -15,6 +15,7 @@ let cssStyle = "<style> * {font-family: '-apple-system','HelveticaNeue'; font-si
 
 public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMapViewDelegate, UIViewControllerPreviewingDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     
+    @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var commentHeightCollectionView: NSLayoutConstraint!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -79,6 +80,7 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
     var pendingCommentsAsyncId: String?
     
     var phoneNumber: String?
+    var scrollToComments = false
         
     func map_Clicked(sender: AnyObject) {
         AppAnalytics.logEvent(.PostDetailsScreen_FullScreenMap)
@@ -786,6 +788,13 @@ public class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKM
         }))
         alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .Cancel, handler: nil))
         self.presentViewController(alertController, animated: true, completion: nil)
+    }
+    
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if self.scrollToComments {
+            self.scrollView.scrollRectToVisible(CGRectMake(0, self.scrollView.contentSize.height - 1, 1, 1), animated: true)
+        }
     }
     
     //After load content

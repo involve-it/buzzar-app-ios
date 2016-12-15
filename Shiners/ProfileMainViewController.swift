@@ -49,4 +49,8 @@ class ProfileMainViewController: UIViewController {
         viewController.didMoveToParentViewController(self)
         self.view.addSubview(viewController.view)
     }
+    
+    @IBAction func unwindMyPosts(segue: UIStoryboardSegue){
+        
+    }
 }

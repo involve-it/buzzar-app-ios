@@ -34,12 +34,12 @@ class PushNotificationsHandler{
             case CHAT:
                 if let chatId = payload.id{
                     AccountHandler.Instance.updateMyChats()
-                    let messagesNavigationController = rootViewController.viewControllers![1] as! UINavigationController
+                    rootViewController.selectedIndex = 3
+                    let messagesNavigationController = rootViewController.viewControllers![3] as! UINavigationController
                     let messagesViewController = messagesNavigationController.viewControllers[0] as! MessagesViewController
                     messagesViewController.pendingChatId = chatId
                     
                     rootViewController.popNavigationControllerToRoot = 1
-                    rootViewController.selectedIndex = 1
                     if messagesNavigationController.visibleViewController !== messagesViewController {
                         messagesNavigationController.visibleViewController?.performSegueWithIdentifier("unwindMessages", sender: nil)
                     }
@@ -47,16 +47,17 @@ class PushNotificationsHandler{
             case COMMENT:
                 if let postId = payload.id{
                     AccountHandler.Instance.updateMyPosts()
-                    rootViewController.selectedIndex = 3
-                    let navigationController = rootViewController.viewControllers![3] as! UINavigationController
+                    rootViewController.selectedIndex = 1
+                    let navigationController = rootViewController.viewControllers![1] as! UINavigationController
                     //let myPostsViewController = navigationController.viewControllers[0] as? MyPostsViewController
                     let mainViewController = navigationController.viewControllers[0] as? ProfileMainViewController
                     mainViewController?.typeSwitch.selectedSegmentIndex = 0
                     let myPostsViewController = mainViewController?.myPostsViewController
                     myPostsViewController?.pendingPostId = postId
                     
-                    if navigationController.visibleViewController !== myPostsViewController {
-                        navigationController.visibleViewController?.performSegueWithIdentifier("unwindMyPosts", sender: nil)
+                    if navigationController.visibleViewController !== mainViewController {
+                        //navigationController.visibleViewController?.performSegueWithIdentifier("unwindMyPosts", sender: nil)
+                        navigationController.popViewControllerAnimated(true)
                     }
                 }
             case POST:

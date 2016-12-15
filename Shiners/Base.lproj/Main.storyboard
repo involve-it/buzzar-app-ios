@@ -287,7 +287,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="searchView" destination="vZm-1i-HRw" id="2Dq-uR-Rnn"/>
-                        <segue destination="IKf-YR-aAu" kind="unwind" unwindAction="unwindPosts:" id="g3q-LL-Nt4"/>
+                        <segue destination="IKf-YR-aAu" kind="unwind" identifier="unwindPosts" unwindAction="unwindPosts:" id="g3q-LL-Nt4"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wtx-Rj-tlb" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -613,7 +613,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="btnAdd" destination="PLz-p1-uL3" id="QEf-Qh-Paz"/>
-                        <segue destination="IKf-YR-aAu" kind="unwind" unwindAction="unwindMyPosts:" id="ZmA-Yc-OW5"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R81-EY-Bbk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4220,6 +4219,7 @@
                         <outlet property="postDescription" destination="Jsc-SN-pA4" id="gJc-OY-meQ"/>
                         <outlet property="postMapLocation" destination="m0y-pb-GOa" id="WH6-TX-7gy"/>
                         <outlet property="postStatusImage" destination="o2b-P1-chO" id="RCv-yD-wY4"/>
+                        <outlet property="scrollView" destination="R3n-bX-pes" id="PAF-zu-bea"/>
                         <outlet property="svImages" destination="RaG-04-aCK" id="9f7-2F-Z6h"/>
                         <outlet property="txtFavoritesCount" destination="Z4S-Mm-lA8" id="s2r-Tv-a7P"/>
                         <outlet property="txtPostCreated" destination="FCL-Kj-ncV" id="mZW-Js-D1l"/>
@@ -4231,6 +4231,7 @@
                         <outlet property="txtViews" destination="KPg-kX-jwf" id="JzU-MU-s0t"/>
                         <outlet property="webviewHeightConstraint" destination="GQu-ZM-iuS" id="HHe-Jj-ooS"/>
                         <outlet property="writeStack" destination="LMk-gQ-B7d" id="uTk-3I-FEi"/>
+                        <segue destination="IKf-YR-aAu" kind="unwind" unwindAction="unwindMyPosts:" id="JTd-oK-tgt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xmu-6d-iTJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -6568,9 +6569,9 @@
         <image name="vk.png" width="128" height="128"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="qDI-Sx-lDh"/>
+        <segue reference="DWx-l0-Aia"/>
         <segue reference="gVm-sN-Epi"/>
-        <segue reference="SFg-II-FGA"/>
+        <segue reference="ZJS-vP-tPP"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.35294117650000001" green="0.69411764710000001" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
 </document>
