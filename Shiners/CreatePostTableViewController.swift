@@ -40,7 +40,7 @@ var descriptionAllowCount:String = "1000"
 let descriptionPlaceholderText = NSLocalizedString("Optional: Provide more details", comment: "Placeholder, Description (optional)")
 let descriptionPlaceholderColor = UIColor.lightGray
 
-class CreatePostTableViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, LocationHandlerDelegate, SelectCategoryViewControllerDelegate {
+class CreatePostTableViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, LocationHandlerDelegate, SelectCategoryViewControllerDelegate, UIWebViewDelegate {
 
     //Title
     @IBOutlet weak var titleTextCount: UILabel!
@@ -60,6 +60,45 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     @IBOutlet weak var titleCountOfDescription: UILabel!
     @IBOutlet weak var fieldDescriptionOfPost: UITextView!
     
+    var webview: UIWebView!
+    var webviewLoaded = false
+    
+    @IBAction func segmentedControl_Changed(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            self.setLoading(false, rightBarButtonItem: self.btn_next)
+            UIView.animate(withDuration: 0.2, animations: {
+                self.webview.alpha = 0
+            }, completion: { (finished) in
+                self.webview.removeFromSuperview()
+            })
+        } else {
+            var showWebview = true
+            self.webview.alpha = 0
+            if !self.webviewLoaded {
+                if let lastLocation = LocationHandler.lastLocation, let userId = AccountHandler.Instance.userId{
+                    self.setLoading(true)
+                    self.webview.loadRequest(URLRequest(url: URL(string: "http://192.168.1.102:3000/request-location?isiframe=true&userId=\(userId)&lat=\(lastLocation.coordinate.latitude)&lng=\(lastLocation.coordinate.longitude)")!))
+                } else {
+                    showWebview = false
+                }
+            }
+            if showWebview {
+                self.view.addSubview(self.webview)
+                self.view.bringSubview(toFront: self.webview)
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.webview.alpha = 1
+                })
+            } else {
+                sender.selectedSegmentIndex = 0
+                self.showAlert("Location", message: "Still waiting for location...")
+            }
+        }
+    }
+    
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        self.setLoading(false, rightBarButtonItem: self.btn_next)
+        self.webviewLoaded = true
+    }
     
     @IBAction func titleFieldChanged(_ sender: UITextField) {
         let currentCountTitleTextField:Int = (titleNewPost.text?.characters.count)!
@@ -101,6 +140,9 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.webview = UIWebView(frame: self.tableView.frame)
+        self.webview.delegate = self
         
         /*NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)*/
