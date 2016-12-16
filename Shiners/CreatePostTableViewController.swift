@@ -16,11 +16,11 @@ var descriptionAllowCount:String = "1000"
 let descriptionPlaceholderText = NSLocalizedString("Optional: Provide more details", comment: "Placeholder, Description (optional)")
 let descriptionPlaceholderColor = UIColor.lightGrayColor()
 
-class CreatePostTableViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, LocationHandlerDelegate, SelectCategoryViewControllerDelegate {
+class CreatePostTableViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, LocationHandlerDelegate, SelectCategoryViewControllerDelegate, UIWebViewDelegate {
 
     //Title
     @IBOutlet weak var titleTextCount: UILabel!
-    @IBOutlet weak var btn_next: UIBarButtonItem!
+    @IBOutlet var btn_next: UIBarButtonItem!
     @IBOutlet weak var titleNewPost: UITextField!
     
     private var currentLocationInfo: GeocoderInfo?
@@ -36,6 +36,37 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     @IBOutlet weak var titleCountOfDescription: UILabel!
     @IBOutlet weak var fieldDescriptionOfPost: UITextView!
     
+    var webview: UIWebView!
+    var webviewLoaded = false
+    
+    @IBAction func segmentedControl_Changed(sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            self.setLoading(false, rightBarButtonItem: self.btn_next)
+            UIView.animateWithDuration(0.2, animations: { 
+                self.webview.alpha = 0
+                }, completion: { (finished) in
+                    self.webview.removeFromSuperview()
+            })
+        } else {
+            
+            self.webview.alpha = 0
+            if !self.webviewLoaded {
+                self.setLoading(true)
+                self.webview.loadRequest(NSURLRequest(URL: NSURL(string: "https://shiners.mobi/request-location")!))
+            }
+            
+            self.view.addSubview(self.webview)
+            self.view.bringSubviewToFront(self.webview)
+            UIView.animateWithDuration(0.2, animations: { 
+                self.webview.alpha = 1
+            })
+        }
+    }
+    
+    func webViewDidFinishLoad(webView: UIWebView) {
+        self.setLoading(false, rightBarButtonItem: self.btn_next)
+        self.webviewLoaded = true
+    }
     
     @IBAction func titleFieldChanged(sender: UITextField) {
         let currentCountTitleTextField:Int = (titleNewPost.text?.characters.count)!
@@ -77,6 +108,9 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.webview = UIWebView(frame: self.tableView.frame)
+        self.webview.delegate = self
         
         /*NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)*/

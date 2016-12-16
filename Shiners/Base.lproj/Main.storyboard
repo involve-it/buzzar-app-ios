@@ -6022,7 +6022,7 @@
             </objects>
             <point key="canvasLocation" x="2287" y="-2289"/>
         </scene>
-        <!--New post-->
+        <!--Create Post Table View Controller-->
         <scene sceneID="gzo-KY-PUG">
             <objects>
                 <tableViewController id="W2p-v9-u8k" customClass="CreatePostTableViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
@@ -6155,13 +6155,25 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="New post" id="dfX-kM-zaA">
+                    <navigationItem key="navigationItem" id="dfX-kM-zaA">
+                        <nil key="title"/>
                         <barButtonItem key="backBarButtonItem" title="Back" id="QaD-QI-xTs"/>
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="SuO-JL-WsU">
                             <connections>
                                 <action selector="closeCreatePostForm:" destination="W2p-v9-u8k" id="aJl-SZ-733"/>
                             </connections>
                         </barButtonItem>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="HfO-Bg-owA">
+                            <rect key="frame" x="180" y="7" width="240" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="New Post"/>
+                                <segment title="Widget"/>
+                            </segments>
+                            <connections>
+                                <action selector="segmentedControl_Changed:" destination="W2p-v9-u8k" eventType="valueChanged" id="SeG-7T-rUE"/>
+                            </connections>
+                        </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" enabled="NO" title="Next" id="NwJ-oT-NeE">
                             <connections>
                                 <segue destination="iIP-KC-Tq1" kind="show" identifier="chooseLocation" id="AzY-FW-DOG"/>
