@@ -9,9 +9,9 @@
 import Foundation
 import SwiftDDP
 
-public class Image: MeteorDocument{
-    public var data: String?;
-    public var thumbnail: String?;
-    public var userId: String?;
-    public var name: String?;
+open class Image: MeteorDocument{
+    open var data: String?;
+    open var thumbnail: String?;
+    open var userId: String?;
+    open var name: String?;
 }

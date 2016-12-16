@@ -14,11 +14,11 @@ import CoreLocation
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
     var window: UIWindow?
-    private var reachability: Reachability?
+    fileprivate var reachability: Reachability?
     
-    private let locationManager = LocationHandler()
+    fileprivate let locationManager = LocationHandler()
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         NSSetUncaughtExceptionHandler { (ex) in
             ExceptionHandler.saveException(ex)
         }
@@ -30,13 +30,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
         }
         
         // Override point for customization after application launch.
-        do {
-            reachability = try Reachability.reachabilityForInternetConnection()
-        } catch{
-            NSLog("Can't create reachability")
-        }
+        self.reachability = Reachability()!
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged), name: ReachabilityChangedNotification, object: nil)
         
         do {
             try reachability?.startNotifier()
@@ -54,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
         
         application.registerForRemoteNotifications()
         
-        if let notification = launchOptions?[UIApplicationLaunchOptionsRemoteNotificationKey] as? [String: AnyObject]{
+        if let notification = launchOptions?[UIApplicationLaunchOptionsKey.remoteNotification] as? [String: AnyObject]{
             self.handlePushNotification(notification)
         }
         
@@ -69,7 +65,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
 
         
         //UIBarButtonItem.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = UIColor.whiteColor()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(accountUpdated), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(accountUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)
         
         return true
     }
@@ -82,20 +78,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
         }
     }
     
-    func locationReported(geocoderInfo: GeocoderInfo) {
-        if UIApplication.sharedApplication().applicationState == .Background, let coords = geocoderInfo.coordinate {
+    func locationReported(_ geocoderInfo: GeocoderInfo) {
+        if UIApplication.shared.applicationState == .background, let coords = geocoderInfo.coordinate {
             ConnectionHandler.Instance.reportLocation(coords.latitude, lng: coords.longitude, notify: true)
         }
     }
     
-    private func handlePushNotification(notification: [String: AnyObject]){
+    fileprivate func handlePushNotification(_ notification: [String: AnyObject]){
         if let payload = notification["ejson"] as? String{
             PushNotificationsHandler.handleNotification(payload, rootViewController: self.window?.rootViewController as! MainViewController)
         }
     }
     
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
-        if (application.applicationState == .Inactive || application.applicationState == .Background  )
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
+        if (application.applicationState == .inactive || application.applicationState == .background  )
         {
             if let payload = userInfo["ejson"] as? String{
                 PushNotificationsHandler.handleNotification(payload, rootViewController: self.window?.rootViewController as! MainViewController)
@@ -103,18 +99,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
         }
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
-        let handled = FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
+        let handled = FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
         return handled
     }
     
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let token = PushNotificationsHandler.saveToken(deviceToken)
         if AccountHandler.Instance.isLoggedIn(){
             if ConnectionHandler.Instance.isNetworkConnected() {
                 self.savePushToken()
             } else {
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.savePushToken), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(self.savePushToken), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
             }
         }
         print("Registered for push. Token: \(token)")
@@ -123,27 +119,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
     func savePushToken(){
         AccountHandler.Instance.savePushToken({ (success) in
             if !success {
-                UIApplication.sharedApplication().unregisterForRemoteNotifications()
+                UIApplication.shared.unregisterForRemoteNotifications()
                 NotificationManager.sendNotification(NotificationManager.Name.PushRegistrationFailed, object: nil)
             }
         })
     }
     
-    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Failed to register for push notifications")
         application.unregisterForRemoteNotifications()
         NotificationManager.sendNotification(NotificationManager.Name.PushRegistrationFailed, object: nil)
     }
     
-    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
-        if !application.isRegisteredForRemoteNotifications(){
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
+        if !application.isRegisteredForRemoteNotifications{
             NotificationManager.sendNotification(NotificationManager.Name.PushRegistrationFailed, object: nil)
         }
     }
     
-    func reachabilityChanged(notification: NSNotification){
+    func reachabilityChanged(_ notification: Notification){
         guard let reachability = self.reachability else {return}
-        if reachability.isReachable(){
+        if reachability.isReachable{
             NotificationManager.sendNotification(NotificationManager.Name.NetworkReachable, object: nil)
         } else {
             NotificationManager.sendNotification(NotificationManager.Name.NetworkUnreachable, object: nil)
@@ -152,31 +148,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
     
     func isNetworkReachable() -> Bool {
         guard let reachability = self.reachability else {return true}
-        return reachability.isReachable()
+        return reachability.isReachable
     }
 
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-        UIApplication.sharedApplication().applicationIconBadgeNumber = LocalNotificationsHandler.Instance.getTotalEventCount()
+        UIApplication.shared.applicationIconBadgeNumber = LocalNotificationsHandler.Instance.getTotalEventCount()
     }
 
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     }
 
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
 
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         FBSDKAppEvents.activateApp()
         //UIApplication.sharedApplication().applicationIconBadgeNumber = 0
     }
 
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 

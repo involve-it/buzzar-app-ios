@@ -21,12 +21,12 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let dissmisImage = UIImage(named: "expand_arrow")?.imageWithRenderingMode(.AlwaysTemplate)
-        dismissViewController.setImage(dissmisImage, forState: .Normal)
+        let dissmisImage = UIImage(named: "expand_arrow")?.withRenderingMode(.alwaysTemplate)
+        dismissViewController.setImage(dissmisImage, for: UIControlState())
         dismissViewController.tintColor = UIColor(netHex: 0xFFFFFF)
         dismissViewController.backgroundColor = UIColor(white: 1, alpha: 0.2)
         dismissViewController.layer.cornerRadius = 4.0
-        dismissViewController.hidden = !self.isBtnDismiss
+        dismissViewController.isHidden = !self.isBtnDismiss
 
         configNavigationToolBar()
         
@@ -36,10 +36,10 @@ class SettingsViewController: UIViewController {
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if (AccountHandler.Instance.isLoggedIn()){
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         }
     }
     
@@ -48,12 +48,12 @@ class SettingsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    private func applyMotionEffect (toView view:UIView, magnitude:Float) {
-        let xMotion = UIInterpolatingMotionEffect(keyPath: "center.x", type: .TiltAlongHorizontalAxis)
+    fileprivate func applyMotionEffect (toView view:UIView, magnitude:Float) {
+        let xMotion = UIInterpolatingMotionEffect(keyPath: "center.x", type: .tiltAlongHorizontalAxis)
         xMotion.minimumRelativeValue = -magnitude
         xMotion.maximumRelativeValue = magnitude
         
-        let yMotion = UIInterpolatingMotionEffect(keyPath: "center.y", type: .TiltAlongVerticalAxis)
+        let yMotion = UIInterpolatingMotionEffect(keyPath: "center.y", type: .tiltAlongVerticalAxis)
         yMotion.minimumRelativeValue = -magnitude
         yMotion.maximumRelativeValue = magnitude
         
@@ -64,50 +64,50 @@ class SettingsViewController: UIViewController {
     }
 
     func configNavigationToolBar() {
-        self.navigationController?.tabBarController?.tabBar.translucent = true
-        self.navigationController?.tabBarController?.tabBar.backgroundImage = UIImage.imageWithColor(UIColor.clearColor())
-        let frost = UIVisualEffectView(effect: UIBlurEffect(style: .Light))
+        self.navigationController?.tabBarController?.tabBar.isTranslucent = true
+        self.navigationController?.tabBarController?.tabBar.backgroundImage = UIImage.imageWithColor(UIColor.clear)
+        let frost = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         
         if let bottomBar = self.navigationController?.tabBarController {
             frost.frame = bottomBar.tabBar.bounds
-            frost.autoresizingMask = .FlexibleWidth
-            bottomBar.tabBar.insertSubview(frost, atIndex: 0)
+            frost.autoresizingMask = .flexibleWidth
+            bottomBar.tabBar.insertSubview(frost, at: 0)
         }
         
         
     }
     
     // MARK: - Action
-    @IBAction func clickToLogin(sender: UIButton) {
+    @IBAction func clickToLogin(_ sender: UIButton) {
         //loginNavigationController
         let storyboardMain = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboardMain.instantiateViewControllerWithIdentifier("NEWloginNavigationController")
-        self.presentViewController(vc, animated: true, completion: nil)
+        let vc = storyboardMain.instantiateViewController(withIdentifier: "NEWloginNavigationController")
+        self.present(vc, animated: true, completion: nil)
     }
 
-    @IBAction func clickToRegister(sender: UIButton) {
+    @IBAction func clickToRegister(_ sender: UIButton) {
         let storyboardMain = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboardMain.instantiateViewControllerWithIdentifier("SignUpNavigationController")
-        self.presentViewController(vc, animated: true, completion: nil)
+        let vc = storyboardMain.instantiateViewController(withIdentifier: "SignUpNavigationController")
+        self.present(vc, animated: true, completion: nil)
     }
     
-    @IBAction func click_dismissViewController(sender: UIButton) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func click_dismissViewController(_ sender: UIButton) {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
 extension UIImage {
-    class func imageWithColor(color: UIColor) -> UIImage {
-        let rect = CGRectMake(0.0, 0.0, 1.0, 1.0)
+    class func imageWithColor(_ color: UIColor) -> UIImage {
+        let rect = CGRect(x: 0.0, y: 0.0, width: 1.0, height: 1.0)
         UIGraphicsBeginImageContext(rect.size)
         let context = UIGraphicsGetCurrentContext()
         
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextFillRect(context, rect)
+        context?.setFillColor(color.cgColor)
+        context?.fill(rect)
         
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return image
+        return image!
     }
 }

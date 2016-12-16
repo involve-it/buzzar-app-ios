@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class MyPostsViewController: UITableViewController, UIViewControllerPreviewingDelegate{
+open class MyPostsViewController: UITableViewController, UIViewControllerPreviewingDelegate{
     var myPosts = [Post]()
     
     var meteorLoaded = false
@@ -22,11 +22,11 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         if let indexPaths = self.tableView.indexPathsForSelectedRows {
             let count = indexPaths.count
             if count > 0 {
-                let alertController = UIAlertController(title: NSLocalizedString("Delete Posts", comment: "Delete Posts"), message: NSLocalizedString("Are you sure you want to delete selected post(s)?", comment: "Alert message, Are you sure you want to delete selected posts?"), preferredStyle: .ActionSheet);
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: "Delete"), style: .Destructive, handler: { (action) in
+                let alertController = UIAlertController(title: NSLocalizedString("Delete Posts", comment: "Delete Posts"), message: NSLocalizedString("Are you sure you want to delete selected post(s)?", comment: "Alert message, Are you sure you want to delete selected posts?"), preferredStyle: .actionSheet);
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: "Delete"), style: .destructive, handler: { (action) in
                     //self.showAlert("Deleted", message: "Deleted")
                     var processedCount = 0
-                    var successfulIndexPaths = [NSIndexPath]()
+                    var successfulIndexPaths = [IndexPath]()
                     indexPaths.forEach({ (indexPath) in
                         self.deletePost(indexPath, callback: { (success) in
                             processedCount += 1
@@ -37,39 +37,39 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
                         })
                     })
                 }))
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .Cancel, handler: nil));
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .cancel, handler: nil));
                 
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
             }
         }
     }
     
-    func endEditIfDone(count: Int, processedCount: Int, allIndexPaths: [NSIndexPath]){
+    func endEditIfDone(_ count: Int, processedCount: Int, allIndexPaths: [IndexPath]){
         if count == processedCount {
-            if self.tableView.editing {
+            if self.tableView.isEditing {
                 ThreadHelper.runOnMainThread({ 
-                    self.editAction(self.editButtonItem())
+                    self.editAction(self.editButtonItem)
                 })
             }
             ThreadHelper.runOnMainThread({
                 if self.myPosts.count == 0{
                     let allExceptFirst = allIndexPaths.filter({$0.row != 0})
-                    self.tableView.deleteRowsAtIndexPaths(allExceptFirst, withRowAnimation: .None)
+                    self.tableView.deleteRows(at: allExceptFirst, with: .none)
                     self.tableView.reloadData()
                 } else {
-                    self.tableView.deleteRowsAtIndexPaths(allIndexPaths, withRowAnimation: .Automatic)
+                    self.tableView.deleteRows(at: allIndexPaths, with: .automatic)
                 }
             })
             AccountHandler.Instance.updateMyPosts()
         }
     }
     
-    public override func viewDidLoad() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(myPostsUpdated), name: NotificationManager.Name.MyPostsUpdated.rawValue, object: nil)
-        self.btnDelete = UIBarButtonItem(title: NSLocalizedString("Delete", comment: "Delete"), style: UIBarButtonItemStyle.Done, target: self, action: #selector(deletePosts))
+    open override func viewDidLoad() {
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(myPostsUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.MyPostsUpdated.rawValue), object: nil)
+        self.btnDelete = UIBarButtonItem(title: NSLocalizedString("Delete", comment: "Delete"), style: UIBarButtonItemStyle.done, target: self, action: #selector(deletePosts))
         self.myPosts = [Post]()
-        if AccountHandler.Instance.status == .Completed {
+        if AccountHandler.Instance.status == .completed {
             self.meteorLoaded = true
             if let myPosts = AccountHandler.Instance.myPosts{
                 self.myPosts = myPosts
@@ -77,32 +77,32 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
                 self.myPosts = [Post]()
             }
         } else {
-            if CachingHandler.Instance.status != .Complete {
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
+            if CachingHandler.Instance.status != .complete {
+                NotificationCenter.default.addObserver(self, selector: #selector(showOfflineData), name: NSNotification.Name(rawValue: NotificationManager.Name.OfflineCacheRestored.rawValue), object: nil)
             } else if let posts = CachingHandler.Instance.postsMy {
                 self.myPosts = posts
             }
         }
         
         if (myPosts.count == 0){
-            self.tableView.separatorStyle = .None;
+            self.tableView.separatorStyle = .none;
         } else {
-            self.tableView.separatorStyle = .SingleLine;
+            self.tableView.separatorStyle = .singleLine;
         }
         
         self.refreshControl = UIRefreshControl()
-        self.refreshControl?.addTarget(self, action: #selector(updateMyPosts), forControlEvents: .ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(updateMyPosts), for: .valueChanged)
         
-        if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
-            self.registerForPreviewingWithDelegate(self, sourceView: view)
+        if self.traitCollection.forceTouchCapability == UIForceTouchCapability.available {
+            self.registerForPreviewing(with: self, sourceView: view)
         }
         //self.navigationItem.rightBarButtonItem = self.editButtonItem()
-        self.editButtonItem().action = #selector(editAction)
+        self.editButtonItem.action = #selector(editAction)
         
         if self.myPosts.count > 0{
-            self.editButtonItem().enabled = true
+            self.editButtonItem.isEnabled = true
         } else {
-            self.editButtonItem().enabled = false
+            self.editButtonItem.isEnabled = false
         }
         
         //conf. LeftMenu
@@ -110,24 +110,24 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         //self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
     }
     
-    func editAction(sender: UIBarButtonItem){
+    func editAction(_ sender: UIBarButtonItem){
         AppAnalytics.logEvent(.MyPostsScreen_BtnEdit_Click)
-        if self.tableView.editing{
+        if self.tableView.isEditing{
             self.tableView.setEditing(false, animated: true)
-            self.parentViewController!.navigationItem.rightBarButtonItem = (self.parentViewController as! ProfileMainViewController).btnAdd
+            self.parent!.navigationItem.rightBarButtonItem = (self.parent as! ProfileMainViewController).btnAdd
             
             sender.title = NSLocalizedString("Edit", comment: "Edit")
         } else {
             self.tableView.setEditing(true, animated: true)
-            self.parentViewController!.navigationItem.rightBarButtonItem = self.btnDelete
+            self.parent!.navigationItem.rightBarButtonItem = self.btnDelete
             sender.title = NSLocalizedString("Done", comment: "Done")
         }
     }
     
-    public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
-        guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
-        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("postDetails") as? PostDetailsViewController
+    open func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.tableView.indexPathForRow(at: location) else {return nil}
+        guard let cell = self.tableView.cellForRow(at: indexPath) else {return nil}
+        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "postDetails") as? PostDetailsViewController
         
         let post = myPosts[indexPath.row];
         viewController?.post = post
@@ -136,33 +136,33 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         return viewController
     }
     
-    public func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
-        self.showViewController(viewControllerToCommit, sender: self)
+    open func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        self.show(viewControllerToCommit, sender: self)
     }
     
-    public override func viewWillAppear(animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.checkPending()
         self.refreshControl?.endRefreshing()
     }
     
     func appDidBecomeActive(){
-        if self.myPosts.count > 0 && AccountHandler.Instance.status == .Completed{
+        if self.myPosts.count > 0 && AccountHandler.Instance.status == .completed{
             self.checkPending()
         }
         self.refreshControl?.endRefreshing()
     }
     
-    @IBAction func btnEdit_Click(sender: AnyObject) {
+    @IBAction func btnEdit_Click(_ sender: AnyObject) {
         self.tableView.setEditing(true, animated: true)
     }
     
     func checkPending(){
-        if let pendingPostId = self.pendingPostId, postIndex = self.myPosts.indexOf({$0.id == pendingPostId}){
+        if let pendingPostId = self.pendingPostId, let postIndex = self.myPosts.index(where: {$0.id == pendingPostId}){
             //self.navigationController?.popToViewController(self, animated: false)
-            let indexPath = NSIndexPath(forRow: postIndex, inSection: 0)
-            self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
-            self.performSegueWithIdentifier("myPostDetails", sender: self)
+            let indexPath = IndexPath(row: postIndex, section: 0)
+            self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
+            self.performSegue(withIdentifier: "myPostDetails", sender: self)
         }
         self.pendingPostId = nil
     }
@@ -172,16 +172,16 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
             if let posts = CachingHandler.Instance.postsMy{
                 self.myPosts = posts
                 ThreadHelper.runOnMainThread {
-                    self.tableView.separatorStyle = .SingleLine;
+                    self.tableView.separatorStyle = .singleLine;
                     self.tableView.reloadData()
                 }
             }
         }
     }
     
-    public override func viewDidAppear(animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if self.myPosts.count > 0 && AccountHandler.Instance.status == .Completed{
+        if self.myPosts.count > 0 && AccountHandler.Instance.status == .completed{
             self.checkPending()
         }
     }
@@ -201,33 +201,33 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         }
         ThreadHelper.runOnMainThread {
             if self.myPosts.count > 0{
-                self.editButtonItem().enabled = true
+                self.editButtonItem.isEnabled = true
             } else {
-                self.editButtonItem().enabled = false
+                self.editButtonItem.isEnabled = false
             }
             self.refreshControl?.endRefreshing()
-            self.tableView.separatorStyle = .SingleLine;
+            self.tableView.separatorStyle = .singleLine;
             self.tableView.reloadData()
             
             self.checkPending()
         }
     }
     
-    public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return max(1, myPosts.count);
     }
     
-    public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (myPosts.count == 0){
             if self.meteorLoaded
             {
-                return tableView.dequeueReusableCellWithIdentifier("noPosts")!
+                return tableView.dequeueReusableCell(withIdentifier: "noPosts")!
             } else {
-                return tableView.dequeueReusableCellWithIdentifier("waitingPosts")!
+                return tableView.dequeueReusableCell(withIdentifier: "waitingPosts")!
             }
         }
         
-        let cell = self.tableView.dequeueReusableCellWithIdentifier("post") as! PostsTableViewCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "post") as! PostsTableViewCell
         let post: Post = self.myPosts[indexPath.row];
         
         cell.txtTitle.text = post.title;
@@ -264,7 +264,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         //Post expires
         cell.txtExpiresPostCount.text = post.endDate?.toLeftExpiresDatePost()
         
-        if let price = post.price where post.price != "" {
+        if let price = post.price, post.price != "" {
             cell.txtPrice.text = "$\(price)";
         } else {
             cell.txtPrice.text = "";
@@ -272,8 +272,8 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         var loading = false;
         if let url = post.getMainPhoto()?.original {
             loading = ImageCachingHandler.Instance.getImageFromUrl(url) { (image) in
-                dispatch_async(dispatch_get_main_queue(), {
-                    if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
+                DispatchQueue.main.async(execute: {
+                    if let cellToUpdate = tableView.cellForRow(at: indexPath) as? PostsTableViewCell{
                         cellToUpdate.imgPhoto?.image = image;
                     }
                 })
@@ -288,14 +288,14 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         return cell
     }
     
-    public override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
-        return !self.tableView.editing
+    open override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        return !self.tableView.isEditing
     }
     
-    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "myPostDetails"){
             AppAnalytics.logEvent(.MyPostsScreen_PostSelected)
-            let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
+            let vc:PostDetailsViewController = segue.destination as! PostDetailsViewController;
             let index = self.tableView.indexPathForSelectedRow!.row;
             let post = myPosts[index];
             vc.isOwnPost = true
@@ -309,45 +309,45 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         }
     }
    
-    public override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    open override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func deletePost(indexPath: NSIndexPath, callback: ((success: Bool) -> Void)? = nil) {
+    func deletePost(_ indexPath: IndexPath, callback: ((_ success: Bool) -> Void)? = nil) {
         let post = self.myPosts[indexPath.row]
         ConnectionHandler.Instance.posts.deletePost(post.id!) { success, errorId, errorMessage, result in
             if success {
-                NotificationManager.sendNotification(.NearbyPostRemoved, object: post.id)
-                self.myPosts.removeAtIndex(self.myPosts.indexOf({ (p) -> Bool in
+                NotificationManager.sendNotification(.NearbyPostRemoved, object: post.id as AnyObject?)
+                self.myPosts.remove(at: self.myPosts.index(where: { (p) -> Bool in
                     return p.id == post.id
                 })!)
             } else {
                 self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
             }
-            callback?(success: success)
+            callback?(success)
         }
     }
     
-    public override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+    open override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         var actions = [UITableViewRowAction]()
         
         let post = self.myPosts[indexPath.row]
         let title = (post.visible ?? false) ? NSLocalizedString("Hide", comment: "Title, Hide") : NSLocalizedString("Show", comment: "Title, Show")
         
-        var button = UITableViewRowAction(style: .Normal, title: title) { (action, indexPath) in
+        var button = UITableViewRowAction(style: .normal, title: title) { (action, indexPath) in
             AppAnalytics.logEvent(.MyPostsScreen_SlideHide_Clicked)
             print(title)
             let post = self.myPosts[indexPath.row]
             post.visible = !(post.visible ?? false)
-            self.tableView.editing = false
+            self.tableView.isEditing = false
             ConnectionHandler.Instance.posts.editPost(post, callback: { (success, errorId, errorMessage, result) in
                 if success {
                     if post.visible! {
                         NotificationManager.sendNotification(.NearbyPostAdded, object: post)
                     } else {
-                        NotificationManager.sendNotification(.NearbyPostRemoved, object: post.id)
+                        NotificationManager.sendNotification(.NearbyPostRemoved, object: post.id as AnyObject?)
                     }
-                    self.tableView.rectForRowAtIndexPath(indexPath)
+                    self.tableView.rectForRow(at: indexPath)
                 } else {
                     self.showAlert("Error", message: errorMessage)
                 }
@@ -356,7 +356,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
         
         actions.append(button)
         
-        button = UITableViewRowAction(style: .Destructive, title: NSLocalizedString("Delete", comment: "Title, Delete")) { (action, indexPath) in
+        button = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "Title, Delete")) { (action, indexPath) in
             AppAnalytics.logEvent(.MyPostsScreen_SlideDelete_Clicked)
             print("delete")
             //self.tableView.editing = false
@@ -366,7 +366,7 @@ public class MyPostsViewController: UITableViewController, UIViewControllerPrevi
                     if self.myPosts.count == 0{
                         self.tableView.reloadData()
                     } else {
-                        self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                        self.tableView.deleteRows(at: [indexPath], with: .automatic)
                     }
                 }
             }

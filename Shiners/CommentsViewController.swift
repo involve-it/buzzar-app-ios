@@ -22,19 +22,19 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
     var loadingMore = false
     
     @IBOutlet var accessoryView: AddCommentView!
-    var imagesCache = NSCache()
+    var imagesCache = NSCache<AnyObject, AnyObject>()
     
     override func viewDidLoad() {
         super.viewDidLoad();
         
-        self.collectionView!.registerNib(UINib(nibName: "commentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: commentCellId)
-        self.collectionView!.backgroundColor = UIColor.whiteColor()
+        self.collectionView!.register(UINib(nibName: "commentCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: commentCellId)
+        self.collectionView!.backgroundColor = UIColor.white
         self.collectionView!.delegate = self
         
         if self.loadingComments{
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(notifyCommentsLoaded), name: NotificationManager.Name.PostCommentsUpdated.rawValue, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(notifyCommentsLoaded), name: NSNotification.Name(rawValue: NotificationManager.Name.PostCommentsUpdated.rawValue), object: nil)
         }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(newCommentReceived), name: NotificationManager.Name.CommentAdded.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(newCommentReceived), name: NSNotification.Name(rawValue: NotificationManager.Name.CommentAdded.rawValue), object: nil)
         
         
         //self.accessoryView.frame = CGRectMake(0, self.view.frame.height - 43, self.view.frame.width, 43)
@@ -52,21 +52,21 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         self.collectionView!.allowsSelection = true
             //AccountHandler.Instance.isLoggedIn()
         self.updateInsets(self.accessoryView.frame.height)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentUpdated), name: NotificationManager.Name.CommentUpdated.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(commentRemoved), name: NotificationManager.Name.CommentRemoved.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(commentUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.CommentUpdated.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(commentRemoved), name: NSNotification.Name(rawValue: NotificationManager.Name.CommentRemoved.rawValue), object: nil)
         if self.post.comments.count > CommentsHandler.DEFAULT_PAGE_SIZE {
             self.post.comments.removeLast()
             self.moreCommentsAvailable = true
         }
     }
     
-    func commentRemoved(notification: NSNotification){
+    func commentRemoved(_ notification: Notification){
         ThreadHelper.runOnMainThread({
-            if self.isVisible(), let comment = notification.object as? Comment where comment.entityId == self.post.id,
-                let index = self.post.comments.indexOf({$0.id == comment.id}) {
-                self.post.comments.removeAtIndex(index)
+            if self.isVisible(), let comment = notification.object as? Comment, comment.entityId == self.post.id,
+                let index = self.post.comments.index(where: {$0.id == comment.id}) {
+                self.post.comments.remove(at: index)
                 if self.post.comments.count > 1 {
-                    self.collectionView!.deleteItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                    self.collectionView!.deleteItems(at: [IndexPath(row: index, section: 0)])
                 } else {
                     self.collectionView!.reloadData()
                 }
@@ -74,34 +74,34 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         })
     }
     
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
         if AccountHandler.Instance.isLoggedIn() && !self.accessoryView.typing {
             let comment = self.post.comments[indexPath.row]
-            let actionController = UIAlertController(title: NSLocalizedString("Comment", comment: "Comment"), message: NSLocalizedString("What would you like to do?", comment: "What would you like to do?"), preferredStyle: .ActionSheet)
+            let actionController = UIAlertController(title: NSLocalizedString("Comment", comment: "Comment"), message: NSLocalizedString("What would you like to do?", comment: "What would you like to do?"), preferredStyle: .actionSheet)
             var title = NSLocalizedString("Like", comment: "Like")
             if comment.liked ?? false {
                 title = NSLocalizedString("Unlike", comment: "Unlike")
             }
             
-            actionController.addAction(UIAlertAction(title: title, style: .Default, handler: { (action) in
+            actionController.addAction(UIAlertAction(title: title, style: .default, handler: { (action) in
                 self.doLike(indexPath.row)
             }))
             
             if comment.userId == AccountHandler.Instance.userId || self.post.user!.id! == AccountHandler.Instance.userId {
-                actionController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: "Delete"), style: .Destructive, handler: { (action) in
+                actionController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: "Delete"), style: .destructive, handler: { (action) in
                     if self.isNetworkReachable() {
                         self.doDeleteComment(indexPath.row)
                     }
                 }))
             }
-            actionController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .Cancel, handler: nil))
+            actionController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .cancel, handler: nil))
             
-            self.presentViewController(actionController, animated: true, completion: nil)
+            self.present(actionController, animated: true, completion: nil)
         }
     }
     
-    override func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if Float(indexPath.row) > (Float(CommentsHandler.DEFAULT_PAGE_SIZE) / 1.5) && self.moreCommentsAvailable && !self.loadingMore && ConnectionHandler.Instance.isNetworkConnected() {
             self.loadingMore = true
             ConnectionHandler.Instance.posts.getComments(self.post.id!, skip: self.post.comments.count, take: CommentsHandler.DEFAULT_PAGE_SIZE + 1, callback: { (success, errorId, errorMessage, result) in
@@ -115,7 +115,7 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
                             self.moreCommentsAvailable = false
                         }
                         ThreadHelper.runOnMainThread({ 
-                            self.post.comments.appendContentsOf(comments)
+                            self.post.comments.append(contentsOf: comments)
                             self.collectionView?.reloadData()
                         })
                     }
@@ -124,20 +124,20 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         }
     }
     
-    func doDeleteComment(index: Int){
-        let comment = self.post.comments.removeAtIndex(index)
+    func doDeleteComment(_ index: Int){
+        let comment = self.post.comments.remove(at: index)
         if self.post.comments.count > 1{
-            self.collectionView!.deleteItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+            self.collectionView!.deleteItems(at: [IndexPath(row: index, section: 0)])
         } else {
             self.collectionView!.reloadData()
         }
         ConnectionHandler.Instance.posts.deleteComment(comment.id!) { (success, errorId, errorMessage, result) in
             if !success {
                 ThreadHelper.runOnMainThread({ 
-                    self.post.comments.insert(comment, atIndex: index)
+                    self.post.comments.insert(comment, at: index)
                     if self.isVisible() {
                         if self.post.comments.count > 1 {
-                            self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                            self.collectionView!.insertItems(at: [IndexPath(row: index, section: 0)])
                         } else {
                             self.collectionView!.reloadData()
                         }
@@ -148,15 +148,15 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         }
     }
     
-    func newCommentReceived(notification: NSNotification){
+    func newCommentReceived(_ notification: Notification){
         ThreadHelper.runOnMainThread({
-            if self.isVisible(), let comment = notification.object as? Comment where comment.entityId == self.post.id,
-                let index = self.post.comments.indexOf({$0.id == comment.id}) {
-                if self.addedLocally.indexOf(comment.id!) == nil {
+            if self.isVisible(), let comment = notification.object as? Comment, comment.entityId == self.post.id,
+                let index = self.post.comments.index(where: {$0.id == comment.id}) {
+                if self.addedLocally.index(of: comment.id!) == nil {
                     if self.post.comments.count == 1{
                         self.collectionView!.reloadData()
                     } else {
-                        self.collectionView!.insertItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                        self.collectionView!.insertItems(at: [IndexPath(row: index, section: 0)])
                     }
                 }
             }
@@ -167,26 +167,26 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         self.view.endEditing(true)
     }
     
-    func updateInsets(height: CGFloat){
+    func updateInsets(_ height: CGFloat){
         self.collectionView?.contentInset.bottom = height
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if self.addingComment {
             self.accessoryView.txtComment.becomeFirstResponder()
         }
     }
     
-    func commentUpdated(notification: NSNotification){
-        if let comment = notification.object as? Comment where comment.entityId == self.post.id!, let index = self.post.comments.indexOf({$0.id == comment.id}) {
+    func commentUpdated(_ notification: Notification){
+        if let comment = notification.object as? Comment, comment.entityId == self.post.id!, let index = self.post.comments.index(where: {$0.id == comment.id}) {
             ThreadHelper.runOnMainThread({
-                self.collectionView!.reloadItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                self.collectionView!.reloadItems(at: [IndexPath(row: index, section: 0)])
             })
         }
     }
     
-    func sendButtonPressed(comment: String) {
+    func sendButtonPressed(_ comment: String) {
         if comment == "" || !self.isNetworkReachable() || !AccountHandler.Instance.isLoggedIn() {
             return
         }
@@ -199,14 +199,14 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
     func doComment(){
         let commentText = self.accessoryView.txtComment.text
         if ConnectionHandler.Instance.isConnected() {
-            NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
             let comment = Comment()
             comment.entityId = self.post.id
             comment.text = commentText
             comment.userId = AccountHandler.Instance.userId
             comment.username = AccountHandler.Instance.currentUser!.username
             comment.user = AccountHandler.Instance.currentUser
-            comment.timestamp = NSDate()
+            comment.timestamp = Date()
             
             ConnectionHandler.Instance.posts.addComment(comment, callback: { (success, errorId, errorMessage, result) in
                 if self.isVisible() {
@@ -217,14 +217,14 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
                             self.accessoryView.clearMessageText()
                             comment.id = result as? String
                             
-                            if self.post.comments.indexOf({$0.id == comment.id}) == nil {
+                            if self.post.comments.index(where: {$0.id == comment.id}) == nil {
                                 self.addedLocally.append(comment.id!)
-                                self.post.comments.insert(comment, atIndex: 0)
+                                self.post.comments.insert(comment, at: 0)
                                 if self.isVisible() {
                                     if self.post.comments.count == 1 {
                                         self.collectionView!.reloadData()
                                     } else {
-                                        self.collectionView?.insertItemsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)])
+                                        self.collectionView?.insertItems(at: [IndexPath(row: 0, section: 0)])
                                     }
                                 }
                             }
@@ -235,12 +235,12 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
                 }
             })
         } else {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(doComment), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(doComment), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
         }
     }
     
-    func notifyCommentsLoaded(notification: NSNotification){
-        if let postId = notification.object as? String where postId == self.post.id! {
+    func notifyCommentsLoaded(_ notification: Notification){
+        if let postId = notification.object as? String, postId == self.post.id! {
             self.loadingComments = false
             if self.post.comments.count > CommentsHandler.DEFAULT_PAGE_SIZE {
                 self.post.comments.removeLast()
@@ -252,23 +252,23 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         }
     }
     
-    @IBAction func btnCancel_Click(sender: AnyObject) {
-        self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func btnCancel_Click(_ sender: AnyObject) {
+        self.navigationController!.dismiss(animated: true, completion: nil)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.view.endEditing(true)
     }
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if !self.loadingComments {
             if post.comments.count == 0{
-                let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cellCommentMessage", forIndexPath: indexPath) as! CommentCollectionViewMessageCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellCommentMessage", for: indexPath) as! CommentCollectionViewMessageCell
                 cell.lblMessage.text = NSLocalizedString("There are no comments to this post", comment: "There are no comments to this post")
                 return cell
             } else {
-                let cell = collectionView.dequeueReusableCellWithReuseIdentifier(commentCellId, forIndexPath: indexPath) as! commentCollectionViewCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: commentCellId, for: indexPath) as! commentCollectionViewCell
                 
                 cell.userAvatar.backgroundColor = UIColor(netHex: 0x8F8E94)
                 cell.userAvatar.image = ImageCachingHandler.defaultAccountImage
@@ -276,22 +276,22 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
                 let comment = self.post.comments[indexPath.row]
                 cell.userComment.text = comment.text
                 cell.username = comment.username!
-                cell.commentWritten = JSQMessagesTimestampFormatter.sharedFormatter().timestampForDate(comment.timestamp!)
+                cell.commentWritten = JSQMessagesTimestampFormatter.shared().timestamp(for: comment.timestamp! as Date!)
                 cell.labelUserInfoConfigure()
                 cell.commentId = comment.id!
                 cell.btnLike.commentId = comment.id!
-                cell.btnLike.removeTarget(self, action: #selector(self.btnLike_Click(_:)), forControlEvents: .TouchUpInside)
-                cell.btnLike.addTarget(self, action: #selector(self.btnLike_Click(_:)), forControlEvents: .TouchUpInside)
+                cell.btnLike.removeTarget(self, action: #selector(self.btnLike_Click(_:)), for: .touchUpInside)
+                cell.btnLike.addTarget(self, action: #selector(self.btnLike_Click(_:)), for: .touchUpInside)
                 cell.setLikes(AccountHandler.Instance.isLoggedIn(), count: comment.likes ?? 0, liked: comment.liked ?? false)
-                if let user = comment.user, url = user.imageUrl {
-                    if let cachedImage = self.imagesCache.objectForKey(url) as? UIImage {
+                if let user = comment.user, let url = user.imageUrl {
+                    if let cachedImage = self.imagesCache.object(forKey: url as AnyObject) as? UIImage {
                         cell.userAvatar.image = cachedImage
                     } else {
                         ImageCachingHandler.Instance.getImageFromUrl(url, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
-                            if let img = image where img != ImageCachingHandler.defaultAccountImage {
+                            if let img = image, img != ImageCachingHandler.defaultAccountImage {
                                 ThreadHelper.runOnBackgroundThread({
                                     let newImage = img.resizeImage(200, maxHeight: 200, quality: 0.4)
-                                    self.imagesCache.setObject(newImage, forKey: url)
+                                    self.imagesCache.setObject(newImage, forKey: url as AnyObject)
                                     ThreadHelper.runOnMainThread({ 
                                         cell.userAvatar.image = newImage
                                     })
@@ -304,26 +304,26 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
                 return cell
             }
         } else {
-            let cell = collectionView.dequeueReusableCellWithReuseIdentifier("cellCommentMessage", forIndexPath: indexPath) as! CommentCollectionViewMessageCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellCommentMessage", for: indexPath) as! CommentCollectionViewMessageCell
             cell.lblMessage.text = NSLocalizedString("Loading comments", comment: "Loading comments")
             return cell
         }
         
     }
     
-    func btnLike_Click(sender: LikeButton){
-        if self.isNetworkReachable(), let row = self.post.comments.indexOf({$0.id == sender.commentId}){
+    func btnLike_Click(_ sender: LikeButton){
+        if self.isNetworkReachable(), let row = self.post.comments.index(where: {$0.id == sender.commentId}){
             self.doLike(row)
         }
     }
     
-    func doLike(index: Int){
+    func doLike(_ index: Int){
         let comment = self.post.comments[index]
         if comment.liked ?? false {
             comment.liked = false
             comment.likes = (comment.likes ?? 0) - 1
             
-            self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+            self.collectionView?.reloadItems(at: [IndexPath(row: index, section: 0)])
             
             ConnectionHandler.Instance.posts.unlikeComment(comment.id!) { (success, errorId, errorMessage, result) in
                 if !success {
@@ -331,7 +331,7 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
                     comment.likes = (comment.likes ?? 0) + 1
                     ThreadHelper.runOnMainThread({
                         if self.isVisible() {
-                            self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                            self.collectionView?.reloadItems(at: [IndexPath(row: index, section: 0)])
                             self.showAlert(NSLocalizedString("Error", comment: "Alert title, error"), message: NSLocalizedString("An error occurred.", comment: "An error occurred."))
                         }
                     })
@@ -341,7 +341,7 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
             comment.liked = true
             comment.likes = (comment.likes ?? 0) + 1
             
-            self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+            self.collectionView?.reloadItems(at: [IndexPath(row: index, section: 0)])
             
             ConnectionHandler.Instance.posts.likeComment(comment.id!) { (success, errorId, errorMessage, result) in
                 if !success {
@@ -349,7 +349,7 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
                     comment.likes = (comment.likes ?? 0) - 1
                     ThreadHelper.runOnMainThread({
                         if self.isVisible(){
-                            self.collectionView?.reloadItemsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)])
+                            self.collectionView?.reloadItems(at: [IndexPath(row: index, section: 0)])
                             self.showAlert(NSLocalizedString("Error", comment: "Alert title, error"), message: NSLocalizedString("An error occurred.", comment: "An error occurred."))
                         }
                     })
@@ -359,7 +359,7 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         
     }
     
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if !self.loadingComments {
             return max(1, self.post.comments.count)
         } else {
@@ -367,13 +367,13 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         }
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: IndexPath) -> CGSize {
         if self.post.comments.count > 0 {
             let comment = self.post.comments[indexPath.row]
-            let size = CGSizeMake(collectionView.frame.width - 60 - 16, 1000)
-            let options = NSStringDrawingOptions.UsesFontLeading.union(.UsesLineFragmentOrigin)
+            let size = CGSize(width: collectionView.frame.width - 60 - 16, height: 1000)
+            let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
             
-            let estimatedRect = NSString(string: comment.text!).boundingRectWithSize(size, options: options, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(13)], context: nil)
+            let estimatedRect = NSString(string: comment.text!).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 13)], context: nil)
             
             let newSize = CGSize(width: collectionView.frame.width - 16, height: max(estimatedRect.height, 40) + 20)
             
@@ -384,7 +384,7 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         }
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAtIndex section: Int) -> CGFloat {
         return 1
     }
 }

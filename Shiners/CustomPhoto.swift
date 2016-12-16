@@ -11,7 +11,7 @@ import NYTPhotoViewer
 
 class CustomPhoto: NSObject, NYTPhoto{
     var image: UIImage?
-    var imageData: NSData?
+    var imageData: Data?
     var placeholderImage: UIImage?
     let attributedCaptionTitle: NSAttributedString?
     let attributedCaptionSummary: NSAttributedString? = nil
@@ -19,7 +19,7 @@ class CustomPhoto: NSObject, NYTPhoto{
     let attributedCaptionCredit: NSAttributedString? = nil
         //NSAttributedString(string: "credit", attributes: [NSForegroundColorAttributeName: UIColor.darkGrayColor()])
     
-    init(image: UIImage? = nil, imageData: NSData? = nil, attributedCaptionTitle: NSAttributedString? = nil) {
+    init(image: UIImage? = nil, imageData: Data? = nil, attributedCaptionTitle: NSAttributedString? = nil) {
         self.image = image
         self.imageData = imageData
         self.attributedCaptionTitle = attributedCaptionTitle

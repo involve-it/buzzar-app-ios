@@ -23,29 +23,29 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     internal weak var mainViewController: PostsMainViewController!
     
-    func updateFiltering(filtering: Bool){
+    func updateFiltering(_ filtering: Bool){
         if (filtering){
             self.refreshControl = nil
         } else {
             self.refreshControl = UIRefreshControl()
-            self.refreshControl?.addTarget(self, action: #selector(getNearby), forControlEvents: .ValueChanged)
+            self.refreshControl?.addTarget(self, action: #selector(getNearby), for: .valueChanged)
         }
     }
     
-    func showPostDetails(index: Int) {
-        let indexPath = NSIndexPath(forRow: index, inSection: 0)
-        self.tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: .Bottom)
-        self.performSegueWithIdentifier("postDetails", sender: self)
+    func showPostDetails(_ index: Int) {
+        let indexPath = IndexPath(row: index, section: 0)
+        self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
+        self.performSegue(withIdentifier: "postDetails", sender: self)
     }
     
     func postsUpdated() {
         ThreadHelper.runOnMainThread {
             if (self.mainViewController.posts.count == 0){
                 //self.tableView.scrollEnabled = false;
-                self.tableView.separatorStyle = .None;
+                self.tableView.separatorStyle = .none;
             } else {
                 //self.tableView.scrollEnabled = true;
-                self.tableView.separatorStyle = .SingleLine;
+                self.tableView.separatorStyle = .singleLine;
             }
             
             self.refreshControl?.endRefreshing()
@@ -53,11 +53,11 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "postDetails"){
             AppAnalytics.logEvent(.NearbyPostsScreen_List_PostSelected)
             self.mainViewController.searchBar.endEditing(true)
-            let vc:PostDetailsViewController = segue.destinationViewController as! PostDetailsViewController;
+            let vc:PostDetailsViewController = segue.destination as! PostDetailsViewController;
             let index = self.tableView.indexPathForSelectedRow!.row;
             let post = self.mainViewController.posts[index];
             
@@ -76,19 +76,19 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
             }
             
         } else if (segue.identifier == "searchSegue"){
-            self.searchViewController = segue.destinationViewController as? NewSearchViewController
+            self.searchViewController = segue.destination as? NewSearchViewController
             self.searchViewController?.delegate = self
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         //Set background collor to default value
         self.navigationController?.navigationBar.barTintColor = UIColor(white: 249/255, alpha: 1)
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = nil
-        self.navigationController?.navigationBar.translucent = false
+        self.navigationController?.navigationBar.isTranslucent = false
         
         self.refreshControl?.endRefreshing()
     }
@@ -96,24 +96,24 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.mainViewController = self.parentViewController as! PostsMainViewController
+        self.mainViewController = self.parent as! PostsMainViewController
         
         if (self.mainViewController.posts.count == 0){
             //self.tableView.scrollEnabled = false;
-            self.tableView.separatorStyle = .None;
+            self.tableView.separatorStyle = .none;
         } else {
             //self.tableView.scrollEnabled = true;
-            self.tableView.separatorStyle = .SingleLine;
+            self.tableView.separatorStyle = .singleLine;
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(forceLayout), name: UIDeviceOrientationDidChangeNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(forceLayout), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
         self.refreshControl = UIRefreshControl()
-        self.refreshControl?.addTarget(self, action: #selector(getNearby), forControlEvents: .ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(getNearby), for: .valueChanged)
         
-        if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
-            self.registerForPreviewingWithDelegate(self, sourceView: view)
+        if self.traitCollection.forceTouchCapability == UIForceTouchCapability.available {
+            self.registerForPreviewing(with: self, sourceView: view)
         }
         
         //conf. LeftMenu
@@ -130,10 +130,10 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         self.refreshControl?.endRefreshing()
     }
     
-    func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
-        guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) else {return nil}
-        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("postDetails") as? PostDetailsViewController
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.tableView.indexPathForRow(at: location) else {return nil}
+        guard let cell = self.tableView.cellForRow(at: indexPath) else {return nil}
+        let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "postDetails") as? PostDetailsViewController
         
         let post = self.mainViewController.posts[indexPath.row];
         viewController?.post = post
@@ -142,8 +142,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         return viewController
     }
     
-    func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
-        self.showViewController(viewControllerToCommit, sender: self)
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        self.show(viewControllerToCommit, sender: self)
     }
     
     func forceLayout(){
@@ -153,28 +153,28 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         self.view.layoutSubviews()
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell!
         if self.mainViewController.posts.count == 0 {
             if (self.mainViewController.errorMessage != nil || (self.mainViewController.meteorLoaded && self.self.mainViewController.locationAcquired)){
-                let errorCell = tableView.dequeueReusableCellWithIdentifier("postsError") as! ErrorCell
+                let errorCell = tableView.dequeueReusableCell(withIdentifier: "postsError") as! ErrorCell
                 errorCell.lblMessage.text = self.mainViewController.errorMessage ?? NSLocalizedString("There are no posts around you", comment: "There are no posts around you")
                 cell = errorCell
             } else if self.mainViewController.filtering{
-                let errorCell = tableView.dequeueReusableCellWithIdentifier("postsError") as! ErrorCell
+                let errorCell = tableView.dequeueReusableCell(withIdentifier: "postsError") as! ErrorCell
                 errorCell.lblMessage.text = self.mainViewController.errorMessage ?? NSLocalizedString("Can't find any posts matching your search criteria", comment: "Can't find any posts matching your search criteria")
                 cell = errorCell
             } else if self.mainViewController.loadingPosts {
-                cell = tableView.dequeueReusableCellWithIdentifier("waitingPosts")
+                cell = tableView.dequeueReusableCell(withIdentifier: "waitingPosts")
             } else {
-                let errorCell = tableView.dequeueReusableCellWithIdentifier("postsError") as! ErrorCell
+                let errorCell = tableView.dequeueReusableCell(withIdentifier: "postsError") as! ErrorCell
                 errorCell.lblMessage.text =  NSLocalizedString("There are no posts around you", comment: "There are no posts around you")
                 cell = errorCell
             }
         } else if indexPath.row == self.mainViewController.posts.count && self.mainViewController.loadingMorePosts{
-            cell = tableView.dequeueReusableCellWithIdentifier("morePosts")
+            cell = tableView.dequeueReusableCell(withIdentifier: "morePosts")
         } else {
-            let postCell: PostsTableViewCell = tableView.dequeueReusableCellWithIdentifier("post") as! PostsTableViewCell;
+            let postCell: PostsTableViewCell = tableView.dequeueReusableCell(withIdentifier: "post") as! PostsTableViewCell;
             let post: Post = self.mainViewController.posts[indexPath.row];
             
             //Post title
@@ -189,8 +189,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
             
             //Post category
             if let category = post.type?.rawValue {
-                postCell.categoryViewOfPost.hidden = false
-                postCell.imgSeparatorOfCategory.hidden = false
+                postCell.categoryViewOfPost.isHidden = false
+                postCell.imgSeparatorOfCategory.isHidden = false
                 postCell.categoryViewOfPost.layer.cornerRadius = 2.0
                 postCell.categoryOfPost.text = category
                 
@@ -208,8 +208,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
                 }
                 
             } else {
-                postCell.categoryViewOfPost.hidden = true
-                postCell.imgSeparatorOfCategory.hidden = true
+                postCell.categoryViewOfPost.isHidden = true
+                postCell.imgSeparatorOfCategory.isHidden = true
             }
             
             //Additional labels
@@ -246,7 +246,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
                 postCell.txtPostDistance.text = "..."
             }
             
-            if let price = post.price where post.price != "" {
+            if let price = post.price, post.price != "" {
                 postCell.txtPrice.text = "$\(price)";
             } else {
                 postCell.txtPrice.text = "";
@@ -254,8 +254,8 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
             var loading = false
             if let url = post.getMainPhoto()?.original {
                 loading = ImageCachingHandler.Instance.getImageFromUrl(url) { (image) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? PostsTableViewCell{
+                    DispatchQueue.main.async(execute: {
+                        if let cellToUpdate = tableView.cellForRow(at: indexPath) as? PostsTableViewCell{
                             cellToUpdate.imgPhoto?.image = image;
                         }
                     })
@@ -272,7 +272,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         return cell;
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == self.mainViewController.posts.count && self.mainViewController.loadingMorePosts {
             return 44
         } else {
@@ -283,12 +283,12 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     func displayLoadingMore() {
         ThreadHelper.runOnMainThread {
             if self.tableView(self.tableView, numberOfRowsInSection: 0) == self.mainViewController.posts.count {
-                self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.mainViewController.posts.count, inSection: 0)], withRowAnimation: .Automatic)
+                self.tableView.insertRows(at: [IndexPath(row: self.mainViewController.posts.count, section: 0)], with: .automatic)
             }
         }
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var count = max(1, self.mainViewController.posts.count);
         if self.mainViewController.loadingMorePosts && self.mainViewController.posts.count != 0 {
             count += 1
@@ -296,7 +296,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         return count
     }
     
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if !self.mainViewController.filtering && indexPath.row >= self.mainViewController.posts.count - Int(AccountHandler.NEARBY_POSTS_PAGE_SIZE / 3) && !self.mainViewController.noMorePosts && !self.mainViewController.loadingPosts && self.mainViewController.allPosts.count >= AccountHandler.NEARBY_POSTS_PAGE_SIZE {
             self.mainViewController.getMore()
         }
@@ -308,38 +308,38 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     func closeSearchView(){
         self.txtSearchBox.resignFirstResponder()
-        UIView.animateWithDuration(0.25, animations: {
+        UIView.animate(withDuration: 0.25, animations: {
            // self.segmFilter.alpha = 1
             self.txtSearchBox.alpha = 0
             self.searchView.alpha = 0
-        }) { (_) in
+        }, completion: { (_) in
             self.searchView.removeFromSuperview()
-            self.tableView.scrollEnabled = true
-        }
+            self.tableView.isScrollEnabled = true
+        }) 
     }
     
     func openSearchView(){
         self.searchView.frame = self.view.bounds;
-        self.tableView.scrollEnabled = false
+        self.tableView.isScrollEnabled = false
         
         self.searchViewController?.setContentInset(self.navigationController!, tabBarController: self.tabBarController!)
         self.searchView.alpha = 0
         self.view.addSubview(self.searchView)
         
         self.txtSearchBox.becomeFirstResponder()
-        UIView.animateWithDuration(0.25, animations: {
+        UIView.animate(withDuration: 0.25, animations: {
             //self.segmFilter.alpha = 0
             self.txtSearchBox.alpha = 1
             self.searchView.alpha = 1
             
-        }) { (_) in
+        }, completion: { (_) in
             
-        }
+        }) 
     }
     
     
     // MARK: action
-    @IBAction func btnSearchClick(sender: AnyObject) {
+    @IBAction func btnSearchClick(_ sender: AnyObject) {
         
         if (self.segmFilter.alpha == 0){
             self.closeSearchView()
@@ -349,7 +349,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         
     }
     
-    @IBAction func unwindPosts(segue: UIStoryboardSegue){
+    @IBAction func unwindPosts(_ segue: UIStoryboardSegue){
         print("unwind")
     }
 }

@@ -9,17 +9,17 @@
 import UIKit
 import NYTPhotoViewer
 
-public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotosViewControllerDelegate{
-    private let mainView: UIView
-    private let scrollView: UIScrollView
-    private let viewController: UIViewController
-    private var photosViewController: NYTPhotosViewController?
+open class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotosViewControllerDelegate{
+    fileprivate let mainView: UIView
+    fileprivate let scrollView: UIScrollView
+    fileprivate let viewController: UIViewController
+    fileprivate var photosViewController: NYTPhotosViewController?
     
-    private var photos: [CustomPhoto] = []
+    fileprivate var photos: [CustomPhoto] = []
     
-    private var position = 0
-    private let pageControl: UIPageControl?
-    private var imagesCount = 0
+    fileprivate var position = 0
+    fileprivate let pageControl: UIPageControl?
+    fileprivate var imagesCount = 0
     
     let addPhotoTitle = NSLocalizedString("Photo", comment: "Title, Photo")
     
@@ -35,7 +35,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     }
     
     
-    public func setupScrollView(imageUrls: [String]?) {
+    open func setupScrollView(_ imageUrls: [String]?) {
         self.photos = []
         self.scrollView.subviews.forEach { (view) in
             view.removeFromSuperview()
@@ -60,7 +60,7 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
             self.addImageToScrollView(nil, index: 0)
         }
         
-        scrollView.contentSize = CGSizeMake(mainView.frame.size.width * CGFloat(index), scrollView.frame.size.height);
+        scrollView.contentSize = CGSize(width: mainView.frame.size.width * CGFloat(index), height: scrollView.frame.size.height);
         
         self.scrollToPosition(self.position)
         
@@ -72,16 +72,16 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
     
 
 
-    private func addImageToScrollView(imageUrl: String?, index: Int){
+    fileprivate func addImageToScrollView(_ imageUrl: String?, index: Int){
         //add default - it will be updated later
         self.addPhoto(ImageCachingHandler.defaultPhoto!, index: index)
         
-        let imageView = UIImageView(frame: CGRectMake( CGFloat(index) * mainView.frame.size.width, 0, mainView.frame.size.width, scrollView.frame.size.height));
-        imageView.contentMode = .ScaleAspectFill;
+        let imageView = UIImageView(frame: CGRect( x: CGFloat(index) * mainView.frame.size.width, y: 0, width: mainView.frame.size.width, height: scrollView.frame.size.height));
+        imageView.contentMode = .scaleAspectFill;
         imageView.clipsToBounds = true;
         
         let loading = ImageCachingHandler.Instance.getImageFromUrl(imageUrl, callback: { (image) in
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 imageView.image = image;
                 self.updatePhoto(image!, index: index)
             })
@@ -93,19 +93,19 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
         scrollView.addSubview(imageView);
     }
     
-    private func addPhoto(image: UIImage, index: Int){
-        let title = NSAttributedString(string: "\(addPhotoTitle) \(index + 1)", attributes: [NSForegroundColorAttributeName: UIColor.whiteColor()])
+    fileprivate func addPhoto(_ image: UIImage, index: Int){
+        let title = NSAttributedString(string: "\(addPhotoTitle) \(index + 1)", attributes: [NSForegroundColorAttributeName: UIColor.white])
         self.photos.append(CustomPhoto(image: image, attributedCaptionTitle: title))
     }
     
-    private func updatePhoto(image: UIImage, index: Int){
+    fileprivate func updatePhoto(_ image: UIImage, index: Int){
         let photo = self.photos[index]
         photo.image = image
         
-        self.photosViewController?.updateImageForPhoto(photo)
+        self.photosViewController?.updateImage(for: photo)
     }
     
-    public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let x = scrollView.contentOffset.x;
         let currentPosition = x / mainView.frame.size.width;
         //var position: Int;
@@ -124,34 +124,34 @@ public class ImagesScrollViewDelegate: NSObject, UIScrollViewDelegate, NYTPhotos
                 position = Int(currentPosition)
             }
         }
-        targetContentOffset.memory = CGPointMake(CGFloat(position) * mainView.frame.size.width, 0);
+        targetContentOffset.pointee = CGPoint(x: CGFloat(position) * mainView.frame.size.width, y: 0);
         
         //Change currentPosition - pageControl
         self.pageControl?.currentPage = position
     }
     
-    func scrollToPosition(position: Int){
+    func scrollToPosition(_ position: Int){
         self.scrollView.contentOffset = CGPoint(x: CGFloat(position) * mainView.frame.size.width, y: 0)
     }
     
-    public func photosViewController(photosViewController: NYTPhotosViewController, loadingViewForPhoto photo: NYTPhoto) -> UIView? {
-        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .WhiteLarge)
+    open func photosViewController(_ photosViewController: NYTPhotosViewController, loadingViewFor photo: NYTPhoto) -> UIView? {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
         activityIndicator.startAnimating()
         return activityIndicator
     }
     
-    func scrollViewTapped(gestureRecognizer: UIGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.Recognized && self.imagesCount > 0 {
-            let point = gestureRecognizer.locationInView(self.scrollView)
+    func scrollViewTapped(_ gestureRecognizer: UIGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.recognized && self.imagesCount > 0 {
+            let point = gestureRecognizer.location(in: self.scrollView)
             let imageIndex = Int(floor(point.x / self.mainView.frame.width))
             
             self.showPhotoViewer(imageIndex)
         }
     }
     
-    func showPhotoViewer(currentIndex: Int){
+    func showPhotoViewer(_ currentIndex: Int){
         self.photosViewController = NYTPhotosViewController(photos: self.photos, initialPhoto: self.photos[currentIndex], delegate: self)
         self.photosViewController?.rightBarButtonItem = nil
-        self.viewController.presentViewController(self.photosViewController!, animated: true, completion: nil)
+        self.viewController.present(self.photosViewController!, animated: true, completion: nil)
     }
 }

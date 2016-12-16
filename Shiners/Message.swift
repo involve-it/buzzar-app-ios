@@ -10,13 +10,13 @@ import Foundation
 
 
 
-public class Message: NSObject, DictionaryInitializable, NSCoding {
+open class Message: NSObject, DictionaryInitializable, NSCoding {
     var id: String?
     var userId: String?
     var toUserId: String?
     var chatId: String?
     var text: String?
-    var timestamp: NSDate?
+    var timestamp: Date?
     var keyMessage: String?
     var seen: Bool?
     var associatedPostId: String?
@@ -25,7 +25,7 @@ public class Message: NSObject, DictionaryInitializable, NSCoding {
         super.init()
     }
     
-    public func shortMessage() -> String{
+    open func shortMessage() -> String{
         if let text = self.text {
             return text.shortMessageForNotification()
         }
@@ -42,49 +42,49 @@ public class Message: NSObject, DictionaryInitializable, NSCoding {
         self.update(fields)
     }
     
-    func update(fields: NSDictionary?){
-        self.id = fields?.objectForKey(PropertyKeys.id) as? String
-        self.userId = fields?.objectForKey(PropertyKeys.userId) as? String
-        self.toUserId = fields?.objectForKey(PropertyKeys.toUserId) as? String
-        self.chatId = fields?.objectForKey(PropertyKeys.chatId) as? String
-        self.text = fields?.objectForKey(PropertyKeys.text) as? String
-        if let timestampMilliseconds = fields?.objectForKey(PropertyKeys.timestamp) as? Double {
-            self.timestamp = NSDate(timeIntervalSince1970: timestampMilliseconds / 1000)
+    func update(_ fields: NSDictionary?){
+        self.id = fields?.object(forKey: PropertyKeys.id) as? String
+        self.userId = fields?.object(forKey: PropertyKeys.userId) as? String
+        self.toUserId = fields?.object(forKey: PropertyKeys.toUserId) as? String
+        self.chatId = fields?.object(forKey: PropertyKeys.chatId) as? String
+        self.text = fields?.object(forKey: PropertyKeys.text) as? String
+        if let timestampMilliseconds = fields?.object(forKey: PropertyKeys.timestamp) as? Double {
+            self.timestamp = Date(timeIntervalSince1970: timestampMilliseconds / 1000)
         }
-        self.keyMessage = fields?.objectForKey(PropertyKeys.keyMessage) as? String
-        self.seen = fields?.objectForKey(PropertyKeys.seen) as? Bool
-        self.associatedPostId = fields?.objectForKey(PropertyKeys.associatedPostId) as? String
+        self.keyMessage = fields?.object(forKey: PropertyKeys.keyMessage) as? String
+        self.seen = fields?.object(forKey: PropertyKeys.seen) as? Bool
+        self.associatedPostId = fields?.object(forKey: PropertyKeys.associatedPostId) as? String
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        self.id = aDecoder.decodeObjectForKey(PropertyKeys.id) as? String
-        self.userId = aDecoder.decodeObjectForKey(PropertyKeys.userId) as? String
-        self.toUserId = aDecoder.decodeObjectForKey(PropertyKeys.toUserId) as? String
-        self.chatId = aDecoder.decodeObjectForKey(PropertyKeys.chatId) as? String
-        self.text = aDecoder.decodeObjectForKey(PropertyKeys.text) as? String
-        self.timestamp = aDecoder.decodeObjectForKey(PropertyKeys.timestamp) as? NSDate
-        self.keyMessage = aDecoder.decodeObjectForKey(PropertyKeys.keyMessage) as? String
-        if aDecoder.containsValueForKey(PropertyKeys.seen){
-            self.seen = aDecoder.decodeBoolForKey(PropertyKeys.seen)
+        self.id = aDecoder.decodeObject(forKey: PropertyKeys.id) as? String
+        self.userId = aDecoder.decodeObject(forKey: PropertyKeys.userId) as? String
+        self.toUserId = aDecoder.decodeObject(forKey: PropertyKeys.toUserId) as? String
+        self.chatId = aDecoder.decodeObject(forKey: PropertyKeys.chatId) as? String
+        self.text = aDecoder.decodeObject(forKey: PropertyKeys.text) as? String
+        self.timestamp = aDecoder.decodeObject(forKey: PropertyKeys.timestamp) as? Date
+        self.keyMessage = aDecoder.decodeObject(forKey: PropertyKeys.keyMessage) as? String
+        if aDecoder.containsValue(forKey: PropertyKeys.seen){
+            self.seen = aDecoder.decodeBool(forKey: PropertyKeys.seen)
         }
-        self.associatedPostId = aDecoder.decodeObjectForKey(PropertyKeys.associatedPostId) as? String
+        self.associatedPostId = aDecoder.decodeObject(forKey: PropertyKeys.associatedPostId) as? String
     }
     
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.id, forKey: PropertyKeys.id)
-        aCoder.encodeObject(self.userId, forKey: PropertyKeys.userId)
-        aCoder.encodeObject(self.toUserId, forKey: PropertyKeys.toUserId)
-        aCoder.encodeObject(self.chatId, forKey: PropertyKeys.chatId)
-        aCoder.encodeObject(self.text, forKey: PropertyKeys.text)
-        aCoder.encodeObject(self.timestamp, forKey: PropertyKeys.timestamp)
-        aCoder.encodeObject(self.keyMessage, forKey: PropertyKeys.keyMessage)
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.id, forKey: PropertyKeys.id)
+        aCoder.encode(self.userId, forKey: PropertyKeys.userId)
+        aCoder.encode(self.toUserId, forKey: PropertyKeys.toUserId)
+        aCoder.encode(self.chatId, forKey: PropertyKeys.chatId)
+        aCoder.encode(self.text, forKey: PropertyKeys.text)
+        aCoder.encode(self.timestamp, forKey: PropertyKeys.timestamp)
+        aCoder.encode(self.keyMessage, forKey: PropertyKeys.keyMessage)
         if let seen = self.seen{
-            aCoder.encodeBool(seen, forKey: PropertyKeys.seen)
+            aCoder.encode(seen, forKey: PropertyKeys.seen)
         }
-        aCoder.encodeObject(self.associatedPostId, forKey: PropertyKeys.associatedPostId)
+        aCoder.encode(self.associatedPostId, forKey: PropertyKeys.associatedPostId)
     }
     
-    private struct PropertyKeys {
+    fileprivate struct PropertyKeys {
         static let id = "_id"
         static let userId = "userId"
         static let toUserId = "toUserId"
@@ -96,7 +96,7 @@ public class Message: NSObject, DictionaryInitializable, NSCoding {
         static let associatedPostId = "associatedPostId"
     }
     
-    func isOwn(userId: String) -> Bool{
+    func isOwn(_ userId: String) -> Bool{
         if self.userId == userId {
             return true
         } else {

@@ -8,9 +8,9 @@
 
 import Foundation
 
-public class ConstantValuesHandler {
+open class ConstantValuesHandler {
     
-    public let adTypes = [
+    open let adTypes = [
         Post.AdType.Jobs.rawValue: "Job market",
         Post.AdType.Trainings.rawValue: "Need or provide training",
         Post.AdType.Connect.rawValue: "Looking for connections",
@@ -21,7 +21,7 @@ public class ConstantValuesHandler {
         Post.AdType.Help.rawValue: "Need or give help"
     ]
     
-    public let connectionTypes = [
+    open let connectionTypes = [
         Post.ConnectionType.Artists.rawValue: "Artists and other creative people",
         Post.ConnectionType.Friends.rawValue: "Friendship",
         Post.ConnectionType.Sport.rawValue: "Sport activities",
@@ -29,12 +29,12 @@ public class ConstantValuesHandler {
         Post.ConnectionType.Other.rawValue: "Other"
     ]
     
-    public let trainingTypes = [
+    open let trainingTypes = [
         Post.TrainingType.Learn.rawValue: "Learn",
         Post.TrainingType.Train.rawValue: "Train others"
     ]
     
-    public let trainingCategoryTypes = [
+    open let trainingCategoryTypes = [
         Post.TrainingCategoryType.Trainings.rawValue: "Trainings",
         Post.TrainingCategoryType.MasterClass.rawValue: "Master class",
         Post.TrainingCategoryType.Tutoring.rawValue: "Tutoring",
@@ -43,7 +43,7 @@ public class ConstantValuesHandler {
         Post.TrainingCategoryType.HighSchool.rawValue: "High school"
     ]
     
-    public let housingTypes = [
+    open let housingTypes = [
         Post.HousingType.Roommates.rawValue: "Roommates",
         Post.HousingType.Rent.rawValue: "Renting",
         Post.HousingType.RentOut.rawValue: "Renting out",
@@ -51,34 +51,34 @@ public class ConstantValuesHandler {
         Post.HousingType.Sell.rawValue: "Selling"
     ]
     
-    public let localEventTypes = [
+    open let localEventTypes = [
         Post.LocalEventType.Provide.rawValue: "Provide",
         Post.LocalEventType.Need.rawValue: "Need"
     ]
     
-    public let helpTypes = [
+    open let helpTypes = [
         Post.HelpType.LostMyPet.rawValue: "Lost my pet",
         Post.HelpType.NeedMoneyForFood.rawValue: "Need money for food",
         Post.HelpType.Emergency.rawValue: "Emergency Situation",
         Post.HelpType.Other.rawValue: "Other"
     ]
     
-    public let categories = ["jobs", "trainings", "connect", "trade", "housing", "events", "services", "help"];
+    open let categories = ["jobs", "trainings", "connect", "trade", "housing", "events", "services", "help"];
     
-    public let postDateRanges = [
+    open let postDateRanges = [
         "One day": 1.0 * 60 * 60 * 24, "Two days": 2.0 * 60 * 60 * 24, "Week": 7.0 * 60 * 60 * 24, "Two weeks": 14.0 * 60 * 60 * 24, "Month": 30.0 * 60 * 60 * 24, "Year": 365.0 * 60 * 60 * 24
     ]
     
-    public let currencies = [
+    open let currencies = [
         "USD", "RUR"
     ]
     
-    private init(){
+    fileprivate init(){
         
     }
     
-    private static var instance: ConstantValuesHandler = ConstantValuesHandler();
-    public static var Instance: ConstantValuesHandler {
+    fileprivate static var instance: ConstantValuesHandler = ConstantValuesHandler();
+    open static var Instance: ConstantValuesHandler {
         return instance;
     }
 }

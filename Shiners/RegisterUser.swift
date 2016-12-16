@@ -8,10 +8,10 @@
 
 import Foundation
 
-public class RegisterUser{
-    public var username: String?
-    public var email: String?
-    public var password: String?
+open class RegisterUser{
+    open var username: String?
+    open var email: String?
+    open var password: String?
     
     init(username: String?, email: String?, password: String?){
         self.username = username
@@ -19,7 +19,7 @@ public class RegisterUser{
         self.password = password
     }
     
-    public func isValid() -> Bool{
+    open func isValid() -> Bool{
         if self.username == nil || self.email == nil || self.password == nil{
             return false
         }
@@ -27,12 +27,12 @@ public class RegisterUser{
         return true
     }
     
-    public func toDictionary() -> Dictionary<String, AnyObject>{
+    open func toDictionary() -> Dictionary<String, AnyObject>{
         var dict = Dictionary<String, AnyObject>()
         
-        dict["username"] = self.username
-        dict["email"] = self.email
-        dict["password"] = self.password
+        dict["username"] = self.username as AnyObject?
+        dict["email"] = self.email as AnyObject?
+        dict["password"] = self.password as AnyObject?
         
         return dict
     }

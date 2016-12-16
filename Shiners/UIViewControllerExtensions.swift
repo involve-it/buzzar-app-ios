@@ -9,11 +9,11 @@
 import UIKit
 
 public extension UIViewController{
-    public func setLoading(loading: Bool, rightBarButtonItem: UIBarButtonItem? = nil){
+    public func setLoading(_ loading: Bool, rightBarButtonItem: UIBarButtonItem? = nil){
         if (loading){
-            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray);
+            let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray);
             activityIndicator.startAnimating();
-            activityIndicator.hidden = false;
+            activityIndicator.isHidden = false;
             let rightItem = UIBarButtonItem(customView: activityIndicator);
             self.navigationItem.rightBarButtonItem = rightItem;
         } else {
@@ -22,19 +22,19 @@ public extension UIViewController{
     }
     
     
-    public func showAlert(title: String, message: String?){
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert);
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Dismiss", comment: "Alert title, Dismiss"), style: .Default, handler: nil));
-        self.presentViewController(alertController, animated: true, completion: nil)
+    public func showAlert(_ title: String, message: String?){
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert);
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Dismiss", comment: "Alert title, Dismiss"), style: .default, handler: nil));
+        self.present(alertController, animated: true, completion: nil)
     }
     
     
-    public func showConnecting(connecting: Bool){
+    public func showConnecting(_ connecting: Bool){
         
     }
     
-    func displayModalAlert(title: String, message: String? = nil) -> UIAlertController{
-        let pending = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
+    func displayModalAlert(_ title: String, message: String? = nil) -> UIAlertController{
+        let pending = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         
         //create an activity indicator
         //let indicator = UIActivityIndicatorView(frame: CGRectMake(-12, 22, 37, 37))
@@ -47,7 +47,7 @@ public extension UIViewController{
         //indicator.userInteractionEnabled = false // required otherwise if there buttons in the UIAlertController you will not be able to press them
         //indicator.startAnimating()
         
-        self.presentViewController(pending, animated: true, completion: nil)
+        self.present(pending, animated: true, completion: nil)
         
         return pending
     }
@@ -61,7 +61,7 @@ public extension UIViewController{
     }
     
     func isVisible() -> Bool{
-        return self.isViewLoaded() && self.view.window != nil
+        return self.isViewLoaded && self.view.window != nil
     }
     
 }

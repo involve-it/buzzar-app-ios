@@ -8,32 +8,56 @@
 
 import Foundation
 import CoreLocation
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
-public class Post: NSObject, DictionaryInitializable, NSCoding{
-    public var id: String?
-    public var title: String?
-    public var photos: [Photo]?
-    public var descr: String?
-    public var price: String?
-    public var seenTotal: Int?
-    public var seenToday: Int?
-    public var type: AdType?
-    public var locations: [Location]?
-    public var url: String?
-    public var anonymousPost: Bool?
-    public var endDate: NSDate?
-    public var user: User?
-    public var visible: Bool?
-    public var timestamp: NSDate?
-    public var trainingCategory: String?
-    public var sectionLearning: String?
-    public var near: Bool?
-    public var likes: Int?
-    public var liked: Bool?
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
+
+open class Post: NSObject, DictionaryInitializable, NSCoding{
+    open var id: String?
+    open var title: String?
+    open var photos: [Photo]?
+    open var descr: String?
+    open var price: String?
+    open var seenTotal: Int?
+    open var seenToday: Int?
+    open var type: AdType?
+    open var locations: [Location]?
+    open var url: String?
+    open var anonymousPost: Bool?
+    open var endDate: Date?
+    open var user: User?
+    open var visible: Bool?
+    open var timestamp: Date?
+    open var trainingCategory: String?
+    open var sectionLearning: String?
+    open var near: Bool?
+    open var likes: Int?
+    open var liked: Bool?
     
-    public var outDistancePost: String?
+    open var outDistancePost: String?
     
-    public var commentsRequested = false
+    open var commentsRequested = false
     var comments = [Comment]()
     
     public override init(){
@@ -52,37 +76,37 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         self.update(fields);
     }
     
-    public func isLive() -> Bool{
-        if let online = self.user?.isOnline() where online, let near = self.near where near {
+    open func isLive() -> Bool{
+        if let online = self.user?.isOnline(), online, let near = self.near, near {
             return true
         }
         
         return false
     }
     
-    public func removedHtmlFromPostDescription( postDescription: String? ) -> String? {
+    open func removedHtmlFromPostDescription( _ postDescription: String? ) -> String? {
         if postDescription == nil { return nil }
-        return postDescription!.stringByReplacingOccurrencesOfString("<[^>]+>", withString: "", options: .RegularExpressionSearch, range: nil)
+        return postDescription!.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
     }
     
-    public func update(fields: NSDictionary?){
-        if let id = fields?.valueForKey(PropertyKey.id) as? String {
+    open func update(_ fields: NSDictionary?){
+        if let id = fields?.value(forKey: PropertyKey.id) as? String {
             self.id = id
         }
         
-        if let type = fields?.valueForKey(PropertyKey.type) as? String {
+        if let type = fields?.value(forKey: PropertyKey.type) as? String {
             self.type = AdType(rawValue: type)
         }
         
-        if let details = fields?.valueForKey(PropertyKey.details) as? NSDictionary {
-            self.title = details.valueForKey(PropertyKey.title) as? String
+        if let details = fields?.value(forKey: PropertyKey.details) as? NSDictionary {
+            self.title = details.value(forKey: PropertyKey.title) as? String
             
-            self.descr = details.valueForKey(PropertyKey.description) as? String
-            self.anonymousPost = details.valueForKey(PropertyKey.anonymousPost) as? Bool
-            self.url = details.valueForKey(PropertyKey.url) as? String
+            self.descr = details.value(forKey: PropertyKey.description) as? String
+            self.anonymousPost = details.value(forKey: PropertyKey.anonymousPost) as? Bool
+            self.url = details.value(forKey: PropertyKey.url) as? String
             
             
-            if let photos = details.valueForKey(PropertyKey.photoUrls) as? NSArray {
+            if let photos = details.value(forKey: PropertyKey.photoUrls) as? NSArray {
                 self.photos = [Photo]()
                 for photoUrl in photos {
                     if let url = photoUrl as? String {
@@ -91,7 +115,7 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
                         self.photos!.append(photoObj)
                     }
                 }
-            } else if let photos = details.valueForKey(PropertyKey.photos) as? NSArray{
+            } else if let photos = details.value(forKey: PropertyKey.photos) as? NSArray{
                 self.photos = [Photo]()
                 for photo in photos {
                     if let photoFields = photo as? NSDictionary{
@@ -103,7 +127,7 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
                 }
             }
             
-            if let locations = details.valueForKey(PropertyKey.locations) as? NSArray {
+            if let locations = details.value(forKey: PropertyKey.locations) as? NSArray {
                 self.locations = [Location]()
                 for location in locations {
                     if let locationFields = location as? NSDictionary{
@@ -112,52 +136,52 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
                 }
             }
             
-            self.price = details.valueForKey(PropertyKey.price) as? String
+            self.price = details.value(forKey: PropertyKey.price) as? String
         }
         
-        self.likes = fields?.valueForKey(PropertyKey.likes) as? Int
-        self.liked = fields?.valueForKey(PropertyKey.liked) as? Bool
+        self.likes = fields?.value(forKey: PropertyKey.likes) as? Int
+        self.liked = fields?.value(forKey: PropertyKey.liked) as? Bool
         
-        if let stats = fields?.valueForKey(PropertyKey.stats) as? NSDictionary{
-            if let seenTotal = stats.valueForKey(PropertyKey.seenTotal)as? Int{
+        if let stats = fields?.value(forKey: PropertyKey.stats) as? NSDictionary{
+            if let seenTotal = stats.value(forKey: PropertyKey.seenTotal)as? Int{
                 self.seenTotal = seenTotal;
             } else {
                 self.seenTotal = 0
             }
-            if let seenToday = stats.valueForKey(PropertyKey.seenToday) as? Int{
+            if let seenToday = stats.value(forKey: PropertyKey.seenToday) as? Int{
                 self.seenToday = seenToday;
             } else {
                 self.seenToday = 0
             }
         }
-        if let presences = fields?.valueForKey("presences") as? NSDictionary {
-            if let dynamicPresence = presences.valueForKey("dynamic") as? String where dynamicPresence == "close"{
+        if let presences = fields?.value(forKey: "presences") as? NSDictionary {
+            if let dynamicPresence = presences.value(forKey: "dynamic") as? String, dynamicPresence == "close"{
                 self.near = true
-            } else if let staticPresence = presences.valueForKey("static") as? String where staticPresence == "close"{
+            } else if let staticPresence = presences.value(forKey: "static") as? String, staticPresence == "close"{
                 self.near = true
             }
         }
         
-        if let statusFields = fields?.valueForKey(PropertyKey.status) as? NSDictionary{
-            if let visible = statusFields.valueForKey(PropertyKey.visible) as? String where visible == PropertyKey.visible {
+        if let statusFields = fields?.value(forKey: PropertyKey.status) as? NSDictionary{
+            if let visible = statusFields.value(forKey: PropertyKey.visible) as? String, visible == PropertyKey.visible {
                 self.visible = true
             } else {
                 self.visible = false
             }
         }
         
-        if let userFields = fields?.valueForKey(PropertyKey.user) as? NSDictionary {
+        if let userFields = fields?.value(forKey: PropertyKey.user) as? NSDictionary {
             self.user = User(fields: userFields)
         }
-        if let endDateMilliseconds = fields?.valueForKey(PropertyKey.endDate) as? Double {
-            self.endDate = NSDate(timeIntervalSince1970: endDateMilliseconds / 1000)
+        if let endDateMilliseconds = fields?.value(forKey: PropertyKey.endDate) as? Double {
+            self.endDate = Date(timeIntervalSince1970: endDateMilliseconds / 1000)
         }
-        if let timestampMillisecnods = fields?.valueForKey(PropertyKey.timestamp) as? Double {
-            self.timestamp = NSDate(timeIntervalSince1970: timestampMillisecnods / 1000)
+        if let timestampMillisecnods = fields?.value(forKey: PropertyKey.timestamp) as? Double {
+            self.timestamp = Date(timeIntervalSince1970: timestampMillisecnods / 1000)
         }
     }
     
-    public func getMainPhoto() -> Photo? {
+    open func getMainPhoto() -> Photo? {
         if self.photos?.count > 0 {
             return self.photos?[0]
         }
@@ -166,88 +190,88 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
     }
     
     @objc public required init(coder aDecoder: NSCoder) {
-        self.id = aDecoder.decodeObjectForKey(PropertyKey.id) as? String
-        self.title = aDecoder.decodeObjectForKey(PropertyKey.title) as? String
-        self.descr = aDecoder.decodeObjectForKey(PropertyKey.description) as? String
-        self.price = aDecoder.decodeObjectForKey(PropertyKey.price) as? String
-        if aDecoder.containsValueForKey(PropertyKey.seenTotal){
-            self.seenTotal = aDecoder.decodeObjectForKey(PropertyKey.seenTotal) as? Int
+        self.id = aDecoder.decodeObject(forKey: PropertyKey.id) as? String
+        self.title = aDecoder.decodeObject(forKey: PropertyKey.title) as? String
+        self.descr = aDecoder.decodeObject(forKey: PropertyKey.description) as? String
+        self.price = aDecoder.decodeObject(forKey: PropertyKey.price) as? String
+        if aDecoder.containsValue(forKey: PropertyKey.seenTotal){
+            self.seenTotal = aDecoder.decodeObject(forKey: PropertyKey.seenTotal) as? Int
         }
-        if aDecoder.containsValueForKey(PropertyKey.seenToday){
-            self.seenTotal = aDecoder.decodeObjectForKey(PropertyKey.seenToday) as? Int
+        if aDecoder.containsValue(forKey: PropertyKey.seenToday){
+            self.seenTotal = aDecoder.decodeObject(forKey: PropertyKey.seenToday) as? Int
         }
-        self.photos = aDecoder.decodeObjectForKey(PropertyKey.photos) as? [Photo]
-        if let type = aDecoder.decodeObjectForKey(PropertyKey.type) as? String {
+        self.photos = aDecoder.decodeObject(forKey: PropertyKey.photos) as? [Photo]
+        if let type = aDecoder.decodeObject(forKey: PropertyKey.type) as? String {
             self.type = AdType(rawValue: type)
         }
         
-        self.locations = aDecoder.decodeObjectForKey(PropertyKey.locations) as? [Location]
-        self.url = aDecoder.decodeObjectForKey(PropertyKey.url) as? String
-        if aDecoder.containsValueForKey(PropertyKey.anonymousPost){
-            self.anonymousPost = aDecoder.decodeBoolForKey(PropertyKey.anonymousPost)
+        self.locations = aDecoder.decodeObject(forKey: PropertyKey.locations) as? [Location]
+        self.url = aDecoder.decodeObject(forKey: PropertyKey.url) as? String
+        if aDecoder.containsValue(forKey: PropertyKey.anonymousPost){
+            self.anonymousPost = aDecoder.decodeBool(forKey: PropertyKey.anonymousPost)
         }
-        self.endDate = aDecoder.decodeObjectForKey(PropertyKey.endDate) as? NSDate
-        self.user = aDecoder.decodeObjectForKey(PropertyKey.user) as? User
-        if aDecoder.containsValueForKey(PropertyKey.visible){
-            self.visible = aDecoder.decodeBoolForKey(PropertyKey.visible)
+        self.endDate = aDecoder.decodeObject(forKey: PropertyKey.endDate) as? Date
+        self.user = aDecoder.decodeObject(forKey: PropertyKey.user) as? User
+        if aDecoder.containsValue(forKey: PropertyKey.visible){
+            self.visible = aDecoder.decodeBool(forKey: PropertyKey.visible)
         }
-        if aDecoder.containsValueForKey(PropertyKey.near){
-            self.near = aDecoder.decodeBoolForKey(PropertyKey.near)
+        if aDecoder.containsValue(forKey: PropertyKey.near){
+            self.near = aDecoder.decodeBool(forKey: PropertyKey.near)
         }
-        self.timestamp = aDecoder.decodeObjectForKey(PropertyKey.timestamp) as? NSDate
-        if aDecoder.containsValueForKey(PropertyKey.likes){
-            self.likes = aDecoder.decodeObjectForKey(PropertyKey.likes) as? Int
+        self.timestamp = aDecoder.decodeObject(forKey: PropertyKey.timestamp) as? Date
+        if aDecoder.containsValue(forKey: PropertyKey.likes){
+            self.likes = aDecoder.decodeObject(forKey: PropertyKey.likes) as? Int
         }
-        if aDecoder.containsValueForKey(PropertyKey.liked){
-            self.liked = aDecoder.decodeBoolForKey(PropertyKey.liked)
+        if aDecoder.containsValue(forKey: PropertyKey.liked){
+            self.liked = aDecoder.decodeBool(forKey: PropertyKey.liked)
         }
         
         super.init()
     }
     
-    @objc public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(id, forKey: PropertyKey.id)
-        aCoder.encodeObject(title, forKey: PropertyKey.title)
-        aCoder.encodeObject(photos, forKey: PropertyKey.photos)
-        aCoder.encodeObject(descr, forKey: PropertyKey.description)
-        aCoder.encodeObject(price, forKey: PropertyKey.price)
+    @objc open func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: PropertyKey.id)
+        aCoder.encode(title, forKey: PropertyKey.title)
+        aCoder.encode(photos, forKey: PropertyKey.photos)
+        aCoder.encode(descr, forKey: PropertyKey.description)
+        aCoder.encode(price, forKey: PropertyKey.price)
         if let seenTotal = self.seenTotal{
-            aCoder.encodeInteger(seenTotal, forKey: PropertyKey.seenTotal)
+            aCoder.encode(seenTotal, forKey: PropertyKey.seenTotal)
         }
         if let seenToday = self.seenToday{
-            aCoder.encodeInteger(seenToday, forKey: PropertyKey.seenToday)
+            aCoder.encode(seenToday, forKey: PropertyKey.seenToday)
         }
-        aCoder.encodeObject(type?.rawValue, forKey: PropertyKey.type)
-        aCoder.encodeObject(locations, forKey: PropertyKey.locations)
-        aCoder.encodeObject(url, forKey: PropertyKey.url)
+        aCoder.encode(type?.rawValue, forKey: PropertyKey.type)
+        aCoder.encode(locations, forKey: PropertyKey.locations)
+        aCoder.encode(url, forKey: PropertyKey.url)
         if let anonymousPost = self.anonymousPost{
-            aCoder.encodeBool(anonymousPost, forKey: PropertyKey.anonymousPost)
+            aCoder.encode(anonymousPost, forKey: PropertyKey.anonymousPost)
         }
         
-        aCoder.encodeObject(endDate, forKey: PropertyKey.endDate)
-        aCoder.encodeObject(user, forKey: PropertyKey.user)
+        aCoder.encode(endDate, forKey: PropertyKey.endDate)
+        aCoder.encode(user, forKey: PropertyKey.user)
         if let visible = self.visible{
-            aCoder.encodeBool(visible, forKey: PropertyKey.visible)
+            aCoder.encode(visible, forKey: PropertyKey.visible)
         }
         if let near = self.near{
-            aCoder.encodeBool(near, forKey: PropertyKey.near)
+            aCoder.encode(near, forKey: PropertyKey.near)
         }
         
-        aCoder.encodeObject(timestamp, forKey: PropertyKey.timestamp)
+        aCoder.encode(timestamp, forKey: PropertyKey.timestamp)
         if let likes = self.likes {
-            aCoder.encodeInteger(likes, forKey: PropertyKey.likes)
+            aCoder.encode(likes, forKey: PropertyKey.likes)
         }
         if let liked = self.liked {
-            aCoder.encodeBool(liked, forKey: PropertyKey.liked)
+            aCoder.encode(liked, forKey: PropertyKey.liked)
         }
     }
     
-    func getDistanceFormatted(currentLocation: CLLocation) -> String? {
+    func getDistanceFormatted(_ currentLocation: CLLocation) -> String? {
         var distanceFormatted: String?
         //Post location
         if let locations = self.locations {
             for location in locations {
-                if let lat = location.lat, lng = location.lng {
+                if let lat = location.lat, let lng = location.lng {
                     distanceFormatted = currentLocation.distanceFromLocationFormatted(CLLocation(latitude: lat, longitude: lng))
                     
                     if location.placeType == .Dynamic {
@@ -260,13 +284,13 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         return distanceFormatted
     }
     
-    func getDistance(currentLocation: CLLocation) -> Double? {
+    func getDistance(_ currentLocation: CLLocation) -> Double? {
         var distance: Double?
         //Post location
         if let locations = self.locations {
             for location in locations {
-                if let lat = location.lat, lng = location.lng {
-                    distance = currentLocation.distanceFromLocation(CLLocation(latitude: lat, longitude: lng))
+                if let lat = location.lat, let lng = location.lng {
+                    distance = currentLocation.distance(from: CLLocation(latitude: lat, longitude: lng))
                     
                     if location.placeType == .Dynamic {
                         break
@@ -278,56 +302,60 @@ public class Post: NSObject, DictionaryInitializable, NSCoding{
         return distance
     }
     
-    public func toDictionary() -> Dictionary<String, AnyObject>{
+    open func toDictionary() -> Dictionary<String, AnyObject>{
         var dict = Dictionary<String, AnyObject>()
         
-        dict[PropertyKey.id] = self.id
-        dict[PropertyKey.type] = self.type?.rawValue
+        dict[PropertyKey.id] = self.id as AnyObject?
+        dict[PropertyKey.type] = self.type?.rawValue as AnyObject?
         
         if let endDate = self.endDate {
-            dict[PropertyKey.endDate] = Int(endDate.timeIntervalSince1970 * 1000)
+            dict[PropertyKey.endDate] = Int(endDate.timeIntervalSince1970 * 1000) as AnyObject?
         }
         if let timestamp = self.timestamp{
-            dict[PropertyKey.timestamp] = Int(timestamp.timeIntervalSince1970 * 1000)
+            dict[PropertyKey.timestamp] = Int(timestamp.timeIntervalSince1970 * 1000) as AnyObject?
         }
         
         var details = Dictionary<String, AnyObject>()
-        details[PropertyKey.anonymousPost] = self.anonymousPost
+        details[PropertyKey.anonymousPost] = self.anonymousPost as AnyObject?
         if let locations = self.locations{
             var locationsArray = Array<Dictionary<String, AnyObject>>()
             for location in locations{
                 locationsArray.append(location.toDictionary())
             }
-            details[PropertyKey.locations] = locationsArray
+            details[PropertyKey.locations] = locationsArray as AnyObject?
         }
-        details[PropertyKey.title] = self.title
-        details[PropertyKey.description] = self.descr
-        details[PropertyKey.price] = self.price
+        details[PropertyKey.title] = self.title as AnyObject?
+        details[PropertyKey.description] = self.descr as AnyObject?
+        details[PropertyKey.price] = self.price as AnyObject?
         if let photos = self.photos {
             var photosArray = Array<Dictionary<String, AnyObject>>()
             for photo in photos {
                 photosArray.append(photo.toDictionary())
             }
-            details[PropertyKey.photos] = photosArray
+            details[PropertyKey.photos] = photosArray as AnyObject?
         }
-        dict[PropertyKey.details] = details
-        if let visible = self.visible where visible {
-            dict[PropertyKey.status] = [PropertyKey.visible: PropertyKey.visible]
+        dict[PropertyKey.details] = details as AnyObject?
+        if let visible = self.visible, visible {
+            var status = Dictionary<String, AnyObject>()
+            status[PropertyKey.visible] = PropertyKey.visible as AnyObject?
+            dict[PropertyKey.status] = status as AnyObject?
         } else {
-            dict[PropertyKey.status] = [PropertyKey.visible: false]
+            var status = Dictionary<String, AnyObject>()
+            status[PropertyKey.visible] = false as AnyObject?
+            dict[PropertyKey.status] = status as AnyObject?
         }
         
         if self.type == .Trainings {
             var trainingDetails = Dictionary<String, AnyObject>()
-            trainingDetails[PropertyKey.trainingCategory] = self.trainingCategory
-            trainingDetails[PropertyKey.sectionLearning] = self.sectionLearning
-            dict[PropertyKey.trainingDetails] = trainingDetails
+            trainingDetails[PropertyKey.trainingCategory] = self.trainingCategory as AnyObject?
+            trainingDetails[PropertyKey.sectionLearning] = self.sectionLearning as AnyObject?
+            dict[PropertyKey.trainingDetails] = trainingDetails as AnyObject?
         }
         
         return dict
     }
     
-    private struct PropertyKey{
+    fileprivate struct PropertyKey{
         static let id = "_id"
         static let title = "title"
         static let description = "description"

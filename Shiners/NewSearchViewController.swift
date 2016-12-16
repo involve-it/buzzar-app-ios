@@ -8,13 +8,13 @@
 
 import UIKit
 
-public class NewSearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
+open class NewSearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
-    public var delegate: SearchViewControllerDelegate?
+    open var delegate: SearchViewControllerDelegate?
     
     @IBOutlet weak var tblSearchResults: UITableView!
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         self.tblSearchResults.delegate = self
         self.tblSearchResults.dataSource = self
     }
@@ -24,25 +24,25 @@ public class NewSearchViewController: UIViewController, UITableViewDelegate, UIT
         
     }
     
-    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCellWithIdentifier("testCell")!
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return tableView.dequeueReusableCell(withIdentifier: "testCell")!
     }
     
-    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    open func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
     }
     
-    public func setContentInset(navigationController: UINavigationController, tabBarController: UITabBarController){
-        self.tblSearchResults.contentInset = UIEdgeInsetsMake(UIApplication.sharedApplication().statusBarFrame.height + navigationController.navigationBar.frame.height, 0, tabBarController.tabBar.frame.height, 0)
+    open func setContentInset(_ navigationController: UINavigationController, tabBarController: UITabBarController){
+        self.tblSearchResults.contentInset = UIEdgeInsetsMake(UIApplication.shared.statusBarFrame.height + navigationController.navigationBar.frame.height, 0, tabBarController.tabBar.frame.height, 0)
     }
     
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.delegate?.didApplyFilter()
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

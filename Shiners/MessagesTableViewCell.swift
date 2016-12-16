@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class MessagesTableViewCell: UITableViewCell{
+open class MessagesTableViewCell: UITableViewCell{
     
     @IBOutlet weak var imgPhoto: UIImageView!
     @IBOutlet weak var lblTitle: UILabel!

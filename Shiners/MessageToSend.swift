@@ -16,10 +16,10 @@ class MessageToSend {
     
     func toDictionary() -> Dictionary<String, AnyObject>{
         var dict = Dictionary<String, AnyObject>()
-        dict["message"] = message
-        dict["type"] = type
-        dict["destinationUserId"] = destinationUserId
-        dict["associatedPostId"] = associatedPostId
+        dict["message"] = message as AnyObject?
+        dict["type"] = type as AnyObject?
+        dict["destinationUserId"] = destinationUserId as AnyObject?
+        dict["associatedPostId"] = associatedPostId as AnyObject?
         return dict
     }
 }

@@ -14,36 +14,36 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
     @IBOutlet weak var txtUsername: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
     
-    private let registerButton = UIBarButtonItem(title: NSLocalizedString("Register", comment: "Button title, Register"), style: .Plain, target: nil, action: #selector(btnRegister_Click));
+    fileprivate let registerButton = UIBarButtonItem(title: NSLocalizedString("Register", comment: "Button title, Register"), style: .plain, target: nil, action: #selector(btnRegister_Click));
     
     let txtTitleLogInFaild = NSLocalizedString("Log in failed", comment: "Alert title, Log in failed")
     
-    @IBAction func btnRegister_Click(sender: AnyObject) {
+    @IBAction func btnRegister_Click(_ sender: AnyObject) {
         let presentingViewController = self.presentingViewController;
-        self.navigationController?.dismissViewControllerAnimated(true, completion: { 
+        self.navigationController?.dismiss(animated: true, completion: { 
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewControllerWithIdentifier("registerNavigationController")
-            presentingViewController!.presentViewController(vc, animated: true, completion: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "registerNavigationController")
+            presentingViewController!.present(vc, animated: true, completion: nil)
         })
     }
-    @IBAction func btnCancel_Click(sender: AnyObject) {
+    @IBAction func btnCancel_Click(_ sender: AnyObject) {
         self.dismissSelf();
     }
     
-    private func dismissSelf(){
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil);
+    fileprivate func dismissSelf(){
+        self.navigationController?.dismiss(animated: true, completion: nil);
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.txtUsername.becomeFirstResponder();
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.processLogin), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)
     }
     
     override func viewDidLoad() {
@@ -53,7 +53,7 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
         self.txtUsername.delegate = self;
     }
     
-    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if indexPath.section == 2 && indexPath.row == 0{
             return indexPath;
         } else {
@@ -61,17 +61,17 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 2 && indexPath.row == 0{
-            tableView.deselectRowAtIndexPath(indexPath, animated: false)
+            tableView.deselectRow(at: indexPath, animated: false)
             
             self.login();
         } 
     }
     
     func processLogin(){
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-        dispatch_async(dispatch_get_main_queue(), {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)
+        DispatchQueue.main.async(execute: {
             self.setLoading(false, rightBarButtonItem: self.registerButton)
             if AccountHandler.Instance.currentUser != nil {
                 //AccountHandler.Instance.requestPushNotifications()
@@ -83,7 +83,7 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
     }
     
     func login(){
-        if let userName = txtUsername.text where userName != "", let password = txtPassword.text where password != "" {
+        if let userName = txtUsername.text, userName != "", let password = txtPassword.text, password != "" {
             setLoading(true, rightBarButtonItem: self.registerButton)
             
             AccountHandler.Instance.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in
@@ -96,7 +96,7 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
         }
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if (textField === self.txtPassword){
             self.login()
         } else if (textField === self.txtUsername){

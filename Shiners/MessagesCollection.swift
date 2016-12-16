@@ -18,11 +18,11 @@ class MessagesCollection: AbstractCollection{
         super.init(name: "bz.messages");
     }
     
-    override func documentWasAdded(collection: String, id: String, fields: NSDictionary?) {
+    override func documentWasAdded(_ collection: String, id: String, fields: NSDictionary?) {
         let message = Message(id: id, fields: fields)
         self.messages.append(message)
         
-        if let chatIndex = AccountHandler.Instance.myChats?.indexOf({return $0.id == message.chatId}), chat = AccountHandler.Instance.myChats?[chatIndex] {
+        if let chatIndex = AccountHandler.Instance.myChats?.index(where: {return $0.id == message.chatId}), let chat = AccountHandler.Instance.myChats?[chatIndex] {
             chat.addMessage(message)
             if message.toUserId == AccountHandler.Instance.userId {
                 chat.seen = message.seen
@@ -37,21 +37,21 @@ class MessagesCollection: AbstractCollection{
                     })
                 }*/
                 
-                LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id, messageTitle: "New message from \(chat.otherParty?.username ?? "Unknown")", messageSubtitle: message.shortMessage())
+                LocalNotificationsHandler.Instance.reportNewEvent(.messages, count: 1, id: chat.id, messageTitle: "New message from \(chat.otherParty?.username ?? "Unknown")", messageSubtitle: message.shortMessage())
             }
             NotificationManager.sendNotification(NotificationManager.Name.MessageAdded, object: message)
         } else {
             ConnectionHandler.Instance.messages.getChat(message.chatId!){ success, errorId, errorMessage, result in
-                if AccountHandler.Instance.myChats?.indexOf({$0.id == message.chatId}) == nil{
-                    if let chat = result as? Chat where success {
+                if AccountHandler.Instance.myChats?.index(where: {$0.id == message.chatId}) == nil{
+                    if let chat = result as? Chat, success {
                         chat.addMessage(message)
                         if message.toUserId == AccountHandler.Instance.userId {
                             chat.seen = message.seen
                         }
                         chat.messagesRequested = true
-                        AccountHandler.Instance.myChats?.insert(chat, atIndex: 0)
+                        AccountHandler.Instance.myChats?.insert(chat, at: 0)
                         if message.toUserId == AccountHandler.Instance.userId{
-                            LocalNotificationsHandler.Instance.reportNewEvent(.Messages, count: 1, id: chat.id)
+                            LocalNotificationsHandler.Instance.reportNewEvent(.messages, count: 1, id: chat.id)
                         }
                         NotificationManager.sendNotification(.MyChatsUpdated, object: chat)
                     } else {
@@ -62,13 +62,13 @@ class MessagesCollection: AbstractCollection{
         }
     }
     
-    override func documentWasRemoved(collection: String, id: String) {
-        if let index = self.messages.indexOf({message in return message.id == id}){
+    override func documentWasRemoved(_ collection: String, id: String) {
+        if let index = self.messages.index(where: {message in return message.id == id}){
             let message = self.messages[index]
-            self.messages.removeAtIndex(index)
+            self.messages.remove(at: index)
             
-            if let chatIndex = AccountHandler.Instance.myChats?.indexOf({return $0.id == message.chatId}), chat = AccountHandler.Instance.myChats?[chatIndex], messageIndex = chat.messages.indexOf({return $0.id == message.id}) {
-                chat.messages.removeAtIndex(messageIndex)
+            if let chatIndex = AccountHandler.Instance.myChats?.index(where: {return $0.id == message.chatId}), let chat = AccountHandler.Instance.myChats?[chatIndex], let messageIndex = chat.messages.index(where: {return $0.id == message.id}) {
+                chat.messages.remove(at: messageIndex)
                 
                 NotificationManager.sendNotification(NotificationManager.Name.MessageRemoved, object: message)
             } else {
@@ -98,7 +98,7 @@ class MessagesCollection: AbstractCollection{
         return messages.count;
     }
     
-    func itemAtIndex(index: Int) -> Message{
+    func itemAtIndex(_ index: Int) -> Message{
         return messages[index];
     }
 }

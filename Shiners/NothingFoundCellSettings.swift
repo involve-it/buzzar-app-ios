@@ -23,7 +23,7 @@ class NothingFoundCellSettings: UITableViewCell {
         
     }
     
-    @IBAction func pressTextYouCanAlways(sender: UIButton) {
+    @IBAction func pressTextYouCanAlways(_ sender: UIButton) {
         print("PRESS BUTTON __ YOU CAN ALWAYS...")
     }
     

@@ -11,7 +11,7 @@ import FBSDKLoginKit
 import FBSDKCoreKit
 import AWSS3
 
-public class EditProfileTableViewController: UITableViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate{
+open class EditProfileTableViewController: UITableViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate{
 
     
     @IBOutlet weak var fNameView: UIView!
@@ -25,7 +25,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     
     @IBOutlet weak var txtAddressLocationLabel: UITextField!
     
-    private var imagePickerHandler: ImagePickerHandler?
+    fileprivate var imagePickerHandler: ImagePickerHandler?
     
     @IBOutlet var btnSave: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
@@ -35,7 +35,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     @IBOutlet weak var txtBioPlaceholder: UITextView!
     
     let txtBioPlaceholderText = NSLocalizedString("Bio (optional)", comment: "Placeholder, Bio (optional)")
-    let txtPlaceHolderColor = UIColor.lightGrayColor()
+    let txtPlaceHolderColor = UIColor.lightGray
     
     var uploadDelegate: ImageCachingHandler.UploadDelegate?
     var uploadAlertController: UIAlertController?
@@ -44,7 +44,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     var previousImage: UIImage?
     var lastRequestId: String!
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         //txtBioPlaceholder.delegate = self
@@ -64,7 +64,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
         AppAnalytics.logEvent(.SettingsLoggedInScreen_BtnEdit_Click)
     }
     
-    @IBAction func btnSave_Click(sender: AnyObject) {
+    @IBAction func btnSave_Click(_ sender: AnyObject) {
         AppAnalytics.logEvent(.EditProfileScreen_BtnSave_Click)
         if !self.isNetworkReachable(){
             return
@@ -83,7 +83,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
         }
     }
     
-    private func getUser() -> User {
+    fileprivate func getUser() -> User {
         let user = AccountHandler.Instance.currentUser!;
         user.setProfileDetail(.FirstName, value: self.firstNameLabel.text)
         user.setProfileDetail(.LastName, value: self.lastNameLabel.text)
@@ -97,7 +97,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
         return user;
     }
     
-    private func refreshUserData(){
+    fileprivate func refreshUserData(){
         self.txtUsernameLabel.text = self.currentUser!.username
         self.firstNameLabel.text = self.currentUser?.getProfileDetailValue(.FirstName)
         self.lastNameLabel.text = self.currentUser?.getProfileDetailValue(.LastName)
@@ -108,7 +108,7 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
         
         if let imageUrl = self.currentUser?.imageUrl{
             ImageCachingHandler.Instance.getImageFromUrl(imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.imgUserAvatar.image = image;
                 })
             })
@@ -117,12 +117,12 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
         }
     }
     
-    override public func viewDidLayoutSubviews() {
+    override open func viewDidLayoutSubviews() {
         // Creates the bottom border
         //TODO: Make a function
         let borderBottom = CALayer()
         let borderWidth = CGFloat(1.0)
-        let borderColor = UIColor(red: 164/255, green: 162/255, blue: 169/255, alpha: 0.3).CGColor
+        let borderColor = UIColor(red: 164/255, green: 162/255, blue: 169/255, alpha: 0.3).cgColor
         
         borderBottom.borderColor = borderColor
         borderBottom.frame = CGRect(x: 0, y: fNameView.frame.height - 0.5, width: fNameView.frame.width , height: fNameView.frame.height - 0.5)
@@ -132,17 +132,17 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
         fNameView.layer.masksToBounds = true
     }
     
-    @IBAction func btnChangeImage_Click(sender: AnyObject) {
+    @IBAction func btnChangeImage_Click(_ sender: AnyObject) {
         AppAnalytics.logEvent(.EditProfileScreen_ChangePhoto_Click)
         self.imagePickerHandler?.displayImagePicker()
     }
     
-    private func dismissSelf(){
-        self.navigationController?.popViewControllerAnimated(true)
+    fileprivate func dismissSelf(){
+        self.navigationController?.popViewController(animated: true)
     }
 
     // MARK: Cancel action
-    @IBAction func btn_Cancel(sender: UIBarButtonItem) {
+    @IBAction func btn_Cancel(_ sender: UIBarButtonItem) {
         /*
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewControllerWithIdentifier("settingsUserProfile")
@@ -181,12 +181,12 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
         }
     }*/
     
-    func txtPlaceholderSelectedTextRange(placeholder: UITextView) -> () {
-        placeholder.selectedTextRange = placeholder.textRangeFromPosition(placeholder.beginningOfDocument, toPosition: placeholder.beginningOfDocument)
+    func txtPlaceholderSelectedTextRange(_ placeholder: UITextView) -> () {
+        placeholder.selectedTextRange = placeholder.textRange(from: placeholder.beginningOfDocument, to: placeholder.beginningOfDocument)
     }
     
-    public func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        picker.dismissViewControllerAnimated(true, completion: nil)
+    open func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        picker.dismiss(animated: true, completion: nil)
         
         let rotatedImage = image.correctlyOrientedImage().resizeImage()
         self.previousImage = self.imgUserAvatar.image
@@ -198,16 +198,16 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
     
     func doUpload(){
         self.setLoading(true)
-        self.cancelButton.enabled = false
-        let lastRequestId = NSUUID().UUIDString
+        self.cancelButton.isEnabled = false
+        let lastRequestId = UUID().uuidString
         self.lastRequestId = lastRequestId
         self.aborting = false
         self.uploadDelegate = ImageCachingHandler.Instance.saveImage(self.imgUserAvatar.image!) { (success, imageUrl) in
             ThreadHelper.runOnMainThread({
                 if self.lastRequestId == lastRequestId {
                     self.setLoading(false, rightBarButtonItem: self.btnSave)
-                    self.cancelButton.enabled = true
-                    self.uploadAlertController?.dismissViewControllerAnimated(true, completion: nil)
+                    self.cancelButton.isEnabled = true
+                    self.uploadAlertController?.dismiss(animated: true, completion: nil)
                     if success {
                         self.currentUser?.imageUrl = imageUrl
                         self.previousImage = nil
@@ -222,22 +222,22 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
             })
         }
         
-        NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: #selector(displayUploadingLongTime), userInfo: nil, repeats: false)
+        Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(displayUploadingLongTime), userInfo: nil, repeats: false)
     }
     
-    func displayUploadingLongTime(timer: NSTimer){
-        self.uploadAlertController = UIAlertController(title: NSLocalizedString("Uploading photo...", comment: "Alert title, Uploading photo"), message: NSLocalizedString("Looks like upload is taking longer then usual. We are still trying to upload, but if you wish, you may continue waiting, cancel, retry and attempt to upload image with lower quality.", comment: "Alert message, Looks like upload is taking longer then usual. We are still trying to upload, but if you wish, you may continue waiting, cancel, retry and attempt to upload image with lower quality."), preferredStyle: .Alert)
-        self.uploadAlertController?.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: { (action) in
+    func displayUploadingLongTime(_ timer: Timer){
+        self.uploadAlertController = UIAlertController(title: NSLocalizedString("Uploading photo...", comment: "Alert title, Uploading photo"), message: NSLocalizedString("Looks like upload is taking longer then usual. We are still trying to upload, but if you wish, you may continue waiting, cancel, retry and attempt to upload image with lower quality.", comment: "Alert message, Looks like upload is taking longer then usual. We are still trying to upload, but if you wish, you may continue waiting, cancel, retry and attempt to upload image with lower quality."), preferredStyle: .alert)
+        self.uploadAlertController?.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action) in
             self.aborting = true
             self.uploadDelegate?.abort()
         }))
-        self.uploadAlertController?.addAction(UIAlertAction(title: "Retry", style: .Default, handler: { (action) in
+        self.uploadAlertController?.addAction(UIAlertAction(title: "Retry", style: .default, handler: { (action) in
             self.aborting = true
             self.uploadDelegate?.abort()
             self.doUpload()
         }))
         if !self.tryingLowerQuality {
-            self.uploadAlertController?.addAction(UIAlertAction(title: "Try lower quality", style: .Default, handler: { (action) in
+            self.uploadAlertController?.addAction(UIAlertAction(title: "Try lower quality", style: .default, handler: { (action) in
                 self.aborting = true
                 self.tryingLowerQuality = true
                 self.uploadDelegate?.abort()
@@ -245,15 +245,15 @@ public class EditProfileTableViewController: UITableViewController, UITextViewDe
                 self.doUpload()
             }))
         }
-        self.presentViewController(self.uploadAlertController!, animated: true, completion: nil)
+        self.present(self.uploadAlertController!, animated: true, completion: nil)
     }
     
-    public func textFieldShouldReturn(textField: UITextField) -> Bool {
+    open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder();
         return false;
     }
     
-    override public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.reloadData()
     }
     

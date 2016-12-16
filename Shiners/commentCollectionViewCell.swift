@@ -42,7 +42,7 @@ class commentCollectionViewCell: UICollectionViewCell {
         self.txtTotalInfoFromUser.text = "\(username) • \(commentWritten)"
     }
     
-    func setLikes(loggedIn: Bool, count: Int, liked: Bool) {
+    func setLikes(_ loggedIn: Bool, count: Int, liked: Bool) {
         self.loggedIn = loggedIn
         self.likes = count
         self.liked = liked
@@ -51,7 +51,7 @@ class commentCollectionViewCell: UICollectionViewCell {
     
     func updateLikesUi(){
         if self.loggedIn {
-            self.btnLike.hidden = false
+            self.btnLike.isHidden = false
             var title: String
             if liked  {
                 title = NSLocalizedString("Unlike", comment: "Unlike")
@@ -61,9 +61,9 @@ class commentCollectionViewCell: UICollectionViewCell {
             if likes > 0 {
                 title += " (\(likes))"
             }
-            self.btnLike.setTitle(title, forState: .Normal)
+            self.btnLike.setTitle(title, for: UIControlState())
         } else {
-            self.btnLike.hidden = true
+            self.btnLike.isHidden = true
         }
     }
 }

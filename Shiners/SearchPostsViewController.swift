@@ -55,24 +55,24 @@ class SearchPostsViewController: UIViewController {
         heightViewNavBars = stackViewBtnMore.frame.height
         
         //Add some point margin at the top
-        if !stackViewBtnMore.hidden {
+        if !stackViewBtnMore.isHidden {
             tableView.contentInset = UIEdgeInsetsMake(heightViewNavBars, 0, 0, 0)
             tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightViewNavBars, 0, 0, 0)
         }
     
         var cellNib = UINib(nibName: TableViewCellIdentifiers.searchResultCell, bundle: nil)
-        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.searchResultCell)
+        tableView.register(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.searchResultCell)
         
         cellNib = UINib(nibName: TableViewCellIdentifiers.nothingFoundCell, bundle: nil)
-        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.nothingFoundCell)
+        tableView.register(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.nothingFoundCell)
         
         cellNib = UINib(nibName: TableViewCellIdentifiers.loadingCell, bundle: nil)
-        tableView.registerNib(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.loadingCell)
+        tableView.register(cellNib, forCellReuseIdentifier: TableViewCellIdentifiers.loadingCell)
         
         searchBar.becomeFirstResponder()
         
         //Получаем первичный неотсортированный массив posts
-        if CachingHandler.Instance.status != .Complete {
+        if CachingHandler.Instance.status != .complete {
             print("ERROR LOAD POST")
         } else if let posts = CachingHandler.Instance.postsAll {
             postsAllLoad = posts
@@ -80,14 +80,14 @@ class SearchPostsViewController: UIViewController {
     }
     
     //Тут можно поменять стили вью или статус бара и т.д.
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBar.translucent = false
+        self.navigationController?.navigationBar.isTranslucent = false
         //Remove Shadow in nc
         let img = UIImage()
         self.navigationController?.navigationBar.shadowImage = img
-        self.navigationController?.navigationBar.setBackgroundImage(img, forBarMetrics: .Default)
+        self.navigationController?.navigationBar.setBackgroundImage(img, for: .default)
         //Set background color
         self.navigationController?.navigationBar.barTintColor = blueColor
         
@@ -98,14 +98,14 @@ class SearchPostsViewController: UIViewController {
     override func viewWillLayoutSubviews() {}
     
     //View будет удален из иерархии вьюх. Можно отменить стили, которые были выставлены для nav...
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         searchBar.resignFirstResponder()
     }
     
     func createSearchBar() {
-        searchBar.barTintColor = UIColor.whiteColor()
+        searchBar.barTintColor = UIColor.white
         searchBar.showsCancelButton = true
         searchBar.placeholder = NSLocalizedString("Search posts", comment: "Search placeholder, Search posts")
         searchBar.delegate = self
@@ -116,28 +116,28 @@ class SearchPostsViewController: UIViewController {
     func setBackBarButtonCustom() {
         //Initialising "back button"
         let btnLeftMenu: UIButton = UIButton()
-        btnLeftMenu.setImage(UIImage(named: "goBackBtn"), forState: UIControlState.Normal)
-        btnLeftMenu.addTarget(self, action: #selector(SearchPostsViewController.onGoBack), forControlEvents: .TouchUpInside)
-        btnLeftMenu.frame = CGRectMake(0, 0, 39/2, 63/2)
+        btnLeftMenu.setImage(UIImage(named: "goBackBtn"), for: UIControlState())
+        btnLeftMenu.addTarget(self, action: #selector(SearchPostsViewController.onGoBack), for: .touchUpInside)
+        btnLeftMenu.frame = CGRect(x: 0, y: 0, width: 39/2, height: 63/2)
         let barButton = UIBarButtonItem(customView: btnLeftMenu)
         self.navigationItem.leftBarButtonItem = barButton
     }
     
     func onGoBack() {
-        self.navigationController?.popViewControllerAnimated(true)
+        self.navigationController?.popViewController(animated: true)
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
     
     
-    @IBAction func CloseViewMoreFiltersSearch(sender: UIButton) {
+    @IBAction func CloseViewMoreFiltersSearch(_ sender: UIButton) {
         closeViewMoreFilters()
     }
     
     
-    @IBAction func openViewMoreFiltersSearch(sender: UIButton) {
+    @IBAction func openViewMoreFiltersSearch(_ sender: UIButton) {
         openViewMoreFilters()
     }
     
@@ -147,52 +147,52 @@ class SearchPostsViewController: UIViewController {
         
         self.viewMoreFiltersSearch.alpha = 1
         self.innerStackView.alpha = 0
-        self.moreCategoryView.hidden = false
+        self.moreCategoryView.isHidden = false
         
-        UIView.animateWithDuration(0.15, delay: 0, options: [.CurveLinear], animations: {
+        UIView.animate(withDuration: 0.15, delay: 0, options: [.curveLinear], animations: {
             
             self.innerStackView.alpha = 1
             self.viewMoreFiltersSearch.alpha = 0
-            self.moreCategoryView.hidden = true
+            self.moreCategoryView.isHidden = true
             
             }, completion: { (_) in
-                self.tableView.scrollEnabled = true
+                self.tableView.isScrollEnabled = true
                 self.viewMoreFiltersSearch.removeFromSuperview()
         })
     }
     
     func openViewMoreFilters() {
         //Size height colculate
-        self.viewMoreFiltersSearch.frame = CGRectMake(0, heightViewNavBars, self.view.frame.width, self.view.frame.height - heightViewNavBars)
+        self.viewMoreFiltersSearch.frame = CGRect(x: 0, y: heightViewNavBars, width: self.view.frame.width, height: self.view.frame.height - heightViewNavBars)
         self.view.addSubview(self.viewMoreFiltersSearch)
         
         
-        self.tableView.scrollEnabled = false
+        self.tableView.isScrollEnabled = false
         self.viewMoreFiltersSearch.alpha = 0
         self.innerStackView.alpha = 1
-        self.moreCategoryView.hidden = true
+        self.moreCategoryView.isHidden = true
         
         self.searchBar.resignFirstResponder()
         
-        UIView.animateWithDuration(0.15, delay: 0, options: [.CurveLinear], animations: {
+        UIView.animate(withDuration: 0.15, delay: 0, options: [.curveLinear], animations: {
             
             self.innerStackView.alpha = 0
             self.viewMoreFiltersSearch.alpha = 1
-            self.moreCategoryView.hidden = false
+            self.moreCategoryView.isHidden = false
             
             }, completion: nil)
     }
     
     func tabelViewStyleDefault() {
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.singleLine
         tableView.layoutMargins = UIEdgeInsets()
         tableView.separatorInset = UIEdgeInsets()
     }
     
     func tableViewStyleOwn() {
-        tableView.separatorStyle = UITableViewCellSeparatorStyle.None
-        tableView.layoutMargins = UIEdgeInsetsZero
-        tableView.separatorInset = UIEdgeInsetsZero
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.none
+        tableView.layoutMargins = UIEdgeInsets.zero
+        tableView.separatorInset = UIEdgeInsets.zero
     }
     
 }
@@ -203,12 +203,12 @@ class SearchPostsViewController: UIViewController {
 
 extension SearchPostsViewController: UISearchBarDelegate {
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     //User tap search button
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         
         //Когда пользователь нажимает на кнопку поиска
@@ -228,7 +228,7 @@ extension SearchPostsViewController: UISearchBarDelegate {
     }
 
     //Текст в поле поиска меняется
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.characters.count == 0 {
             self.tabelViewStyleDefault()
             hasSearched = false
@@ -242,23 +242,23 @@ extension SearchPostsViewController: UISearchBarDelegate {
     }
     
     //Простая функция для поиска
-    func filterContentForSearchText(searchText: String) {
+    func filterContentForSearchText(_ searchText: String) {
         searchResults = postsAllLoad.filter({ (post) -> Bool in
-            let nameMatch = post.title?.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
+            let nameMatch = post.title?.range(of: searchText, options: NSString.CompareOptions.caseInsensitive)
             return nameMatch != nil
         })
     }
     
     //Top position for Bar
-    func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
-        return .TopAttached
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
     }
 }
 
 
 extension SearchPostsViewController: UITableViewDataSource {
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
         if isLoading {
             return 1
@@ -272,12 +272,12 @@ extension SearchPostsViewController: UITableViewDataSource {
         
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if isLoading {
-            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.loadingCell, forIndexPath: indexPath) as! LoadingCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.loadingCell, for: indexPath) as! LoadingCell
             let spinner = cell.loadingSpinner
-            spinner.startAnimating()
+            spinner?.startAnimating()
             return cell
         } else if searchResults.count == 0 {
             tableView.estimatedRowHeight = 44.0
@@ -285,10 +285,10 @@ extension SearchPostsViewController: UITableViewDataSource {
             
             self.tableViewStyleOwn()
             
-            return tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.nothingFoundCell, forIndexPath: indexPath)
+            return tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.nothingFoundCell, for: indexPath)
         } else {
             
-            let cell = tableView.dequeueReusableCellWithIdentifier(TableViewCellIdentifiers.searchResultCell, forIndexPath: indexPath) as! SearchResultCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCellIdentifiers.searchResultCell, for: indexPath) as! SearchResultCell
             
             let searchResult = searchResults[indexPath.row]
             
@@ -303,12 +303,12 @@ extension SearchPostsViewController: UITableViewDataSource {
 
 extension SearchPostsViewController: UITableViewDelegate {
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     
-    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if searchResults.count == 0 || isLoading {
             return nil
         } else {
@@ -320,11 +320,11 @@ extension SearchPostsViewController: UITableViewDelegate {
 
 //Statusbar LightContent
 extension UINavigationController {
-    override public func preferredStatusBarStyle() -> UIStatusBarStyle {
+    override open var preferredStatusBarStyle : UIStatusBarStyle {
         if self.topViewController != nil {
-            return self.topViewController!.preferredStatusBarStyle()
+            return self.topViewController!.preferredStatusBarStyle
         } else {
-            return UIStatusBarStyle.Default
+            return UIStatusBarStyle.default
         }
     }
 }

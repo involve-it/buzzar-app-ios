@@ -13,30 +13,30 @@ import CoreLocation
 let MAX_SHORT_MESSAGE_LENGTH = 43
 
 extension String{
-    func heightWithConstrainedWidth(width: CGFloat, font: UIFont) -> CGFloat {
-        let constraintRect = CGSize(width: width, height: CGFloat.max)
+    func heightWithConstrainedWidth(_ width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         
-        let boundingBox = self.boundingRectWithSize(constraintRect, options: NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
+        let boundingBox = self.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSFontAttributeName: font], context: nil)
         
         return boundingBox.height
     }
     
-    func toDate() -> NSDate? {
-        let dateFormatter = NSDateFormatter()
+    func toDate() -> Date? {
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZ"
-        return dateFormatter.dateFromString(self)
+        return dateFormatter.date(from: self)
     }
     
     //Check email isValid
     func isValidEmail() -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailTest.evaluateWithObject(self)
+        return emailTest.evaluate(with: self)
     }
     
     func shortMessageForNotification() -> String{
         if self.characters.count > MAX_SHORT_MESSAGE_LENGTH {
-            return self.substringToIndex(self.startIndex.advancedBy(MAX_SHORT_MESSAGE_LENGTH)) + "..."
+            return self.substring(to: self.characters.index(self.startIndex, offsetBy: MAX_SHORT_MESSAGE_LENGTH)) + "..."
         } else {
             return self
         }
@@ -44,53 +44,53 @@ extension String{
 }
 
 
-extension NSDate {
+extension Date {
     func toString() -> String {
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZ"
-        return dateFormatter.stringFromDate(self)
+        return dateFormatter.string(from: self)
     }
     
     func toShortDateString() -> String {
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/dd/yyyy"
-        return dateFormatter.stringFromDate(self)
+        return dateFormatter.string(from: self)
     }
     
     func toShortTimeString() -> String {
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "h:mm a"
-        return dateFormatter.stringFromDate(self)
+        return dateFormatter.string(from: self)
     }
     
     func toLocalizedString() -> String{
-        let locale = NSLocale.currentLocale()
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateStyle = .ShortStyle
-        dateFormatter.timeStyle = .NoStyle
+        let locale = Locale.current
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .none
         dateFormatter.locale = locale
-        return dateFormatter.stringFromDate(self)
+        return dateFormatter.string(from: self)
     }
     
     func toLeftExpiresDatePost() -> String {
         let output: String?
-        let dateFormatter = NSDateFormatter()
-        let locale = NSLocale.currentLocale()
+        let dateFormatter = DateFormatter()
+        let locale = Locale.current
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ssZZZZ"
         dateFormatter.locale = locale
         
-        let dateToday = NSDate()
+        let dateToday = Date()
         let endDate = self
         
-        let dateComponentsFormatter = NSDateComponentsFormatter()
-        dateComponentsFormatter.unitsStyle = .Full
+        let dateComponentsFormatter = DateComponentsFormatter()
+        dateComponentsFormatter.unitsStyle = .full
     
         dateComponentsFormatter.allowedUnits = [
-            NSCalendarUnit.Year,
-            NSCalendarUnit.Month,
-            NSCalendarUnit.Day,
-            NSCalendarUnit.Hour,
-            NSCalendarUnit.Minute
+            NSCalendar.Unit.year,
+            NSCalendar.Unit.month,
+            NSCalendar.Unit.day,
+            NSCalendar.Unit.hour,
+            NSCalendar.Unit.minute
         ]
         
         //If endDate < Now -> return
@@ -99,8 +99,8 @@ extension NSDate {
             return NSLocalizedString("post closed", comment: "Post info, post closed")
         }
         
-        let date = dateComponentsFormatter.stringFromDate(dateToday, toDate: endDate)!
-        let formatterArrayWithDate = date.componentsSeparatedByString(",")
+        let date = dateComponentsFormatter.string(from: dateToday, to: endDate)!
+        let formatterArrayWithDate = date.components(separatedBy: ",")
         
         output = formatterArrayWithDate[0]
         
@@ -109,22 +109,22 @@ extension NSDate {
     
     func toFriendlyDateTimeString() -> String {
         
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         //dateFormatter.dateFormat = "h:mm a"
         
-        let elapsedTimeInSeconds = NSDate().timeIntervalSinceDate(self)
+        let elapsedTimeInSeconds = Date().timeIntervalSince(self)
         
-        let secondsInDay: NSTimeInterval = 60 * 60 * 24
+        let secondsInDay: TimeInterval = 60 * 60 * 24
         
         if elapsedTimeInSeconds > 7 * secondsInDay {
-            dateFormatter.dateStyle = .ShortStyle
+            dateFormatter.dateStyle = .short
         } else if elapsedTimeInSeconds > secondsInDay {
             dateFormatter.dateFormat = "EEE"
         } else {
-            dateFormatter.timeStyle = .ShortStyle
+            dateFormatter.timeStyle = .short
         }
         
-        return dateFormatter.stringFromDate(self)
+        return dateFormatter.string(from: self)
         
         /*
         if NSCalendar.currentCalendar().isDateInToday(self){
@@ -135,33 +135,33 @@ extension NSDate {
     }
     
     func toFriendlyLongDateTimeString() -> String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.timeStyle = .ShortStyle
-        dateFormatter.dateStyle = .LongStyle
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .short
+        dateFormatter.dateStyle = .long
         
-        return dateFormatter.stringFromDate(self)
+        return dateFormatter.string(from: self)
     }
 }
 
-extension NSData {
+extension Data {
     var hexString: String {
-        let bytes = UnsafeBufferPointer<UInt8>(start: UnsafePointer(self.bytes), count:self.length)
-        return bytes.map { String(format: "%02hhx", $0) }.reduce("", combine: { $0 + $1 })
+        let bytes = UnsafeBufferPointer<UInt8>(start: (self as NSData).bytes.bindMemory(to: UInt8.self, capacity: self.count), count:self.count)
+        return bytes.map { String(format: "%02hhx", $0) }.reduce("", { $0 + $1 })
     }
 }
 
 extension UIImage {
     func correctlyOrientedImage() -> UIImage{
-        if self.imageOrientation == .Up{
+        if self.imageOrientation == .up{
             return self
         }
         
         UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
-        self.drawInRect(CGRectMake(0, 0, self.size.width, self.size.height))
+        self.draw(in: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
         let normalizedImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         
-        return normalizedImage;
+        return normalizedImage!;
     }
     
     func resizeImage() -> UIImage {
@@ -187,21 +187,21 @@ extension UIImage {
             }
         }
         
-        let rect = CGRectMake(0, 0, actualWidth, actualHeight)
+        let rect = CGRect(x: 0, y: 0, width: actualWidth, height: actualHeight)
         UIGraphicsBeginImageContext(rect.size)
-        self.drawInRect(rect)
+        self.draw(in: rect)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext()
         
-        if let data = UIImageJPEGRepresentation(image, 0.7){
+        if let data = UIImageJPEGRepresentation(image!, 0.7){
             return UIImage(data: data)!
         } else {
-            return image
+            return image!
         }
     }
     
-    func resizeImage(maxWidth: Int, maxHeight: Int, quality: Float) -> UIImage {
+    func resizeImage(_ maxWidth: Int, maxHeight: Int, quality: Float) -> UIImage {
         var actualHeight = self.size.height
         var actualWidth = self.size.width
         let maxHeight = CGFloat(maxHeight)
@@ -224,25 +224,25 @@ extension UIImage {
             }
         }
         
-        let rect = CGRectMake(0, 0, actualWidth, actualHeight)
+        let rect = CGRect(x: 0, y: 0, width: actualWidth, height: actualHeight)
         UIGraphicsBeginImageContext(rect.size)
-        self.drawInRect(rect)
+        self.draw(in: rect)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         
         UIGraphicsEndImageContext()
         
-        if let data = UIImageJPEGRepresentation(image, CGFloat(quality)){
+        if let data = UIImageJPEGRepresentation(image!, CGFloat(quality)){
             return UIImage(data: data)!
         } else {
-            return image
+            return image!
         }
     }
 }
 
 extension CLLocation{
-    func distanceFromLocationFormatted(other: CLLocation) -> String{
-        let distance = self.distanceFromLocation(other)
-        if NSLocale.currentLocale().objectForKey(NSLocaleUsesMetricSystem) as! Bool {
+    func distanceFromLocationFormatted(_ other: CLLocation) -> String{
+        let distance = self.distance(from: other)
+        if (Locale.current as NSLocale).object(forKey: NSLocale.Key.usesMetricSystem) as! Bool {
             if distance < 1000 {
                 return String(format: "%.0f m", distance)
             } else if distance < 10000 {
@@ -273,10 +273,10 @@ extension Double {
 }
 
 extension NSDictionary{
-    func javaScriptDateFromFirstElement() -> NSDate?{
+    func javaScriptDateFromFirstElement() -> Date?{
         if self.count == 1 {
             if let dateNumber = self.allValues[0] as? Int {
-                return NSDate(timeIntervalSince1970: Double(dateNumber) / 1000)
+                return Date(timeIntervalSince1970: Double(dateNumber) / 1000)
             }
         }
         return nil
@@ -284,56 +284,56 @@ extension NSDictionary{
 }
 
 extension UIView {
-    func addConstraintsWithFormat(format: String, views: UIView...) {
+    func addConstraintsWithFormat(_ format: String, views: UIView...) {
         var viewsDictionary = [String: UIView]()
-        for (index, view) in views.enumerate() {
+        for (index, view) in views.enumerated() {
             let key = "v\(index)"
             viewsDictionary[key] = view
             view.translatesAutoresizingMaskIntoConstraints = false
         }
-        addConstraints(NSLayoutConstraint.constraintsWithVisualFormat(format, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary))
     }
     
-    func anchorToTop(top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil) {
+    func anchorToTop(_ top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil) {
         
         anchorWithConstantsToTop(top, left: left, bottom: bottom, right: right, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0)
     }
     
-    func anchorWithConstantsToTop(top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil, topConstant: CGFloat = 0, leftConstant: CGFloat = 0, bottomConstant: CGFloat = 0, rightConstant: CGFloat = 0) {
+    func anchorWithConstantsToTop(_ top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil, topConstant: CGFloat = 0, leftConstant: CGFloat = 0, bottomConstant: CGFloat = 0, rightConstant: CGFloat = 0) {
         
         _ = anchor(top, left: left, bottom: bottom, right: right, topConstant: topConstant, leftConstant: leftConstant, bottomConstant: bottomConstant, rightConstant: rightConstant)
     }
     
-    func anchor(top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil, topConstant: CGFloat = 0, leftConstant: CGFloat = 0, bottomConstant: CGFloat = 0, rightConstant: CGFloat = 0, widthConstant: CGFloat = 0, heightConstant: CGFloat = 0) -> [NSLayoutConstraint] {
+    func anchor(_ top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil, topConstant: CGFloat = 0, leftConstant: CGFloat = 0, bottomConstant: CGFloat = 0, rightConstant: CGFloat = 0, widthConstant: CGFloat = 0, heightConstant: CGFloat = 0) -> [NSLayoutConstraint] {
         translatesAutoresizingMaskIntoConstraints = false
         
         var anchors = [NSLayoutConstraint]()
         
         if let top = top {
-            anchors.append(topAnchor.constraintEqualToAnchor(top, constant: topConstant))
+            anchors.append(topAnchor.constraint(equalTo: top, constant: topConstant))
         }
         
         if let left = left {
-            anchors.append(leftAnchor.constraintEqualToAnchor(left, constant: leftConstant))
+            anchors.append(leftAnchor.constraint(equalTo: left, constant: leftConstant))
         }
         
         if let bottom = bottom {
-            anchors.append(bottomAnchor.constraintEqualToAnchor(bottom, constant: -bottomConstant))
+            anchors.append(bottomAnchor.constraint(equalTo: bottom, constant: -bottomConstant))
         }
         
         if let right = right {
-            anchors.append(rightAnchor.constraintEqualToAnchor(right, constant: -rightConstant))
+            anchors.append(rightAnchor.constraint(equalTo: right, constant: -rightConstant))
         }
         
         if widthConstant > 0 {
-            anchors.append(widthAnchor.constraintEqualToConstant(widthConstant))
+            anchors.append(widthAnchor.constraint(equalToConstant: widthConstant))
         }
         
         if heightConstant > 0 {
-            anchors.append(heightAnchor.constraintEqualToConstant(heightConstant))
+            anchors.append(heightAnchor.constraint(equalToConstant: heightConstant))
         }
         
-        anchors.forEach({$0.active = true})
+        anchors.forEach({$0.isActive = true})
         
         return anchors
     }
@@ -346,7 +346,7 @@ extension UIButton {
         let imageSize: CGSize = self.imageView!.image!.size
         self.titleEdgeInsets = UIEdgeInsetsMake(0.0, -imageSize.width, -(imageSize.height + spacing), 0.0)
         let labelString = NSString(string: self.titleLabel!.text!)
-        let titleSize = labelString.sizeWithAttributes([NSFontAttributeName: self.titleLabel!.font])
+        let titleSize = labelString.size(attributes: [NSFontAttributeName: self.titleLabel!.font])
         self.imageEdgeInsets = UIEdgeInsetsMake(-(titleSize.height + spacing), 0.0, 0.0, -titleSize.width)
         let edgeOffset = abs(titleSize.height - imageSize.height) / 2.0;
         self.contentEdgeInsets = UIEdgeInsetsMake(edgeOffset, 0.0, edgeOffset, 0.0)
@@ -374,7 +374,7 @@ extension UIDevice {
         uname(&systemInfo)
         let machineMirror = Mirror(reflecting: systemInfo.machine)
         let identifier = machineMirror.children.reduce("") { identifier, element in
-            guard let value = element.value as? Int8 where value != 0 else { return identifier }
+            guard let value = element.value as? Int8, value != 0 else { return identifier }
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
         

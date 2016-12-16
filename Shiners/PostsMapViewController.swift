@@ -8,6 +8,30 @@
 
 import UIKit
 import MapKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewControllerDelegate {
 
@@ -25,7 +49,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.mainViewController = self.parentViewController as! PostsMainViewController
+        self.mainViewController = self.parent as! PostsMainViewController
         
         //Location's of post
         self.postsUpdated()
@@ -35,8 +59,8 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
         self.updateMap(self.mainViewController.allPosts)
     }
     
-    func showPostDetails(index: Int) {
-        let detailsViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("postDetails") as! PostDetailsViewController
+    func showPostDetails(_ index: Int) {
+        let detailsViewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "postDetails") as! PostDetailsViewController
         let post = self.mainViewController.allPosts[index]
         if let currentLocation = self.mainViewController.currentLocation {
             //current location
@@ -51,12 +75,12 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
         self.mainViewController.navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.mapView.showsUserLocation = true
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.mapView.showsUserLocation = false
     }
@@ -67,7 +91,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
     }
     
     
-    func updateMap(posts: [Post]) {
+    func updateMap(_ posts: [Post]) {
         self.mapView.removeAnnotations(self.postsLocationAnnotations)
         self.postsLocationAnnotations = [CustomPointAnnotation]()
         if posts.count > 0 {
@@ -96,7 +120,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
                     
                     //print("Post Location: \(postLocation)")
                     
-                    if let postLocation = postLocation, lat = postLocation.lat, lng = postLocation.lng {
+                    if let postLocation = postLocation, let lat = postLocation.lat, let lng = postLocation.lng {
                         
                         let location = CLLocation(latitude: lat, longitude: lng)
                         
@@ -140,7 +164,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
         }
     }
     
-    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
         if annotation is MKUserLocation {
             return nil
@@ -150,12 +174,12 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
         
         if let _ = customPointAnnotation.id {
             let reuseIdentifier = "customPin"
-            var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseIdentifier)
+            var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
             
             if (annotationView == nil) {
                 annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
                 annotationView!.canShowCallout = true
-                annotationView?.centerOffset = CGPointMake(10, -20)
+                annotationView?.centerOffset = CGPoint(x: 10, y: -20)
             } else {
                 annotationView!.annotation = annotation
             }
@@ -172,11 +196,11 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
             
             let leftIconView = UIImageView(frame: CGRect(x: 0, y: 0, width: 53, height: 53))
             leftIconView.image = customPointAnnotation.image
-            leftIconView.contentMode = .ScaleAspectFill
+            leftIconView.contentMode = .scaleAspectFill
             leftIconView.clipsToBounds = true
             annotationView?.leftCalloutAccessoryView = leftIconView
             
-            let btn = UIButton(type: .DetailDisclosure)
+            let btn = UIButton(type: .detailDisclosure)
             annotationView?.rightCalloutAccessoryView = btn
 
             return annotationView
@@ -185,14 +209,14 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
         return nil
     }
     
-    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        if let annotation = view.annotation as? CustomPointAnnotation, postIndex = self.mainViewController!.allPosts.indexOf({$0.id == annotation.id}){
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        if let annotation = view.annotation as? CustomPointAnnotation, let postIndex = self.mainViewController!.allPosts.index(where: {$0.id == annotation.id}){
             AppAnalytics.logEvent(.NearbyPostsScreen_Map_PostSelected)
             self.showPostDetails(postIndex)
         }
     }
     
-    func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         if !self.locationUpdated {
             self.currentLocationAnnotation = CustomPointAnnotation(coordinate: userLocation.coordinate)
             
@@ -215,7 +239,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
         
     }
     
-    func centerMapOnLocation(location: CustomPointAnnotation, regionRadius: Double) {
+    func centerMapOnLocation(_ location: CustomPointAnnotation, regionRadius: Double) {
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
                                                                   regionRadius * 2.0, regionRadius * 2.0)
         //let region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))

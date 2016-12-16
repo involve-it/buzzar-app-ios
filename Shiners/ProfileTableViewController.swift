@@ -29,7 +29,7 @@ class ProfileTableViewController: UITableViewController {
     @IBOutlet weak var contactStackView: UIStackView!
     var extUser: User?
     var postId: String?
-    private var currentUser: User!
+    fileprivate var currentUser: User!
     
     struct TableViewIdentifierCell {
         static let cellUserProfileNib = "cellUserProfile"
@@ -48,14 +48,14 @@ class ProfileTableViewController: UITableViewController {
         
         //self.navigationItem.title = NSLocalizedString("Settings", comment: "Navigation title, Settings")
         
-        self.btnCallToUser.enabled = false
-        self.btnMessageToUser.enabled = false
+        self.btnCallToUser.isEnabled = false
+        self.btnMessageToUser.isEnabled = false
         self.btnCallToUser.centerTextButton()
         self.btnMessageToUser.centerTextButton()
         
         
-        self.phoneRowVisible.hidden = false
-        self.skypeRowVisible.hidden = false
+        self.phoneRowVisible.isHidden = false
+        self.skypeRowVisible.isHidden = false
         //self.vkRowVisible.hidden = false
         //self.facebookRowVisible.hidden = false
         
@@ -63,16 +63,16 @@ class ProfileTableViewController: UITableViewController {
         fillUserData()
         
         if extUser == nil {
-            if let index = self.navigationItem.leftBarButtonItems?.indexOf(self.btnCloseVC){
-                self.navigationItem.leftBarButtonItems?.removeAtIndex(index)
+            if let index = self.navigationItem.leftBarButtonItems?.index(of: self.btnCloseVC){
+                self.navigationItem.leftBarButtonItems?.remove(at: index)
             }
-            self.contactStackView.hidden = true
+            self.contactStackView.isHidden = true
             self.contactStackViewVerticatConstraint.constant = 0
-            self.isStatusLabel.hidden = true
+            self.isStatusLabel.isHidden = true
             self.profileImageHeightConstraint.constant = 140
             self.profileImageWidthConstraint.constant = 140
         } else {
-            if let firstName = self.extUser!.getProfileDetailValue(.FirstName), lastName = self.extUser!.getProfileDetailValue(.LastName){
+            if let firstName = self.extUser!.getProfileDetailValue(.FirstName), let lastName = self.extUser!.getProfileDetailValue(.LastName){
                 self.navigationItem.title = "\(firstName) \(lastName)"
             } else {
                 self.navigationItem.title = self.extUser!.username
@@ -82,21 +82,21 @@ class ProfileTableViewController: UITableViewController {
         self.imgUserAvatar.layer.cornerRadius = self.profileImageHeightConstraint.constant / 2
         self.imgUserAvatar.clipsToBounds = true
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(fillUserData), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(fillUserData), name: NotificationManager.Name.UserUpdated.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(fillUserData), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(fillUserData), name: NSNotification.Name(rawValue: NotificationManager.Name.UserUpdated.rawValue), object: nil)
     }
     
-    @IBAction func cendMessageToUser(sender: UIButton) {
+    @IBAction func cendMessageToUser(_ sender: UIButton) {
         AppAnalytics.logEvent(.ProfileScreen_Message)
-        let alertController = UIAlertController(title: NSLocalizedString("New message", comment: "Alert title, New message"), message: nil, preferredStyle: .Alert);
+        let alertController = UIAlertController(title: NSLocalizedString("New message", comment: "Alert title, New message"), message: nil, preferredStyle: .alert);
         
-        alertController.addTextFieldWithConfigurationHandler { (textField) in
+        alertController.addTextField { (textField) in
             textField.placeholder = NSLocalizedString("Message", comment: "Placeholder, Message")
         }
         
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Send", comment: "Alert title, Send"), style: .Default, handler: { (action) in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Send", comment: "Alert title, Send"), style: .default, handler: { (action) in
             AppAnalytics.logEvent(.ProfileScreen_Msg_Send)
-            if let text = alertController.textFields?[0].text where text != "" {
+            if let text = alertController.textFields?[0].text, text != "" {
                 alertController.resignFirstResponder()
                 let message = MessageToSend()
                 message.destinationUserId = self.extUser!.id
@@ -111,60 +111,60 @@ class ProfileTableViewController: UITableViewController {
                 }
             }
         }))
-        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert, title, Cancel"), style: .Cancel, handler: {action in
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert, title, Cancel"), style: .cancel, handler: {action in
             AppAnalytics.logEvent(.ProfileScreen_Msg_Cancel)
             alertController.resignFirstResponder()
         }));
-        self.presentViewController(alertController, animated: true) {
+        self.present(alertController, animated: true) {
             alertController.textFields![0].becomeFirstResponder()
         }
     }
     
-    @IBAction func callToUser(sender: UIButton) {
+    @IBAction func callToUser(_ sender: UIButton) {
         AppAnalytics.logEvent(.ProfileScreen_Call)
         if let phoneNumber = self.phoneRowLabel.text {
             callNumberToUser(phoneNumber)
         }
     }
     
-    func callNumberToUser(phoneNumber: String) {
-        if let url =  NSURL(string: "tel://\(phoneNumber)") {
-            UIApplication.sharedApplication().openURL(url)
+    func callNumberToUser(_ phoneNumber: String) {
+        if let url =  URL(string: "tel://\(phoneNumber)") {
+            UIApplication.shared.openURL(url)
         }
     }
     
-    @IBAction func closeVC(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func closeVC(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
 
-    @IBAction func cbNearbyNotifications_Changed(sender: UISwitch) {
+    @IBAction func cbNearbyNotifications_Changed(_ sender: UISwitch) {
         AppAnalytics.logEvent(.SettingsLoggedInScreen_Notify_Change)
-        if sender.on && !UIApplication.sharedApplication().isRegisteredForRemoteNotifications(){
+        if sender.isOn && !UIApplication.shared.isRegisteredForRemoteNotifications{
             self.showAlert(NSLocalizedString("Notifications", comment: "Alert title, Notifications"), message: NSLocalizedString("To receive notifications, please allow this in device Settings.", comment: "Alert message, to receive notifications, please allow this in device Settings."));
-            sender.on = false
+            sender.isOn = false
         } else {
             let initialState = currentUser.enableNearbyNotifications
-            currentUser.enableNearbyNotifications = sender.on
+            currentUser.enableNearbyNotifications = sender.isOn
             
             AccountHandler.Instance.saveUser(currentUser) { (success, errorMessage) in
                 if (!success){
                     ThreadHelper.runOnMainThread({
                         self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: NSLocalizedString("An error occurred while saving.", comment: "Title message, an error occurred while saving."))
                         self.currentUser?.enableNearbyNotifications = initialState
-                        sender.on = initialState ?? false
+                        sender.isOn = initialState ?? false
                     })
                 }
             }
         }
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         //Phone
         if (indexPath.section == 0 && indexPath.row == 0) {
-            return !self.phoneRowVisible.hidden ? 44 : 0.0
+            return !self.phoneRowVisible.isHidden ? 44 : 0.0
         } else if(indexPath.section == 0 && indexPath.row == 1) {
-            return !self.skypeRowVisible.hidden ? 44 : 0.0
+            return !self.skypeRowVisible.isHidden ? 44 : 0.0
         }
 //        } else if (indexPath.section == 1 && indexPath.row == 2) {
 //            return !self.vkRowVisible.hidden ? 44 : 0.0
@@ -175,7 +175,7 @@ class ProfileTableViewController: UITableViewController {
         return UITableViewAutomaticDimension
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return !(self.extUser != nil) ? 3 : 1
     }
     
@@ -184,21 +184,21 @@ class ProfileTableViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 2 {
             AppAnalytics.logEvent(.SettingsLoggedInScreen_Logout)
-            let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .ActionSheet)
-            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
+            let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .actionSheet)
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .destructive, handler: { (_) in
                 AppAnalytics.logEvent(.SettingsLoggedInScreen_DoLogout)
                 self.doLogout()
             }))
             
-            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Cancel, handler: { (_) in
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .cancel, handler: { (_) in
                 AppAnalytics.logEvent(.SettingsLoggedInScreen_CancelLogout)
             }))
             
-            self.presentViewController(alertViewController, animated: true, completion: nil)
+            self.present(alertViewController, animated: true, completion: nil)
         }
     }
     
@@ -211,12 +211,12 @@ class ProfileTableViewController: UITableViewController {
         }
         
         if ConnectionHandler.Instance.isConnected() {
-            NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
             AccountHandler.Instance.logoff(){ success in
                 ThreadHelper.runOnMainThread({
-                    self.modalSpinner!.dismissViewControllerAnimated(true, completion: { 
+                    self.modalSpinner!.dismiss(animated: true, completion: { 
                         if (success){
-                            let mainViewController = (self.parentViewController as! ProfileMainViewController)
+                            let mainViewController = (self.parent as! ProfileMainViewController)
                             mainViewController.typeSwitch.selectedSegmentIndex = 0
                             mainViewController.switch_ValueChanged(mainViewController.typeSwitch)
                         } else {
@@ -226,7 +226,7 @@ class ProfileTableViewController: UITableViewController {
                 })
             }
         } else {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(doLogout), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(doLogout), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
         }
     }
     
@@ -239,7 +239,7 @@ class ProfileTableViewController: UITableViewController {
             
             //Username
             if let firstName = self.currentUser?.getProfileDetailValue(.FirstName),
-               lastName = self.currentUser?.getProfileDetailValue(.LastName) where firstName != "" || lastName != "" {
+               let lastName = self.currentUser?.getProfileDetailValue(.LastName), firstName != "" || lastName != "" {
                 if (lastName != ""){
                     txtUserName.text = "\(firstName) \(lastName)"
                 } else {
@@ -254,24 +254,24 @@ class ProfileTableViewController: UITableViewController {
                 self.isStatusLabel.textColor = UIColor(red: 50/255, green: 185/255, blue: 91/255, alpha: 1)
             } else {
                 self.isStatusLabel.text = "offline"
-                self.isStatusLabel.textColor = UIColor.redColor()
+                self.isStatusLabel.textColor = UIColor.red
             }
             
     
             //Phone
-            if let isPhone = self.currentUser.getProfileDetailValue(.Phone) where isPhone != "" {
+            if let isPhone = self.currentUser.getProfileDetailValue(.Phone), isPhone != "" {
                 self.phoneRowLabel.text = isPhone
-                self.btnCallToUser.enabled = true
+                self.btnCallToUser.isEnabled = true
             } else {
-                self.phoneRowVisible.hidden = true
-                self.btnCallToUser.enabled = false
+                self.phoneRowVisible.isHidden = true
+                self.btnCallToUser.isEnabled = false
             }
             
             //Skype
-            if let isSkype = self.currentUser.getProfileDetailValue(.Skype) where isSkype != "" {
+            if let isSkype = self.currentUser.getProfileDetailValue(.Skype), isSkype != "" {
                 self.skypeRowLabel.text = isSkype
             } else {
-                self.skypeRowVisible.hidden = true
+                self.skypeRowVisible.isHidden = true
             }
             
             //VKontakte
@@ -291,7 +291,7 @@ class ProfileTableViewController: UITableViewController {
             //Avatar
             if let imageUrl = self.currentUser.imageUrl{
                 ImageCachingHandler.Instance.getImageFromUrl(imageUrl, callback: { (image) in
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.imgUserAvatar.image = image
                     })
                 })
@@ -314,21 +314,21 @@ class ProfileTableViewController: UITableViewController {
         }
         
         if self.postId != nil && self.extUser != nil {
-           self.btnMessageToUser.enabled = true
+           self.btnMessageToUser.isEnabled = true
         } else {
-           self.btnMessageToUser.enabled = false
+           self.btnMessageToUser.isEnabled = false
         }
         
-        if self.skypeRowVisible.hidden{
-            self.phoneRowVisible.separatorInset = UIEdgeInsetsZero
-            self.phoneRowVisible.layoutMargins = UIEdgeInsetsZero
+        if self.skypeRowVisible.isHidden{
+            self.phoneRowVisible.separatorInset = UIEdgeInsets.zero
+            self.phoneRowVisible.layoutMargins = UIEdgeInsets.zero
             //self.phoneRowVisible.preservesSuperviewLayoutMargins = false
         }
     }
     
-    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "editProfile"{
-            return self.isNetworkReachable() && AccountHandler.Instance.status == .Completed
+            return self.isNetworkReachable() && AccountHandler.Instance.status == .completed
         }
         
         return true

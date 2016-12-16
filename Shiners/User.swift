@@ -8,19 +8,19 @@
 
 import Foundation
 
-public class User: NSObject, DictionaryInitializable, NSCoding{
-    public var id: String?
-    public var createdAt: NSDate?
-    public var username: String?
-    public var email: String?
-    public var imageUrl: String?
-    public var online: Bool?
-    public var locations: [Location]?
-    public var profileDetails: [ProfileDetail]?
-    public var language: String?
-    public var enableNearbyNotifications: Bool?
-    public var lastMobileLocationReport: NSDate?
-    public var lastLogin: NSDate?
+open class User: NSObject, DictionaryInitializable, NSCoding{
+    open var id: String?
+    open var createdAt: Date?
+    open var username: String?
+    open var email: String?
+    open var imageUrl: String?
+    open var online: Bool?
+    open var locations: [Location]?
+    open var profileDetails: [ProfileDetail]?
+    open var language: String?
+    open var enableNearbyNotifications: Bool?
+    open var lastMobileLocationReport: Date?
+    open var lastLogin: Date?
     
     override init(){
         super.init()
@@ -39,33 +39,33 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         self.update(fields)
     }
     
-    public func update(fields: NSDictionary?){
-        self.id = fields?.valueForKey("_id") as? String
-        self.createdAt = (fields?.valueForKey("createdAt") as? NSDictionary)?.javaScriptDateFromFirstElement()
-        self.username = fields?.valueForKey("username") as? String
+    open func update(_ fields: NSDictionary?){
+        self.id = fields?.value(forKey: "_id") as? String
+        self.createdAt = (fields?.value(forKey: "createdAt") as? NSDictionary)?.javaScriptDateFromFirstElement() as Date?
+        self.username = fields?.value(forKey: "username") as? String
         
-        if let emails = fields?.valueForKey("emails") as? NSArray{
+        if let emails = fields?.value(forKey: "emails") as? NSArray{
             if emails.count > 0{
                 if let emailFields = emails[0] as? NSDictionary{
-                    self.email = emailFields.valueForKey("address") as? String
+                    self.email = emailFields.value(forKey: "address") as? String
                 }
             }
         }
         
-        self.online = fields?.valueForKey("online") as? Bool
-        self.lastLogin = (fields?.valueForKey(PropertyKeys.lastLogin) as? NSDictionary)?.javaScriptDateFromFirstElement()
-        self.lastMobileLocationReport = (fields?.valueForKey(PropertyKeys.lastMobileLocationReport) as? NSDictionary)?.javaScriptDateFromFirstElement()
+        self.online = fields?.value(forKey: "online") as? Bool
+        self.lastLogin = (fields?.value(forKey: PropertyKeys.lastLogin) as? NSDictionary)?.javaScriptDateFromFirstElement() as Date?
+        self.lastMobileLocationReport = (fields?.value(forKey: PropertyKeys.lastMobileLocationReport) as? NSDictionary)?.javaScriptDateFromFirstElement() as Date?
         
-        if let images = fields?.valueForKey("image") as? NSArray{
+        if let images = fields?.value(forKey: "image") as? NSArray{
             for image in images{
-                self.imageUrl = image.valueForKey("imageUrl") as? String
+                self.imageUrl = (image as AnyObject).value(forKey: "imageUrl") as? String
                 break
             }
-        } else if let image = fields?.valueForKey("image") as? NSDictionary {
-            self.imageUrl = image.valueForKey("imageUrl") as? String
+        } else if let image = fields?.value(forKey: "image") as? NSDictionary {
+            self.imageUrl = image.value(forKey: "imageUrl") as? String
         }
         
-        if let locations = fields?.valueForKey("locations") as? NSArray {
+        if let locations = fields?.value(forKey: "locations") as? NSArray {
             self.locations = [Location]()
             
             for location in locations {
@@ -75,7 +75,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
             }
         }
         
-        if let profileDetails = fields?.valueForKey("profileDetails") as? NSArray{
+        if let profileDetails = fields?.value(forKey: "profileDetails") as? NSArray{
             self.profileDetails = [ProfileDetail]()
             for profileDetail in profileDetails {
                 if let fields = profileDetail as? NSDictionary{
@@ -83,14 +83,14 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
                 }
             }
         }
-        self.language = fields?.valueForKey("language") as? String
-        self.enableNearbyNotifications = fields?.valueForKey(PropertyKeys.enableNearbyNotifications) as? Bool
+        self.language = fields?.value(forKey: "language") as? String
+        self.enableNearbyNotifications = fields?.value(forKey: PropertyKeys.enableNearbyNotifications) as? Bool
     }
     
-    public func isOnline() -> Bool{
+    open func isOnline() -> Bool{
         if let online = self.online{
             if let lastMobileLocationReport = self.lastMobileLocationReport{
-                return online || NSDate().timeIntervalSinceDate(lastMobileLocationReport) <= 20 * 60
+                return online || Date().timeIntervalSince(lastMobileLocationReport) <= 20 * 60
             } else {
                 return online
             }
@@ -98,11 +98,11 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         return false
     }
     
-    public func getProfileDetailValue(key: ProfileDetail.Key) -> String? {
+    open func getProfileDetailValue(_ key: ProfileDetail.Key) -> String? {
         return self.getProfileDetail(key)?.value;
     }
     
-    public func getProfileDetail(key: ProfileDetail.Key) -> ProfileDetail?{
+    open func getProfileDetail(_ key: ProfileDetail.Key) -> ProfileDetail?{
         var value: ProfileDetail?;
         if let profileDetails = self.profileDetails{
             for profileDetail in profileDetails {
@@ -115,7 +115,7 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         return value;
     }
     
-    public func setProfileDetail(key: ProfileDetail.Key, value: String?) -> Void{
+    open func setProfileDetail(_ key: ProfileDetail.Key, value: String?) -> Void{
         if self.profileDetails == nil{
             self.profileDetails = [ProfileDetail]()
         }
@@ -127,19 +127,19 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
         }
     }
     
-    public func toDictionary() -> Dictionary<String, AnyObject>{
+    open func toDictionary() -> Dictionary<String, AnyObject>{
         var dict = Dictionary<String, AnyObject>()
         
-        dict["email"] = self.email
-        dict["imageUrl"] = self.imageUrl
+        dict["email"] = self.email as AnyObject?
+        dict["imageUrl"] = self.imageUrl as AnyObject?
         if let profileDetails = self.profileDetails{
             var profileDetailsDict = Array<Dictionary<String, AnyObject>>()
             for profileDetail in profileDetails{
                 profileDetailsDict.append(profileDetail.toDictionary())
             }
-            dict["profileDetails"] = profileDetailsDict
+            dict["profileDetails"] = profileDetailsDict as AnyObject?
         }
-        dict[PropertyKeys.enableNearbyNotifications] = self.enableNearbyNotifications
+        dict[PropertyKeys.enableNearbyNotifications] = self.enableNearbyNotifications as AnyObject?
         
         return dict
     }
@@ -147,44 +147,44 @@ public class User: NSObject, DictionaryInitializable, NSCoding{
     public required init(coder aDecoder: NSCoder) {
         super.init()
         
-        self.id = aDecoder.decodeObjectForKey(PropertyKeys.id) as? String
-        self.createdAt = aDecoder.decodeObjectForKey(PropertyKeys.createdAt) as? NSDate
-        self.username = aDecoder.decodeObjectForKey(PropertyKeys.username) as? String
-        self.email = aDecoder.decodeObjectForKey(PropertyKeys.email) as? String
-        self.imageUrl = aDecoder.decodeObjectForKey(PropertyKeys.imageUrl) as? String
-        if aDecoder.containsValueForKey(PropertyKeys.online){
-            self.online = aDecoder.decodeBoolForKey(PropertyKeys.online)
+        self.id = aDecoder.decodeObject(forKey: PropertyKeys.id) as? String
+        self.createdAt = aDecoder.decodeObject(forKey: PropertyKeys.createdAt) as? Date
+        self.username = aDecoder.decodeObject(forKey: PropertyKeys.username) as? String
+        self.email = aDecoder.decodeObject(forKey: PropertyKeys.email) as? String
+        self.imageUrl = aDecoder.decodeObject(forKey: PropertyKeys.imageUrl) as? String
+        if aDecoder.containsValue(forKey: PropertyKeys.online){
+            self.online = aDecoder.decodeBool(forKey: PropertyKeys.online)
         }
-        if aDecoder.containsValueForKey(PropertyKeys.enableNearbyNotifications){
-            self.enableNearbyNotifications = aDecoder.decodeBoolForKey(PropertyKeys.enableNearbyNotifications)
+        if aDecoder.containsValue(forKey: PropertyKeys.enableNearbyNotifications){
+            self.enableNearbyNotifications = aDecoder.decodeBool(forKey: PropertyKeys.enableNearbyNotifications)
         }
-        self.locations = aDecoder.decodeObjectForKey(PropertyKeys.locations) as? [Location]
-        self.profileDetails = aDecoder.decodeObjectForKey(PropertyKeys.profileDetails) as? [ProfileDetail]
-        self.language = aDecoder.decodeObjectForKey(PropertyKeys.language) as? String
-        self.lastMobileLocationReport = aDecoder.decodeObjectForKey(PropertyKeys.lastMobileLocationReport) as? NSDate
-        self.lastLogin = aDecoder.decodeObjectForKey(PropertyKeys.lastLogin) as? NSDate
+        self.locations = aDecoder.decodeObject(forKey: PropertyKeys.locations) as? [Location]
+        self.profileDetails = aDecoder.decodeObject(forKey: PropertyKeys.profileDetails) as? [ProfileDetail]
+        self.language = aDecoder.decodeObject(forKey: PropertyKeys.language) as? String
+        self.lastMobileLocationReport = aDecoder.decodeObject(forKey: PropertyKeys.lastMobileLocationReport) as? Date
+        self.lastLogin = aDecoder.decodeObject(forKey: PropertyKeys.lastLogin) as? Date
     }
     
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.id, forKey: PropertyKeys.id)
-        aCoder.encodeObject(self.createdAt, forKey: PropertyKeys.createdAt)
-        aCoder.encodeObject(self.username, forKey: PropertyKeys.username)
-        aCoder.encodeObject(self.email, forKey: PropertyKeys.email)
-        aCoder.encodeObject(self.imageUrl, forKey: PropertyKeys.imageUrl)
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.id, forKey: PropertyKeys.id)
+        aCoder.encode(self.createdAt, forKey: PropertyKeys.createdAt)
+        aCoder.encode(self.username, forKey: PropertyKeys.username)
+        aCoder.encode(self.email, forKey: PropertyKeys.email)
+        aCoder.encode(self.imageUrl, forKey: PropertyKeys.imageUrl)
         if let online = self.online{
-            aCoder.encodeBool(online, forKey: PropertyKeys.online)
+            aCoder.encode(online, forKey: PropertyKeys.online)
         }
-        aCoder.encodeObject(self.locations, forKey: PropertyKeys.locations)
-        aCoder.encodeObject(self.profileDetails, forKey: PropertyKeys.profileDetails)
-        aCoder.encodeObject(self.language, forKey: PropertyKeys.language)
+        aCoder.encode(self.locations, forKey: PropertyKeys.locations)
+        aCoder.encode(self.profileDetails, forKey: PropertyKeys.profileDetails)
+        aCoder.encode(self.language, forKey: PropertyKeys.language)
         if let enableNearbyNotifications = self.enableNearbyNotifications{
-            aCoder.encodeBool(enableNearbyNotifications, forKey: PropertyKeys.enableNearbyNotifications)
+            aCoder.encode(enableNearbyNotifications, forKey: PropertyKeys.enableNearbyNotifications)
         }
-        aCoder.encodeObject(self.lastMobileLocationReport, forKey: PropertyKeys.lastMobileLocationReport)
-        aCoder.encodeObject(self.lastLogin, forKey: PropertyKeys.lastLogin)
+        aCoder.encode(self.lastMobileLocationReport, forKey: PropertyKeys.lastMobileLocationReport)
+        aCoder.encode(self.lastLogin, forKey: PropertyKeys.lastLogin)
     }
     
-    private struct PropertyKeys{
+    fileprivate struct PropertyKeys{
         static let id = "_id"
         static let createdAt = "createdAt"
         static let username = "username"

@@ -10,7 +10,7 @@ import Foundation
 import FBSDKCoreKit
 
 class AppAnalytics{
-    class func logEvent(event: Event) {
+    class func logEvent(_ event: Event) {
         ThreadHelper.runOnBackgroundThread { 
             FBSDKAppEvents.logEvent(event.rawValue)
         }

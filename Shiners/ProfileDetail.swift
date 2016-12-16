@@ -9,12 +9,12 @@
 import Foundation
 import SwiftDDP
 
-public class ProfileDetail: NSObject, NSCoding {
-    public var id: String?
-    public var userId: String?
-    public var key: String?
-    public var value: String?
-    public var policy: String?
+open class ProfileDetail: NSObject, NSCoding {
+    open var id: String?
+    open var userId: String?
+    open var key: String?
+    open var value: String?
+    open var policy: String?
     
     public init (key: String, value: String?){
         self.key = key
@@ -22,11 +22,11 @@ public class ProfileDetail: NSObject, NSCoding {
     }
     
     public init (fields: NSDictionary){
-        self.id = fields.valueForKey("_id") as? String
-        self.userId = fields.valueForKey("userId") as? String
-        self.key = fields.valueForKey("key") as? String
-        self.value = fields.valueForKey("value") as? String
-        self.policy = fields.valueForKey("policy") as? String
+        self.id = fields.value(forKey: "_id") as? String
+        self.userId = fields.value(forKey: "userId") as? String
+        self.key = fields.value(forKey: "key") as? String
+        self.value = fields.value(forKey: "value") as? String
+        self.policy = fields.value(forKey: "policy") as? String
     }
     
     public enum Key: String{
@@ -40,33 +40,33 @@ public class ProfileDetail: NSObject, NSCoding {
         case Facebook = "facebook"
     }
     
-    public func toDictionary() -> Dictionary<String, AnyObject>{
+    open func toDictionary() -> Dictionary<String, AnyObject>{
         var dict = Dictionary<String, AnyObject>()
         
-        dict["key"] = self.key
-        dict["value"] = self.value
-        dict["policy"] = self.policy
+        dict["key"] = self.key as AnyObject?
+        dict["value"] = self.value as AnyObject?
+        dict["policy"] = self.policy as AnyObject?
         
         return dict;
     }
     
     public required init(coder aDecoder: NSCoder) {
-        self.id = aDecoder.decodeObjectForKey(PropertyKeys.id) as? String
-        self.userId = aDecoder.decodeObjectForKey(PropertyKeys.userId) as? String
-        self.key = aDecoder.decodeObjectForKey(PropertyKeys.key) as? String
-        self.value = aDecoder.decodeObjectForKey(PropertyKeys.value) as? String
-        self.policy = aDecoder.decodeObjectForKey(PropertyKeys.policy) as? String
+        self.id = aDecoder.decodeObject(forKey: PropertyKeys.id) as? String
+        self.userId = aDecoder.decodeObject(forKey: PropertyKeys.userId) as? String
+        self.key = aDecoder.decodeObject(forKey: PropertyKeys.key) as? String
+        self.value = aDecoder.decodeObject(forKey: PropertyKeys.value) as? String
+        self.policy = aDecoder.decodeObject(forKey: PropertyKeys.policy) as? String
     }
     
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.id, forKey: PropertyKeys.id)
-        aCoder.encodeObject(self.userId, forKey: PropertyKeys.userId)
-        aCoder.encodeObject(self.key, forKey: PropertyKeys.key)
-        aCoder.encodeObject(self.value, forKey: PropertyKeys.value)
-        aCoder.encodeObject(self.policy, forKey: PropertyKeys.policy)
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.id, forKey: PropertyKeys.id)
+        aCoder.encode(self.userId, forKey: PropertyKeys.userId)
+        aCoder.encode(self.key, forKey: PropertyKeys.key)
+        aCoder.encode(self.value, forKey: PropertyKeys.value)
+        aCoder.encode(self.policy, forKey: PropertyKeys.policy)
     }
     
-    private struct PropertyKeys{
+    fileprivate struct PropertyKeys{
         static let id = "id"
         static let userId = "userId"
         static let key = "key"

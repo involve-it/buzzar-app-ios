@@ -8,9 +8,9 @@
 
 import Foundation
 
-public class NotificationManager{
-    public class func sendNotification(name: NotificationManager.Name, object: AnyObject?){
-        NSNotificationCenter.defaultCenter().postNotificationName(name.rawValue, object: object)
+open class NotificationManager{
+    open class func sendNotification(_ name: NotificationManager.Name, object: AnyObject?){
+        NotificationCenter.default.post(name: Notification.Name(rawValue: name.rawValue), object: object)
     }
     
     public enum Name: String{

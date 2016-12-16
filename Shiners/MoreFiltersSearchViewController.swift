@@ -45,7 +45,7 @@ class MoreFiltersSearchViewController: UIViewController {
         
         
         
-        collectionView.registerNib(UINib(nibName: CollectionViewIdentifierCell.postCategoryNib, bundle: nil), forCellWithReuseIdentifier: CollectionViewIdentifierCell.postCategoryNib)
+        collectionView.register(UINib(nibName: CollectionViewIdentifierCell.postCategoryNib, bundle: nil), forCellWithReuseIdentifier: CollectionViewIdentifierCell.postCategoryNib)
        
     }
     
@@ -61,7 +61,7 @@ class MoreFiltersSearchViewController: UIViewController {
          layout.minimumLineSpacing = 0
         */
         
-        screenSize = UIScreen.mainScreen().bounds
+        screenSize = UIScreen.main.bounds
         screenWidth = screenSize.width
         screenHeight = screenSize.height
     }
@@ -78,16 +78,16 @@ class MoreFiltersSearchViewController: UIViewController {
 extension MoreFiltersSearchViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return categoryOfPosts.count
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(CollectionViewIdentifierCell.postCategoryNib, forIndexPath: indexPath) as! CVCellNib
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionViewIdentifierCell.postCategoryNib, for: indexPath) as! CVCellNib
         
         cell.backgroundColor = UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1)
-         cell.layer.borderColor = UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1).CGColor
+         cell.layer.borderColor = UIColor(red: 180/255, green: 180/255, blue: 180/255, alpha: 1).cgColor
          cell.layer.borderWidth = 0.5
          cell.frame.size.width = screenWidth / sizeCVCell.width
          cell.frame.size.height = screenWidth / sizeCVCell.height
@@ -99,7 +99,7 @@ extension MoreFiltersSearchViewController: UICollectionViewDelegate, UICollectio
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let size = CGSize(width: screenWidth / sizeCVCell.width, height: screenWidth / sizeCVCell.height)
         return size
         

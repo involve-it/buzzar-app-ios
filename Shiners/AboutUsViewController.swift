@@ -17,12 +17,12 @@ class AboutUsViewController: UIViewController, UIWebViewDelegate {
         
         self.webView.delegate = self
         
-        let preferredLanguage = NSLocale.preferredLanguages()[0] as String
-        var url: NSURL!
+        let preferredLanguage = Locale.preferredLanguages[0] as String
+        var url: URL!
         if preferredLanguage == "ru"{
-            url = NSURL(string: "https://shiners.ru/about-us?isiframe=true")
+            url = URL(string: "https://shiners.ru/about-us?isiframe=true")
         } else {
-            url = NSURL(string: "https://shiners.mobi/about-us?lat=37&lng=-120&isiframe=true")
+            url = URL(string: "https://shiners.mobi/about-us?lat=37&lng=-120&isiframe=true")
         }
         loadWebView(url!, webView: self.webView)
         self.setLoading(true)
@@ -30,11 +30,11 @@ class AboutUsViewController: UIViewController, UIWebViewDelegate {
     }
     
     
-    func loadWebView(url: NSURL, webView: UIWebView) {
-        webView.loadRequest(NSURLRequest(URL: url))
+    func loadWebView(_ url: URL, webView: UIWebView) {
+        webView.loadRequest(URLRequest(url: url))
     }
     
-    func webViewDidFinishLoad(webView: UIWebView) {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
         self.setLoading(false)
     }
 }

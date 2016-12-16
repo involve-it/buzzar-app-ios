@@ -18,10 +18,10 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     @IBOutlet weak var constraintSvImagesTop: NSLayoutConstraint!
     @IBOutlet weak var constraintAddPhotoButtonTop: NSLayoutConstraint!
-    private let BTN_TO_MOVE: CGFloat = 68
+    fileprivate let BTN_TO_MOVE: CGFloat = 68
     var buttonUp = false
-    private var imagePickerHandler: ImagePickerHandler?
-    private var images = [UIImage]()
+    fileprivate var imagePickerHandler: ImagePickerHandler?
+    fileprivate var images = [UIImage]()
     
     var uploadingIds = [String]()
     var retryingIds = [String]()
@@ -29,8 +29,8 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     var currentLocationInfo: GeocoderInfo?
     
     override func viewDidLoad() {
-        self.svImages.hidden = true;
-        self.lblNoImages.hidden = false;
+        self.svImages.isHidden = true;
+        self.lblNoImages.isHidden = false;
         
         self.imagePickerHandler = ImagePickerHandler(viewController: self, delegate: self)
         if self.post.photos == nil {
@@ -43,9 +43,9 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         self.svImages.addGestureRecognizer(gestureRecognizer)
     }
     
-    func scrollViewTapped(gestureRecognizer: UIGestureRecognizer){
-        if gestureRecognizer.state == UIGestureRecognizerState.Recognized && self.images.count > 0 {
-            let point = gestureRecognizer.locationInView(self.svImages)
+    func scrollViewTapped(_ gestureRecognizer: UIGestureRecognizer){
+        if gestureRecognizer.state == UIGestureRecognizerState.recognized && self.images.count > 0 {
+            let point = gestureRecognizer.location(in: self.svImages)
             var index = 0
             var currentHeight:Float = 0
             
@@ -78,13 +78,13 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     //Actions
-    @IBAction func addImages(sender: AnyObject) {
+    @IBAction func addImages(_ sender: AnyObject) {
         AppAnalytics.logEvent(.NewPostWizard_PhotoStep_AddPhoto_Click)
         self.imagePickerHandler?.displayImagePicker()
     }
     
     //Create post
-    @IBAction func createPost(sender: AnyObject) {
+    @IBAction func createPost(_ sender: AnyObject) {
         AppAnalytics.logEvent(.NewPostWizard_PhotoStep_BtnCreate_Click)
         if !self.isNetworkReachable(){
             return
@@ -95,7 +95,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     func doCreatePost(){
         self.setLoading(true)
         if ConnectionHandler.Instance.isNetworkConnected() {
-            NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
             let callback: MeteorMethodCallback = { (success, errorId, errorMessage, result) in
                 ThreadHelper.runOnMainThread({ 
                     self.setLoading(false, rightBarButtonItem: self.createPost)
@@ -104,7 +104,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                     AccountHandler.Instance.updateMyPosts()
                     ThreadHelper.runOnMainThread({
                         self.view.endEditing(true)
-                        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                        self.navigationController?.dismiss(animated: true, completion: nil)
                     })
                     if let id = result as? String {
                         self.post.id = id
@@ -120,12 +120,12 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
             //Add post
             ConnectionHandler.Instance.posts.addPost(post, currentCoordinates: self.currentLocationInfo?.coordinate, callback: callback)
         } else {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(doCreatePost), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(doCreatePost), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
         }
     }
     
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         self.setLoading(true)
         
         let rotatedImage = image.correctlyOrientedImage().resizeImage()
@@ -133,16 +133,16 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         let view = self.addImageToScrollView(rotatedImage, index: self.images.count - 1)
         self.doUpload(view)
         
-        picker.dismissViewControllerAnimated(true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
     }
     
-    func doUpload(view: SmallImageView){
+    func doUpload(_ view: SmallImageView){
         view.displayLoading(true)
         self.uploadingIds.append(view.id)
         
         view.uploadDelegate = ImageCachingHandler.Instance.saveImage(view.image) { (success, imageUrl) in
             ThreadHelper.runOnMainThread({
-                if let index = self.uploadingIds.indexOf(view.id){
+                if let index = self.uploadingIds.index(of: view.id){
                     //self.setLoading(false, rightBarButtonItem: self.cancelButton)
                     //self.btnSave.enabled = true
                     
@@ -153,12 +153,12 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                         photo.original = imageUrl
                         self.post.photos!.append(photo)
                         view.imageUrl = imageUrl
-                        self.uploadingIds.removeAtIndex(index)
-                        if let retryIndex = self.retryingIds.indexOf(view.id){
-                            self.retryingIds.removeAtIndex(retryIndex)
+                        self.uploadingIds.remove(at: index)
+                        if let retryIndex = self.retryingIds.index(of: view.id){
+                            self.retryingIds.remove(at: retryIndex)
                         }
                     } else {
-                        if self.retryingIds.indexOf(view.id) == nil {
+                        if self.retryingIds.index(of: view.id) == nil {
                             self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("Error uploading photo", comment: "Alert, error message uploading photo"));
                             self.deleteClicked(view)
                         }
@@ -167,11 +167,11 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                     self.updateCreateButton()
                 } else {
                     let globalY = self.calculateImagesHeight(self.images.count - 1)
-                    self.svImages.contentSize = CGSizeMake(self.svImages.frame.size.width, CGFloat(globalY));
+                    self.svImages.contentSize = CGSize(width: self.svImages.frame.size.width, height: CGFloat(globalY));
                 }
             })
         }
-        NSTimer.scheduledTimerWithTimeInterval(5.0, target: self, selector: #selector(displayUploadingLongTime), userInfo: view, repeats: false)
+        Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(displayUploadingLongTime), userInfo: view, repeats: false)
     }
     
     func updateCreateButton(){
@@ -182,27 +182,27 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
     }
     
-    func addImageToScrollView(image: UIImage, index: Int) -> SmallImageView {
-        if (self.svImages.hidden){
-            self.svImages.hidden = false
-            self.lblNoImages.hidden = true
+    func addImageToScrollView(_ image: UIImage, index: Int) -> SmallImageView {
+        if (self.svImages.isHidden){
+            self.svImages.isHidden = false
+            self.lblNoImages.isHidden = true
         }
         
         var y = self.calculateImagesHeight(index)
         let view = SmallImageView(x: 8, y: y, index: index, delegate: self, image: image)
         view.alpha = 0
         
-        UIView.animateWithDuration(0.7) { 
+        UIView.animate(withDuration: 0.7, animations: { 
             view.alpha = 1
-        }
+        }) 
         
         self.svImages.addSubview(view)
         y = self.calculateImagesHeight(index + 1)
         
-        self.svImages.contentSize = CGSizeMake(self.svImages.frame.size.width, CGFloat(y));
+        self.svImages.contentSize = CGSize(width: self.svImages.frame.size.width, height: CGFloat(y));
         self.svImages.layoutSubviews()
         
-        self.svImages.scrollRectToVisible(CGRectMake(self.svImages.contentSize.width - 1, self.svImages.contentSize.height - 1, 1, 1), animated: true)
+        self.svImages.scrollRectToVisible(CGRect(x: self.svImages.contentSize.width - 1, y: self.svImages.contentSize.height - 1, width: 1, height: 1), animated: true)
         
         return view
     }
@@ -219,13 +219,13 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
     }*/
     
-    func displayUploadingLongTime(timer: NSTimer){
-        if let view = timer.userInfo as? SmallImageView where self.uploadingIds.indexOf(view.id) != nil {
+    func displayUploadingLongTime(_ timer: Timer){
+        if let view = timer.userInfo as? SmallImageView, self.uploadingIds.index(of: view.id) != nil {
             view.initControlButtons()
         }
     }
     
-    func calculateImagesHeight(count: Int) -> Float {
+    func calculateImagesHeight(_ count: Int) -> Float {
         var height: Float = 8
         var i = 0
         self.svImages.subviews.forEach { (view) in
@@ -248,21 +248,21 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         return height
     }
     
-    func deleteClicked(smallImageView: SmallImageView) {
+    func deleteClicked(_ smallImageView: SmallImageView) {
         AppAnalytics.logEvent(.NewPostWizard_PhotoStep_Photo_Remove)
-        if let index = self.uploadingIds.indexOf(smallImageView.id!){
-            self.uploadingIds.removeAtIndex(index)
+        if let index = self.uploadingIds.index(of: smallImageView.id!){
+            self.uploadingIds.remove(at: index)
             smallImageView.uploadDelegate?.abort()
         }
-        if let imageUrl = smallImageView.imageUrl, index = self.post.photos!.indexOf({$0.original == imageUrl}) {
-            self.post.photos!.removeAtIndex(index)
+        if let imageUrl = smallImageView.imageUrl, let index = self.post.photos!.index(where: {$0.original == imageUrl}) {
+            self.post.photos!.remove(at: index)
         }
         
-        UIView.animateWithDuration(0.3, animations: {
+        UIView.animate(withDuration: 0.3, animations: {
             smallImageView.alpha = 0
-            }) { (finished) in
-                self.images.removeAtIndex(smallImageView.index!)
-                if let index = self.svImages.subviews.indexOf(smallImageView){
+            }, completion: { (finished) in
+                self.images.remove(at: smallImageView.index!)
+                if let index = self.svImages.subviews.index(of: smallImageView){
                     smallImageView.removeFromSuperview()
                     var i = 0
                     self.svImages.subviews.forEach({ (view) in
@@ -270,32 +270,32 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                             if i >= index {
                                 sView.index = i
                                 let y = self.calculateImagesHeight(i)
-                                UIView.animateWithDuration(0.3, animations: { 
-                                    sView.frame = CGRectMake(CGFloat(8), CGFloat(y), sView.frame.width + 20, sView.frame.height + 10)
+                                UIView.animate(withDuration: 0.3, animations: { 
+                                    sView.frame = CGRect(x: CGFloat(8), y: CGFloat(y), width: sView.frame.width + 20, height: sView.frame.height + 10)
                                     self.svImages.layoutSubviews()
-                                }) { (finished) in
+                                }, completion: { (finished) in
                                     if i == self.svImages.subviews.count - 1 {
                                         let globalY = self.calculateImagesHeight(i)
-                                        self.svImages.contentSize = CGSizeMake(self.svImages.frame.size.width, CGFloat(globalY));
+                                        self.svImages.contentSize = CGSize(width: self.svImages.frame.size.width, height: CGFloat(globalY));
                                     }
-                                }
+                                }) 
                             }
                             i += 1
                         }
                     })
                 }
                 if self.images.count == 0{
-                    self.svImages.hidden = true
-                    self.lblNoImages.hidden = false
+                    self.svImages.isHidden = true
+                    self.lblNoImages.isHidden = false
                 }
                 self.updateCreateButton()
-            }
+            }) 
     }
     
-    func retryClicked(view: SmallImageView) {
+    func retryClicked(_ view: SmallImageView) {
         AppAnalytics.logEvent(.NewPostWizard_PhotoStep_Photo_Retry)
-        if let index = self.uploadingIds.indexOf(view.id!){
-            self.uploadingIds.removeAtIndex(index)
+        if let index = self.uploadingIds.index(of: view.id!){
+            self.uploadingIds.remove(at: index)
             self.retryingIds.append(view.id!)
             view.uploadDelegate?.abort()
             view.hideLongUploadControls()
@@ -303,12 +303,12 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         self.doUpload(view)
     }
     
-    func uploadWithLowerQualityClicked(view: SmallImageView) {
+    func uploadWithLowerQualityClicked(_ view: SmallImageView) {
         AppAnalytics.logEvent(.NewPostWizard_PhotoStep_Photo_LowerQual)
         if !view.isLowerQualityUpload {
             view.isLowerQualityUpload = true
-            if let index = self.uploadingIds.indexOf(view.id!){
-                self.uploadingIds.removeAtIndex(index)
+            if let index = self.uploadingIds.index(of: view.id!){
+                self.uploadingIds.remove(at: index)
                 self.retryingIds.append(view.id!)
                 view.uploadDelegate?.abort()
                 view.hideLongUploadControls()
@@ -318,15 +318,15 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
     }
     
-    func showPhotoViewer(currentIndex: Int){
+    func showPhotoViewer(_ currentIndex: Int){
         var photos = [CustomPhoto]()
         var i = 0
         self.images.forEach { (image) in
-            photos.append(CustomPhoto(image: image, attributedCaptionTitle: NSAttributedString(string: "\(i + 1)", attributes: [NSForegroundColorAttributeName: UIColor.whiteColor()])))
+            photos.append(CustomPhoto(image: image, attributedCaptionTitle: NSAttributedString(string: "\(i + 1)", attributes: [NSForegroundColorAttributeName: UIColor.white])))
             i += 1
         }
         let photosViewController = NYTPhotosViewController(photos: photos, initialPhoto: photos[currentIndex], delegate: nil)
         photosViewController.rightBarButtonItem = nil
-        self.presentViewController(photosViewController, animated: true, completion: nil)
+        self.present(photosViewController, animated: true, completion: nil)
     }
 }

@@ -8,14 +8,14 @@
 
 import Foundation
 
-public class Location: NSObject, NSCoding {
-    public var id: String?
-    public var userId: String?
-    public var name: String?
-    public var lat: Double?
-    public var lng: Double?
-    public var placeType: PlaceType?
-    public var isPublic: Bool?
+open class Location: NSObject, NSCoding {
+    open var id: String?
+    open var userId: String?
+    open var name: String?
+    open var lat: Double?
+    open var lng: Double?
+    open var placeType: PlaceType?
+    open var isPublic: Bool?
     
     public override init (){
         super.init()
@@ -24,71 +24,71 @@ public class Location: NSObject, NSCoding {
     public init (fields: NSDictionary?){
         super.init()
         
-        self.id = fields?.valueForKey("_id") as? String
-        self.userId = fields?.valueForKey("userId") as? String
-        self.name = fields?.valueForKey("name") as? String
+        self.id = fields?.value(forKey: "_id") as? String
+        self.userId = fields?.value(forKey: "userId") as? String
+        self.name = fields?.value(forKey: "name") as? String
         
-        if let coords = fields?.valueForKey("coords") as? NSDictionary{
-            self.lat = coords.valueForKey("lat") as? Double
-            self.lng = coords.valueForKey("lng") as? Double
+        if let coords = fields?.value(forKey: "coords") as? NSDictionary{
+            self.lat = coords.value(forKey: "lat") as? Double
+            self.lng = coords.value(forKey: "lng") as? Double
         }
         
-        if let placeType = fields?.valueForKey("placeType") as? String{
+        if let placeType = fields?.value(forKey: "placeType") as? String{
             self.placeType = PlaceType(rawValue: placeType)
         }
-        self.isPublic = fields?.valueForKey("public") as? Bool
+        self.isPublic = fields?.value(forKey: "public") as? Bool
     }
     
     public required init(coder aDecoder: NSCoder) {
         super.init()
-        self.id = aDecoder.decodeObjectForKey(PropertyKeys.id) as? String
-        self.userId = aDecoder.decodeObjectForKey(PropertyKeys.userId) as? String
-        self.name = aDecoder.decodeObjectForKey(PropertyKeys.name) as? String
-        if aDecoder.containsValueForKey(PropertyKeys.lat){
-            self.lat = aDecoder.decodeDoubleForKey(PropertyKeys.lat)
+        self.id = aDecoder.decodeObject(forKey: PropertyKeys.id) as? String
+        self.userId = aDecoder.decodeObject(forKey: PropertyKeys.userId) as? String
+        self.name = aDecoder.decodeObject(forKey: PropertyKeys.name) as? String
+        if aDecoder.containsValue(forKey: PropertyKeys.lat){
+            self.lat = aDecoder.decodeDouble(forKey: PropertyKeys.lat)
         }
-        if aDecoder.containsValueForKey(PropertyKeys.lng){
-            self.lng = aDecoder.decodeDoubleForKey(PropertyKeys.lng)
+        if aDecoder.containsValue(forKey: PropertyKeys.lng){
+            self.lng = aDecoder.decodeDouble(forKey: PropertyKeys.lng)
         }
-        if let placeType = aDecoder.decodeObjectForKey(PropertyKeys.placeType) as? String{
+        if let placeType = aDecoder.decodeObject(forKey: PropertyKeys.placeType) as? String{
             self.placeType = PlaceType(rawValue: placeType)
         }
-        if aDecoder.containsValueForKey(PropertyKeys.isPublic){
-            self.isPublic = aDecoder.decodeBoolForKey(PropertyKeys.isPublic)
+        if aDecoder.containsValue(forKey: PropertyKeys.isPublic){
+            self.isPublic = aDecoder.decodeBool(forKey: PropertyKeys.isPublic)
         }
     }
     
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.id, forKey: PropertyKeys.id)
-        aCoder.encodeObject(self.userId, forKey: PropertyKeys.userId)
-        aCoder.encodeObject(self.name, forKey: PropertyKeys.name)
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.id, forKey: PropertyKeys.id)
+        aCoder.encode(self.userId, forKey: PropertyKeys.userId)
+        aCoder.encode(self.name, forKey: PropertyKeys.name)
         if let lat = self.lat{
-            aCoder.encodeDouble(lat, forKey: PropertyKeys.lat)
+            aCoder.encode(lat, forKey: PropertyKeys.lat)
         }
         if let lng = self.lng {
-            aCoder.encodeDouble(lng, forKey: PropertyKeys.lng)
+            aCoder.encode(lng, forKey: PropertyKeys.lng)
         }
-        aCoder.encodeObject(self.placeType?.rawValue, forKey: PropertyKeys.placeType)
+        aCoder.encode(self.placeType?.rawValue, forKey: PropertyKeys.placeType)
         if let isPublic = self.isPublic {
-            aCoder.encodeBool(isPublic, forKey: PropertyKeys.isPublic)
+            aCoder.encode(isPublic, forKey: PropertyKeys.isPublic)
         }
     }
     
-    public func toDictionary() ->Dictionary<String, AnyObject>{
+    open func toDictionary() ->Dictionary<String, AnyObject>{
         var dict = Dictionary<String, AnyObject>()
-        dict[PropertyKeys.id] = self.id
-        dict[PropertyKeys.userId] = self.userId
-        dict[PropertyKeys.name] = self.name
+        dict[PropertyKeys.id] = self.id as AnyObject?
+        dict[PropertyKeys.userId] = self.userId as AnyObject?
+        dict[PropertyKeys.name] = self.name as AnyObject?
         
         var coords = Dictionary<String, AnyObject>()
-        coords[PropertyKeys.lat] = self.lat
-        coords[PropertyKeys.lng] = self.lng
-        dict[PropertyKeys.coords] = coords
+        coords[PropertyKeys.lat] = self.lat as AnyObject?
+        coords[PropertyKeys.lng] = self.lng as AnyObject?
+        dict[PropertyKeys.coords] = coords as AnyObject?
         
         if let placeType = self.placeType {
-            dict[PropertyKeys.placeType] = placeType.rawValue
+            dict[PropertyKeys.placeType] = placeType.rawValue as AnyObject?
         }
-        dict[PropertyKeys.isPublic] = self.isPublic
+        dict[PropertyKeys.isPublic] = self.isPublic as AnyObject?
         
         return dict
     }
@@ -98,7 +98,7 @@ public class Location: NSObject, NSCoding {
         case Dynamic = "dynamic"
     }
     
-    private struct PropertyKeys {
+    fileprivate struct PropertyKeys {
         static let id = "_id"
         static let userId = "userId"
         static let name = "name"

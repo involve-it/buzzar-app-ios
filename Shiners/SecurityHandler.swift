@@ -9,14 +9,14 @@
 import Foundation
 
 class SecurityHandler{
-    private static let DEVICE_ID_KEY = "org.buzzar.app:DEVICE_ID_KEY"
-    private static var deviceId: String!
+    fileprivate static let DEVICE_ID_KEY = "org.buzzar.app:DEVICE_ID_KEY"
+    fileprivate static var deviceId: String!
     
     class func setDeviceId(){
         if let id = KeychainWrapper.stringForKey(DEVICE_ID_KEY){
             deviceId = id
         } else {
-            deviceId = NSUUID().UUIDString
+            deviceId = UUID().uuidString
             KeychainWrapper.setString(deviceId, forKey: DEVICE_ID_KEY)
         }
     }

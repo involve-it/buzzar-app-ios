@@ -9,83 +9,83 @@
 import Foundation
 import SwiftDDP
 
-public class ConnectionHandler{
+open class ConnectionHandler{
     //public static let baseUrl = "http://192.168.1.71:3000"
     //public static let baseUrl = "http://msg.webhop.org"
-    public static let baseUrl = "https://www.shiners.mobi"
+    open static let baseUrl = "https://www.shiners.mobi"
     
-    public static let publicUrl = "https://shiners.ru"
+    open static let publicUrl = "https://shiners.ru"
     
     //private let url:String = "ws://msg.webhop.org/websocket"
     //private let url:String = "ws://192.168.1.71:3000/websocket"
-    private let url:String = "wss://www.shiners.mobi/websocket"
+    fileprivate let url:String = "wss://www.shiners.mobi/websocket"
     
-    public private(set) var status: ConnectionStatus = .NotInitialized
+    open fileprivate(set) var status: ConnectionStatus = .notInitialized
     
-    public var users = UsersProxy.Instance
-    public var posts = PostsProxy.Instance
-    public var messages = MessagesProxy.Instance
+    open var users = UsersProxy.Instance
+    open var posts = PostsProxy.Instance
+    open var messages = MessagesProxy.Instance
     
-    private var totalDependencies = 1
-    private var dependenciesResolved = 0
+    fileprivate var totalDependencies = 1
+    fileprivate var dependenciesResolved = 0
     
-    private var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    fileprivate var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
-    public func reportLocation(lat: Double, lng: Double, notify: Bool){
+    open func reportLocation(_ lat: Double, lng: Double, notify: Bool){
         CachingHandler.Instance.saveLastLocation(lat, lng: lng)
         if let userId = AccountHandler.Instance.getSavedUserId() {
             var dict = Dictionary<String, AnyObject>()
-            dict["lat"] = lat
-            dict["lng"] = lng
-            dict["userId"] = userId
-            dict["deviceId"] = SecurityHandler.getDeviceId()
-            dict["notify"] = notify
-            if let jsonData = try? NSJSONSerialization.dataWithJSONObject(dict, options: NSJSONWritingOptions()), url = NSURL(string: ConnectionHandler.baseUrl + "/api/geolocation"){
-                let request = NSMutableURLRequest(URL: url)
+            dict["lat"] = lat as AnyObject?
+            dict["lng"] = lng as AnyObject?
+            dict["userId"] = userId as AnyObject?
+            dict["deviceId"] = SecurityHandler.getDeviceId() as AnyObject?
+            dict["notify"] = notify as AnyObject?
+            if let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions()), let url = URL(string: ConnectionHandler.baseUrl + "/api/geolocation"){
+                let request = NSMutableURLRequest(url: url)
                 request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                request.HTTPMethod = "POST"
-                request.HTTPBody = jsonData
+                request.httpMethod = "POST"
+                request.httpBody = jsonData
                 
                 
-                self.backgroundTask = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler({
-                    UIApplication.sharedApplication().endBackgroundTask(self.backgroundTask)
+                self.backgroundTask = UIApplication.shared.beginBackgroundTask(expirationHandler: {
+                    UIApplication.shared.endBackgroundTask(self.backgroundTask)
                 })
                 
-                NSURLSession.sharedSession().dataTaskWithRequest(request){data,response,error in
+                URLSession.shared.dataTask(with: request as URLRequest, completionHandler: {data,response,error in
                     print(data)
-                }.resume()
+                }).resume()
                 
                 if self.backgroundTask != UIBackgroundTaskInvalid{
-                    UIApplication.sharedApplication().endBackgroundTask(self.backgroundTask)
+                    UIApplication.shared.endBackgroundTask(self.backgroundTask)
                     self.backgroundTask = UIBackgroundTaskInvalid
                 }
             }
         }
     }
     
-    @objc private func accountLoaded(){
+    @objc fileprivate func accountLoaded(){
         Logger.log("account loaded callback")
         self.dependenciesResolved += 1
         self.executeHandlers(self.dependenciesResolved)
     }
     
-    public func connect() {
-        if self.status != .Connected && self.status != .Connecting{
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(clientDisconnected), name: DDP_WEBSOCKET_ERROR, object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(clientDisconnected), name: DDP_WEBSOCKET_CLOSE, object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(clientDisconnected), name: DDP_DISCONNECTED, object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(clientDisconnected), name: DDP_FAILED, object: nil)
+    open func connect() {
+        if self.status != .connected && self.status != .connecting{
+            NotificationCenter.default.addObserver(self, selector: #selector(clientDisconnected), name: NSNotification.Name(rawValue: DDP_WEBSOCKET_ERROR), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(clientDisconnected), name: NSNotification.Name(rawValue: DDP_WEBSOCKET_CLOSE), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(clientDisconnected), name: NSNotification.Name(rawValue: DDP_DISCONNECTED), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(clientDisconnected), name: NSNotification.Name(rawValue: DDP_FAILED), object: nil)
             
-            self.status = ConnectionStatus.Connecting
+            self.status = ConnectionStatus.connecting
             //Meteor.client.logLevel = .Debug;
             
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.accountLoaded), name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(self.accountLoaded), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountLoaded.rawValue), object: nil)
             Logger.log("connect() called")
             Meteor.connect(url) { (session) in
                 NSLog("Meteor connected")
                 Logger.log("Meteor.connect callback, current status: \(self.status)")
                 self.dependenciesResolved = 0
-                self.status = .NetworkConnected
+                self.status = .networkConnected
                 NotificationManager.sendNotification(.MeteorNetworkConnected, object: nil)
                 
                 if AccountHandler.Instance.isLoggedIn(){
@@ -101,50 +101,50 @@ public class ConnectionHandler{
         }
     }
     
-    public func isConnected() -> Bool {
-        return self.status == .Connected && self.isNetworkReachable()
+    open func isConnected() -> Bool {
+        return self.status == .connected && self.isNetworkReachable()
     }
     
-    public func isNetworkConnected() -> Bool {
-        return self.status == .NetworkConnected || self.status == .Connected
+    open func isNetworkConnected() -> Bool {
+        return self.status == .networkConnected || self.status == .connected
     }
     
-    public func isNetworkReachable() -> Bool {
-        return (UIApplication.sharedApplication().delegate as! AppDelegate).isNetworkReachable()
+    open func isNetworkReachable() -> Bool {
+        return (UIApplication.shared.delegate as! AppDelegate).isNetworkReachable()
     }
     
-    public func disconnect(){
+    open func disconnect(){
         //todo: disconnect
         Meteor.connect("")
     }
     
-    private func executeHandlers(count: Int){
+    fileprivate func executeHandlers(_ count: Int){
         print("execute handlers: \(count)")
         Logger.log("execute handlers. count: \(count)")
-        if (count == self.totalDependencies && self.status != .Connected){
+        if (count == self.totalDependencies && self.status != .connected){
             Logger.log("execute handlers: executing")
-            self.status = ConnectionStatus.Connected;
+            self.status = ConnectionStatus.connected;
             NotificationManager.sendNotification(NotificationManager.Name.MeteorConnected, object: nil)
         }
     }
     
-    private init(){
+    fileprivate init(){
         //singleton
     }
     
-    private static let instance: ConnectionHandler = ConnectionHandler();
-    public class var Instance: ConnectionHandler {
+    fileprivate static let instance: ConnectionHandler = ConnectionHandler();
+    open class var Instance: ConnectionHandler {
         return instance;
     }
     
     
     public enum ConnectionStatus{
-        case NotInitialized, Connecting, Failed, Connected, NetworkConnected
+        case notInitialized, connecting, failed, connected, networkConnected
     }
     
     @objc func clientDisconnected(){
         Logger.log("Client disconnected, current status: \(self.status). Setting to: .Failed")
-        self.status = .Failed
+        self.status = .failed
         self.dependenciesResolved = 0
         NotificationManager.sendNotification(.MeteorConnectionFailed, object: nil)
     }

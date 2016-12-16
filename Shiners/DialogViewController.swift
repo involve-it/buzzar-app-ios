@@ -9,7 +9,7 @@
 import UIKit
 import JSQMessagesViewController
 
-public class DialogViewController : JSQMessagesViewController{
+open class DialogViewController : JSQMessagesViewController{
     var messages = [JSQMessage]()
     var outgoingBubbleImageView: JSQMessagesBubbleImage!
     var incomingBubbleImageView: JSQMessagesBubbleImage!
@@ -22,24 +22,24 @@ public class DialogViewController : JSQMessagesViewController{
     var dataFromCache: Bool!
     var shownMessageIds = [String]()
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
         self.senderId = AccountHandler.Instance.userId ?? CachingHandler.Instance.currentUser?.id
         self.senderDisplayName = chat.otherParty?.username
         
-        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSizeZero
-        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSizeZero
+        collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
+        collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
         self.inputToolbar.contentView.leftBarButtonItem = nil
         
         self.setupBubbles()
         
         self.initialPage = true
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messagesPageReceived), name: NotificationManager.Name.MessagesAsyncRequestCompleted.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(messagesPageReceived), name: NSNotification.Name(rawValue: NotificationManager.Name.MessagesAsyncRequestCompleted.rawValue), object: nil)
         if let pendingMessagesAsyncId = self.pendingMessagesAsyncId {
-            if let isCompleted = MessagesHandler.Instance.isCompleted(pendingMessagesAsyncId) where isCompleted {
+            if let isCompleted = MessagesHandler.Instance.isCompleted(pendingMessagesAsyncId), isCompleted {
                 self.pendingMessagesAsyncId = nil
                 if let messages = MessagesHandler.Instance.getMessagesByRequestId(pendingMessagesAsyncId){
                     chat.messages = messages
@@ -54,7 +54,7 @@ public class DialogViewController : JSQMessagesViewController{
             self.updateMessages(self.chat.messages)
             self.notifyUnseen()
         }
-        LocalNotificationsHandler.Instance.reportEventSeen(.Messages, id: self.chat.id)
+        LocalNotificationsHandler.Instance.reportEventSeen(.messages, id: self.chat.id)
     }
     
     func appDidBecomeActive(){
@@ -63,38 +63,38 @@ public class DialogViewController : JSQMessagesViewController{
         }
     }
     
-    public override func collectionView(collectionView: JSQMessagesCollectionView!, header headerView: JSQMessagesLoadEarlierHeaderView!, didTapLoadEarlierMessagesButton sender: UIButton!) {
+    open override func collectionView(_ collectionView: JSQMessagesCollectionView!, header headerView: JSQMessagesLoadEarlierHeaderView!, didTapLoadEarlierMessagesButton sender: UIButton!) {
         self.view.endEditing(true)
         self.showLoadEarlierMessagesHeader = false
         
         self.pendingMessagesAsyncId = MessagesHandler.Instance.getMessagesAsync(self.chat.id!, skip: self.messages.count)
     }
     
-    public override func viewWillAppear(animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        LocalNotificationsHandler.Instance.reportActiveView(.Messages, id: self.chat.id)
+        LocalNotificationsHandler.Instance.reportActiveView(.messages, id: self.chat.id)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageAdded), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageRemoved), name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(messageAdded), name: NSNotification.Name(rawValue: NotificationManager.Name.MessageAdded.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(messageRemoved), name: NSNotification.Name(rawValue: NotificationManager.Name.MessageRemoved.rawValue), object: nil)
         //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageModified), name: NotificationManager.Name.MessageModified.rawValue, object: nil)
     }
     
-    func messagesPageReceived(notification:NSNotification){
-        if let pendingMessagesAsyncId = self.pendingMessagesAsyncId where pendingMessagesAsyncId == notification.object as! String,
+    func messagesPageReceived(_ notification:Notification){
+        if let pendingMessagesAsyncId = self.pendingMessagesAsyncId, pendingMessagesAsyncId == notification.object as! String,
             let messages = MessagesHandler.Instance.getMessagesByRequestId(pendingMessagesAsyncId){
             self.chat.messagesRequested = true
             self.dataFromCache = false
             self.updateMessages(messages)
-            if messages.contains({!($0.seen ?? true)}) || !(self.chat.seen ?? true){
+            if messages.contains(where: {!($0.seen ?? true)}) || !(self.chat.seen ?? true){
                 self.notifyUnseen()
             }
         }
     }
     
-    private func notifyUnseen(){
+    fileprivate func notifyUnseen(){
         let unseen = self.chat.messages.filter({!($0.seen ?? false) && $0.id != nil && $0.toUserId == AccountHandler.Instance.userId}).map({$0.id!})
-        if unseen.count > 0 && UIApplication.sharedApplication().applicationState == .Active {
+        if unseen.count > 0 && UIApplication.shared.applicationState == .active {
             ConnectionHandler.Instance.messages.messagesSetSeen(unseen, callback: { (success, errorId, errorMessage, result) in
                 if success {
                     self.chat.messages.filter({unseen.contains($0.id ?? "")}).forEach({ (message) in
@@ -112,47 +112,47 @@ public class DialogViewController : JSQMessagesViewController{
         }
     }
     
-    private func updateMessages(messages: Array<Message>){
+    fileprivate func updateMessages(_ messages: Array<Message>){
         if messages.count == 0{
             ThreadHelper.runOnMainThread({
                 self.showLoadEarlierMessagesHeader = false
             })
         } else {
-            let messagesSorted = messages.sort({
-                return $0.timestamp!.compare($1.timestamp!) == NSComparisonResult.OrderedAscending
+            let messagesSorted = messages.sorted(by: {
+                return $0.timestamp!.compare($1.timestamp! as Date) == ComparisonResult.orderedAscending
             })
             if self.initialPage {
                 self.shownMessageIds.removeAll()
                 chat.messages = messagesSorted
                 self.messages = [JSQMessage]()
                 self.chat.messages.forEach { (message) in
-                    if let userId = message.userId, text = message.text, timestamp = message.timestamp where self.chat.messages.count <= MessagesHandler.DEFAULT_PAGE_SIZE || message != self.chat.messages.first!{
-                        addMessage(message.id!, senderId: userId, text: text, timestamp: timestamp)
+                    if let userId = message.userId, let text = message.text, let timestamp = message.timestamp, self.chat.messages.count <= MessagesHandler.DEFAULT_PAGE_SIZE || message != self.chat.messages.first!{
+                        addMessage(message.id!, senderId: userId, text: text, timestamp: timestamp as Date)
                     }
                 }
                 ThreadHelper.runOnMainThread({ 
                     self.collectionView.reloadData()
-                    self.scrollToBottomAnimated(false)
+                    self.scrollToBottom(animated: false)
                 })
                 
                 //cache only first page
                 AccountHandler.Instance.saveMyChats()
             } else {
                 let oldBottomOffset = self.collectionView.contentSize.height - self.collectionView.contentOffset.y
-                let messagesSortedDescending = messages.sort({
-                    return $0.timestamp!.compare($1.timestamp!) == NSComparisonResult.OrderedDescending
+                let messagesSortedDescending = messages.sorted(by: {
+                    return $0.timestamp!.compare($1.timestamp! as Date) == ComparisonResult.orderedDescending
                 })
-                var indexPaths = [NSIndexPath]()
+                var indexPaths = [IndexPath]()
                 var totalCount = messages.count
                 if messages.count > MessagesHandler.DEFAULT_PAGE_SIZE {
                     totalCount = MessagesHandler.DEFAULT_PAGE_SIZE
                 }
                 for i in 0...totalCount - 1 {
-                    indexPaths.append(NSIndexPath(forItem: i, inSection: 0))
+                    indexPaths.append(IndexPath(item: i, section: 0))
                     let message = messagesSortedDescending[i]
-                    if let userId = message.userId, text = message.text, timestamp = message.timestamp {
-                        let message = JSQMessage(senderId: userId, senderDisplayName: "", date: timestamp, text: text)
-                        self.messages.insert(message, atIndex: 0)
+                    if let userId = message.userId, let text = message.text, let timestamp = message.timestamp {
+                        let message = JSQMessage(senderId: userId, senderDisplayName: "", date: timestamp as Date!, text: text)
+                        self.messages.insert(message!, at: 0)
                     }
                 }
                 
@@ -161,12 +161,12 @@ public class DialogViewController : JSQMessagesViewController{
                     CATransaction.setDisableActions(true)
                     
                     self.collectionView.performBatchUpdates({ 
-                        self.collectionView.insertItemsAtIndexPaths(indexPaths)
-                        self.collectionView.collectionViewLayout.invalidateLayoutWithContext(JSQMessagesCollectionViewFlowLayoutInvalidationContext())
+                        self.collectionView.insertItems(at: indexPaths)
+                        self.collectionView.collectionViewLayout.invalidateLayout(with: JSQMessagesCollectionViewFlowLayoutInvalidationContext())
                     }, completion: { (finished) in
-                        self.finishReceivingMessageAnimated(false)
+                        self.finishReceivingMessage(animated: false)
                         self.collectionView.layoutIfNeeded()
-                        self.collectionView.contentOffset = CGPointMake(0, self.collectionView.contentSize.height - oldBottomOffset)
+                        self.collectionView.contentOffset = CGPoint(x: 0, y: self.collectionView.contentSize.height - oldBottomOffset)
                         CATransaction.commit()
                     })
                 })
@@ -186,26 +186,26 @@ public class DialogViewController : JSQMessagesViewController{
         }
     }
     
-    override public func prefersStatusBarHidden() -> Bool {
+    override open var prefersStatusBarHidden : Bool {
         return false
     }
     
-    func messageAdded(notification: NSNotification){
-        if let message = notification.object as? Message where message.chatId == self.chat.id /*&& !self.chat.messages.contains({$0.id! == message.id!})*/ {
+    func messageAdded(_ notification: Notification){
+        if let message = notification.object as? Message, message.chatId == self.chat.id /*&& !self.chat.messages.contains({$0.id! == message.id!})*/ {
             ThreadHelper.runOnMainThread({ 
                 self.addMessage(message.id!, senderId: message.userId!, text: message.text!, timestamp: message.timestamp!, callFinish: true)
             })
-            if UIApplication.sharedApplication().applicationState == .Active {
+            if UIApplication.shared.applicationState == .active {
                 if message.toUserId == AccountHandler.Instance.userId {
                     self.notifyUnseen()
                 }
-                LocalNotificationsHandler.Instance.reportEventSeen(.Messages, id: self.chat.id)
+                LocalNotificationsHandler.Instance.reportEventSeen(.messages, id: self.chat.id)
             }
         } else {
             ThreadHelper.runOnMainThread({ 
                 //let backButton = self.navigationItem.backBarButtonItem
                 //backButton?.title! += "(1)"
-                let count = LocalNotificationsHandler.Instance.getNewEventCount(.Messages)
+                let count = LocalNotificationsHandler.Instance.getNewEventCount(.messages)
                 if count > 0 {
                     self.navigationController!.navigationBar.backItem!.title = NSLocalizedString("Messages(\(count))", comment: "NavigationBar Item, Messages")
                 }
@@ -213,45 +213,45 @@ public class DialogViewController : JSQMessagesViewController{
         }
     }
     
-    func messageRemoved(notification: NSNotification){
-        if let message = notification.object as? Message where message.chatId == self.chat.id {
+    func messageRemoved(_ notification: Notification){
+        if let message = notification.object as? Message, message.chatId == self.chat.id {
             //todo
         }
     }
     
-    func messageModified(notification: NSNotification){
-        if let message = notification.object as? Message where message.chatId == self.chat.id {
+    func messageModified(_ notification: Notification){
+        if let message = notification.object as? Message, message.chatId == self.chat.id {
             //todo
         }
     }
     
-    public override func viewWillDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
+    open override func viewWillDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MessageAdded.rawValue), object: nil)
         //NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageModified.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
-        LocalNotificationsHandler.Instance.reportActiveView(.Messages, id: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MessageRemoved.rawValue), object: nil)
+        LocalNotificationsHandler.Instance.reportActiveView(.messages, id: nil)
     }
     
-    public override func viewDidAppear(animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.scrollToBottomAnimated(false)
+        self.scrollToBottom(animated: false)
         if !self.isPeeking {
             self.keyboardController.textView.becomeFirstResponder()
         }
         
-        let count = LocalNotificationsHandler.Instance.getNewEventCount(.Messages)
+        let count = LocalNotificationsHandler.Instance.getNewEventCount(.messages)
         if count > 0 {
             self.navigationController!.navigationBar.backItem!.title = NSLocalizedString("Messages(\(count))", comment: "NavigationBar Item, Messages")
         }
     }
     
-    private func shouldDisplayTimestamp(index: Int) -> Bool{
+    fileprivate func shouldDisplayTimestamp(_ index: Int) -> Bool{
         if index == 0{
             return true
         } else {
             let currentMessage = self.messages[index]
             let previousMessage = self.messages[index - 1]
-            if currentMessage.date.timeIntervalSinceDate(previousMessage.date) > 60 * 5 {
+            if currentMessage.date.timeIntervalSince(previousMessage.date) > 60 * 5 {
                 return true
             } else {
                 return false
@@ -259,7 +259,7 @@ public class DialogViewController : JSQMessagesViewController{
         }
     }
     
-    public override func collectionView(collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> CGFloat {
+    open override func collectionView(_ collectionView: JSQMessagesCollectionView!, layout collectionViewLayout: JSQMessagesCollectionViewFlowLayout!, heightForCellTopLabelAt indexPath: IndexPath!) -> CGFloat {
         if self.shouldDisplayTimestamp(indexPath.row){
             return kJSQMessagesCollectionViewCellLabelHeightDefault
         } else {
@@ -267,24 +267,24 @@ public class DialogViewController : JSQMessagesViewController{
         }
     }
     
-    public override func collectionView(collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAtIndexPath indexPath: NSIndexPath!) -> NSAttributedString! {
+    open override func collectionView(_ collectionView: JSQMessagesCollectionView!, attributedTextForCellTopLabelAt indexPath: IndexPath!) -> NSAttributedString! {
         if self.shouldDisplayTimestamp(indexPath.row){
             let currentMessage = self.messages[indexPath.row]
-            return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(currentMessage.date)
+            return JSQMessagesTimestampFormatter.shared().attributedTimestamp(for: currentMessage.date)
         } else {
             return nil
         }
     }
     
-    public override func collectionView(collectionView: JSQMessagesCollectionView!, messageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageData! {
+    open override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
         return messages[indexPath.item]
     }
     
-    public override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    open override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
     
-    public override func collectionView(collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageBubbleImageDataSource! {
+    open override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item]
         if message.senderId == self.senderId{
             return outgoingBubbleImageView
@@ -293,36 +293,36 @@ public class DialogViewController : JSQMessagesViewController{
         }
     }
     
-    public override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = super.collectionView(collectionView, cellForItemAtIndexPath: indexPath) as! JSQMessagesCollectionViewCell
+    open override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! JSQMessagesCollectionViewCell
         let message = messages[indexPath.item]
         if message.senderId == self.senderId{
-            cell.textView!.textColor = UIColor.whiteColor()
+            cell.textView!.textColor = UIColor.white
         } else {
-            cell.textView!.textColor = UIColor.blackColor()
+            cell.textView!.textColor = UIColor.black
         }
         
         return cell;
     }
     
-    private func setupBubbles(){
+    fileprivate func setupBubbles(){
         let factory = JSQMessagesBubbleImageFactory()
-        outgoingBubbleImageView = factory.outgoingMessagesBubbleImageWithColor(
-            UIColor.jsq_messageBubbleBlueColor())
-        incomingBubbleImageView = factory.incomingMessagesBubbleImageWithColor(
-            UIColor.jsq_messageBubbleLightGrayColor())
+        outgoingBubbleImageView = factory?.outgoingMessagesBubbleImage(
+            with: UIColor.jsq_messageBubbleBlue())
+        incomingBubbleImageView = factory?.incomingMessagesBubbleImage(
+            with: UIColor.jsq_messageBubbleLightGray())
     }
     
-    override public func collectionView(collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAtIndexPath indexPath: NSIndexPath!) -> JSQMessageAvatarImageDataSource! {
+    override open func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource! {
         return nil
     }
     
-    func addMessage(id: String, senderId: String, text: String, timestamp: NSDate, callFinish: Bool = false){
+    func addMessage(_ id: String, senderId: String, text: String, timestamp: Date, callFinish: Bool = false){
         //let message = JSQMessage(senderId: id, displayName: "", text: text)
-        if self.shownMessageIds.indexOf(id) == nil {
+        if self.shownMessageIds.index(of: id) == nil {
             self.shownMessageIds.append(id)
             let message = JSQMessage(senderId: senderId, senderDisplayName: "", date: timestamp, text: text)
-            messages.append(message)
+            messages.append(message!)
             if callFinish{
                 if id == self.senderId {
                     JSQSystemSoundPlayer.jsq_playMessageSentSound()
@@ -335,13 +335,13 @@ public class DialogViewController : JSQMessagesViewController{
         }
     }
     
-    public override func didPressSendButton(button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: NSDate!) {
+    open override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         if text != "" {
             if !self.isNetworkReachable(){
                 return
             }
             self.setLoading(true)
-            button.enabled = false
+            button.isEnabled = false
             
             
             self.doSendMessge()
@@ -349,8 +349,8 @@ public class DialogViewController : JSQMessagesViewController{
     }
     
     func doSendMessge() {
-        if ConnectionHandler.Instance.status == .Connected {
-            NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+        if ConnectionHandler.Instance.status == .connected {
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
             let message = MessageToSend()
             message.destinationUserId = self.chat.otherParty?.id
             message.message = self.inputToolbar.contentView.textView.text
@@ -358,7 +358,7 @@ public class DialogViewController : JSQMessagesViewController{
             ConnectionHandler.Instance.messages.sendMessage(message){ success, errorId, errorMessage, result in
                 ThreadHelper.runOnMainThread({
                     self.setLoading(false)
-                    self.inputToolbar.contentView.rightBarButtonItem.enabled = true
+                    self.inputToolbar.contentView.rightBarButtonItem.isEnabled = true
                     
                     if success {
                         self.finishSendingMessage()
@@ -368,14 +368,14 @@ public class DialogViewController : JSQMessagesViewController{
                 })
             }
         } else {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(doSendMessge), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(doSendMessge), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
         }
     }
 }
 
-extension NSDate {
+extension Date {
     
     func timestampFormatterForDate() -> NSAttributedString {
-        return JSQMessagesTimestampFormatter.sharedFormatter().attributedTimestampForDate(self)
+        return JSQMessagesTimestampFormatter.shared().attributedTimestamp(for: self)
     }
 }

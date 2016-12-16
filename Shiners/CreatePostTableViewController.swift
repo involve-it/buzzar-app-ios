@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
 
 //Устанавливаем лимит символов для текстового поля
 var titleAllowCount:String = "50"
@@ -14,7 +38,7 @@ var titleAllowCount:String = "50"
 var descriptionAllowCount:String = "1000"
 
 let descriptionPlaceholderText = NSLocalizedString("Optional: Provide more details", comment: "Placeholder, Description (optional)")
-let descriptionPlaceholderColor = UIColor.lightGrayColor()
+let descriptionPlaceholderColor = UIColor.lightGray
 
 class CreatePostTableViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate, LocationHandlerDelegate, SelectCategoryViewControllerDelegate {
 
@@ -23,8 +47,8 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     @IBOutlet weak var btn_next: UIBarButtonItem!
     @IBOutlet weak var titleNewPost: UITextField!
     
-    private var currentLocationInfo: GeocoderInfo?
-    private let locationHandler = LocationHandler()
+    fileprivate var currentLocationInfo: GeocoderInfo?
+    fileprivate let locationHandler = LocationHandler()
     
     var post = Post()
     
@@ -37,24 +61,24 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     @IBOutlet weak var fieldDescriptionOfPost: UITextView!
     
     
-    @IBAction func titleFieldChanged(sender: UITextField) {
+    @IBAction func titleFieldChanged(_ sender: UITextField) {
         let currentCountTitleTextField:Int = (titleNewPost.text?.characters.count)!
         titleTextCount.text = String( Int(titleAllowCount)! - currentCountTitleTextField )
         
-        if let title = sender.text where title != "" {
-            btn_next.enabled = true
+        if let title = sender.text, title != "" {
+            btn_next.isEnabled = true
         } else {
-            btn_next.enabled = false
+            btn_next.isEnabled = false
         }
     }
     
-    @IBAction func closeCreatePostForm(sender: UIBarButtonItem) {
+    @IBAction func closeCreatePostForm(_ sender: UIBarButtonItem) {
         AppAnalytics.logEvent(.NewPostWizard_TitleStep_BtnCancel_Click)
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         
         //Изменение titleCountOfDescription в зависимости от лимита
         let currentCountFieldDescriptionOfPost: Int = fieldDescriptionOfPost.text.characters.count
@@ -69,7 +93,7 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     
     
     
-    func locationReported(geocoderInfo: GeocoderInfo) {
+    func locationReported(_ geocoderInfo: GeocoderInfo) {
         self.currentLocationInfo = geocoderInfo
         //print("New post location reported")
         NotificationManager.sendNotification(NotificationManager.Name.NewPostLocationReported, object: self.currentLocationInfo)
@@ -109,13 +133,13 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
 
     
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         //Set focus to textfield
         titleNewPost.becomeFirstResponder()
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)
     }
@@ -141,7 +165,7 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     
     
     //Textfield limit characters
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if range.length + range.location > titleNewPost.text!.characters.count {
             return false
@@ -152,10 +176,10 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
         
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
-        let currentText: NSString = fieldDescriptionOfPost.text
-        let updateText = currentText.stringByReplacingCharactersInRange(range, withString: text)
+        let currentText: NSString = fieldDescriptionOfPost.text as NSString
+        let updateText = currentText.replacingCharacters(in: range, with: text)
         
         if updateText.isEmpty || range.length + range.location > fieldDescriptionOfPost.text.characters.count{
             fieldDescriptionOfPost.text = descriptionPlaceholderText
@@ -166,7 +190,7 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
             
         } else if (fieldDescriptionOfPost.textColor == descriptionPlaceholderColor && !text.isEmpty)  {
             fieldDescriptionOfPost.text = nil
-            fieldDescriptionOfPost.textColor = UIColor.blackColor()
+            fieldDescriptionOfPost.textColor = UIColor.black
         } else {
             let newlength = fieldDescriptionOfPost.text.characters.count + text.characters.count - range.length
             return newlength <= Int(descriptionAllowCount)
@@ -175,7 +199,7 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
         return true
     }
     
-    func textViewDidChangeSelection(textView: UITextView) {
+    func textViewDidChangeSelection(_ textView: UITextView) {
         if self.view.window != nil {
             if fieldDescriptionOfPost.textColor == descriptionPlaceholderColor {
                 txtPlaceholderSelectedTextRange(fieldDescriptionOfPost)
@@ -183,20 +207,20 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
         }
     }
     
-    func txtPlaceholderSelectedTextRange(placeholder: UITextView) -> () {
-        placeholder.selectedTextRange = placeholder.textRangeFromPosition(placeholder.beginningOfDocument, toPosition: placeholder.beginningOfDocument)
+    func txtPlaceholderSelectedTextRange(_ placeholder: UITextView) -> () {
+        placeholder.selectedTextRange = placeholder.textRange(from: placeholder.beginningOfDocument, to: placeholder.beginningOfDocument)
     }
 
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "chooseLocation" {
             AppAnalytics.logEvent(.NewPostWizard_BtnNext_Click)
-            if let destination = segue.destinationViewController as? WhereViewController{
+            if let destination = segue.destination as? WhereViewController{
                 //В свойство объекта title помещаем строку из titleNewPost
                 post.title = titleNewPost.text
                 
                 //В свойство объекта desc помещаем строку из fieldDescriptionOfPost
-                if let description = fieldDescriptionOfPost.text where description != descriptionPlaceholderText {
+                if let description = fieldDescriptionOfPost.text, description != descriptionPlaceholderText {
                     post.descr = description
                 }
                 
@@ -206,14 +230,14 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
                 destination.currentLocationInfo = self.currentLocationInfo
             }
         } else if segue.identifier == "selectCategory"{
-            let navController = segue.destinationViewController as! UINavigationController
+            let navController = segue.destination as! UINavigationController
             let selectCategoryViewController = navController.viewControllers[0] as! SelectCategoryTableViewController
             selectCategoryViewController.currentCategory = post.type?.rawValue
             selectCategoryViewController.selectCategoryDelegate = self
         }
     }
     
-    func categorySelected(category: String?, value: String) {
+    func categorySelected(_ category: String?, value: String) {
         if let cat = category {
             self.post.type = Post.AdType(rawValue: cat)
         } else {

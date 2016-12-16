@@ -7,6 +7,30 @@
 //
 
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
 
 class editMyPostTableViewController: UITableViewController, UITextFieldDelegate, UITextViewDelegate {
 
@@ -34,30 +58,30 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
         txtPlaceholderSelectedTextRange(fieldDescriptionOfPost)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)
     }
 
-    @IBAction func titleFieldChanged(sender: UITextField) {
+    @IBAction func titleFieldChanged(_ sender: UITextField) {
         let currentCountTitleTextField:Int = (titleNewPost.text?.characters.count)!
         titleTextCount.text = String( Int(titleAllowCount)! - currentCountTitleTextField )
         
-        if let title = sender.text where title != "" {
-            btn_update.enabled = true
+        if let title = sender.text, title != "" {
+            btn_update.isEnabled = true
         } else {
-            btn_update.enabled = false
+            btn_update.isEnabled = false
         }
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         //Изменение titleCountOfDescription в зависимости от лимита
         let currentCountFieldDescriptionOfPost: Int = fieldDescriptionOfPost.text.characters.count
         titleCountOfDescription.text =  String(Int(descriptionAllowCount)! - currentCountFieldDescriptionOfPost)
     }
     
     //Textfield limit characters
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if range.length + range.location > titleNewPost.text!.characters.count {
             return false
@@ -68,10 +92,10 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
         
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
-        let currentText: NSString = fieldDescriptionOfPost.text
-        let updateText = currentText.stringByReplacingCharactersInRange(range, withString: text)
+        let currentText: NSString = fieldDescriptionOfPost.text as NSString
+        let updateText = currentText.replacingCharacters(in: range, with: text)
         
         if updateText.isEmpty || range.length + range.location > fieldDescriptionOfPost.text.characters.count{
             fieldDescriptionOfPost.text = descriptionPlaceholderText
@@ -82,7 +106,7 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
             
         } else if (fieldDescriptionOfPost.textColor == descriptionPlaceholderColor && !text.isEmpty)  {
             fieldDescriptionOfPost.text = nil
-            fieldDescriptionOfPost.textColor = UIColor.blackColor()
+            fieldDescriptionOfPost.textColor = UIColor.black
         } else {
             let newlength = fieldDescriptionOfPost.text.characters.count + text.characters.count - range.length
             return newlength <= Int(descriptionAllowCount)
@@ -91,7 +115,7 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
         return true
     }
     
-    func textViewDidChangeSelection(textView: UITextView) {
+    func textViewDidChangeSelection(_ textView: UITextView) {
         if self.view.window != nil {
             if fieldDescriptionOfPost.textColor == descriptionPlaceholderColor {
                 txtPlaceholderSelectedTextRange(fieldDescriptionOfPost)
@@ -99,8 +123,8 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
         }
     }
     
-    func txtPlaceholderSelectedTextRange(placeholder: UITextView) -> () {
-        placeholder.selectedTextRange = placeholder.textRangeFromPosition(placeholder.beginningOfDocument, toPosition: placeholder.beginningOfDocument)
+    func txtPlaceholderSelectedTextRange(_ placeholder: UITextView) -> () {
+        placeholder.selectedTextRange = placeholder.textRange(from: placeholder.beginningOfDocument, to: placeholder.beginningOfDocument)
     }
 
   

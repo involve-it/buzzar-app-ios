@@ -8,31 +8,31 @@
 
 import Foundation
 
-public class ResponseHelper{
+open class ResponseHelper{
     static let errors = [900: "Internal error occurred"]
     
-    public class func getErrorId(result: AnyObject?) -> Int?{
-        if let fields = result as? NSDictionary, error = fields.valueForKey("error") as? NSDictionary, errorId = error.valueForKey("errorId") as? Int{
+    open class func getErrorId(_ result: AnyObject?) -> Int?{
+        if let fields = result as? NSDictionary, let error = fields.value(forKey: "error") as? NSDictionary, let errorId = error.value(forKey: "errorId") as? Int{
             return errorId
         }
         return nil
     }
     
-    public class func getResult(result: AnyObject?) -> AnyObject?{
-        if let fields = result as? NSDictionary, res = fields.valueForKey("result"){
-            return res
+    open class func getResult(_ result: AnyObject?) -> AnyObject?{
+        if let fields = result as? NSDictionary, let res = fields.value(forKey: "result"){
+            return res as AnyObject?
         }
         return nil
     }
     
-    public class func isSuccessful(result: AnyObject?) -> Bool{
-        if let fields = result as? NSDictionary, success = fields.valueForKey("success") as? Bool{
+    open class func isSuccessful(_ result: AnyObject?) -> Bool{
+        if let fields = result as? NSDictionary, let success = fields.value(forKey: "success") as? Bool{
             return success
         }
         return false
     }
     
-    public class func getErrorMessage(errorId: Int?) -> String{
+    open class func getErrorMessage(_ errorId: Int?) -> String{
         if let id = errorId {
             if let message = errors[id]{
                 return message;
@@ -44,33 +44,33 @@ public class ResponseHelper{
         }
     }
     
-    public class func getDefaultErrorMessage() -> String{
+    open class func getDefaultErrorMessage() -> String{
         return errors[900]!
     }
     
-    public class func callHandler<T: DictionaryInitializable>(result: AnyObject?, handler: MeteorMethodCallback?) -> T?{
-        if let fields = result as? NSDictionary, success = fields.valueForKey("success") as? Bool{
-            if success, let result = fields.valueForKey("result") as? NSDictionary {
+    open class func callHandler<T: DictionaryInitializable>(_ result: AnyObject?, handler: MeteorMethodCallback?) -> T?{
+        if let fields = result as? NSDictionary, let success = fields.value(forKey: "success") as? Bool{
+            if success, let result = fields.value(forKey: "result") as? NSDictionary {
                 let concreteResult = T(fields: result)
-                handler?(success: true, errorId: nil, errorMessage: nil, result: concreteResult)
+                handler?(true, nil, nil, concreteResult)
                 return concreteResult
             } else {
                 let errorId = getErrorId(result)
                 let message = self.getErrorMessage(errorId)
-                handler?(success: false, errorId: errorId, errorMessage: message, result: nil)
+                handler?(false, errorId, message, nil)
             }
         } else {
-            handler?(success: false, errorId: nil, errorMessage: getDefaultErrorMessage(), result: nil)
+            handler?(false, nil, getDefaultErrorMessage(), nil)
         }
         
         return nil
     }
     
-    public class func callHandlerArray<T: DictionaryInitializable>(result: AnyObject?, handler: MeteorMethodCallback?) -> [T]?{
-        if let fields = result as? NSDictionary, success = fields.valueForKey("success") as? Bool{
+    open class func callHandlerArray<T: DictionaryInitializable>(_ result: AnyObject?, handler: MeteorMethodCallback?) -> [T]?{
+        if let fields = result as? NSDictionary, let success = fields.value(forKey: "success") as? Bool{
             if success {
                 var concreteResults = [T]()
-                if let result = fields.valueForKey("result") as? NSArray{
+                if let result = fields.value(forKey: "result") as? NSArray{
                     for value in result {
                         if let objFields = value as? NSDictionary {
                             let concreteResult = T(fields: objFields)
@@ -79,19 +79,19 @@ public class ResponseHelper{
                     }
                 }
                 
-                handler?(success: true, errorId: nil, errorMessage: nil, result: concreteResults)
+                handler?(true, nil, nil, concreteResults)
                 return concreteResults
             } else {
                 let errorId = getErrorId(result)
                 let message = self.getErrorMessage(errorId)
-                handler?(success: false, errorId: errorId, errorMessage: message, result: nil)
+                handler?(false, errorId, message, nil)
             }
         } else {
-            handler?(success: false, errorId: nil, errorMessage: getDefaultErrorMessage(), result: nil)
+            handler?(false, nil, getDefaultErrorMessage(), nil)
         }
         
         return nil
     }
 }
 
-public typealias MeteorMethodCallback = (success: Bool, errorId: Int?, errorMessage: String?, result: Any?) -> Void
+public typealias MeteorMethodCallback = (_ success: Bool, _ errorId: Int?, _ errorMessage: String?, _ result: Any?) -> Void

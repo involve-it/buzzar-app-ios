@@ -8,6 +8,30 @@
 
 import Foundation
 import UIKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l >= r
+  default:
+    return !(lhs < rhs)
+  }
+}
+
 
 class AddCommentView: UIView, UITextViewDelegate {
     var parentViewHeight: CGFloat!
@@ -17,59 +41,59 @@ class AddCommentView: UIView, UITextViewDelegate {
     @IBOutlet weak var btnSend: UIButton!
     @IBOutlet weak var txtComment: UITextView!
     var typing = false
-    private var timer:NSTimer?
+    fileprivate var timer:Timer?
     
     var delegate: AddCommentDelegate?
     var statusBarHeight:CGFloat = 0
     
-    @IBAction func btnSend_Click(sender: AnyObject) {
+    @IBAction func btnSend_Click(_ sender: AnyObject) {
         self.delegate?.sendButtonPressed(self.txtComment.text)
     }
     
-    func setSendButtonEnabled(enabled: Bool){
-        self.btnSend.enabled = enabled
+    func setSendButtonEnabled(_ enabled: Bool){
+        self.btnSend.isEnabled = enabled
     }
     
-    func enableControls(enable: Bool){
-        self.btnSend.enabled = enable
-        self.txtComment.editable = enable
+    func enableControls(_ enable: Bool){
+        self.btnSend.isEnabled = enable
+        self.txtComment.isEditable = enable
     }
     
     func clearMessageText(){
         self.txtComment.text = ""
-        self.lblPlaceholder.hidden = false
+        self.lblPlaceholder.isHidden = false
         self.textViewDidChange(self.txtComment)
     }
     
     func statusBarHeightChanged(){
-        self.statusBarHeight = UIApplication.sharedApplication().statusBarFrame.height - 20
+        self.statusBarHeight = UIApplication.shared.statusBarFrame.height - 20
         self.frame.origin.y = self.parentViewHeight - self.keyboardHeight - self.statusBarHeight - self.frame.height
     }
     
-    func setupView(parentViewHeight: CGFloat, parentViewWidth: CGFloat, delegate: AddCommentDelegate? = nil){
+    func setupView(_ parentViewHeight: CGFloat, parentViewWidth: CGFloat, delegate: AddCommentDelegate? = nil){
         self.delegate = delegate
         self.parentViewHeight = parentViewHeight
-        self.backgroundColor = UIColor.whiteColor()
+        self.backgroundColor = UIColor.white
         self.layer.borderWidth = 1
-        self.layer.borderColor = UIColor(red:222/255.0, green:225/255.0, blue:227/255.0, alpha: 1.0).CGColor
+        self.layer.borderColor = UIColor(red:222/255.0, green:225/255.0, blue:227/255.0, alpha: 1.0).cgColor
         
-        self.btnSend.setTitle(NSLocalizedString("Send", comment: "Send comment"), forState: .Normal)
+        self.btnSend.setTitle(NSLocalizedString("Send", comment: "Send comment"), for: UIControlState())
         
         let borderColor = UIColor(colorLiteralRed:204.0/255.0, green:204.0/255.0, blue:204.0/255.0, alpha:1.0)
-        self.txtComment.layer.borderColor = borderColor.CGColor;
+        self.txtComment.layer.borderColor = borderColor.cgColor;
         self.txtComment.layer.borderWidth = 1.0;
         self.txtComment.layer.cornerRadius = 5.0;
         self.txtComment.delegate = self
-        self.txtComment.scrollEnabled = false
+        self.txtComment.isScrollEnabled = false
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(self.keyboardNotification),
-                                                         name: UIKeyboardWillChangeFrameNotification,
+                                                         name: NSNotification.Name.UIKeyboardWillChangeFrame,
                                                          object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
+        NotificationCenter.default.addObserver(self,
                                                          selector: #selector(self.statusBarHeightChanged),
-                                                         name: UIApplicationDidChangeStatusBarFrameNotification,
+                                                         name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame,
                                                          object: nil)
         
         //self.layoutSubviews()
@@ -82,20 +106,20 @@ class AddCommentView: UIView, UITextViewDelegate {
         self.typing = false
     }
     
-    func keyboardNotification(notification: NSNotification) {
+    func keyboardNotification(_ notification: Notification) {
         if let userInfo = notification.userInfo {
-            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as?     NSValue)?.CGRectValue()
-            let duration:NSTimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+            let endFrame = (userInfo[UIKeyboardFrameEndUserInfoKey] as?     NSValue)?.cgRectValue
+            let duration:TimeInterval = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
             let animationCurveRawNSN = userInfo[UIKeyboardAnimationCurveUserInfoKey] as? NSNumber
-            let animationCurveRaw = animationCurveRawNSN?.unsignedLongValue ?? UIViewAnimationOptions.CurveEaseInOut.rawValue
+            let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIViewAnimationOptions().rawValue
             let animationCurve:UIViewAnimationOptions = UIViewAnimationOptions(rawValue: animationCurveRaw)
             //var originY: CGFloat!
-            if endFrame?.origin.y >= UIScreen.mainScreen().bounds.size.height {
+            if endFrame?.origin.y >= UIScreen.main.bounds.size.height {
                 //self.keyboardHeightLayoutConstraint?.constant = 0.0
                 //originY = self.parentViewHeight - self.frame.height
                 //self.frame.origin.y = 0
                 self.keyboardHeight = 0
-                self.timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: #selector(setNotTyping), userInfo: nil, repeats: false)
+                self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(setNotTyping), userInfo: nil, repeats: false)
             } else {
                 if let timer = self.timer {
                     timer.invalidate()
@@ -108,8 +132,8 @@ class AddCommentView: UIView, UITextViewDelegate {
             
             
             let originY = self.parentViewHeight - self.keyboardHeight - self.statusBarHeight - self.frame.height
-            UIView.animateWithDuration(duration,
-                                       delay: NSTimeInterval(0),
+            UIView.animate(withDuration: duration,
+                                       delay: TimeInterval(0),
                                        options: animationCurve,
                                        animations: {
                                         self.frame.origin.y = originY
@@ -121,8 +145,8 @@ class AddCommentView: UIView, UITextViewDelegate {
         }
     }
     
-    func textViewDidChange(textView: UITextView) {
-        self.lblPlaceholder.hidden = textView.text != ""
+    func textViewDidChange(_ textView: UITextView) {
+        self.lblPlaceholder.isHidden = textView.text != ""
         
         let fixedWidth = textView.frame.size.width
         textView.sizeThatFits(CGSize(width: fixedWidth, height: 1000))
@@ -135,16 +159,16 @@ class AddCommentView: UIView, UITextViewDelegate {
         if contentHeight < (self.parentViewHeight - self.keyboardHeight) / 3 {
             self.frame.size.height = contentHeight + 10
             self.frame.origin.y = self.parentViewHeight - contentHeight - 10 - self.keyboardHeight
-            self.txtComment.scrollEnabled = false
+            self.txtComment.isScrollEnabled = false
             self.delegate?.updateInsets(self.keyboardHeight + contentHeight + 10)
         } else {
-            self.txtComment.scrollEnabled = true
+            self.txtComment.isScrollEnabled = true
         }
     }
     
 }
 
 protocol AddCommentDelegate {
-    func sendButtonPressed(comment: String)
-    func updateInsets(height: CGFloat)
+    func sendButtonPressed(_ comment: String)
+    func updateInsets(_ height: CGFloat)
 }

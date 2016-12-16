@@ -9,9 +9,9 @@
 import Foundation
 
 class Logger {
-    private static var log = [String]()
+    fileprivate static var log = [String]()
     
-    class func log(message: String){
+    class func log(_ message: String){
         Logger.log.append(message)
     }
     
