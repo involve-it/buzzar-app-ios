@@ -39,7 +39,7 @@ class commentCollectionViewCell: UICollectionViewCell {
     }
     
     func labelUserInfoConfigure() {
-        self.txtTotalInfoFromUser.text = "\(username) • \(commentWritten)"
+        self.txtTotalInfoFromUser.text = "\(username!) • \(commentWritten!)"
     }
     
     func setLikes(_ loggedIn: Bool, count: Int, liked: Bool) {
