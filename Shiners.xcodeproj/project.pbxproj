@@ -246,6 +246,7 @@
 		7B3565601CE93E0800012CA9 /* CachingHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachingHandler.swift; sourceTree = "<group>"; };
 		7B50067D1DEB598600224F49 /* Comment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		7B5006801DEB5E2200224F49 /* CommentsCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsCollection.swift; sourceTree = "<group>"; };
+		7B619A381E07083B0093043B /* Shiners.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Shiners.entitlements; sourceTree = "<group>"; };
 		7B86FFD81D3BFAB7008343B3 /* PushNotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationsHandler.swift; sourceTree = "<group>"; };
 		7B8E25741DD558AC0041A105 /* ExceptionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExceptionHandler.swift; sourceTree = "<group>"; };
 		7BA062FD1DF37F0C001BF2A1 /* CommentsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsHandler.swift; sourceTree = "<group>"; };
@@ -614,6 +615,7 @@
 		7BC0A21A1CCC15E700DA2824 /* Shiners */ = {
 			isa = PBXGroup;
 			children = (
+				7B619A381E07083B0093043B /* Shiners.entitlements */,
 				612736991DC8CF93009EDBD6 /* InfoPlist.strings */,
 				7B3565461CE7B9A100012CA9 /* UI */,
 				7BB2A7E31CCC2B3800AD636D /* Core */,
@@ -1093,6 +1095,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Shiners/Shiners.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1117,6 +1120,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Shiners/Shiners.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
