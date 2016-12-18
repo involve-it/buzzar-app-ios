@@ -71,8 +71,8 @@ open class ConstantValuesHandler {
     
     open let widgetUrls = [
         WidgetInfo(title: NSLocalizedString("New Post", comment: "Title, New Post"), url: ""),
-        WidgetInfo(title: NSLocalizedString("Find a Friend", comment: "Title, Find a Friend"), url: "http://msg.webhop.org/locator?isiframe=true&userId=$$userId$$&lat=$$lat$$&lng=$$lng$$"),
-        WidgetInfo(title: NSLocalizedString("Ask a Question", comment: "Title, Ask a Question"), url: "http://msg.webhop.org/locquestion?isiframe=true&userId=$$userId$$&lat=$$lat$$&lng=$$lng$$")
+        WidgetInfo(title: NSLocalizedString("Find a Friend", comment: "Title, Find a Friend"), url: "https://widgets.shiners.ru/locator?isiframe=true&userId=$$userId$$&lat=$$lat$$&lng=$$lng$$"),
+        WidgetInfo(title: NSLocalizedString("Ask a Question", comment: "Title, Ask a Question"), url: "https://widgets.shiners.ru/locquestion?isiframe=true&userId=$$userId$$&lat=$$lat$$&lng=$$lng$$")
     ]
     
     open let currencies = [
