@@ -22,6 +22,12 @@
 /* Class = "UILabel"; text = "It is connected to the location that you have chosen."; ObjectID = "1yB-M2-EbN"; */
 "1yB-M2-EbN.text" = "Связано с выбранным положением";
 
+/* Class = "UITableViewSection"; footerTitle = "Enable or disable widgets you'd like to use"; ObjectID = "2BX-pq-YUu"; */
+"2BX-pq-YUu.footerTitle" = "Выберите виджеты, которые вы хотите использовать";
+
+/* Class = "UITableViewSection"; headerTitle = "Widgets"; ObjectID = "2BX-pq-YUu"; */
+"2BX-pq-YUu.headerTitle" = "Виджеты";
+
 /* (No Commment) */
 "2PD-Ab-WB9.text" = "Нажмите, чтобы выбрать";
 
@@ -217,6 +223,9 @@
 /* Class = "UILabel"; text = "154 km"; ObjectID = "HWU-ov-avm"; */
 "HWU-ov-avm.text" = "154 km";
 
+/* Class = "UILabel"; text = "Find a friend"; ObjectID = "Hox-Lh-EQW"; */
+"Hox-Lh-EQW.text" = "Найди друга";
+
 /* Class = "UILabel"; text = "username"; ObjectID = "HpE-uK-oCM"; */
 "HpE-uK-oCM.text" = "имя пользователя";
 
@@ -306,6 +315,9 @@
 
 /* Class = "UIViewController"; title = "Login view controller"; ObjectID = "Nfo-dS-g7G"; */
 "Nfo-dS-g7G.title" = "Login view controller";
+
+/* Class = "UILabel"; text = "Current category"; ObjectID = "NmK-sU-zmT"; */
+"NmK-sU-zmT.text" = "Категория";
 
 /* Class = "UITextField"; placeholder = "Email address"; ObjectID = "NqW-97-vIl"; */
 "NqW-97-vIl.placeholder" = "Электронная почта";
@@ -421,6 +433,9 @@
 /* Class = "UITextField"; placeholder = "Skype"; ObjectID = "Var-pC-bmK"; */
 "Var-pC-bmK.placeholder" = "Skype";
 
+/* Class = "UILabel"; text = "All widgets"; ObjectID = "VdZ-IZ-0Or"; */
+"VdZ-IZ-0Or.text" = "Все виджеты";
+
 /* Class = "UILabel"; text = "Tell a friend"; ObjectID = "VfB-7a-8Ii"; */
 "VfB-7a-8Ii.text" = "Рассказать другу";
 
@@ -487,6 +502,9 @@
 /* (No Commment) */
 "aU2-x1-9Dr.text" = "О нас";
 
+/* Class = "UILabel"; text = "Ask a question"; ObjectID = "ae0-3j-Fbq"; */
+"ae0-3j-Fbq.text" = "Задать вопрос";
+
 /* (No Commment) */
 "aiN-IS-rrP.text" = "Зарегистрируйтесь, чтобы создать пост";
 
@@ -541,10 +559,10 @@
 /* Class = "UILabel"; text = "Phone"; ObjectID = "dYb-Pj-rWf"; */
 "dYb-Pj-rWf.text" = "Телефон";
 
-/* Class = "UILabel"; text = "2 days"; ObjectID = "dd3-fE-U3q"; */
+/* Class = "UILabel"; text = "2 weeks"; ObjectID = "dd3-fE-U3q"; */
 "dd3-fE-U3q.text" = "2 дня";
 
-/* Class = "UINavigationItem"; title = "New post"; ObjectID = "dfX-kM-zaA"; */
+/* Class = "UINavigationItem"; title = "New Post"; ObjectID = "dfX-kM-zaA"; */
 "dfX-kM-zaA.title" = "Новый пост";
 
 /* Class = "UIBarButtonItem"; title = "Back"; ObjectID = "drZ-7g-oWG"; */

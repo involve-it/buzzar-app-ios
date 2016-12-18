@@ -33,6 +33,9 @@
 /* Alert title, Are you sure? */
 "Are you sure?" = "Вы уверены?";
 
+/* Title, Ask a Question */
+"Ask a Question" = "Задать вопрос";
+
 /* Connection Connecting, Attempting to recover broken connection... */
 "Attempting to recover broken connection..." = "Пытаемся восстановить соединение...";
 
@@ -47,9 +50,6 @@
    Button, Cancel
    Cancel */
 "Cancel" = "Отменить";
-
-/* Cellular */
-"Cellular" = "Сотовый";
 
 /* Alert title, Choose Image */
 "Choose Image" = "Выберите изображение";
@@ -138,6 +138,9 @@
 /* Alert title, Facebook Login */
 "Facebook Login" = "Войти через Facebook";
 
+/* Title, Find a Friend */
+"Find a Friend" = "Найди друга";
+
 /* No comment provided by engineer. */
 "Find and get found" = "Ты находишь / тебя находят";
 
@@ -198,14 +201,14 @@
 /* Alert title, Network Unreachable */
 "Network Unreachable" = "Сеть недоступна";
 
+/* Title, New Post */
+"New Post" = "Новый пост";
+
 /* Alert title, New message */
 "New message" = "Новое сообщение";
 
 /* Log in page, button Next */
 "Next" = "Далее";
-
-/* No Connection */
-"No Connection" = "Нет связи";
 
 /* None */
 "None" = "Не выбрано";

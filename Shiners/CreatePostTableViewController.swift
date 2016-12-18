@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 // FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
 // Consider refactoring the code to use the non-optional operators.
 fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
@@ -60,44 +61,15 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     @IBOutlet weak var titleCountOfDescription: UILabel!
     @IBOutlet weak var fieldDescriptionOfPost: UITextView!
     
-    var webview: UIWebView!
-    var webviewLoaded = false
-    
-    @IBAction func segmentedControl_Changed(_ sender: UISegmentedControl) {
-        if sender.selectedSegmentIndex == 0 {
-            self.setLoading(false, rightBarButtonItem: self.btn_next)
-            UIView.animate(withDuration: 0.2, animations: {
-                self.webview.alpha = 0
-            }, completion: { (finished) in
-                self.webview.removeFromSuperview()
-            })
-        } else {
-            var showWebview = true
-            self.webview.alpha = 0
-            if !self.webviewLoaded {
-                if let lastLocation = LocationHandler.lastLocation, let userId = AccountHandler.Instance.userId{
-                    self.setLoading(true)
-                    self.webview.loadRequest(URLRequest(url: URL(string: "http://192.168.1.102:3000/request-location?isiframe=true&userId=\(userId)&lat=\(lastLocation.coordinate.latitude)&lng=\(lastLocation.coordinate.longitude)")!))
-                } else {
-                    showWebview = false
-                }
-            }
-            if showWebview {
-                self.view.addSubview(self.webview)
-                self.view.bringSubview(toFront: self.webview)
-                UIView.animate(withDuration: 0.2, animations: {
-                    self.webview.alpha = 1
-                })
-            } else {
-                sender.selectedSegmentIndex = 0
-                self.showAlert("Location", message: "Still waiting for location...")
-            }
-        }
-    }
+    var webview1: UIWebView!
+    var webview2: UIWebView!
+    var webview1Page: Int?
+    var webview2Page: Int?
+    var currentView: UIView!
+    var currentPage = 0
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
         self.setLoading(false, rightBarButtonItem: self.btn_next)
-        self.webviewLoaded = true
     }
     
     @IBAction func titleFieldChanged(_ sender: UITextField) {
@@ -138,11 +110,141 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
         NotificationManager.sendNotification(NotificationManager.Name.NewPostLocationReported, object: self.currentLocationInfo)
     }
     
+    func constructUrl(_ lastLocation: CLLocation,_ userId: String) -> String{
+        let widgetInfo = ConstantValuesHandler.Instance.widgetUrls[self.currentPage]
+        var url = widgetInfo.url
+        url = url.replacingOccurrences(of: "$$userId$$", with: userId)
+        url = url.replacingOccurrences(of: "$$lat$$", with: "\(lastLocation.coordinate.latitude)")
+        url = url.replacingOccurrences(of: "$$lng$$", with: "\(lastLocation.coordinate.longitude)")
+        return url
+    }
+    
+    func swiped(sender: UISwipeGestureRecognizer){
+        self.view.endEditing(true)
+        if let lastLocation = LocationHandler.lastLocation, let userId = AccountHandler.Instance.userId{
+            if sender.direction == .right {
+                if self.currentPage > 0 {
+                    self.currentPage -= 1
+                    var otherView: UIView!
+                    var loadWebview = true
+                    if self.currentPage == 0 {
+                        otherView = self.view
+                    } else {
+                        if self.currentView == self.webview1 {
+                            otherView = self.webview2
+                            if self.webview2Page == self.currentPage {
+                                loadWebview = false
+                            } else {
+                                self.webview2Page = self.currentPage
+                            }
+                        } else {
+                            otherView = self.webview1
+                            if self.webview1Page == self.currentPage {
+                                loadWebview = false
+                            } else {
+                                self.webview1Page = self.currentPage
+                            }
+                        }
+                        if loadWebview {
+                            self.setLoading(true)
+                            let url = self.constructUrl(lastLocation, userId)
+                            (otherView as! UIWebView).loadRequest(URLRequest(url: URL(string: url)!))
+                        }
+                    }
+                    
+                    //self.view.addSubview(otherView)
+                    //otherView.frame.origin.x = -otherView.frame.size.width
+                    
+                    //otherView.alpha = 0
+                    let title = ConstantValuesHandler.Instance.widgetUrls[self.currentPage].title
+                    UIView.animate(withDuration: 0.2, animations: {
+                        self.currentView.frame.origin.x = self.view.frame.width + 1
+                        //otherView.frame.origin.x = 0
+                        //self.currentView.frame.origin.x = self.currentView.frame.size.width
+                        //otherView.alpha = 1
+                        self.currentView.alpha = 0
+                        self.navigationItem.title = title
+                    }, completion: { (finished) in
+                        self.currentView = otherView
+                    })
+                }
+            } else if sender.direction == .left {
+                if self.currentPage < ConstantValuesHandler.Instance.widgetUrls.count - 1  {
+                    
+                    var otherView: UIView!
+                    
+                    self.currentPage += 1
+                    var loadWebview = true
+                    
+                    if self.currentView == self.webview1 {
+                        otherView = self.webview2
+                        if self.webview2Page == self.currentPage{
+                            loadWebview = false
+                        } else {
+                            self.webview2Page = self.currentPage
+                        }
+                    } else {
+                        otherView = self.webview1
+                        if self.webview1Page == self.currentPage{
+                            loadWebview = false
+                        } else {
+                            self.webview1Page = self.currentPage
+                        }
+                    }
+                    
+                    if loadWebview {
+                        self.setLoading(true)
+                        let url = self.constructUrl(lastLocation, userId)
+                        (otherView as! UIWebView).loadRequest(URLRequest(url: URL(string: url)!))
+                    }
+                    
+                    //self.view.addSubview(otherView)
+                    otherView.frame.origin.x = otherView.frame.size.width + 1
+                    self.view.bringSubview(toFront: otherView)
+                    otherView.alpha = 0
+                    let title = ConstantValuesHandler.Instance.widgetUrls[self.currentPage].title
+                    UIView.animate(withDuration: 0.2, animations: {
+                        otherView.frame.origin.x = 0
+                        //self.currentView.frame.origin.x = -self.currentView.frame.size.width
+                        otherView.alpha = 1
+                        //self.currentView.alpha = 0
+                        self.navigationItem.title = title
+                    }, completion: { (finished) in
+                        self.currentView = otherView
+                    })
+                }
+            }
+        } else {
+            self.showAlert("Location", message: "Still waiting for location...")
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.webview = UIWebView(frame: self.tableView.frame)
-        self.webview.delegate = self
+        self.webview1 = UIWebView(frame: self.tableView.frame)
+        self.webview1.frame.origin.x = self.view.frame.width + 1
+        self.webview1.delegate = self
+        
+        self.webview2 = UIWebView(frame: self.tableView.frame)
+        self.webview2.frame.origin.x = self.view.frame.width + 1
+        self.webview2.delegate = self
+        
+        self.view.addSubview(self.webview1)
+        self.view.addSubview(self.webview2)
+        self.currentView = self.view
+        
+        let leftGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(self.swiped))
+        leftGestureRecognizer.direction = .left
+        self.view.addGestureRecognizer(leftGestureRecognizer)
+        
+        let rightGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(self.swiped))
+        rightGestureRecognizer.direction = .right
+        self.view.addGestureRecognizer(rightGestureRecognizer)
+        //self.webview1.addGestureRecognizer(leftGestureRecognizer)
+        //self.webview1.addGestureRecognizer(rightGestureRecognizer)
+        //self.webview2.addGestureRecognizer(leftGestureRecognizer)
+        //self.webview2.addGestureRecognizer(rightGestureRecognizer)
         
         /*NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(keyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)*/
