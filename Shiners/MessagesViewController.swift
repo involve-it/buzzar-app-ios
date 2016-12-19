@@ -301,79 +301,10 @@ open class MessagesViewController: UITableViewController, UIViewControllerPrevie
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "dialog"{
             AppAnalytics.logEvent(.MessagesScreen_DialogSelected)
-            let selectedCell = self.tableView.cellForRow(at: self.tableView.indexPathForSelectedRow!) as! MessagesTableViewCell;
+            //let selectedCell = self.tableView.cellForRow(at: self.tableView.indexPathForSelectedRow!) as! MessagesTableViewCell;
             let chat = self.dialogs[self.tableView.indexPathForSelectedRow!.row]
             
             let viewController = segue.destination as! DialogViewController
-            
-            
-            //Добавить новое view с информацией о пользователе
-            let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 32, height: view.frame.height))
-            titleLabel.text = "HOME"
-            
-            //Main profile view
-            let views: UIView = {
-                let v = UIView()
-                v.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 42)
-                return v
-            }()
-            
-            //Profile imageView
-            let profileImageView: UIImageView = {
-                let imageView = UIImageView()
-                imageView.contentMode = .scaleAspectFill
-                imageView.image = selectedCell.imgPhoto.image
-                //imageView.backgroundColor = UIColor.redColor()
-                imageView.layer.cornerRadius = 15
-                imageView.layer.masksToBounds = true
-                return imageView
-            }()
-            
-            views.addSubview(profileImageView)
-            
-            profileImageView.translatesAutoresizingMaskIntoConstraints = false
-            views.addConstraintsWithFormat("H:|-8-[v0(30)]", views: profileImageView)
-            views.addConstraintsWithFormat("V:[v0(30)]", views: profileImageView)
-            
-            views.addConstraint(NSLayoutConstraint(item: profileImageView, attribute: .centerY, relatedBy: .equal, toItem: views, attribute: .centerY, multiplier: 1, constant: 0))
-            
-            //ContainerView
-            let containerView = UIView()
-            views.addSubview(containerView)
-            
-            views.addConstraintsWithFormat("H:|-46-[v0]|", views: containerView)
-            views.addConstraintsWithFormat("V:[v0(30)]", views: containerView)
-            
-            views.addConstraint(NSLayoutConstraint(item: containerView, attribute: .centerY, relatedBy: .equal, toItem: views, attribute: .centerY, multiplier: 1, constant: 0))
-            
-            //nameLabel
-            let nameLabel: UILabel = {
-               let label = UILabel()
-                label.text = selectedCell.lblTitle.text
-                label.font = UIFont.systemFont(ofSize: 12)
-                return label
-            }()
-            
-            //activeTimeLabel
-            let activeTimeLabel: UILabel = {
-                let label = UILabel()
-                if let lastLogin = chat.otherParty?.lastLogin{
-                    label.text = lastLogin.toFriendlyLongDateTimeString()
-                }
-                label.font = UIFont.systemFont(ofSize: 10)
-                label.textColor = UIColor.darkGray
-                return label
-            }()
-            
-            containerView.addSubview(nameLabel)
-            containerView.addSubview(activeTimeLabel)
-            
-            containerView.addConstraintsWithFormat("H:|[v0]|", views: nameLabel)
-            containerView.addConstraintsWithFormat("V:|[v0][v1(14)]|", views: nameLabel, activeTimeLabel)
-            
-            containerView.addConstraintsWithFormat("H:|[v0]-8-|", views: activeTimeLabel)
-               
-            viewController.navigationItem.titleView = views
             
             //viewController.navigationItem.titleView = titleLabel
             
@@ -394,6 +325,11 @@ open class MessagesViewController: UITableViewController, UIViewControllerPrevie
                 
                 viewController.pendingMessagesAsyncId = MessagesHandler.Instance.getMessagesAsync(chat.id!, skip: 0)
             }
+        }
+        else if segue.identifier == "newMessage" {
+            let navController = segue.destination as! UINavigationController
+            let dialogController = navController.viewControllers[0] as! DialogViewController
+            dialogController.newMessage = true
         }
     }
     

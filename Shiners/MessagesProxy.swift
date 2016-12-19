@@ -73,7 +73,11 @@ open class MessagesProxy {
         Meteor.call("addMessage", params: [dict]) { (result, error) in
             if error == nil {
                 let errorId = ResponseHelper.getErrorId(result as AnyObject?);
-                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), nil)
+                var id: String? = nil
+                if let fields = result as? NSDictionary {
+                    id = fields.value(forKey: "result") as? String
+                }
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), id)
             } else {
                 callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }

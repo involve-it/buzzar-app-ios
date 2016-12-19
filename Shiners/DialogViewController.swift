@@ -21,6 +21,10 @@ open class DialogViewController : JSQMessagesViewController{
     var initialPage = false
     var dataFromCache: Bool!
     var shownMessageIds = [String]()
+    var newMessage = false
+    var openedModally = false
+    
+    @IBOutlet var accessoryView: NewMessageView!
     
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +32,6 @@ open class DialogViewController : JSQMessagesViewController{
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
         self.senderId = AccountHandler.Instance.userId ?? CachingHandler.Instance.currentUser?.id
-        self.senderDisplayName = chat.otherParty?.username
         
         collectionView!.collectionViewLayout.incomingAvatarViewSize = CGSize.zero
         collectionView!.collectionViewLayout.outgoingAvatarViewSize = CGSize.zero
@@ -37,24 +40,138 @@ open class DialogViewController : JSQMessagesViewController{
         self.setupBubbles()
         
         self.initialPage = true
-        NotificationCenter.default.addObserver(self, selector: #selector(messagesPageReceived), name: NSNotification.Name(rawValue: NotificationManager.Name.MessagesAsyncRequestCompleted.rawValue), object: nil)
-        if let pendingMessagesAsyncId = self.pendingMessagesAsyncId {
-            if let isCompleted = MessagesHandler.Instance.isCompleted(pendingMessagesAsyncId), isCompleted {
-                self.pendingMessagesAsyncId = nil
-                if let messages = MessagesHandler.Instance.getMessagesByRequestId(pendingMessagesAsyncId){
-                    chat.messages = messages
-                    self.notifyUnseen()
+        
+        if self.newMessage {
+            self.accessoryView.setupView(frame: self.view.frame, navigationController: self.navigationController!, inputViewHeight: self.inputToolbar.frame.size.height)
+            self.view.addSubview(self.accessoryView)
+            self.senderDisplayName = ""
+        } else {
+            self.setupTitleBar()
+            if !openedModally{
+                self.navigationItem.leftBarButtonItem = nil
+            }
+            NotificationCenter.default.addObserver(self, selector: #selector(messagesPageReceived), name: NSNotification.Name(rawValue: NotificationManager.Name.MessagesAsyncRequestCompleted.rawValue), object: nil)
+            if let pendingMessagesAsyncId = self.pendingMessagesAsyncId {
+                if let isCompleted = MessagesHandler.Instance.isCompleted(pendingMessagesAsyncId), isCompleted {
+                    self.pendingMessagesAsyncId = nil
+                    if let messages = MessagesHandler.Instance.getMessagesByRequestId(pendingMessagesAsyncId){
+                        chat.messages = messages
+                        self.notifyUnseen()
+                    }
                 }
             }
+            
+            self.senderDisplayName = chat.otherParty?.username
+            
+            self.chat.seen = true
+            
+            if self.chat.messages.count > 0{
+                self.updateMessages(self.chat.messages)
+                self.notifyUnseen()
+            }
+            LocalNotificationsHandler.Instance.reportEventSeen(.messages, id: self.chat.id)
         }
-        
-        self.chat.seen = true
-        
-        if self.chat.messages.count > 0{
-            self.updateMessages(self.chat.messages)
-            self.notifyUnseen()
+    }
+    
+    func setupTitleBar() {
+        ThreadHelper.runOnMainThread { 
+            if self.newMessage {
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.collectionView.frame.origin.y = 0
+                    self.collectionView.frame.size.height -= self.accessoryView.frame.size.height
+                    self.accessoryView.frame.origin.y -= self.accessoryView.frame.size.height
+                }, completion: { (finished) in
+                    self.accessoryView.removeFromSuperview()
+                })
+                self.view.layoutSubviews()
+            }
+            
+            //Добавить новое view с информацией о пользователе
+            let titleLabel = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width - 32, height: self.view.frame.height))
+            titleLabel.text = "HOME"
+            
+            //Main profile view
+            let views: UIView = {
+                let v = UIView()
+                v.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 42)
+                return v
+            }()
+            
+            //Profile imageView
+            let profileImageView: UIImageView = {
+                let imageView = UIImageView()
+                imageView.contentMode = .scaleAspectFill
+                
+                imageView.image = ImageCachingHandler.defaultAccountImage
+                if let imageUrl = self.chat?.otherParty?.imageUrl {
+                    ImageCachingHandler.Instance.getImageFromUrl(imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
+                        ThreadHelper.runOnMainThread {
+                            imageView.image = image
+                        }
+                    })
+                }
+                //imageView.image = selectedCell.imgPhoto.image
+                //imageView.backgroundColor = UIColor.redColor()
+                imageView.layer.cornerRadius = 15
+                imageView.layer.masksToBounds = true
+                return imageView
+            }()
+            
+            views.addSubview(profileImageView)
+            
+            profileImageView.translatesAutoresizingMaskIntoConstraints = false
+            views.addConstraintsWithFormat("H:|-8-[v0(30)]", views: profileImageView)
+            views.addConstraintsWithFormat("V:[v0(30)]", views: profileImageView)
+            
+            views.addConstraint(NSLayoutConstraint(item: profileImageView, attribute: .centerY, relatedBy: .equal, toItem: views, attribute: .centerY, multiplier: 1, constant: 0))
+            
+            //ContainerView
+            let containerView = UIView()
+            views.addSubview(containerView)
+            
+            views.addConstraintsWithFormat("H:|-46-[v0]|", views: containerView)
+            views.addConstraintsWithFormat("V:[v0(30)]", views: containerView)
+            
+            views.addConstraint(NSLayoutConstraint(item: containerView, attribute: .centerY, relatedBy: .equal, toItem: views, attribute: .centerY, multiplier: 1, constant: 0))
+            
+            //nameLabel
+            let nameLabel: UILabel = {
+                let label = UILabel()
+                
+                if let firstName = self.chat.otherParty?.getProfileDetailValue(.FirstName), let lastName = self.chat.otherParty?.getProfileDetailValue(.LastName){
+                    label.text = firstName + " " + lastName
+                } else {
+                    label.text = self.chat.otherParty?.username
+                }
+                label.font = UIFont.systemFont(ofSize: 12)
+                return label
+            }()
+            
+            //activeTimeLabel
+            let activeTimeLabel: UILabel = {
+                let label = UILabel()
+                if let lastLogin = self.chat.otherParty?.lastLogin{
+                    label.text = lastLogin.toFriendlyLongDateTimeString()
+                }
+                label.font = UIFont.systemFont(ofSize: 10)
+                label.textColor = UIColor.darkGray
+                return label
+            }()
+            
+            containerView.addSubview(nameLabel)
+            containerView.addSubview(activeTimeLabel)
+            
+            containerView.addConstraintsWithFormat("H:|[v0]|", views: nameLabel)
+            containerView.addConstraintsWithFormat("V:|[v0][v1(14)]|", views: nameLabel, activeTimeLabel)
+            
+            containerView.addConstraintsWithFormat("H:|[v0]-8-|", views: activeTimeLabel)
+            
+            self.navigationItem.titleView = views
         }
-        LocalNotificationsHandler.Instance.reportEventSeen(.messages, id: self.chat.id)
+    }
+    
+    @IBAction func btnDone_Clicked(_ sender: Any) {
+        self.navigationController!.dismiss(animated: true, completion: nil)
     }
     
     func appDidBecomeActive(){
@@ -73,7 +190,9 @@ open class DialogViewController : JSQMessagesViewController{
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        LocalNotificationsHandler.Instance.reportActiveView(.messages, id: self.chat.id)
+        if !self.newMessage {
+            LocalNotificationsHandler.Instance.reportActiveView(.messages, id: self.chat.id)
+        }
         
         NotificationCenter.default.addObserver(self, selector: #selector(messageAdded), name: NSNotification.Name(rawValue: NotificationManager.Name.MessageAdded.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(messageRemoved), name: NSNotification.Name(rawValue: NotificationManager.Name.MessageRemoved.rawValue), object: nil)
@@ -191,25 +310,40 @@ open class DialogViewController : JSQMessagesViewController{
     }
     
     func messageAdded(_ notification: Notification){
-        if let message = notification.object as? Message, message.chatId == self.chat.id /*&& !self.chat.messages.contains({$0.id! == message.id!})*/ {
-            ThreadHelper.runOnMainThread({ 
-                self.addMessage(message.id!, senderId: message.userId!, text: message.text!, timestamp: message.timestamp!, callFinish: true)
-            })
-            if UIApplication.shared.applicationState == .active {
-                if message.toUserId == AccountHandler.Instance.userId {
-                    self.notifyUnseen()
-                }
-                LocalNotificationsHandler.Instance.reportEventSeen(.messages, id: self.chat.id)
+        if let message = notification.object as? Message{
+            var setupTitlebar = false
+            if self.chat == nil && self.newMessage && message.id == self.lastMessageId, let index = AccountHandler.Instance.myChats?.index(where: {$0.id == message.chatId}) {
+                self.chat = AccountHandler.Instance.myChats![index]
+                setupTitlebar = true
+                LocalNotificationsHandler.Instance.reportActiveView(.messages, id: self.chat.id)
             }
-        } else {
-            ThreadHelper.runOnMainThread({ 
-                //let backButton = self.navigationItem.backBarButtonItem
-                //backButton?.title! += "(1)"
-                let count = LocalNotificationsHandler.Instance.getNewEventCount(.messages)
-                if count > 0 {
-                    self.navigationController!.navigationBar.backItem!.title = NSLocalizedString("Messages(\(count))", comment: "NavigationBar Item, Messages")
+            if self.chat != nil {
+                if message.chatId == self.chat.id /*&& !self.chat.messages.contains({$0.id! == message.id!})*/ {
+                    ThreadHelper.runOnMainThread({ 
+                        self.addMessage(message.id!, senderId: message.userId!, text: message.text!, timestamp: message.timestamp!, callFinish: true)
+                        if setupTitlebar {
+                            self.setupTitleBar()
+                        }
+                    })
+                    if UIApplication.shared.applicationState == .active {
+                        if message.toUserId == AccountHandler.Instance.userId {
+                            self.notifyUnseen()
+                        }
+                        LocalNotificationsHandler.Instance.reportEventSeen(.messages, id: self.chat.id)
+                    }
+                } else {
+                    if !self.newMessage {
+                        ThreadHelper.runOnMainThread({
+                            //let backButton = self.navigationItem.backBarButtonItem
+                            //backButton?.title! += "(1)"
+                            let count = LocalNotificationsHandler.Instance.getNewEventCount(.messages)
+                            if count > 0 && !self.openedModally && !self.newMessage {
+                                self.navigationController!.navigationBar.backItem!.title = NSLocalizedString("Messages(\(count))", comment: "NavigationBar Item, Messages")
+                            }
+                        })
+                    }
                 }
-            })
+            }
         }
     }
     
@@ -234,13 +368,21 @@ open class DialogViewController : JSQMessagesViewController{
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if self.newMessage {
+            self.collectionView.frame.origin.y += self.accessoryView.frame.size.height
+            self.collectionView.frame.size.height -= self.accessoryView.frame.size.height
+            self.view.layoutSubviews()
+        }
         self.scrollToBottom(animated: false)
         if !self.isPeeking {
             self.keyboardController.textView.becomeFirstResponder()
         }
+        if (self.newMessage && self.accessoryView.txtTo.text == ""){
+            self.accessoryView.txtTo.becomeFirstResponder()
+        }
         
         let count = LocalNotificationsHandler.Instance.getNewEventCount(.messages)
-        if count > 0 {
+        if count > 0 && !self.newMessage {
             self.navigationController!.navigationBar.backItem!.title = NSLocalizedString("Messages(\(count))", comment: "NavigationBar Item, Messages")
         }
     }
@@ -324,7 +466,7 @@ open class DialogViewController : JSQMessagesViewController{
             let message = JSQMessage(senderId: senderId, senderDisplayName: "", date: timestamp, text: text)
             messages.append(message!)
             if callFinish{
-                if id == self.senderId {
+                if AccountHandler.Instance.userId == self.senderId {
                     JSQSystemSoundPlayer.jsq_playMessageSentSound()
                     finishSendingMessage()
                 } else {
@@ -336,7 +478,7 @@ open class DialogViewController : JSQMessagesViewController{
     }
     
     open override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
-        if text != "" {
+        if text != "" && (!self.newMessage || self.accessoryView.recipient != nil) {
             if !self.isNetworkReachable(){
                 return
             }
@@ -348,11 +490,20 @@ open class DialogViewController : JSQMessagesViewController{
         }
     }
     
+    var lastMessageId: String?
+    
     func doSendMessge() {
-        if ConnectionHandler.Instance.status == .connected {
+        if ConnectionHandler.Instance.isConnected() {
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
             let message = MessageToSend()
-            message.destinationUserId = self.chat.otherParty?.id
+            if self.chat != nil {
+                message.destinationUserId = self.chat.otherParty?.id
+            } else if self.accessoryView.recipient != nil {
+                message.destinationUserId = self.accessoryView.recipient!.id
+            } else {
+                return
+            }
+            
             message.message = self.inputToolbar.contentView.textView.text
             
             ConnectionHandler.Instance.messages.sendMessage(message){ success, errorId, errorMessage, result in
@@ -361,6 +512,14 @@ open class DialogViewController : JSQMessagesViewController{
                     self.inputToolbar.contentView.rightBarButtonItem.isEnabled = true
                     
                     if success {
+                        self.lastMessageId = (result as! String)
+                        if self.chat == nil, let collectionMessageIndex = AccountHandler.Instance.messagesCollection.messages.index(where: {$0.id == self.lastMessageId!}), let index = AccountHandler.Instance.myChats?.index(where: {$0.id == AccountHandler.Instance.messagesCollection.messages[collectionMessageIndex].chatId}) {
+                            let collectionMessage = AccountHandler.Instance.messagesCollection.messages[collectionMessageIndex]
+                            self.chat = AccountHandler.Instance.myChats![index]
+                            self.setupTitleBar()
+                            self.addMessage(collectionMessage.id!, senderId: collectionMessage.userId!, text: collectionMessage.text!, timestamp: collectionMessage.timestamp!, callFinish: true)
+                            LocalNotificationsHandler.Instance.reportActiveView(.messages, id: self.chat.id)
+                        }
                         self.finishSendingMessage()
                     } else {
                         self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)

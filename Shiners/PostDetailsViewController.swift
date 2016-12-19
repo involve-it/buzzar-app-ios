@@ -104,7 +104,7 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
     
     @IBAction func btnSendMessage_Click(_ sender: AnyObject) {
         AppAnalytics.logEvent(.PostDetailsScreen_BtnMessage_Clicked)
-        let alertController = UIAlertController(title: NSLocalizedString("New message", comment: "Alert title, New message"), message: nil, preferredStyle: .alert);
+        /*let alertController = UIAlertController(title: NSLocalizedString("New message", comment: "Alert title, New message"), message: nil, preferredStyle: .alert);
         
         alertController.addTextField { (textField) in
             textField.placeholder = NSLocalizedString("Message", comment: "Placeholder, Message")
@@ -133,7 +133,31 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
         }));
         self.present(alertController, animated: true) {
             alertController.textFields![0].becomeFirstResponder()
+        }*/
+        let newMessageNavViewController = self.instantiateViewController(identifier: "newMessageNavigationController") as! UINavigationController
+        let dialogController = newMessageNavViewController.viewControllers[0] as! DialogViewController
+        dialogController.openedModally = true
+        dialogController.accessoryView.showNearbyUsers = false
+        if let chatIndex = AccountHandler.Instance.myChats?.index(where: {$0.otherParty?.id == self.post!.user!.id}){
+            let chat = AccountHandler.Instance.myChats![chatIndex]
+            dialogController.chat = chat
+            dialogController.dataFromCache = false
+            
+            if !chat.messagesRequested {
+                if CachingHandler.Instance.status == .complete, let index = CachingHandler.Instance.chats?.index(where: {$0.id == chat.id}) {
+                    let cachedChat = CachingHandler.Instance.chats![index]
+                    chat.messages = cachedChat.messages
+                    dialogController.dataFromCache = true
+                }
+                
+                dialogController.pendingMessagesAsyncId = MessagesHandler.Instance.getMessagesAsync(chat.id!, skip: 0)
+            }
+        } else {
+            dialogController.newMessage = true
+            dialogController.accessoryView.txtTo.text = self.post.user!.username
+            dialogController.accessoryView.recipient = self.post.user
         }
+        self.present(newMessageNavViewController, animated: true, completion: nil)
     }
     
     @IBAction func btnShare_Click(_ sender: AnyObject) {

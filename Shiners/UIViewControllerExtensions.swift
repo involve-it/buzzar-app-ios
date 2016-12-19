@@ -64,4 +64,9 @@ public extension UIViewController{
         return self.isViewLoaded && self.view.window != nil
     }
     
+    func instantiateViewController(identifier: String) -> UIViewController?{
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        return storyboard.instantiateViewController(withIdentifier: identifier)
+    }
+    
 }

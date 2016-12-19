@@ -101,7 +101,7 @@ open class User: NSObject, DictionaryInitializable, NSCoding{
     open func getProfileDetailValue(_ key: ProfileDetail.Key) -> String? {
         return self.getProfileDetail(key)?.value;
     }
-    
+      
     open func getProfileDetail(_ key: ProfileDetail.Key) -> ProfileDetail?{
         var value: ProfileDetail?;
         if let profileDetails = self.profileDetails{

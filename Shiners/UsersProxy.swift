@@ -84,6 +84,40 @@ open class UsersProxy{
         };
     }
     
+    static let NEARBY_USERS_RADIUS = 100
+    static let NEARBY_USERS_COUNT = 10
+    
+    open func getNearbyUsers(lat: Float, lng: Float, callback: @escaping MeteorMethodCallback){
+        var dict = Dictionary<String, AnyObject>()
+        dict["lat"] = lat as AnyObject?
+        dict["lng"] = lng as AnyObject?
+        dict["radius"] = UsersProxy.NEARBY_USERS_RADIUS as AnyObject?
+        dict["skip"] = 0 as AnyObject?
+        dict["take"] = UsersProxy.NEARBY_USERS_COUNT as AnyObject?
+        
+        Meteor.call("bz.user.getUsersAround", params: [dict]) {result, error in
+            if error == nil {
+                if let users = ResponseHelper.callHandlerArray(result as AnyObject?, handler: callback) as [User]? {
+                    AccountHandler.Instance.mergeNewUsers(users)
+                }
+            } else {
+                callback(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
+            }
+        }
+    }
+    
+    open func getUserByName(_ username: String, callback: @escaping MeteorMethodCallback){
+        Meteor.call("getUserByName", params: [username]){ result, error in
+            if (error == nil){
+                if let user = ResponseHelper.callHandler(result as AnyObject?, handler: callback) as User?{
+                    AccountHandler.Instance.mergeNewUsers([user])
+                }
+            } else {
+                callback(false, nil, error?.reason, nil)
+            }
+        };
+    }
+    
     open func saveUser(_ user: User, callback: @escaping MeteorMethodCallback){
         Meteor.call("editUser", params: [user.toDictionary()]){ result, error in
             if (error == nil){

@@ -39,7 +39,7 @@ class MessagesCollection: AbstractCollection{
                 
                 LocalNotificationsHandler.Instance.reportNewEvent(.messages, count: 1, id: chat.id, messageTitle: "New message from \(chat.otherParty?.username ?? "Unknown")", messageSubtitle: message.shortMessage())
             }
-            NotificationManager.sendNotification(NotificationManager.Name.MessageAdded, object: message)
+            NotificationManager.sendNotification(.MessageAdded, object: message)
         } else {
             ConnectionHandler.Instance.messages.getChat(message.chatId!){ success, errorId, errorMessage, result in
                 if AccountHandler.Instance.myChats?.index(where: {$0.id == message.chatId}) == nil{
@@ -53,6 +53,7 @@ class MessagesCollection: AbstractCollection{
                         if message.toUserId == AccountHandler.Instance.userId{
                             LocalNotificationsHandler.Instance.reportNewEvent(.messages, count: 1, id: chat.id)
                         }
+                        NotificationManager.sendNotification(.MessageAdded, object: message)
                         NotificationManager.sendNotification(.MyChatsUpdated, object: chat)
                     } else {
                         NSLog("error loading chat")
