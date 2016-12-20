@@ -39,7 +39,7 @@ class commentCollectionViewCell: UICollectionViewCell {
     }
     
     func labelUserInfoConfigure() {
-        self.txtTotalInfoFromUser.text = "\(username!) • \(commentWritten!)"
+        self.txtTotalInfoFromUser.text = "\(username!) • \(commentWritten!) •"
     }
     
     func setLikes(_ loggedIn: Bool, count: Int, liked: Bool) {
@@ -54,12 +54,20 @@ class commentCollectionViewCell: UICollectionViewCell {
             self.btnLike.isHidden = false
             var title: String
             if liked  {
-                title = NSLocalizedString("Unlike", comment: "Unlike")
+                self.btnLike.setImage(UIImage(named: "icon_comment")?.withRenderingMode(.alwaysTemplate), for: .normal)
+                self.btnLike.tintColor = UIColor(netHex: 0x5EB2E5)
+                self.btnLike.titleLabel?.textColor = UIColor(netHex: 0x5EB2E5)
+                
+                title = NSLocalizedString("Like", comment: "Unlike")
             } else {
+                self.btnLike.setImage(UIImage(named: "icon_comment")?.withRenderingMode(.alwaysTemplate), for: .normal)
+                self.btnLike.tintColor = UIColor(netHex: 0xAAAAAA)
+                self.btnLike.titleLabel?.textColor = UIColor(netHex: 0xAAAAAA)
+                
                 title = NSLocalizedString("Like", comment: "Like")
             }
             if likes > 0 {
-                title += " (\(likes))"
+                title += " \(likes)"
             }
             self.btnLike.setTitle(title, for: UIControlState())
         } else {
