@@ -492,7 +492,7 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
     
     func updateLikeButton(){
         if (self.post.liked ?? false){
-            self.btnLike.setImage(UIImage(named: "favorites_filled")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
+            self.btnLike.setImage(UIImage(named: "icon_likes_filled")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
             self.btnLike.tintColor = UITabBar.appearance().tintColor
         } else {
             self.btnLike.setImage(UIImage(named: "icon_likes")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
