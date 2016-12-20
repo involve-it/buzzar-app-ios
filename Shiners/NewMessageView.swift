@@ -30,7 +30,7 @@ class NewMessageView: UIView, UITableViewDataSource, UITextViewDelegate, UITable
         self.parentFrame = frame
         let top = CGFloat(navigationController.navigationBar.frame.size.height + UIApplication.shared.statusBarFrame.height)
         self.frame = CGRect(x: 0, y: top, width: frame.width, height: self.parentFrame.height - top - self.keyboardHeight - self.inputViewHeight - 1)
-        self.bringSubview(toFront: self.tableView)
+        //self.bringSubview(toFront: self.tableView)
         self.layoutSubviews()
         
         self.tableView.dataSource = self

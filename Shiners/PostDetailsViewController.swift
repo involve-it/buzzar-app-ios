@@ -137,7 +137,7 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
         let newMessageNavViewController = self.instantiateViewController(identifier: "newMessageNavigationController") as! UINavigationController
         let dialogController = newMessageNavViewController.viewControllers[0] as! DialogViewController
         dialogController.openedModally = true
-        dialogController.accessoryView.showNearbyUsers = false
+        dialogController.showNearbyUsers = false
         if let chatIndex = AccountHandler.Instance.myChats?.index(where: {$0.otherParty?.id == self.post!.user!.id}){
             let chat = AccountHandler.Instance.myChats![chatIndex]
             dialogController.chat = chat
@@ -154,8 +154,7 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
             }
         } else {
             dialogController.newMessage = true
-            dialogController.accessoryView.txtTo.text = self.post.user!.username
-            dialogController.accessoryView.recipient = self.post.user
+            dialogController.newMessageRecipient = self.post.user
         }
         self.present(newMessageNavViewController, animated: true, completion: nil)
     }

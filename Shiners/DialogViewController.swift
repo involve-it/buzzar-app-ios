@@ -9,7 +9,7 @@
 import UIKit
 import JSQMessagesViewController
 
-open class DialogViewController : JSQMessagesViewController{
+open class DialogViewController : JSQMessagesViewController, UIGestureRecognizerDelegate, NewMessageViewControllerDelegate{
     var messages = [JSQMessage]()
     var outgoingBubbleImageView: JSQMessagesBubbleImage!
     var incomingBubbleImageView: JSQMessagesBubbleImage!
@@ -24,7 +24,37 @@ open class DialogViewController : JSQMessagesViewController{
     var newMessage = false
     var openedModally = false
     
-    @IBOutlet var accessoryView: NewMessageView!
+    var newMessageRecipient: User?
+    var showNearbyUsers = true
+    var newMessageViewController: NewMessageViewController?
+    
+    //@IBOutlet var accessoryView: NewMessageView!
+    
+    func recipientSelected() {
+        self.keyboardController.textView.becomeFirstResponder()
+    }
+    
+    @IBOutlet var accessoryView: UIView!
+    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "newMessageContainer" {
+            let newMessageViewController = segue.destination as! NewMessageViewController
+            newMessageViewController.recipient = self.newMessageRecipient
+            newMessageViewController.showNearbyUsers = self.showNearbyUsers
+            newMessageViewController.delegate = self
+            self.newMessageViewController = newMessageViewController
+        }
+    }
+    
+    open override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if identifier == "newMessageContainer" {
+            return self.newMessage
+        }
+        return true
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return self.chat == nil
+    }
     
     open override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,9 +72,17 @@ open class DialogViewController : JSQMessagesViewController{
         self.initialPage = true
         
         if self.newMessage {
-            self.accessoryView.setupView(frame: self.view.frame, navigationController: self.navigationController!, inputViewHeight: self.inputToolbar.frame.size.height)
-            self.view.addSubview(self.accessoryView)
+            //self.accessoryView.setupView(frame: self.view.frame, navigationController: self.navigationController!, inputViewHeight: self.inputToolbar.frame.size.height)
+            //self.view.addSubview(self.accessoryView)
             self.senderDisplayName = ""
+            self.view.addSubview(self.accessoryView)
+            self.newMessageViewController!.setupView(frame: self.view.frame, navigationController: self.navigationController!, inputViewHeight: self.inputToolbar.frame.size.height, keyboardController: self.keyboardController)
+            self.newMessageViewController!.tableView.gestureRecognizers!.forEach({ (recognizer) in
+                self.collectionView.addGestureRecognizer(recognizer)
+            })
+            self.collectionView.addGestureRecognizer(self.newMessageViewController!.tapGestureRecognizer)
+            
+            //self.collectionView.addGestureRecognizer(self.newMessageViewController!.tableView.panGestureRecognizer)
         } else {
             self.setupTitleBar()
             if !openedModally{
@@ -82,6 +120,7 @@ open class DialogViewController : JSQMessagesViewController{
                     self.accessoryView.frame.origin.y -= self.accessoryView.frame.size.height
                 }, completion: { (finished) in
                     self.accessoryView.removeFromSuperview()
+                    self.newMessageViewController = nil
                 })
                 self.view.layoutSubviews()
             }
@@ -138,8 +177,8 @@ open class DialogViewController : JSQMessagesViewController{
             let nameLabel: UILabel = {
                 let label = UILabel()
                 
-                if let firstName = self.chat.otherParty?.getProfileDetailValue(.FirstName), let lastName = self.chat.otherParty?.getProfileDetailValue(.LastName){
-                    label.text = firstName + " " + lastName
+                if let fullName = self.chat.otherParty?.getFullName(){
+                    label.text = fullName
                 } else {
                     label.text = self.chat.otherParty?.username
                 }
@@ -360,6 +399,7 @@ open class DialogViewController : JSQMessagesViewController{
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
+        self.view.endEditing(true)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MessageAdded.rawValue), object: nil)
         //NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MessageModified.rawValue, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MessageRemoved.rawValue), object: nil)
@@ -368,17 +408,14 @@ open class DialogViewController : JSQMessagesViewController{
     
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if self.newMessage {
+        /*if self.newMessage {
             self.collectionView.frame.origin.y += self.accessoryView.frame.size.height
             self.collectionView.frame.size.height -= self.accessoryView.frame.size.height
             self.view.layoutSubviews()
-        }
+        }*/
         self.scrollToBottom(animated: false)
         if !self.isPeeking {
             self.keyboardController.textView.becomeFirstResponder()
-        }
-        if (self.newMessage && self.accessoryView.txtTo.text == ""){
-            self.accessoryView.txtTo.becomeFirstResponder()
         }
         
         let count = LocalNotificationsHandler.Instance.getNewEventCount(.messages)
@@ -478,7 +515,7 @@ open class DialogViewController : JSQMessagesViewController{
     }
     
     open override func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
-        if text != "" && (!self.newMessage || self.accessoryView.recipient != nil) {
+        if text != "" && (!self.newMessage || self.chat != nil || self.newMessageViewController?.recipient != nil) {
             if !self.isNetworkReachable(){
                 return
             }
@@ -498,8 +535,8 @@ open class DialogViewController : JSQMessagesViewController{
             let message = MessageToSend()
             if self.chat != nil {
                 message.destinationUserId = self.chat.otherParty?.id
-            } else if self.accessoryView.recipient != nil {
-                message.destinationUserId = self.accessoryView.recipient!.id
+            } else if self.newMessageViewController?.recipient != nil {
+                message.destinationUserId = self.newMessageViewController!.recipient!.id
             } else {
                 return
             }

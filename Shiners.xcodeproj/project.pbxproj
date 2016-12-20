@@ -94,6 +94,7 @@
 		7B50067E1DEB598600224F49 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B50067D1DEB598600224F49 /* Comment.swift */; };
 		7B5006811DEB5E2200224F49 /* CommentsCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5006801DEB5E2200224F49 /* CommentsCollection.swift */; };
 		7B619A3A1E07693B0093043B /* NewMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B619A391E07693B0093043B /* NewMessageView.swift */; };
+		7B619A3C1E0893770093043B /* NewMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B619A3B1E0893770093043B /* NewMessageViewController.swift */; };
 		7B86FFD91D3BFAB7008343B3 /* PushNotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B86FFD81D3BFAB7008343B3 /* PushNotificationsHandler.swift */; };
 		7B8E25751DD558AC0041A105 /* ExceptionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8E25741DD558AC0041A105 /* ExceptionHandler.swift */; };
 		7BA062FE1DF37F0C001BF2A1 /* CommentsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA062FD1DF37F0C001BF2A1 /* CommentsHandler.swift */; };
@@ -249,6 +250,7 @@
 		7B5006801DEB5E2200224F49 /* CommentsCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsCollection.swift; sourceTree = "<group>"; };
 		7B619A381E07083B0093043B /* Shiners.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Shiners.entitlements; sourceTree = "<group>"; };
 		7B619A391E07693B0093043B /* NewMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageView.swift; sourceTree = "<group>"; };
+		7B619A3B1E0893770093043B /* NewMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMessageViewController.swift; sourceTree = "<group>"; };
 		7B86FFD81D3BFAB7008343B3 /* PushNotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushNotificationsHandler.swift; sourceTree = "<group>"; };
 		7B8E25741DD558AC0041A105 /* ExceptionHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExceptionHandler.swift; sourceTree = "<group>"; };
 		7BA062FD1DF37F0C001BF2A1 /* CommentsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentsHandler.swift; sourceTree = "<group>"; };
@@ -442,6 +444,7 @@
 				7B3565441CE7B99C00012CA9 /* MessagesTableViewCell.swift */,
 				7B3565491CE7BE0100012CA9 /* DialogViewController.swift */,
 				7B619A391E07693B0093043B /* NewMessageView.swift */,
+				7B619A3B1E0893770093043B /* NewMessageViewController.swift */,
 			);
 			name = Messages;
 			sourceTree = "<group>";
@@ -898,6 +901,7 @@
 				7B3565521CE7DF5A00012CA9 /* PostsProxy.swift in Sources */,
 				7BB2A8011CCD96C000AD636D /* LogInViewController.swift in Sources */,
 				7BC1A9C41D4C3D19005B4F62 /* KeyChainWrapper.swift in Sources */,
+				7B619A3C1E0893770093043B /* NewMessageViewController.swift in Sources */,
 				7BC0A2301CCC160C00DA2824 /* SettingsTableViewController.swift in Sources */,
 				7BFDC67C1D9B5AFB00DE66A6 /* CWStatusBarNotification.swift in Sources */,
 				7B8E25751DD558AC0041A105 /* ExceptionHandler.swift in Sources */,

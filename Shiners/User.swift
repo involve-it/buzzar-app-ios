@@ -101,7 +101,14 @@ open class User: NSObject, DictionaryInitializable, NSCoding{
     open func getProfileDetailValue(_ key: ProfileDetail.Key) -> String? {
         return self.getProfileDetail(key)?.value;
     }
-      
+    
+    open func getFullName() -> String? {
+        if let firstName = self.getProfileDetailValue(.FirstName), let lastName = self.getProfileDetailValue(.LastName){
+            return firstName + " " + lastName
+        }
+        return nil
+    }
+    
     open func getProfileDetail(_ key: ProfileDetail.Key) -> ProfileDetail?{
         var value: ProfileDetail?;
         if let profileDetails = self.profileDetails{
