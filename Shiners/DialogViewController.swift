@@ -215,7 +215,7 @@ open class DialogViewController : JSQMessagesViewController, UIGestureRecognizer
     }
     
     func appDidBecomeActive(){
-        if self.chat.messages.count > 0 {
+        if self.chat != nil && self.chat.messages.count > 0 {
             self.updateMessages(self.chat.messages)
         }
     }

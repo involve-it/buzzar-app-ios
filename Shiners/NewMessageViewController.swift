@@ -160,23 +160,26 @@ class NewMessageViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func getNearbyUsers(){
         if let lastLocation = LocationHandler.lastLocation {
-            /*ConnectionHandler.Instance.users.getNearbyUsers(lat: Float(lastLocation.coordinate.latitude), lng: Float(lastLocation.coordinate.longitude), callback: { (success, errorId, errorMessage, users) in
-                //if success {
+            ConnectionHandler.Instance.users.getNearbyUsers(lat: Float(lastLocation.coordinate.latitude), lng: Float(lastLocation.coordinate.longitude), callback: { (success, errorId, errorMessage, users) in
+                if success {
                 ThreadHelper.runOnMainThread({
-                    self.nearbyUsers = AccountHandler.Instance.allUsers
+                    self.nearbyUsers = (users as! [User]).filter({$0.id != AccountHandler.Instance.userId})
+                    if self.nearbyUsers.count > 0 {
+                        //AccountHandler.Instance.allUsers
                     //self.view.frame.size.height = self.parentFrame.size.height - self.inputViewHeight - self.view.frame.origin.y - 1
                         //self.keyboardOriginY - self.view.frame.origin.y - self.inputViewHeight - 1
-                    self.keyboardHeightChanged()
-                    //users as! [User]
-                    
-                    self.tableView.reloadData()
+                        self.keyboardHeightChanged()
+                        //users as! [User]
+                        
+                        self.tableView.reloadData()
+                    }
                 })
-                //}
-            })*/
-            self.nearbyUsers = AccountHandler.Instance.allUsers
+                }
+            })
+            //self.nearbyUsers = AccountHandler.Instance.allUsers
             //self.view.frame.size.height = self.parentFrame.size.height - self.inputViewHeight - self.view.frame.origin.y - 1
             //self.keyboardOriginY - self.view.frame.origin.y - self.inputViewHeight - 1
-            self.keyboardHeightChanged()
+            //self.keyboardHeightChanged()
             //users as! [User]
             
             self.tableView.reloadData()
