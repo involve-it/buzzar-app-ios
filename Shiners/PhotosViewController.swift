@@ -43,6 +43,11 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         self.svImages.addGestureRecognizer(gestureRecognizer)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.NewPost_Photo)
+    }
+    
     func scrollViewTapped(_ gestureRecognizer: UIGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.recognized && self.images.count > 0 {
             let point = gestureRecognizer.location(in: self.svImages)

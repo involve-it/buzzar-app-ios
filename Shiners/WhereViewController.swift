@@ -99,6 +99,8 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        AppAnalytics.logScreen(.NewPost_Loc)
+        
         if let _ = self.post.locations!.index(where: {return $0.placeType == .Dynamic}) {
             self.mapView.showsUserLocation = true
             self.switcherDynamic.isOn = true
@@ -111,6 +113,7 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
         
         self.centerMapOnAnnotations()
         self.updateUiElementsInLocation()
+        
     }
     
     func currentLocationReported(_ notification: Notification){

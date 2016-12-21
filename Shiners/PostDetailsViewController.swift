@@ -762,6 +762,7 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.PostDetails)
         NotificationCenter.default.addObserver(self, selector: #selector(newCommentReceived), name: NSNotification.Name(rawValue: NotificationManager.Name.CommentAdded.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(commentUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.CommentUpdated.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(commentRemoved), name: NSNotification.Name(rawValue: NotificationManager.Name.CommentRemoved.rawValue), object: nil)

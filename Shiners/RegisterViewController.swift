@@ -45,6 +45,11 @@ open class RegisterViewController: UITableViewController, UITextFieldDelegate{
         }
     }
     
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.Register)
+    }
+    
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)

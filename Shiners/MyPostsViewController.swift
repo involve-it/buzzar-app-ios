@@ -142,6 +142,7 @@ open class MyPostsViewController: UITableViewController, UIViewControllerPreview
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.MyPosts)
         self.checkPending()
         self.refreshControl?.endRefreshing()
     }

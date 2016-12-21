@@ -101,6 +101,11 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.Comments)
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if Float(indexPath.row) > (Float(CommentsHandler.DEFAULT_PAGE_SIZE) / 1.5) && self.moreCommentsAvailable && !self.loadingMore && ConnectionHandler.Instance.isNetworkConnected() {
             self.loadingMore = true
@@ -257,7 +262,7 @@ class CommentsViewController: UICollectionViewController, AddCommentDelegate {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        super.viewWillDisappear(animated)
         self.view.endEditing(true)
     }
     

@@ -34,6 +34,11 @@ class LogInViewController: UITableViewController, UITextFieldDelegate{
         self.navigationController?.dismiss(animated: true, completion: nil);
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.LoginScreen)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)

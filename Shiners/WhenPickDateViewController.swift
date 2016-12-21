@@ -35,6 +35,11 @@ class WhenPickDateViewController: UIViewController {
             self.btn_next.isEnabled = true
         }
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.NewPost_When)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

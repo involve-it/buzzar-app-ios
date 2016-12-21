@@ -186,6 +186,7 @@ open class MessagesViewController: UITableViewController, UIViewControllerPrevie
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.Messages)
         
         self.tableView.reloadData()
         self.navigationItem.title = NSLocalizedString("Messages", comment: "NavigationItem title, Messages")

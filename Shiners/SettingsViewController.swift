@@ -38,6 +38,7 @@ class SettingsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.SettingsLoggedOut)
         if (AccountHandler.Instance.isLoggedIn()){
             self.dismiss(animated: true, completion: nil)
         }

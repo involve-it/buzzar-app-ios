@@ -131,7 +131,10 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
         
     }
 
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.NewPost_Title)
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

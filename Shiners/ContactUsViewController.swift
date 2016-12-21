@@ -82,6 +82,11 @@ class ContactUsViewController: UITableViewController, UITextFieldDelegate, UITex
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.ContactUs)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if let email = self.txtEmail.text, email != "" {

@@ -58,6 +58,11 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
         txtPlaceholderSelectedTextRange(fieldDescriptionOfPost)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.EditPost)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)

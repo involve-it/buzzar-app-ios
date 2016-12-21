@@ -46,6 +46,11 @@ open class ProfileViewController: UITableViewController, UIImagePickerController
         self.navigationController?.popViewController(animated: true)
     }
     
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.Profile)
+    }
+    
     @IBAction func btnSave_Click(_ sender: AnyObject) {
         self.setLoading(true)
         let user = self.getUser();

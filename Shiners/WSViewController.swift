@@ -192,5 +192,8 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
         return true
     }
     
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.Welcome)
+    }
 }

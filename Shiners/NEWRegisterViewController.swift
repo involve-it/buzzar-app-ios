@@ -178,6 +178,10 @@ open class NEWRegisterViewController: UITableViewController, UITextFieldDelegate
         })
     }
 
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.Register)
+    }
     
     // TODO: - duplication code
     open func leftPaddingToTextField(_ array: [UITextField]) {

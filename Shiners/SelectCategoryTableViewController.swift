@@ -14,7 +14,7 @@ class SelectCategoryTableViewController: UITableViewController {
     var selectCategoryDelegate: SelectCategoryViewControllerDelegate?
     
     override func viewDidLoad() {
-        
+        AppAnalytics.logScreen(.NewPost_Category)
     }
     
     override func viewWillAppear(_ animated: Bool) {

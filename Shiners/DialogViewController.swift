@@ -229,7 +229,7 @@ open class DialogViewController : JSQMessagesViewController, UIGestureRecognizer
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        AppAnalytics.logScreen(.Dialog)
         if !self.newMessage {
             LocalNotificationsHandler.Instance.reportActiveView(.messages, id: self.chat.id)
         }
