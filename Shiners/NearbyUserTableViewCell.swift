@@ -28,7 +28,7 @@ class NearbyUserTableViewCell: UITableViewCell {
     
     func setup(_ user: User){
         self.txtUsername.text = user.username
-        if let fullName = user.getFullName() {
+        if let fullName = user.getFullName(), fullName != "" {
             if !self.fullNameShown {
                 self.fullNameShown = true
                 self.stackView.addArrangedSubview(self.txtFullname!)
