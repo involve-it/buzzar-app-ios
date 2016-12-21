@@ -56,6 +56,11 @@ open class DialogViewController : JSQMessagesViewController, UIGestureRecognizer
         return self.chat == nil
     }
     
+    func setupCancelButton(){
+        let btn = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(self.btnDone_Clicked(_:)))
+        self.navigationItem.leftBarButtonItem = btn
+    }
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,6 +77,7 @@ open class DialogViewController : JSQMessagesViewController, UIGestureRecognizer
         self.initialPage = true
         
         if self.newMessage {
+            self.setupCancelButton()
             //self.accessoryView.setupView(frame: self.view.frame, navigationController: self.navigationController!, inputViewHeight: self.inputToolbar.frame.size.height)
             //self.view.addSubview(self.accessoryView)
             self.senderDisplayName = ""
@@ -86,8 +92,8 @@ open class DialogViewController : JSQMessagesViewController, UIGestureRecognizer
             //self.collectionView.addGestureRecognizer(self.newMessageViewController!.tableView.panGestureRecognizer)
         } else {
             self.setupTitleBar()
-            if !openedModally{
-                self.navigationItem.leftBarButtonItem = nil
+            if openedModally{
+                self.setupCancelButton()
             }
             NotificationCenter.default.addObserver(self, selector: #selector(messagesPageReceived), name: NSNotification.Name(rawValue: NotificationManager.Name.MessagesAsyncRequestCompleted.rawValue), object: nil)
             if let pendingMessagesAsyncId = self.pendingMessagesAsyncId {
