@@ -241,7 +241,7 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
             }
             //req.region = MKCoordinateRegionMake(loc.coordinate, MKCoordinateSpanMake(1, 1))
             let search = MKLocalSearch(request: req)
-            search.start(completionHandler: {(response: MKLocalSearchResponse?, error: NSError?) in
+            search.start(completionHandler: { (response, error) in
                 guard let response = response, requestId == self.lastStaticSearchRequestId else { return }
                 
                 self.searchResults.removeAll()
@@ -249,10 +249,10 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
                     
                     self.searchResults.append(item.placemark)
                 }
-                ThreadHelper.runOnMainThread({ 
+                ThreadHelper.runOnMainThread({
                     self.tableView.reloadData()
                 })
-            } as! MKLocalSearchCompletionHandler)
+            })
         } else {
             self.searchContainerView.alpha = 0
             self.searchContainerView.isHidden = true

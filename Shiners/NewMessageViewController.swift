@@ -16,6 +16,8 @@ class NewMessageViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var txtTo: UITextView!
     @IBOutlet weak var tableView: UITableView!
 
+    
+    //var parentContainerView: UIView!
     var timer:Timer?
     var layoutTimer:Timer?
     var recipient: User?
@@ -39,22 +41,22 @@ class NewMessageViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         
         self.tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.tapped))
-        
         if self.showNearbyUsers {
             self.getNearbyUsers()
             //NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
             //NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(self.keyboardNotification),
-                                                   name: NSNotification.Name.UIKeyboardWillChangeFrame,
-                                                   object: nil)
             
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(self.setOriginY),
-                                                   name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame,
-                                                   object: nil)
-
         }
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.keyboardNotification),
+                                               name: NSNotification.Name.UIKeyboardWillChangeFrame,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(self.setOriginY),
+                                               name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame,
+                                               object: nil)
+
     }
     
     func keyboardNotification(_ notification: Notification){
@@ -96,18 +98,18 @@ class NewMessageViewController: UIViewController, UITableViewDelegate, UITableVi
         }
     }
 
-    func setupView(frame: CGRect, navigationController: UINavigationController, inputViewHeight: CGFloat, keyboardController: JSQMessagesKeyboardController){
+    func setupView(frame: CGRect, navigationController: UINavigationController, inputViewHeight: CGFloat, keyboardController: JSQMessagesKeyboardController/*, parentContainerView: UIView*/){
         self.inputViewHeight = inputViewHeight
         self.parentFrame = frame
         self.keyboardController = keyboardController
         self.parentNavigationController = navigationController
+        self.keyboardOriginY = self.parentFrame.size.height
+        //self.parentContainerView = parentContainerView
         
         let top = CGFloat(navigationController.navigationBar.frame.size.height + UIApplication.shared.statusBarFrame.height)
         
         self.view.frame = CGRect(x: 0, y: top, width: self.parentFrame.width, height: self.inputContainerView.frame.height + 1)
-        
-        
-        self.view.layoutSubviews()
+        self.view.setNeedsLayout()
         
         self.txtTo.delegate = self
         
@@ -143,21 +145,22 @@ class NewMessageViewController: UIViewController, UITableViewDelegate, UITableVi
         if self.nearbyUsers.count > 0 {
             self.setOriginY()
             self.view.frame.size.height = self.keyboardOriginY - self.view.frame.origin.y - self.inputViewHeight - 1
-            
+            self.view.frame.size.width = self.parentFrame.size.width
             //self.parentFrame.height - self.view.frame.origin.y - self.keyboardHeight - self.inputViewHeight - 1
-            //self.view.layoutIfNeeded()
+            self.view.layoutSubviews()
         }
     }
     
     func setOriginY (){
         let top = CGFloat(self.parentNavigationController.navigationBar.frame.size.height + UIApplication.shared.statusBarFrame.height)
         self.view.frame.origin.y = top
+        //self.parentContainerView.frame.origin.y = 0
         print("\(top)")
     }
     
     func getNearbyUsers(){
         if let lastLocation = LocationHandler.lastLocation {
-            ConnectionHandler.Instance.users.getNearbyUsers(lat: Float(lastLocation.coordinate.latitude), lng: Float(lastLocation.coordinate.longitude), callback: { (success, errorId, errorMessage, users) in
+            /*ConnectionHandler.Instance.users.getNearbyUsers(lat: Float(lastLocation.coordinate.latitude), lng: Float(lastLocation.coordinate.longitude), callback: { (success, errorId, errorMessage, users) in
                 //if success {
                 ThreadHelper.runOnMainThread({
                     self.nearbyUsers = AccountHandler.Instance.allUsers
@@ -169,7 +172,14 @@ class NewMessageViewController: UIViewController, UITableViewDelegate, UITableVi
                     self.tableView.reloadData()
                 })
                 //}
-            })
+            })*/
+            self.nearbyUsers = AccountHandler.Instance.allUsers
+            //self.view.frame.size.height = self.parentFrame.size.height - self.inputViewHeight - self.view.frame.origin.y - 1
+            //self.keyboardOriginY - self.view.frame.origin.y - self.inputViewHeight - 1
+            self.keyboardHeightChanged()
+            //users as! [User]
+            
+            self.tableView.reloadData()
         } else {
             let locationHandler = LocationHandler()
             locationHandler.delegate = self
@@ -249,26 +259,16 @@ class NewMessageViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let user = self.nearbyUsers[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "nearbyUserCell")!
-        cell.textLabel!.text = user.username
-        if let fullName = user.getFullName() {
-            cell.detailTextLabel?.text = "\(fullName)"
-        } else {
-            cell.detailTextLabel?.text = ""
-        }
-        cell.imageView!.contentMode = .scaleAspectFill
-        cell.imageView!.layer.cornerRadius = cell.imageView!.frame.height / 2
-        cell.imageView!.layer.masksToBounds = true
-        cell.imageView!.clipsToBounds = true
-        cell.imageView!.image = ImageCachingHandler.defaultAccountImage
+        let cell = tableView.dequeueReusableCell(withIdentifier: "nearbyUserCell") as! NearbyUserTableViewCell
+        cell.setup(user)
         
         if let imageUrl = user.imageUrl {
             ImageCachingHandler.Instance.getImageFromUrl(imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
                 ThreadHelper.runOnMainThread {
                     if self.tableView.indexPathsForVisibleRows!.index(where: {$0.row == indexPath.row}) != nil{
-                        cell.imageView!.layer.cornerRadius = cell.imageView!.frame.height / 2
-                        cell.imageView!.layer.masksToBounds = true
-                        cell.imageView!.image = image
+                        //cell.imageView!.layer.cornerRadius = cell.imageView!.frame.height / 2
+                        //cell.imageView!.layer.masksToBounds = true
+                        cell.updateImage(image: image!)
                     }
                 }
             })

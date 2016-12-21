@@ -75,13 +75,14 @@ open class DialogViewController : JSQMessagesViewController, UIGestureRecognizer
             //self.accessoryView.setupView(frame: self.view.frame, navigationController: self.navigationController!, inputViewHeight: self.inputToolbar.frame.size.height)
             //self.view.addSubview(self.accessoryView)
             self.senderDisplayName = ""
+            //self.accessoryView.frame = self.view.frame
             self.view.addSubview(self.accessoryView)
             self.newMessageViewController!.setupView(frame: self.view.frame, navigationController: self.navigationController!, inputViewHeight: self.inputToolbar.frame.size.height, keyboardController: self.keyboardController)
             self.newMessageViewController!.tableView.gestureRecognizers!.forEach({ (recognizer) in
                 self.collectionView.addGestureRecognizer(recognizer)
             })
             self.collectionView.addGestureRecognizer(self.newMessageViewController!.tapGestureRecognizer)
-            
+            //self.view.layoutSubviews()
             //self.collectionView.addGestureRecognizer(self.newMessageViewController!.tableView.panGestureRecognizer)
         } else {
             self.setupTitleBar()
@@ -232,7 +233,7 @@ open class DialogViewController : JSQMessagesViewController, UIGestureRecognizer
         if !self.newMessage {
             LocalNotificationsHandler.Instance.reportActiveView(.messages, id: self.chat.id)
         }
-        
+        //self.accessoryView.frame.origin.y = 0
         NotificationCenter.default.addObserver(self, selector: #selector(messageAdded), name: NSNotification.Name(rawValue: NotificationManager.Name.MessageAdded.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(messageRemoved), name: NSNotification.Name(rawValue: NotificationManager.Name.MessageRemoved.rawValue), object: nil)
         //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageModified), name: NotificationManager.Name.MessageModified.rawValue, object: nil)
@@ -417,6 +418,7 @@ open class DialogViewController : JSQMessagesViewController, UIGestureRecognizer
         if !self.isPeeking {
             self.keyboardController.textView.becomeFirstResponder()
         }
+        //self.accessoryView.frame.origin.y = 0
         
         let count = LocalNotificationsHandler.Instance.getNewEventCount(.messages)
         if count > 0 && !self.newMessage {
