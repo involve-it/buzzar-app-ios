@@ -48,6 +48,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     fileprivate var listInitialized = false
     fileprivate var mapInitialized = false
     fileprivate var searchToolbarHeight: CGFloat!
+    var subscribed = false
     
     lazy var listViewController: PostsViewController! = {
         let list = self.storyBoard.instantiateViewController(withIdentifier: "postsViewController") as! PostsViewController
@@ -220,6 +221,10 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                 })
             }
         }
+        
+        if !self.subscribed {
+            self.subscribeToNearbyPosts()
+        }
     }
     
     func showOfflineData(){
@@ -278,8 +283,16 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                         AccountHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude)
                     })
                 }
-                AccountHandler.Instance.subscribeToNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude)
+                self.subscribed = false
+                self.subscribeToNearbyPosts()
             }
+        }
+    }
+    
+    func subscribeToNearbyPosts(){
+        if ConnectionHandler.Instance.isConnected() {
+            AccountHandler.Instance.subscribeToNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude)
+            self.subscribed = true
         }
     }
     

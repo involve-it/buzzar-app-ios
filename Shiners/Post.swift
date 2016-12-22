@@ -89,6 +89,33 @@ open class Post: NSObject, DictionaryInitializable, NSCoding{
         return postDescription!.replacingOccurrences(of: "<[^>]+>", with: "", options: .regularExpression, range: nil)
     }
     
+    func updateFrom(post: Post){
+        self.id = post.id
+        self.title = post.title
+        if let photos = post.photos {
+            self.photos = Array(photos)
+        }
+        self.descr = post.descr
+        self.price = post.price
+        self.seenTotal = post.seenTotal
+        self.seenToday = post.seenToday
+        self.type = post.type
+        if let locations = post.locations {
+            self.locations = Array(locations)
+        }
+        self.url = post.url
+        self.anonymousPost = post.anonymousPost
+        self.endDate = post.endDate
+        self.user = post.user
+        self.visible = post.visible
+        self.timestamp = post.timestamp
+        self.trainingCategory = post.trainingCategory
+        self.sectionLearning = post.sectionLearning
+        self.near = post.near
+        self.likes = post.likes
+        self.liked = post.liked
+    }
+    
     open func update(_ fields: NSDictionary?){
         if let id = fields?.value(forKey: PropertyKey.id) as? String {
             self.id = id

@@ -72,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
         // Optional: configure GAI options.
         let gai = GAI.sharedInstance()!
         gai.trackUncaughtExceptions = true  // report uncaught exceptions
-        gai.logger.logLevel = GAILogLevel.verbose  // remove before app release
+        //gai.logger.logLevel = GAILogLevel.verbose  // remove before app release
         
         //UIBarButtonItem.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = UIColor.whiteColor()
         NotificationCenter.default.addObserver(self, selector: #selector(accountUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)

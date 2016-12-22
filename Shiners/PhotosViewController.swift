@@ -27,8 +27,14 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     var retryingIds = [String]()
     
     var currentLocationInfo: GeocoderInfo?
+    var editingPost = false
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        if self.editingPost {
+            self.navigationItem.rightBarButtonItem = nil
+        }
+        
         self.svImages.isHidden = true;
         self.lblNoImages.isHidden = false;
         
@@ -53,7 +59,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
             let point = gestureRecognizer.location(in: self.svImages)
             var index = 0
             var currentHeight:Float = 0
-            
+                
             for view in self.svImages.subviews {
                 if let smallImageView = view as? SmallImageView {
                     currentHeight += Float(smallImageView.height)
@@ -72,10 +78,13 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     func showExistingPhotos(){
         var index = 0
+        self.images.removeAll()
         self.post.photos!.forEach { (photo) in
             ImageCachingHandler.Instance.getImageFromUrl(photo.original!, callback: { (image) in
-                ThreadHelper.runOnMainThread({ 
-                    self.addImageToScrollView(image!, index: index)
+                ThreadHelper.runOnMainThread({
+                    self.images.append(image!)
+                    let view = self.addImageToScrollView(image!, index: index)
+                    view.imageUrl = photo.original
                     index += 1
                 })
             })
@@ -181,7 +190,11 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     func updateCreateButton(){
         if self.uploadingIds.count == 0{
-            self.setLoading(false, rightBarButtonItem: self.createPost)
+            if self.editingPost{
+                self.setLoading(false)
+            } else {
+                self.setLoading(false, rightBarButtonItem: self.createPost)
+            }
         } else {
             self.setLoading(true)
         }
@@ -272,7 +285,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                     var i = 0
                     self.svImages.subviews.forEach({ (view) in
                         if let sView = view as? SmallImageView {
-                            if i >= index {
+                            if i >= index - 1 {
                                 sView.index = i
                                 let y = self.calculateImagesHeight(i)
                                 UIView.animate(withDuration: 0.3, animations: { 
@@ -289,7 +302,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                         }
                     })
                 }
-                if self.images.count == 0{
+                if self.images.count == 0 {
                     self.svImages.isHidden = true
                     self.lblNoImages.isHidden = false
                 }

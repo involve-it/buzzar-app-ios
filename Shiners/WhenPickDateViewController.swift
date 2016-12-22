@@ -16,13 +16,16 @@ class WhenPickDateViewController: UIViewController {
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var btn_next: UIBarButtonItem!
     
-    
+    var editingPost = false
     var post: Post!
     
     var currentLocationInfo: GeocoderInfo?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if self.editingPost {
+            self.navigationItem.rightBarButtonItem = nil
+        }
         
         // Do any additional setup after loading the view.
         //labelDateNotYetSet.text = ""
@@ -85,7 +88,7 @@ class WhenPickDateViewController: UIViewController {
         datePicker.date = calculatedDate!
         labelDateNotYetSet.text = formatter.string(from: calculatedDate!)
         
-        if(!btn_next.isEnabled) {
+        if(self.btn_next != nil && !btn_next.isEnabled) {
             btn_next.isEnabled = true
         }
         post.endDate = self.datePicker.date
@@ -111,7 +114,7 @@ class WhenPickDateViewController: UIViewController {
         datePicker.date = calculatedDate!
         labelDateNotYetSet.text = formatter.string(from: calculatedDate!)
         
-        if(!btn_next.isEnabled) {
+        if(self.btn_next != nil && !btn_next.isEnabled) {
             btn_next.isEnabled = true
         }
         post.endDate = self.datePicker.date
@@ -137,7 +140,7 @@ class WhenPickDateViewController: UIViewController {
         datePicker.date = calculatedDate!
         labelDateNotYetSet.text = formatter.string(from: calculatedDate!)
         
-        if(!btn_next.isEnabled) {
+        if(self.btn_next != nil && !btn_next.isEnabled) {
             btn_next.isEnabled = true
         }
         post.endDate = self.datePicker.date
@@ -163,7 +166,7 @@ class WhenPickDateViewController: UIViewController {
         datePicker.date = calculatedDate!
         labelDateNotYetSet.text = formatter.string(from: calculatedDate!)
         
-        if(!btn_next.isEnabled) {
+        if(self.btn_next != nil && !btn_next.isEnabled) {
             btn_next.isEnabled = true
         }
         post.endDate = self.datePicker.date
@@ -189,7 +192,7 @@ class WhenPickDateViewController: UIViewController {
         datePicker.date = calculatedDate!
         labelDateNotYetSet.text = formatter.string(from: calculatedDate!)
         
-        if(!btn_next.isEnabled) {
+        if(self.btn_next != nil && !btn_next.isEnabled) {
             btn_next.isEnabled = true
         }
         post.endDate = self.datePicker.date
@@ -215,7 +218,7 @@ class WhenPickDateViewController: UIViewController {
         datePicker.date = calculatedDate!
         labelDateNotYetSet.text = formatter.string(from: calculatedDate!)
         
-        if(!btn_next.isEnabled) {
+        if(self.btn_next != nil && !btn_next.isEnabled) {
             btn_next.isEnabled = true
         }
         post.endDate = self.datePicker.date

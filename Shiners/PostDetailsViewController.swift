@@ -190,7 +190,7 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
         
         self.postDescription.dataDetectorTypes = .link
         
-        self.navigationItem.title = post?.title
+        
         
         //Button View all comments
         self.btnViewAllComments.setTitle(NSLocalizedString("View all comments", comment: "View all comments").uppercased(), for: UIControlState())
@@ -198,7 +198,7 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
         
         //Button likes
         self.btnLike.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 6)
-        self.updateLikeButton()
+        
         
         //Button add_comments
         self.btnAddComment.setImage(UIImage(named: "add_comments")?.withRenderingMode(.alwaysTemplate), for: UIControlState())
@@ -243,17 +243,6 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
             }
         }
         
-        //Title
-        self.txtTitle.text = post?.title
-        self.txtTitle.sizeToFit()
-        
-        //Description
-        self.postDescription.scrollView.isScrollEnabled = false
-        if let htmlString = post?.descr {
-            self.postDescription.loadHTMLString(cssStyle + htmlString, baseURL: nil)
-        } else {
-            self.postDescription.loadHTMLString("", baseURL: nil)
-        }
         
         //Username
         if !ownPost {
@@ -304,18 +293,93 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
             txtPostCreated.text = postDateCreated.timestampFormatterForDate().string
         }
         
-        //Post Date Expires
-        txtPostDateExpires.text = post.endDate?.toLeftExpiresDatePost()
         
-        //Post Distance
-        txtPostDistance.text = post.outDistancePost
         
         //MAP
         self.postMapLocation.isZoomEnabled = false;
         self.postMapLocation.isScrollEnabled = false;
         //self.postMapLocation.userInteractionEnabled = false;
         
+        //POST TYPE
+        /*if let txtPostType = post.type?.rawValue {
+            postType.setTitle(txtPostType, forState: .Normal)
+        }*/
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateScrollView), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.MyPostUpdated.rawValue), object: nil)
+        
+        self.updateUI()
+        
+        if ownPost {
+            LocalNotificationsHandler.Instance.reportEventSeen(.myPosts, id: self.post.id)
+            LocalNotificationsHandler.Instance.reportActiveView(.myPosts, id: self.post.id)
+        } else {
+            if let index = self.navigationItem.rightBarButtonItems?.index(of: self.btnEdit){
+                self.navigationItem.rightBarButtonItems?.remove(at: index)
+            }
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(commentsPageReceived), name: NSNotification.Name(rawValue: NotificationManager.Name.CommentsAsyncRequestCompleted.rawValue), object: nil)
+        self.btnViewAllComments.isHidden = true
+        if let pendingCommentsAsyncId = self.pendingCommentsAsyncId {
+            if let isCompleted = CommentsHandler.Instance.isCompleted(pendingCommentsAsyncId), isCompleted {
+                self.pendingCommentsAsyncId = nil
+                if let comments = CommentsHandler.Instance.getCommentsByRequestId(pendingCommentsAsyncId) {
+                    self.post.comments = comments
+                    if comments.count > 3 {
+                        self.btnViewAllComments.isHidden = false
+                    }
+                }
+            }
+        }
+        if self.subscriptionId == nil {
+            if ConnectionHandler.Instance.isNetworkConnected() {
+                self.subscriptionId = AccountHandler.Instance.subscribeToCommentsForPost(self.post.id!)
+            } else {
+                NotificationCenter.default.addObserver(self, selector: #selector(meteorNetworkConnected), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorNetworkConnected.rawValue), object: nil)
+            }
+        }
+        
+        if self.traitCollection.forceTouchCapability == UIForceTouchCapability.available {
+            self.registerForPreviewing(with: self, sourceView: view)
+        }
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+    }
+    
+    func postUpdated(notification: Notification){
+        if let id = notification.object as? String, let currentId = self.post.id, id == currentId {
+            ThreadHelper.runOnMainThread {
+                self.updateUI()
+            }
+        }
+    }
+    
+    func updateUI(){
+        self.navigationItem.title = post?.title
+        self.updateLikeButton()
+        
+        let ownPost = post.user?.id == AccountHandler.Instance.userId
+        //Title
+        self.txtTitle.text = post?.title
+        self.txtTitle.sizeToFit()
+        
+        //Description
+        self.postDescription.scrollView.isScrollEnabled = false
+        if let htmlString = post?.descr {
+            self.postDescription.loadHTMLString(cssStyle + htmlString, baseURL: nil)
+        } else {
+            self.postDescription.loadHTMLString("", baseURL: nil)
+        }
+        //Post Date Expires
+        txtPostDateExpires.text = post.endDate?.toLeftExpiresDatePost()
+        
+        //Post Distance
+        txtPostDistance.text = post.outDistancePost
+        
         //POST LOCATION
+        if let annotation = self.annotation {
+            self.postMapLocation.removeAnnotation(annotation)
+        }
         if let postCoordinateLocation = post.locations {
             let geoCoder = CLGeocoder()
             
@@ -371,19 +435,19 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
                         }
                         
                         ThreadHelper.runOnMainThread({
-  
+                            
                             if placemark.formatAddress() != "" {
                                 self.txtPostLocationFormattedAddress.text = placemark.formatAddress()
                             } else {
                                 self.txtPostLocationFormattedAddress.text = NSLocalizedString("Address is not defined", comment: "Location, Address is not defined")
                             }
                             
-//                            if let formattedAddress = placemark.addressDictionary!["FormattedAddressLines"] {
-//                                let allResults = (formattedAddress as! [String]).joinWithSeparator(", ")
-//                                self.txtPostLocationFormattedAddress.text = allResults
-//                            } else {
-//                                self.txtPostLocationFormattedAddress.text = NSLocalizedString("Address is not defined", comment: "Location, Address is not defined")
-//                            }
+                            //                            if let formattedAddress = placemark.addressDictionary!["FormattedAddressLines"] {
+                            //                                let allResults = (formattedAddress as! [String]).joinWithSeparator(", ")
+                            //                                self.txtPostLocationFormattedAddress.text = allResults
+                            //                            } else {
+                            //                                self.txtPostLocationFormattedAddress.text = NSLocalizedString("Address is not defined", comment: "Location, Address is not defined")
+                            //                            }
                             
                         })
                     }
@@ -397,12 +461,6 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
             self.txtPostLocationFormattedAddress.text = NSLocalizedString("Address is not defined", comment: "Location, Address is not defined")
         }
         
-        //POST TYPE
-        /*if let txtPostType = post.type?.rawValue {
-            postType.setTitle(txtPostType, forState: .Normal)
-        }*/
-        
-        
         //Page Conrol
         self.pageControl.numberOfPages = (post?.photos?.count) ?? 1
         self.pageControl.currentPage = 0
@@ -415,44 +473,6 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
         }
         
         self.updateScrollView()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(updateScrollView), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
-        
-        if let index = self.navigationItem.rightBarButtonItems?.index(of: self.btnEdit){
-            self.navigationItem.rightBarButtonItems?.remove(at: index)
-        }
-        if ownPost {
-            //TODO: uncomment when Edit functionality is ready
-            //self.navigationItem.rightBarButtonItems?.append(self.btnEdit)
-            LocalNotificationsHandler.Instance.reportEventSeen(.myPosts, id: self.post.id)
-            LocalNotificationsHandler.Instance.reportActiveView(.myPosts, id: self.post.id)
-        }
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(commentsPageReceived), name: NSNotification.Name(rawValue: NotificationManager.Name.CommentsAsyncRequestCompleted.rawValue), object: nil)
-        self.btnViewAllComments.isHidden = true
-        if let pendingCommentsAsyncId = self.pendingCommentsAsyncId {
-            if let isCompleted = CommentsHandler.Instance.isCompleted(pendingCommentsAsyncId), isCompleted {
-                self.pendingCommentsAsyncId = nil
-                if let comments = CommentsHandler.Instance.getCommentsByRequestId(pendingCommentsAsyncId) {
-                    self.post.comments = comments
-                    if comments.count > 3 {
-                        self.btnViewAllComments.isHidden = false
-                    }
-                }
-            }
-        }
-        if self.subscriptionId == nil {
-            if ConnectionHandler.Instance.isNetworkConnected() {
-                self.subscriptionId = AccountHandler.Instance.subscribeToCommentsForPost(self.post.id!)
-            } else {
-                NotificationCenter.default.addObserver(self, selector: #selector(meteorNetworkConnected), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorNetworkConnected.rawValue), object: nil)
-            }
-        }
-        
-        if self.traitCollection.forceTouchCapability == UIForceTouchCapability.available {
-            self.registerForPreviewing(with: self, sourceView: view)
-        }
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
@@ -830,9 +850,9 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
     //fullMapSegue
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "editPost"{
-            //let vc = segue.destinationViewController as! UINavigationController
-            //let createVc = vc.viewControllers[0] as! NewPostViewController
-            //createVc.post = self.post
+            let vc = segue.destination as! UINavigationController
+            let createVc = vc.viewControllers[0] as! editMyPostTableViewController
+            createVc.originalPost = self.post
         } else if segue.identifier == "fullMapSegue"{
             AppAnalytics.logEvent(.PostDetailsScreen_FullScreenMap)
             let nc = segue.destination as! UINavigationController

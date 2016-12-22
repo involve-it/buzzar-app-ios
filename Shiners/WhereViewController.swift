@@ -63,6 +63,7 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     
     @IBOutlet weak var switcherDynamic: UISwitch!
     @IBOutlet weak var switcherStatic: UISwitch!
+    var editingPost = false
     var lastStaticSearchRequestId = ""
     
     func locationReported(_ geocoderInfo: GeocoderInfo) {
@@ -78,6 +79,9 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if self.editingPost {
+            self.navigationItem.rightBarButtonItem = nil
+        }
         
         self.searchContainerView.alpha = 0
         self.searchContainerView.isHidden = true
@@ -452,12 +456,14 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
                 self.switcherStatic.isOn = false
             }
             
-            if self.post.locations?.count > 0 {
-                self.btn_next.isEnabled = true
-                self.createPostAddiotionalMenu.isHidden = false
-            } else {
-                self.btn_next.isEnabled = false
-                self.createPostAddiotionalMenu.isHidden = true
+            if !self.editingPost {
+                if self.post.locations?.count > 0 {
+                    self.btn_next.isEnabled = true
+                    self.createPostAddiotionalMenu.isHidden = false
+                } else {
+                    self.btn_next.isEnabled = false
+                    self.createPostAddiotionalMenu.isHidden = true
+                }
             }
         }
     }
