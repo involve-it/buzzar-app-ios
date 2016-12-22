@@ -913,3 +913,5 @@
 /* Class = "UITextField"; placeholder = "Subject"; ObjectID = "zvX-Sf-D0c"; */
 "zvX-Sf-D0c.placeholder" = "Заголовок";
 
+/* Category of post */
+"CQ2-G7-RiR.text" = "Категория";

@@ -812,7 +812,8 @@
 /* Class = "UILabel"; Reset password, header title */
 "VNk-iv-hD8.text" = "To reset your password, enter your email address and we will send you link to create a new password.";
 
-
+/* Category of post */
+"CQ2-G7-RiR.text" = "Category";
 
 
 

@@ -338,3 +338,8 @@
 /* Post info, post closed */
 "post closed" = "Пост закрыт";
 
+/* Category of post */
+"Not assigned" = "Не назначена";
+
+
+

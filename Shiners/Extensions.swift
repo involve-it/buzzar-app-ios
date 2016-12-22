@@ -41,6 +41,7 @@ extension String{
             return self
         }
     }
+    
 }
 
 
@@ -148,6 +149,7 @@ extension Data {
         let bytes = UnsafeBufferPointer<UInt8>(start: (self as NSData).bytes.bindMemory(to: UInt8.self, capacity: self.count), count:self.count)
         return bytes.map { String(format: "%02hhx", $0) }.reduce("", { $0 + $1 })
     }
+    
 }
 
 extension UIImage {

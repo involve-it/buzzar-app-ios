@@ -47,6 +47,7 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
     @IBOutlet weak var callStack: UIStackView!
     @IBOutlet weak var writeStack: UIStackView!
     
+    
     @IBOutlet weak var callWriteView: UIView!
     //@IBOutlet weak var callWriteViewHeight: NSLayoutConstraint!
     
@@ -62,6 +63,7 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
     @IBOutlet weak var txtTitle: UILabel!
     @IBOutlet weak var txtPostDateExpires: UILabel!
     @IBOutlet weak var txtViews: UILabel!
+    @IBOutlet weak var postCategory: UILabel!
     @IBOutlet weak var txtFavoritesCount: UILabel!
     @IBOutlet weak var txtUsername: UILabel!
     @IBOutlet weak var txtPostCreated: UILabel!
@@ -363,6 +365,12 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
         self.txtTitle.text = post?.title
         self.txtTitle.sizeToFit()
         
+        if let category = post.type?.rawValue {
+            self.postCategory.text = category.localizedCapitalized
+        } else {
+            self.postCategory.text = NSLocalizedString("Not assigned", comment: "Category not assigned")
+        }
+        
         //Description
         self.postDescription.scrollView.isScrollEnabled = false
         if let htmlString = post?.descr {
@@ -370,6 +378,7 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
         } else {
             self.postDescription.loadHTMLString("", baseURL: nil)
         }
+        
         //Post Date Expires
         txtPostDateExpires.text = post.endDate?.toLeftExpiresDatePost()
         
