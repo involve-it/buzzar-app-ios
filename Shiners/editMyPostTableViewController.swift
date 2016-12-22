@@ -52,6 +52,7 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
             self.currentLocationInfo = GeocoderInfo()
             self.currentLocationInfo!.coordinate = location.coordinate
         }
+        
     }
     
     func locationReported(_ geocoderInfo: GeocoderInfo) {
@@ -62,14 +63,18 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
     
     func refreshUI(){
         self.titleNewPost.text = self.post.title
+        updateCountCharacterTitle()
+        
         if let descr = self.post.descr {
             self.fieldDescriptionOfPost.text = descr
             fieldDescriptionOfPost.textColor = UIColor.black
+            updateCountCharacterDescription()
         } else {
             //Placeholder
             fieldDescriptionOfPost.text = descriptionPlaceholderText
             fieldDescriptionOfPost.textColor = descriptionPlaceholderColor
         }
+        
         if let imageUrl = self.post.getMainPhoto() {
             ImageCachingHandler.Instance.getImageFromUrl(imageUrl.original!, defaultImage: nil, callback: { (image) in
                 ThreadHelper.runOnMainThread {
@@ -79,11 +84,16 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
                     }
                 }
             })
-            self.btnAddPhotos.backgroundColor = UIColor(white: 1, alpha: 0.2)
+            
+            self.btnAddPhotos.centerTextButton()
+            self.btnAddPhotos.backgroundColor = UIColor(white: 0.2, alpha: 0.2)
+            self.btnAddPhotos.contentEdgeInsets = UIEdgeInsetsMake(16.0, 0.0, 16.0, 0.0)
             self.btnAddPhotos.setTitle(NSLocalizedString("Edit photos", comment: "Edit photos"), for: .normal)
         } else {
-            self.imgPhoto.contentMode = .center
-            self.imgPhoto.image = UIImage(named: "edit_no-photo")
+            self.imgPhoto.contentMode = .scaleAspectFill
+            //self.imgPhoto.image = UIImage(named: "edit_no-photo")
+            self.imgPhoto.image = nil
+            self.btnAddPhotos.centerTextButton()
             self.btnAddPhotos.setTitle(NSLocalizedString("Add photos", comment: "Add photos"), for: .normal)
             self.btnAddPhotos.backgroundColor = nil
         }
@@ -154,25 +164,36 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
     }
 
     @IBAction func titleFieldChanged(_ sender: UITextField) {
-        let currentCountTitleTextField:Int = (titleNewPost.text?.characters.count)!
-        titleTextCount.text = String( Int(titleAllowCount)! - currentCountTitleTextField )
+        updateCountCharacterTitle()
         
         if let title = sender.text, title != "" {
             btn_update.isEnabled = true
         } else {
             btn_update.isEnabled = false
         }
+        
     }
     
     func textViewDidChange(_ textView: UITextView) {
+        updateCountCharacterDescription()
+    }
+    
+    func updateCountCharacterDescription() {
         //Изменение titleCountOfDescription в зависимости от лимита
         let currentCountFieldDescriptionOfPost: Int = fieldDescriptionOfPost.text.characters.count
         titleCountOfDescription.text =  String(Int(descriptionAllowCount)! - currentCountFieldDescriptionOfPost)
     }
     
+    func updateCountCharacterTitle() {
+        let currentCountTitleTextField:Int = (titleNewPost.text?.characters.count)!
+        titleTextCount.text = String( Int(titleAllowCount)! - currentCountTitleTextField )
+    }
+    
     //Textfield limit characters
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
+        self.btn_update.isEnabled = true
+
         if range.length + range.location > titleNewPost.text!.characters.count {
             return false
         } else {
@@ -183,6 +204,8 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        self.btn_update.isEnabled = true
         
         let currentText: NSString = fieldDescriptionOfPost.text as NSString
         let updateText = currentText.replacingCharacters(in: range, with: text)
