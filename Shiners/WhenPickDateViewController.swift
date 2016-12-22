@@ -35,7 +35,10 @@ class WhenPickDateViewController: UIViewController {
         
         if let date = post.endDate{
             self.datePicker.date = date as Date
-            self.btn_next.isEnabled = true
+            self.setDateLabel()
+            if !self.editingPost {
+                self.btn_next.isEnabled = true
+            }
         }
     }
     
@@ -49,22 +52,27 @@ class WhenPickDateViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func setDateLabel(){
+        if let date = self.post.endDate {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .long
+            
+            self.labelDateNotYetSet.text = formatter.string(from: date)
+            if !self.editingPost{
+                btn_next.isEnabled = true
+            }
+        } else {
+            if !self.editingPost {
+                btn_next.isEnabled = false
+            }
+        }
+    }
+    
     
     func datePickerChanged(_ sender: UIDatePicker) {
         AppAnalytics.logEvent(.NewPostWizard_WhenStep_Spinner_Modified)
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        
-        if let title:String = formatter.string(from: sender.date) {
-           labelDateNotYetSet.text = title
-            
-            //Btn "next" set enabled
-            btn_next.isEnabled = true
-        } else {
-            //Btn "next" set disabled
-            btn_next.isEnabled = false
-        }
         post.endDate = self.datePicker.date
+        self.setDateLabel()
     }
     
     
