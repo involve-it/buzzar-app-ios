@@ -890,13 +890,10 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "editPost"{
             
-            
             let vc = segue.destination as! UINavigationController
             let createVc = vc.viewControllers[0] as! editMyPostTableViewController
-            createVc.editablePost = self.post
-            
-            
-            
+            createVc.originalPost = self.post
+
             
         } else if segue.identifier == "fullMapSegue"{
             AppAnalytics.logEvent(.PostDetailsScreen_FullScreenMap)

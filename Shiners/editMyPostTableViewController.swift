@@ -278,9 +278,10 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
         }
     }
 
-    @IBAction func btnCancel_Click(_ sender: Any) {
+    @IBAction func btn_close_Click(_ sender: UIBarButtonItem) {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
+
     /*
     // Override to support rearranging the table view.
     override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
