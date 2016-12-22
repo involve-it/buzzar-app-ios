@@ -220,9 +220,11 @@ class NewMessageViewController: UIViewController, UITableViewDelegate, UITableVi
                     ThreadHelper.runOnMainThread {
                         if success {
                             self.recipient = (result as! User)
-                            self.txtTo.textColor = UIColor.green
+                            //green
+                            self.txtTo.textColor = UIColor().SHGreen
                         } else {
-                            self.txtTo.textColor = UIColor.red
+                            //red
+                            self.txtTo.textColor = UIColor().SHRed
                         }
                         self.activityIndicator.stopAnimating()
                     }

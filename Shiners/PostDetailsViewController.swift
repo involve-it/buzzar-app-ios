@@ -421,9 +421,10 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
         if let index = self.navigationItem.rightBarButtonItems?.index(of: self.btnEdit){
             self.navigationItem.rightBarButtonItems?.remove(at: index)
         }
+        
         if ownPost {
             //TODO: uncomment when Edit functionality is ready
-            //self.navigationItem.rightBarButtonItems?.append(self.btnEdit)
+            self.navigationItem.rightBarButtonItems?.append(self.btnEdit)
             LocalNotificationsHandler.Instance.reportEventSeen(.myPosts, id: self.post.id)
             LocalNotificationsHandler.Instance.reportActiveView(.myPosts, id: self.post.id)
         }
@@ -829,9 +830,15 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
     //fullMapSegue
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "editPost"{
-            //let vc = segue.destinationViewController as! UINavigationController
-            //let createVc = vc.viewControllers[0] as! NewPostViewController
-            //createVc.post = self.post
+            
+            
+            let vc = segue.destination as! UINavigationController
+            let createVc = vc.viewControllers[0] as! editMyPostTableViewController
+            createVc.editablePost = self.post
+            
+            
+            
+            
         } else if segue.identifier == "fullMapSegue"{
             AppAnalytics.logEvent(.PostDetailsScreen_FullScreenMap)
             let nc = segue.destination as! UINavigationController

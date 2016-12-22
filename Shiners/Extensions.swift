@@ -365,6 +365,15 @@ extension UIColor {
     convenience init(netHex:Int) {
         self.init(red:(netHex >> 16) & 0xff, green:(netHex >> 8) & 0xff, blue:netHex & 0xff)
     }
+    
+    var SHRed: UIColor {
+        return UIColor(netHex: 0xFF3B30)
+    }
+    
+    var SHGreen: UIColor {
+        return UIColor(netHex: 0x4CD964)
+    }
+
 }
 
 extension UIDevice {

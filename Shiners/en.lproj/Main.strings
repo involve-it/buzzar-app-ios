@@ -485,8 +485,8 @@
 /* Class = "UILabel"; text = "Phone"; ObjectID = "dYb-Pj-rWf"; */
 "dYb-Pj-rWf.text" = "Phone";
 
-/* Class = "UILabel"; text = "2 days"; ObjectID = "dd3-fE-U3q"; */
-"dd3-fE-U3q.text" = "2 days";
+/* Class = "UILabel"; text = "2 weeks"; ObjectID = "dd3-fE-U3q"; */
+"dd3-fE-U3q.text" = "2 weeks";
 
 /* Class = "UINavigationItem"; title = "New post"; ObjectID = "dfX-kM-zaA"; */
 "dfX-kM-zaA.title" = "New post";
