@@ -65,8 +65,10 @@ open class MyPostsViewController: UITableViewController, UIViewControllerPreview
     }
     
     open override func viewDidLoad() {
+        super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(myPostsUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.MyPostsUpdated.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(myPostUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.MyPostUpdated.rawValue), object: nil)
         self.btnDelete = UIBarButtonItem(title: NSLocalizedString("Delete", comment: "Delete"), style: UIBarButtonItemStyle.done, target: self, action: #selector(deletePosts))
         self.myPosts = [Post]()
         if AccountHandler.Instance.status == .completed {
@@ -110,6 +112,14 @@ open class MyPostsViewController: UITableViewController, UIViewControllerPreview
         //self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
     }
     
+    func myPostUpdated(notification: Notification){
+        if let post = notification.object as? Post, let index =  self.myPosts.index(where: {$0.id == post.id}){
+            let currentPost = self.myPosts[index]
+            currentPost.updateFrom(post: post)
+            self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
+        }
+    }
+    
     func editAction(_ sender: UIBarButtonItem){
         AppAnalytics.logEvent(.MyPostsScreen_BtnEdit_Click)
         if self.tableView.isEditing{
@@ -142,6 +152,7 @@ open class MyPostsViewController: UITableViewController, UIViewControllerPreview
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.MyPosts)
         self.checkPending()
         self.refreshControl?.endRefreshing()
     }
@@ -272,11 +283,11 @@ open class MyPostsViewController: UITableViewController, UIViewControllerPreview
         var loading = false;
         if let url = post.getMainPhoto()?.original {
             loading = ImageCachingHandler.Instance.getImageFromUrl(url) { (image) in
-                DispatchQueue.main.async(execute: {
-                    if let cellToUpdate = tableView.cellForRow(at: indexPath) as? PostsTableViewCell{
-                        cellToUpdate.imgPhoto?.image = image;
+                ThreadHelper.runOnMainThread {
+                    if tableView.indexPathsForVisibleRows?.index(where: {$0.row == indexPath.row}) != nil {
+                        cell.imgPhoto.image = image
                     }
-                })
+                }
             }
         } else {
             cell.imgPhoto.image = ImageCachingHandler.defaultPhoto;

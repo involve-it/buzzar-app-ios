@@ -83,7 +83,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        AppAnalytics.logScreen(.NearbyPosts_List)
         //Set background collor to default value
         self.navigationController?.navigationBar.barTintColor = UIColor(white: 249/255, alpha: 1)
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)

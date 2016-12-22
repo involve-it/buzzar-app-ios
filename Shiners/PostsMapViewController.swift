@@ -77,6 +77,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.NearbyPosts_Map)
         self.mapView.showsUserLocation = true
     }
     

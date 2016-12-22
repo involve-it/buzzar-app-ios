@@ -104,7 +104,7 @@ open class User: NSObject, DictionaryInitializable, NSCoding{
     
     open func getFullName() -> String? {
         if let firstName = self.getProfileDetailValue(.FirstName), let lastName = self.getProfileDetailValue(.LastName){
-            return firstName + " " + lastName
+            return (firstName + " " + lastName).trimmingCharacters(in: .whitespacesAndNewlines)
         }
         return nil
     }

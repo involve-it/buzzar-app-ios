@@ -53,21 +53,21 @@ open class ImageCachingHandler{
         return image;
     }
     
-    open func saveImage(_ image: UIImage, callback: @escaping (_ success: Bool, _ imageUrl: String?) -> Void) -> UploadDelegate?{
+    open func saveImage(_ image: UIImage, uploadId: String, callback: @escaping (_ success: Bool,_ uploadId: String, _ imageUrl: String?) -> Void) -> UploadDelegate?{
         if let imageEntity = self.saveImageToLocalStorage(image) {
             let request = self.uploadPhotoToAmazon(ImageCachingHandler.imagesDirectory.appendingPathComponent(imageEntity.filename), contentType: imageEntity.contentType!, callback: { (url) in
                 if let _ = url{
                     imageEntity.setNewUrl(url!)
                     self.savedImages[url!] = imageEntity
                     self.saveContentsFile()
-                    callback(true, url!)
+                    callback(true, uploadId, url!)
                 } else {
-                    callback(false, nil)
+                    callback(false, uploadId, nil)
                 }
             })
             return UploadDelegate(uploadRequest: request)
         } else {
-            callback(false, nil)
+            callback(false, uploadId, nil)
             return nil
         }
     }

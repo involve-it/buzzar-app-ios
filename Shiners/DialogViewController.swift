@@ -56,6 +56,11 @@ open class DialogViewController : JSQMessagesViewController, UIGestureRecognizer
         return self.chat == nil
     }
     
+    func setupCancelButton(){
+        let btn = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(self.btnDone_Clicked(_:)))
+        self.navigationItem.leftBarButtonItem = btn
+    }
+    
     open override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,21 +77,23 @@ open class DialogViewController : JSQMessagesViewController, UIGestureRecognizer
         self.initialPage = true
         
         if self.newMessage {
+            self.setupCancelButton()
             //self.accessoryView.setupView(frame: self.view.frame, navigationController: self.navigationController!, inputViewHeight: self.inputToolbar.frame.size.height)
             //self.view.addSubview(self.accessoryView)
             self.senderDisplayName = ""
+            //self.accessoryView.frame = self.view.frame
             self.view.addSubview(self.accessoryView)
             self.newMessageViewController!.setupView(frame: self.view.frame, navigationController: self.navigationController!, inputViewHeight: self.inputToolbar.frame.size.height, keyboardController: self.keyboardController)
             self.newMessageViewController!.tableView.gestureRecognizers!.forEach({ (recognizer) in
                 self.collectionView.addGestureRecognizer(recognizer)
             })
             self.collectionView.addGestureRecognizer(self.newMessageViewController!.tapGestureRecognizer)
-            
+            //self.view.layoutSubviews()
             //self.collectionView.addGestureRecognizer(self.newMessageViewController!.tableView.panGestureRecognizer)
         } else {
             self.setupTitleBar()
-            if !openedModally{
-                self.navigationItem.leftBarButtonItem = nil
+            if openedModally{
+                self.setupCancelButton()
             }
             NotificationCenter.default.addObserver(self, selector: #selector(messagesPageReceived), name: NSNotification.Name(rawValue: NotificationManager.Name.MessagesAsyncRequestCompleted.rawValue), object: nil)
             if let pendingMessagesAsyncId = self.pendingMessagesAsyncId {
@@ -214,7 +221,7 @@ open class DialogViewController : JSQMessagesViewController, UIGestureRecognizer
     }
     
     func appDidBecomeActive(){
-        if self.chat.messages.count > 0 {
+        if self.chat != nil && self.chat.messages.count > 0 {
             self.updateMessages(self.chat.messages)
         }
     }
@@ -228,11 +235,11 @@ open class DialogViewController : JSQMessagesViewController, UIGestureRecognizer
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        AppAnalytics.logScreen(.Dialog)
         if !self.newMessage {
             LocalNotificationsHandler.Instance.reportActiveView(.messages, id: self.chat.id)
         }
-        
+        //self.accessoryView.frame.origin.y = 0
         NotificationCenter.default.addObserver(self, selector: #selector(messageAdded), name: NSNotification.Name(rawValue: NotificationManager.Name.MessageAdded.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(messageRemoved), name: NSNotification.Name(rawValue: NotificationManager.Name.MessageRemoved.rawValue), object: nil)
         //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageModified), name: NotificationManager.Name.MessageModified.rawValue, object: nil)
@@ -417,6 +424,7 @@ open class DialogViewController : JSQMessagesViewController, UIGestureRecognizer
         if !self.isPeeking {
             self.keyboardController.textView.becomeFirstResponder()
         }
+        //self.accessoryView.frame.origin.y = 0
         
         let count = LocalNotificationsHandler.Instance.getNewEventCount(.messages)
         if count > 0 && !self.newMessage {

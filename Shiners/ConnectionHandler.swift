@@ -70,6 +70,9 @@ open class ConnectionHandler{
     }
     
     open func connect() {
+        if let userId = AccountHandler.Instance.getSavedUserId(){
+            AccountHandler.Instance.userId = userId
+        }
         if self.status != .connected && self.status != .connecting{
             NotificationCenter.default.addObserver(self, selector: #selector(clientDisconnected), name: NSNotification.Name(rawValue: DDP_WEBSOCKET_ERROR), object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(clientDisconnected), name: NSNotification.Name(rawValue: DDP_WEBSOCKET_CLOSE), object: nil)

@@ -63,6 +63,7 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     
     @IBOutlet weak var switcherDynamic: UISwitch!
     @IBOutlet weak var switcherStatic: UISwitch!
+    var editingPost = false
     var lastStaticSearchRequestId = ""
     
     func locationReported(_ geocoderInfo: GeocoderInfo) {
@@ -78,6 +79,9 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if self.editingPost {
+            self.navigationItem.rightBarButtonItem = nil
+        }
         
         self.searchContainerView.alpha = 0
         self.searchContainerView.isHidden = true
@@ -99,6 +103,8 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        AppAnalytics.logScreen(.NewPost_Loc)
+        
         if let _ = self.post.locations!.index(where: {return $0.placeType == .Dynamic}) {
             self.mapView.showsUserLocation = true
             self.switcherDynamic.isOn = true
@@ -111,6 +117,7 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
         
         self.centerMapOnAnnotations()
         self.updateUiElementsInLocation()
+        
     }
     
     func currentLocationReported(_ notification: Notification){
@@ -241,7 +248,7 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
             }
             //req.region = MKCoordinateRegionMake(loc.coordinate, MKCoordinateSpanMake(1, 1))
             let search = MKLocalSearch(request: req)
-            search.start(completionHandler: {(response: MKLocalSearchResponse?, error: NSError?) in
+            search.start(completionHandler: { (response, error) in
                 guard let response = response, requestId == self.lastStaticSearchRequestId else { return }
                 
                 self.searchResults.removeAll()
@@ -249,10 +256,10 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
                     
                     self.searchResults.append(item.placemark)
                 }
-                ThreadHelper.runOnMainThread({ 
+                ThreadHelper.runOnMainThread({
                     self.tableView.reloadData()
                 })
-            } as! MKLocalSearchCompletionHandler)
+            })
         } else {
             self.searchContainerView.alpha = 0
             self.searchContainerView.isHidden = true
@@ -449,12 +456,14 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
                 self.switcherStatic.isOn = false
             }
             
-            if self.post.locations?.count > 0 {
-                self.btn_next.isEnabled = true
-                self.createPostAddiotionalMenu.isHidden = false
-            } else {
-                self.btn_next.isEnabled = false
-                self.createPostAddiotionalMenu.isHidden = true
+            if !self.editingPost {
+                if self.post.locations?.count > 0 {
+                    self.btn_next.isEnabled = true
+                    self.createPostAddiotionalMenu.isHidden = false
+                } else {
+                    self.btn_next.isEnabled = false
+                    self.createPostAddiotionalMenu.isHidden = true
+                }
             }
         }
     }

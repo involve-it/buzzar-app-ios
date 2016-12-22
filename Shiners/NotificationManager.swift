@@ -16,6 +16,7 @@ open class NotificationManager{
     public enum Name: String{
         case UserUpdated = "shiners:userUpdated"
         case MyPostsUpdated = "shiners:myPostsUpdated"
+        case MyPostUpdated = "shiners:myPostUpdated"
         case NetworkUnreachable = "shiners:networkUnrechable"
         case NetworkReachable = "shiners:networkReachable"
         case MeteorConnected = "shiners:meteorConnected"

@@ -8,5 +8,6 @@ target "Shiners" do
     source 'https://github.com/CocoaPods/Specs.git'
     pod 'AWSS3'
     pod 'BRYXBanner'
+    pod 'Google/Analytics'
 end
 use_frameworks!

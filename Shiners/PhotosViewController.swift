@@ -27,8 +27,14 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     var retryingIds = [String]()
     
     var currentLocationInfo: GeocoderInfo?
+    var editingPost = false
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        if self.editingPost {
+            self.navigationItem.rightBarButtonItem = nil
+        }
+        
         self.svImages.isHidden = true;
         self.lblNoImages.isHidden = false;
         
@@ -43,12 +49,17 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         self.svImages.addGestureRecognizer(gestureRecognizer)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.NewPost_Photo)
+    }
+    
     func scrollViewTapped(_ gestureRecognizer: UIGestureRecognizer){
         if gestureRecognizer.state == UIGestureRecognizerState.recognized && self.images.count > 0 {
             let point = gestureRecognizer.location(in: self.svImages)
             var index = 0
             var currentHeight:Float = 0
-            
+                
             for view in self.svImages.subviews {
                 if let smallImageView = view as? SmallImageView {
                     currentHeight += Float(smallImageView.height)
@@ -67,10 +78,13 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     func showExistingPhotos(){
         var index = 0
+        self.images.removeAll()
         self.post.photos!.forEach { (photo) in
             ImageCachingHandler.Instance.getImageFromUrl(photo.original!, callback: { (image) in
-                ThreadHelper.runOnMainThread({ 
-                    self.addImageToScrollView(image!, index: index)
+                ThreadHelper.runOnMainThread({
+                    self.images.append(image!)
+                    let view = self.addImageToScrollView(image!, index: index)
+                    view.imageUrl = photo.original
                     index += 1
                 })
             })
@@ -139,44 +153,48 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     func doUpload(_ view: SmallImageView){
         view.displayLoading(true)
         self.uploadingIds.append(view.id)
-        
-        view.uploadDelegate = ImageCachingHandler.Instance.saveImage(view.image) { (success, imageUrl) in
-            ThreadHelper.runOnMainThread({
-                if let index = self.uploadingIds.index(of: view.id){
-                    //self.setLoading(false, rightBarButtonItem: self.cancelButton)
-                    //self.btnSave.enabled = true
-                    
-                    if success {
-                        view.activityIndicator.stopAnimating()
-                        view.displayLoading(false)
-                        let photo = Photo()
-                        photo.original = imageUrl
-                        self.post.photos!.append(photo)
-                        view.imageUrl = imageUrl
-                        self.uploadingIds.remove(at: index)
-                        if let retryIndex = self.retryingIds.index(of: view.id){
-                            self.retryingIds.remove(at: retryIndex)
-                        }
-                    } else {
-                        if self.retryingIds.index(of: view.id) == nil {
+        view.latestUploadId = NSUUID().uuidString
+        view.uploadDelegate = ImageCachingHandler.Instance.saveImage(view.image, uploadId: view.latestUploadId!) { (success, uploadId, imageUrl) in
+            if self.isVisible() && uploadId == view.latestUploadId!{
+                ThreadHelper.runOnMainThread({
+                    if let index = self.uploadingIds.index(of: view.id){
+                        //self.setLoading(false, rightBarButtonItem: self.cancelButton)
+                        //self.btnSave.enabled = true
+                        
+                        if success {
+                            view.activityIndicator.stopAnimating()
+                            view.displayLoading(false)
+                            let photo = Photo()
+                            photo.original = imageUrl
+                            self.post.photos!.append(photo)
+                            view.imageUrl = imageUrl
+                            self.uploadingIds.remove(at: index)
+                            if let retryIndex = self.retryingIds.index(of: view.id){
+                                self.retryingIds.remove(at: retryIndex)
+                            }
+                        } else {
                             self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("Error uploading photo", comment: "Alert, error message uploading photo"));
                             self.deleteClicked(view)
                         }
+                        
+                        self.updateCreateButton()
+                    } else {
+                        let globalY = self.calculateImagesHeight(self.images.count - 1)
+                        self.svImages.contentSize = CGSize(width: self.svImages.frame.size.width, height: CGFloat(globalY));
                     }
-                    
-                    self.updateCreateButton()
-                } else {
-                    let globalY = self.calculateImagesHeight(self.images.count - 1)
-                    self.svImages.contentSize = CGSize(width: self.svImages.frame.size.width, height: CGFloat(globalY));
-                }
-            })
+                })
+            }
         }
         Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(displayUploadingLongTime), userInfo: view, repeats: false)
     }
     
     func updateCreateButton(){
         if self.uploadingIds.count == 0{
-            self.setLoading(false, rightBarButtonItem: self.createPost)
+            if self.editingPost{
+                self.setLoading(false)
+            } else {
+                self.setLoading(false, rightBarButtonItem: self.createPost)
+            }
         } else {
             self.setLoading(true)
         }
@@ -267,7 +285,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                     var i = 0
                     self.svImages.subviews.forEach({ (view) in
                         if let sView = view as? SmallImageView {
-                            if i >= index {
+                            if i >= index - 1 {
                                 sView.index = i
                                 let y = self.calculateImagesHeight(i)
                                 UIView.animate(withDuration: 0.3, animations: { 
@@ -284,7 +302,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
                         }
                     })
                 }
-                if self.images.count == 0{
+                if self.images.count == 0 {
                     self.svImages.isHidden = true
                     self.lblNoImages.isHidden = false
                 }

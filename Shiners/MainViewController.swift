@@ -143,14 +143,12 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if viewController.title == "addPostPlaceholder" {
             if AccountHandler.Instance.isLoggedIn(){
-                AppAnalytics.logEvent(.Main_CreatePost_Display)
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let controller = storyboard.instantiateViewController(withIdentifier: "addPost");
                 self.present(controller, animated: true, completion: nil)
             } else {
                 //controller = storyboard.instantiateViewControllerWithIdentifier("NEWloginNavigationController");
                 self.selectedIndex = 2
-                AppAnalytics.logEvent(.Main_SettingsLoggedOutTab_Display)
             }
             return false;
         }
@@ -189,25 +187,22 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         let index = self.allViewControllers.index(of: viewController)!
         switch index {
         case 0:
-            AppAnalytics.logEvent(.Main_NearbyPostsTab_Display)
             if AccountHandler.Instance.isLoggedIn(){
                 LocalNotificationsHandler.Instance.reportActiveView(.posts)
             }
             self.setBadgeValue(0, count: 0)
         case 3:
-            AppAnalytics.logEvent(.Main_MessagesTab_Display)
             if AccountHandler.Instance.isLoggedIn(){
                 LocalNotificationsHandler.Instance.reportActiveView(.messages)
             }
         case 1:
-            AppAnalytics.logEvent(.Main_MyPostsTab_Display)
             if AccountHandler.Instance.isLoggedIn(){
                 LocalNotificationsHandler.Instance.reportActiveView(.myPosts)
             }
         case 4:
-            AppAnalytics.logEvent(.Main_SettingsLoggedOutTab_Display)
+            break
         case 5:
-            AppAnalytics.logEvent(.Main_SettingsLoggedInTab_Display)
+            break
         default:
             if AccountHandler.Instance.isLoggedIn(){
                 LocalNotificationsHandler.Instance.reportActiveView(.other)

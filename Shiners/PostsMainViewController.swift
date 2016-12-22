@@ -48,6 +48,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     fileprivate var listInitialized = false
     fileprivate var mapInitialized = false
     fileprivate var searchToolbarHeight: CGFloat!
+    var subscribed = false
     
     lazy var listViewController: PostsViewController! = {
         let list = self.storyBoard.instantiateViewController(withIdentifier: "postsViewController") as! PostsViewController
@@ -154,7 +155,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         NotificationCenter.default.addObserver(self, selector: #selector(postAdded), name: NSNotification.Name(rawValue: NotificationManager.Name.NearbyPostAdded.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(postRemoved), name: NSNotification.Name(rawValue: NotificationManager.Name.NearbyPostRemoved.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(postModified), name: NSNotification.Name(rawValue: NotificationManager.Name.NearbyPostModified.rawValue), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(myPostUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.MyPostUpdated.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(getNearby), name: NSNotification.Name(rawValue: NotificationManager.Name.NearbyPostsUpdated.rawValue), object: nil)
     }
     
@@ -174,6 +175,15 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                 self.callRefreshDelegates()*/
                 self.getNearby()
             }
+        }
+    }
+    
+    func myPostUpdated(_ notification: Notification){
+        if let post = notification.object as? Post, let index =  self.allPosts.index(where: {$0.id == post.id}){
+            let currentPost = self.allPosts[index]
+            currentPost.updateFrom(post: post)
+            self.refreshSearchResults()
+            self.callRefreshDelegates()
         }
     }
     
@@ -219,6 +229,10 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                     AccountHandler.Instance.reportLocation(self.currentLocation!.latitude, lng: self.currentLocation!.longitude)
                 })
             }
+        }
+        
+        if !self.subscribed {
+            self.subscribeToNearbyPosts()
         }
     }
     
@@ -278,8 +292,16 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                         AccountHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude)
                     })
                 }
-                AccountHandler.Instance.subscribeToNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude)
+                self.subscribed = false
+                self.subscribeToNearbyPosts()
             }
+        }
+    }
+    
+    func subscribeToNearbyPosts(){
+        if ConnectionHandler.Instance.isConnected(), let currentLocation = self.currentLocation {
+            AccountHandler.Instance.subscribeToNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude)
+            self.subscribed = true
         }
     }
     

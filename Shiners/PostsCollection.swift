@@ -35,15 +35,16 @@ open class PostsCollection:AbstractCollection{
         }
     }
     
-    override open func documentWasChanged(_ collection: String, id: String, fields: NSDictionary?, cleared: [String]?) {
+    /*override open func documentWasChanged(_ collection: String, id: String, fields: NSDictionary?, cleared: [String]?) {
         if let index = self.posts.index(where: {post in return post.id == id}){
             let post = self.posts[index];
-            post.update(fields);
+            let newPost = Post(id: id, fields: fields)
+            post.updateFrom(post: newPost)
             if !subscribing {
                 NotificationManager.sendNotification(NotificationManager.Name.NearbyPostModified, object: post)
             }
         }
-    }
+    }*/
     
     open func count() -> Int{
         return posts.count;

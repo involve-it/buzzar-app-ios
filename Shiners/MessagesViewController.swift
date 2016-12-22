@@ -16,6 +16,7 @@ open class MessagesViewController: UITableViewController, UIViewControllerPrevie
     var pendingChatId: String?
     var btnDelete: UIBarButtonItem!
     
+    @IBOutlet var btnNewMessage: UIBarButtonItem!
     @IBAction func unwindMessages(_ segue: UIStoryboardSegue) {
         //self.navigationController?.popViewControllerAnimated(false)
     }
@@ -74,7 +75,7 @@ open class MessagesViewController: UITableViewController, UIViewControllerPrevie
         AppAnalytics.logEvent(.MessagesScreen_BtnEdit_Click)
         if self.tableView.isEditing{
             self.tableView.setEditing(false, animated: true)
-            self.navigationItem.rightBarButtonItem = nil
+            self.navigationItem.rightBarButtonItem = self.btnNewMessage
             sender.title = NSLocalizedString("Edit", comment: "Edit")
         } else {
             self.tableView.setEditing(true, animated: true)
@@ -186,6 +187,7 @@ open class MessagesViewController: UITableViewController, UIViewControllerPrevie
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.Messages)
         
         self.tableView.reloadData()
         self.navigationItem.title = NSLocalizedString("Messages", comment: "NavigationItem title, Messages")

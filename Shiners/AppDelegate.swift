@@ -10,6 +10,7 @@ import UIKit
 import SystemConfiguration
 import FBSDKCoreKit
 import CoreLocation
+import Google
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
@@ -63,6 +64,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
         //UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.whiteColor()], forState: .Normal)
         //UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.redColor()], forState: .Selected)
 
+        // Configure tracker from GoogleService-Info.plist.
+        var configureError:NSError?
+        GGLContext.sharedInstance().configureWithError(&configureError)
+        assert(configureError == nil, "Error configuring Google services: \(configureError)")
+        
+        // Optional: configure GAI options.
+        let gai = GAI.sharedInstance()!
+        gai.trackUncaughtExceptions = true  // report uncaught exceptions
+        //gai.logger.logLevel = GAILogLevel.verbose  // remove before app release
         
         //UIBarButtonItem.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = UIColor.whiteColor()
         NotificationCenter.default.addObserver(self, selector: #selector(accountUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)

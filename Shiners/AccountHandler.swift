@@ -33,7 +33,7 @@ open class AccountHandler{
     open var myChats: [Chat]?
     open fileprivate(set) var myPosts: [Post]?
     open fileprivate(set) var currentUser: User?
-    open fileprivate(set) var userId: String?
+    open var userId: String?
     open var allUsers = [User]()
     
     open var postsCollection = PostsCollection()
@@ -323,6 +323,7 @@ open class AccountHandler{
         
         if self.isLoggedIn(){
             self.userId = Meteor.client.userId()
+            UserDefaults.standard.set(self.userId, forKey: AccountHandler.USER_ID)
             self.subscribe(callId)
             Logger.log("loadAccount: invoke getCurrentUser")
             ConnectionHandler.Instance.users.getCurrentUser({ (success, errorId, errorMessage, result) in
