@@ -22,6 +22,7 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
     
     var post: Post!
     var originalPost: Post!
+    var descriptionModified = false
     
     fileprivate var currentLocationInfo: GeocoderInfo?
     fileprivate let locationHandler = LocationHandler()
@@ -35,6 +36,7 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
         super.viewDidLoad()
         self.post = Post()
         self.post.updateFrom(post: self.originalPost)
+        self.post.descr = self.originalPost.removedHtmlFromPostDescription(self.originalPost.descr)
         //Заполняем начальное значение при инициализации контроллера
         titleTextCount.text = String(titleAllowCount)
         // Устанавливаем начальное значение в метку счетчика разрешенного кол-во символов
@@ -176,6 +178,7 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
     
     func textViewDidChange(_ textView: UITextView) {
         updateCountCharacterDescription()
+        self.descriptionModified = true
     }
     
     func updateCountCharacterDescription() {
@@ -279,9 +282,14 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
     
     func doSave(){
         self.setLoading(true)
+        
         if ConnectionHandler.Instance.isConnected() {
             self.post.title = self.titleNewPost.text
-            self.post.descr = self.fieldDescriptionOfPost.text
+            if self.descriptionModified {
+                self.post.descr = self.fieldDescriptionOfPost.text
+            } else {
+                self.post.descr = self.originalPost.descr
+            }
             NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
             ConnectionHandler.Instance.posts.editPost(self.post, callback: { (success, errorId, error, result) in
                 ThreadHelper.runOnMainThread {
