@@ -315,6 +315,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         if let index = self.uploadingIds.index(of: view.id!){
             self.uploadingIds.remove(at: index)
             self.retryingIds.append(view.id!)
+            view.latestUploadId = nil
             view.uploadDelegate?.abort()
             view.hideLongUploadControls()
         }
@@ -325,6 +326,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         AppAnalytics.logEvent(.NewPostWizard_PhotoStep_Photo_LowerQual)
         if !view.isLowerQualityUpload {
             view.isLowerQualityUpload = true
+            view.latestUploadId = nil
             if let index = self.uploadingIds.index(of: view.id!){
                 self.uploadingIds.remove(at: index)
                 self.retryingIds.append(view.id!)
