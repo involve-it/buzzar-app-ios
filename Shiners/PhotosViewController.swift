@@ -153,37 +153,37 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
     func doUpload(_ view: SmallImageView){
         view.displayLoading(true)
         self.uploadingIds.append(view.id)
-        
-        view.uploadDelegate = ImageCachingHandler.Instance.saveImage(view.image) { (success, imageUrl) in
-            ThreadHelper.runOnMainThread({
-                if let index = self.uploadingIds.index(of: view.id){
-                    //self.setLoading(false, rightBarButtonItem: self.cancelButton)
-                    //self.btnSave.enabled = true
-                    
-                    if success {
-                        view.activityIndicator.stopAnimating()
-                        view.displayLoading(false)
-                        let photo = Photo()
-                        photo.original = imageUrl
-                        self.post.photos!.append(photo)
-                        view.imageUrl = imageUrl
-                        self.uploadingIds.remove(at: index)
-                        if let retryIndex = self.retryingIds.index(of: view.id){
-                            self.retryingIds.remove(at: retryIndex)
-                        }
-                    } else {
-                        if self.retryingIds.index(of: view.id) == nil {
+        view.latestUploadId = NSUUID().uuidString
+        view.uploadDelegate = ImageCachingHandler.Instance.saveImage(view.image, uploadId: view.latestUploadId!) { (success, uploadId, imageUrl) in
+            if self.isVisible() && uploadId == view.latestUploadId!{
+                ThreadHelper.runOnMainThread({
+                    if let index = self.uploadingIds.index(of: view.id){
+                        //self.setLoading(false, rightBarButtonItem: self.cancelButton)
+                        //self.btnSave.enabled = true
+                        
+                        if success {
+                            view.activityIndicator.stopAnimating()
+                            view.displayLoading(false)
+                            let photo = Photo()
+                            photo.original = imageUrl
+                            self.post.photos!.append(photo)
+                            view.imageUrl = imageUrl
+                            self.uploadingIds.remove(at: index)
+                            if let retryIndex = self.retryingIds.index(of: view.id){
+                                self.retryingIds.remove(at: retryIndex)
+                            }
+                        } else {
                             self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("Error uploading photo", comment: "Alert, error message uploading photo"));
                             self.deleteClicked(view)
                         }
+                        
+                        self.updateCreateButton()
+                    } else {
+                        let globalY = self.calculateImagesHeight(self.images.count - 1)
+                        self.svImages.contentSize = CGSize(width: self.svImages.frame.size.width, height: CGFloat(globalY));
                     }
-                    
-                    self.updateCreateButton()
-                } else {
-                    let globalY = self.calculateImagesHeight(self.images.count - 1)
-                    self.svImages.contentSize = CGSize(width: self.svImages.frame.size.width, height: CGFloat(globalY));
-                }
-            })
+                })
+            }
         }
         Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(displayUploadingLongTime), userInfo: view, repeats: false)
     }

@@ -199,12 +199,12 @@ open class EditProfileTableViewController: UITableViewController, UITextViewDele
     func doUpload(){
         self.setLoading(true)
         self.cancelButton.isEnabled = false
-        let lastRequestId = UUID().uuidString
-        self.lastRequestId = lastRequestId
+        
+        self.lastRequestId = UUID().uuidString
         self.aborting = false
-        self.uploadDelegate = ImageCachingHandler.Instance.saveImage(self.imgUserAvatar.image!) { (success, imageUrl) in
+        self.uploadDelegate = ImageCachingHandler.Instance.saveImage(self.imgUserAvatar.image!, uploadId: lastRequestId) { (success, uploadId, imageUrl) in
             ThreadHelper.runOnMainThread({
-                if self.lastRequestId == lastRequestId {
+                if self.lastRequestId == uploadId {
                     self.setLoading(false, rightBarButtonItem: self.btnSave)
                     self.cancelButton.isEnabled = true
                     self.uploadAlertController?.dismiss(animated: true, completion: nil)

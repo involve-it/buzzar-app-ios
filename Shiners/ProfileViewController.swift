@@ -181,7 +181,7 @@ open class ProfileViewController: UITableViewController, UIImagePickerController
         let currentImage = self.imgPhoto.image
         self.imgPhoto.image = rotatedImage
         self.btnSave.isEnabled = false
-        ImageCachingHandler.Instance.saveImage(rotatedImage) { (success, imageUrl) in
+        ImageCachingHandler.Instance.saveImage(rotatedImage, uploadId: "") { (success, uploadId, imageUrl) in
             ThreadHelper.runOnMainThread({
                 self.setLoading(false, rightBarButtonItem: self.cancelButton)
                 self.btnSave.isEnabled = true

@@ -17,6 +17,7 @@ open class SmallImageView: UIView{
     open var height: CGFloat!
     
     fileprivate(set) open var id: String!
+    open var latestUploadId: String?
     open var index: Int?
     open var delegate: SmallImageViewDelegate?
     

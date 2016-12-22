@@ -103,17 +103,18 @@ open class Post: NSObject, DictionaryInitializable, NSCoding{
         if let locations = post.locations {
             self.locations = Array(locations)
         }
-        self.url = post.url
+        //self.url = post.url
         self.anonymousPost = post.anonymousPost
         self.endDate = post.endDate
-        self.user = post.user
+        
+        //self.user = post.user
         self.visible = post.visible
         self.timestamp = post.timestamp
-        self.trainingCategory = post.trainingCategory
-        self.sectionLearning = post.sectionLearning
-        self.near = post.near
-        self.likes = post.likes
-        self.liked = post.liked
+        //self.trainingCategory = post.trainingCategory
+        //self.sectionLearning = post.sectionLearning
+        //self.near = post.near
+        //self.likes = post.likes
+        //self.liked = post.liked
     }
     
     open func update(_ fields: NSDictionary?){

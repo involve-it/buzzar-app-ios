@@ -113,7 +113,9 @@ open class MyPostsViewController: UITableViewController, UIViewControllerPreview
     }
     
     func myPostUpdated(notification: Notification){
-        if let id = notification.object as? String, let index = self.myPosts.index(where: {$0.id == id}){
+        if let post = notification.object as? Post, let index =  self.myPosts.index(where: {$0.id == post.id}){
+            let currentPost = self.myPosts[index]
+            currentPost.updateFrom(post: post)
             self.tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
         }
     }

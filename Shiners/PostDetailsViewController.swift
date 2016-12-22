@@ -347,7 +347,7 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
     }
     
     func postUpdated(notification: Notification){
-        if let id = notification.object as? String, let currentId = self.post.id, id == currentId {
+        if let newPost = notification.object as? Post, self.post.id == newPost.id {
             ThreadHelper.runOnMainThread {
                 self.updateUI()
             }

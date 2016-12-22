@@ -10,15 +10,15 @@ import Foundation
 import SwiftDDP
 
 open class ConnectionHandler{
-    public static let baseUrl = "http://192.168.1.71:3000"
+    //public static let baseUrl = "http://192.168.1.71:3000"
     //public static let baseUrl = "http://msg.webhop.org"
-    //open static let baseUrl = "https://www.shiners.mobi"
+    open static let baseUrl = "https://www.shiners.mobi"
     
     open static let publicUrl = "https://shiners.ru"
     
     //private let url:String = "ws://msg.webhop.org/websocket"
-    private let url:String = "ws://192.168.1.71:3000/websocket"
-    //fileprivate let url:String = "wss://www.shiners.mobi/websocket"
+    //private let url:String = "ws://192.168.1.71:3000/websocket"
+    fileprivate let url:String = "wss://www.shiners.mobi/websocket"
     
     open fileprivate(set) var status: ConnectionStatus = .notInitialized
     

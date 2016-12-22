@@ -89,9 +89,13 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
         }
         if let category = self.post.type {
             self.cellCategory.detailTextLabel!.text = category.rawValue
+        } else {
+            self.cellCategory.detailTextLabel!.text = ""
         }
         if let expirationDate = self.post.endDate {
             self.cellExpiration.detailTextLabel!.text = expirationDate.toFriendlyLongDateTimeString()
+        } else {
+            self.cellExpiration.detailTextLabel!.text = ""
         }
         
         if let postCoordinateLocation = post.locations {
@@ -144,6 +148,8 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        self.post.title = self.titleNewPost.text
+        self.post.descr = self.fieldDescriptionOfPost.text
         self.view.endEditing(true)
     }
 
@@ -258,8 +264,8 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
                 ThreadHelper.runOnMainThread {
                     if success {
                         self.originalPost.updateFrom(post: self.post)
-                        NotificationManager.sendNotification(.NearbyPostModified, object: self.post)
-                        NotificationManager.sendNotification(.MyPostUpdated, object: self.post.id as AnyObject?)
+                        //NotificationManager.sendNotification(.NearbyPostModified, object: self.post)
+                        NotificationManager.sendNotification(.MyPostUpdated, object: self.post)
                         self.setLoading(false)
                         self.navigationController?.dismiss(animated: true, completion: nil)
                     } else {
