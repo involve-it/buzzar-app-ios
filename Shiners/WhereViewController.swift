@@ -324,6 +324,9 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
         self.centerMapOnAnnotations()
         self.searchBar.resignFirstResponder()
         self.searchBar.showsCancelButton = false
+        if !self.editingPost {
+            self.btn_next.isEnabled = true
+        }
         
         //UIView.animateWithDuration(2, delay: 0, options: [.CurveEaseOut], animations: {}, completion: nil)
     }
