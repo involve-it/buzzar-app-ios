@@ -22,6 +22,20 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     var currentLocation: CLLocationCoordinate2D?
     var pendingPostId: String?
     
+    
+    
+    @IBOutlet weak var btnJobs: UIButton!
+    @IBOutlet weak var btnTrainings: UIButton!
+    @IBOutlet weak var btnConnect: UIButton!
+    @IBOutlet weak var btnTrade: UIButton!
+    @IBOutlet weak var btnHousing: UIButton!
+    @IBOutlet weak var btnEvents: UIButton!
+    @IBOutlet weak var btnService: UIButton!
+    @IBOutlet weak var btnHelp: UIButton!
+    
+    
+    
+    
     @IBOutlet var btnAddPost: UIBarButtonItem!
     var locationAcquired = false
     var errorMessage: String?
@@ -69,6 +83,22 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     
     var filterCategories = [String]()
     
+    
+    @IBAction func btnCategory_Clicked(_ sender: UIButton) {
+        let category = ConstantValuesHandler.Instance.categories[sender.tag]
+        if let index = self.filterCategories.index(of: category){
+            self.filterCategories.remove(at: index)
+            sender.tintColor = UIColor().SHBlueSystem
+        } else {
+            self.filterCategories.append(category)
+            sender.currentImage?.withRenderingMode(.alwaysTemplate)
+            sender.tintColor = UIColor(white: 0.2, alpha: 0.8)
+        }
+        self.refreshSearchResults()
+    }
+    
+    
+    
     @IBAction func btnCategory_Click(_ sender: UIBarButtonItem) {
         let category = ConstantValuesHandler.Instance.categories[sender.tag]
         if let index = self.filterCategories.index(of: category){
@@ -105,8 +135,29 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         }
     }
     
+    func changesBtnWithInToolbar(buttons: [UIButton], size: CGFloat, color: UIColor) {
+        for button in buttons {
+            button.frame.size.width = size
+            button.setImage(button.currentImage?.withRenderingMode(.alwaysTemplate), for: .normal)
+            button.tintColor = color
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let toolBarItemWidth: CGFloat = (UIScreen.main.bounds.width - 32) / 8 - 8
+        
+        //btnJobs.frame.size.width = toolBarItemWidth
+        //btnTrainings.frame.size.width = toolBarItemWidth
+        //btnConnect.frame.size.width = toolBarItemWidth
+        //btnTrade.frame.size.width = toolBarItemWidth
+        //btnHousing.frame.size.width = toolBarItemWidth
+        //btnEvents.frame.size.width = toolBarItemWidth
+        //btnService.frame.size.width = toolBarItemWidth
+        //btnHelp.frame.size.width = toolBarItemWidth
+        
+        changesBtnWithInToolbar(buttons: [btnJobs, btnTrainings, btnConnect, btnTrade, btnHousing, btnEvents, btnService, btnHelp], size: toolBarItemWidth, color: UIColor().SHBlueSystem)
 
         //Set index for segment
         self.typeSwitch.selectedSegmentIndex = PostsViewType.list.rawValue

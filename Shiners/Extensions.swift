@@ -355,6 +355,7 @@ extension UIButton {
     }
 }
 
+
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {
         assert(red >= 0 && red <= 255, "Invalid red component")
@@ -374,6 +375,10 @@ extension UIColor {
     
     var SHGreen: UIColor {
         return UIColor(netHex: 0x4CD964)
+    }
+    
+    var SHBlueSystem: UIColor {
+        return UIColor(netHex: 0x5DBDF6)
     }
 
 }
