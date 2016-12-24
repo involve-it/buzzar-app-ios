@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AugmentedRealityViewController: UIViewController {
+class AugmentedRealityViewController: UIViewController, LocationHandlerDelegate {
 
     var posts = [Post]()
     
@@ -18,6 +18,13 @@ class AugmentedRealityViewController: UIViewController {
         self.posts = AccountHandler.Instance.myPosts!
 
         // Do any additional setup after loading the view.
+        let locationHandler = LocationHandler()
+        locationHandler.delegate = self
+        locationHandler.startMonitoringLocation()
+    }
+    
+    func locationReported(_ geocoderInfo: GeocoderInfo) {
+        
     }
 
     override func didReceiveMemoryWarning() {
