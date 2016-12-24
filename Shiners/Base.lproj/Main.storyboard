@@ -6490,6 +6490,24 @@
             </objects>
             <point key="canvasLocation" x="1806" y="-783"/>
         </scene>
+        <!--Augmented Reality View Controller-->
+        <scene sceneID="KRn-q2-V7p">
+            <objects>
+                <viewController id="FFn-p2-ng9" customClass="AugmentedRealityViewController" customModule="Shiners" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YKv-UV-ofn"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZnC-ZT-gOf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BMy-BQ-XqL">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SQS-co-juy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-4117" y="2006"/>
+        </scene>
         <!--Settings-->
         <scene sceneID="Rab-4S-yuE">
             <objects>
@@ -6587,6 +6605,31 @@
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <segue destination="a8o-16-8Vj" kind="show" id="aG5-m1-8uY"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" tag="1" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="kkp-6t-ftw" userLabel="About us">
+                                        <rect key="frame" x="0.0" y="251" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kkp-6t-ftw" id="xMl-cx-Fxh">
+                                            <rect key="frame" x="0.0" y="0.0" width="381" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Augemnted Reality" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zfO-pj-9ta">
+                                                    <rect key="frame" x="16" y="11" width="543" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="zfO-pj-9ta" firstAttribute="leading" secondItem="xMl-cx-Fxh" secondAttribute="leadingMargin" constant="8" id="TQW-Uw-MqT"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="zfO-pj-9ta" secondAttribute="trailing" id="ZSv-eN-Pnz"/>
+                                                <constraint firstItem="zfO-pj-9ta" firstAttribute="centerY" secondItem="xMl-cx-Fxh" secondAttribute="centerY" id="k6e-C6-eJm"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <segue destination="FFn-p2-ng9" kind="show" id="sfE-PN-JsG"/>
                                         </connections>
                                     </tableViewCell>
                                 </cells>
