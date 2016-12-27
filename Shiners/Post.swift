@@ -337,10 +337,10 @@ open class Post: NSObject, DictionaryInitializable, NSCoding{
         dict[PropertyKey.type] = self.type?.rawValue as AnyObject?
         
         if let endDate = self.endDate {
-            dict[PropertyKey.endDate] = Int(endDate.timeIntervalSince1970 * 1000) as AnyObject?
+            dict[PropertyKey.endDate] = (endDate.timeIntervalSince1970 * 1000) as AnyObject?
         }
         if let timestamp = self.timestamp{
-            dict[PropertyKey.timestamp] = Int(timestamp.timeIntervalSince1970 * 1000) as AnyObject?
+            dict[PropertyKey.timestamp] = (timestamp.timeIntervalSince1970 * 1000) as AnyObject?
         }
         
         var details = Dictionary<String, AnyObject>()
