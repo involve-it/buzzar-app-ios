@@ -63,6 +63,12 @@ open class ConstantValuesHandler {
         Post.HelpType.Other.rawValue: "Other"
     ]
     
+    open let widgetUrls = [
+        WidgetInfo(title: NSLocalizedString("New Post", comment: "Title, New Post"), url: ""),
+        WidgetInfo(title: NSLocalizedString("Find a Friend", comment: "Title, Find a Friend"), url: "https://widgets.shiners.ru/locator?isiframe=true&userId=$$userId$$&lat=$$lat$$&lng=$$lng$$"),
+        WidgetInfo(title: NSLocalizedString("Ask a Question", comment: "Title, Ask a Question"), url: "https://widgets.shiners.ru/locquestion?isiframe=true&userId=$$userId$$&lat=$$lat$$&lng=$$lng$$")
+    ]
+    
     open let categories = ["jobs", "trainings", "connect", "trade", "housing", "events", "services", "help"];
     
     open let postDateRanges = [
@@ -80,5 +86,15 @@ open class ConstantValuesHandler {
     fileprivate static var instance: ConstantValuesHandler = ConstantValuesHandler();
     open static var Instance: ConstantValuesHandler {
         return instance;
+    }
+    
+    open class WidgetInfo{
+        let title: String
+        let url: String
+        
+        init(title: String, url: String){
+            self.title = title
+            self.url = url
+        }
     }
 }
