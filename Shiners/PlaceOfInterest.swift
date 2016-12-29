@@ -7,7 +7,10 @@
 //
 
 import Foundation
+import UIKit
+import CoreLocation
 
 class PlaceOfInterest {
-    
+    var view: UIView!
+    var location: CLLocation!
 }

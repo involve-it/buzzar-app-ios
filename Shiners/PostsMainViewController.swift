@@ -132,6 +132,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         super.viewDidAppear(animated)
         if self.posts.count > 0 && ConnectionHandler.Instance.isNetworkConnected() {
             self.checkPending(false)
+            self.callRefreshDelegates()
         }
     }
     
@@ -158,17 +159,11 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         //btnHelp.frame.size.width = toolBarItemWidth
         
         changesBtnWithInToolbar(buttons: [btnJobs, btnTrainings, btnConnect, btnTrade, btnHousing, btnEvents, btnService, btnHelp], size: toolBarItemWidth, color: UIColor().SHBlueSystem)
-
-        //Set index for segment
-        self.typeSwitch.selectedSegmentIndex = PostsViewType.list.rawValue
-        // Load viewController
-        self.loadCurrentViewController(self.typeSwitch.selectedSegmentIndex)
         
         self.navigationItem.title = "Posts"
         
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         self.locationHandler.delegate = self
-        
         self.locationHandler.getLocationOnce(false)
         
         if ConnectionHandler.Instance.isNetworkConnected() {
@@ -190,6 +185,11 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
             self.getNearby()
             self.staleLocation = true
         }
+        
+        //Set index for segment
+        self.typeSwitch.selectedSegmentIndex = PostsViewType.list.rawValue
+        // Load viewController
+        self.loadCurrentViewController(self.typeSwitch.selectedSegmentIndex)
         
         self.searchBar.showsCancelButton = true
         self.searchBar.delegate = self
@@ -446,13 +446,11 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
     
     func callDisplayLoadingMore(){
-        let viewController = viewControllerForSelectedSegmentIndex(self.typeSwitch.selectedSegmentIndex)
-        (viewController as! PostsViewControllerDelegate).displayLoadingMore()
+        (self.currentViewController as? PostsViewControllerDelegate)?.displayLoadingMore()
     }
     
     func callRefreshDelegates(){
-        let viewController = viewControllerForSelectedSegmentIndex(self.typeSwitch.selectedSegmentIndex)
-        (viewController as! PostsViewControllerDelegate).postsUpdated()
+        (self.currentViewController as? PostsViewControllerDelegate)?.postsUpdated()
     }
     
     
@@ -525,13 +523,27 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
     
     @IBAction func postsViewTypeChanged(_ sender: UISegmentedControl) {
-        self.currentViewController!.view.removeFromSuperview()
-        self.currentViewController!.removeFromParentViewController()
-        loadCurrentViewController(sender.selectedSegmentIndex)
+        if sender.selectedSegmentIndex != 2 {
+            self.currentViewController!.view.removeFromSuperview()
+            self.currentViewController!.removeFromParentViewController()
+            loadCurrentViewController(sender.selectedSegmentIndex)
+        }
         if sender.selectedSegmentIndex == 0{
             AppAnalytics.logEvent(.NearbyPostsScreen_ListTabActive)
-        } else {
+        } else if sender.selectedSegmentIndex == 1 {
             AppAnalytics.logEvent(.NearbyPostsScreen_MapTabActive)
+        } else if sender.selectedSegmentIndex == 2 {
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "augmentedRealityViewController") as! AugmentedRealityViewController
+            vc.posts = self.allPosts
+            self.currentViewController = vc
+            vc.mainViewController = self
+            self.tabBarController!.present(vc, animated: true, completion: {
+                if self.currentViewController == self.mapViewController {
+                    sender.selectedSegmentIndex = 1
+                } else {
+                    sender.selectedSegmentIndex = 0
+                }
+            })
         }
     }
     
