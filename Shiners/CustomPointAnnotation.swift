@@ -17,9 +17,7 @@ class CustomPointAnnotation: NSObject, MKAnnotation {
     var image: UIImage?
     var pinCustomImageName: String?
     var id: String?
-    var category: String?
-    var postType: String?
-    var live: Bool!
+    var imageName: String!
     
     
     init(coordinate: CLLocationCoordinate2D) {

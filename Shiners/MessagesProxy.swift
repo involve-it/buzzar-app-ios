@@ -9,84 +9,88 @@
 import Foundation
 import SwiftDDP
 
-public class MessagesProxy {
-    private static let instance = MessagesProxy()
+open class MessagesProxy {
+    fileprivate static let instance = MessagesProxy()
     class var Instance: MessagesProxy{
         get{
             return instance;
         }
     }
     
-    func messagesSetSeen(messageIds: [String], callback: MeteorMethodCallback? = nil){
+    func messagesSetSeen(_ messageIds: [String], callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
-        dict["messageIds"] = messageIds
+        dict["messageIds"] = messageIds as AnyObject?
         Meteor.call("messagesSetSeen", params: [dict]){ (result, error) in
             if error == nil {
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: 1, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), 1, ResponseHelper.getDefaultErrorMessage(), nil)
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    func getChat(id: String, callback: MeteorMethodCallback? = nil){
+    func getChat(_ id: String, callback: MeteorMethodCallback? = nil){
         Meteor.call("getChat", params: [id]) { (result, error) in
             if error == nil {
-                ResponseHelper.callHandler(result, handler: callback) as Chat?
+                ResponseHelper.callHandler(result as AnyObject?, handler: callback) as Chat?
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    func getChats(skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
+    func getChats(_ skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
-        dict["take"] = take
-        dict["skip"] = skip
+        dict["take"] = take as AnyObject?
+        dict["skip"] = skip as AnyObject?
         
         Meteor.call("getChats", params: [dict]) { (result, error) in
             if error == nil {
-                ResponseHelper.callHandlerArray(result, handler: callback) as [Chat]?
+                ResponseHelper.callHandlerArray(result as AnyObject?, handler: callback) as [Chat]?
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    func getMessages(chatId: String, skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
+    func getMessages(_ chatId: String, skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
-        dict["take"] = take
-        dict["skip"] = skip
-        dict["chatId"] = chatId
+        dict["take"] = take as AnyObject?
+        dict["skip"] = skip as AnyObject?
+        dict["chatId"] = chatId as AnyObject?
         
         Meteor.call("getMessages", params: [dict]) { (result, error) in
             if error == nil {
-                ResponseHelper.callHandlerArray(result, handler: callback) as [Message]?
+                ResponseHelper.callHandlerArray(result as AnyObject?, handler: callback) as [Message]?
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    func sendMessage(message: MessageToSend, callback: MeteorMethodCallback? = nil){
+    func sendMessage(_ message: MessageToSend, callback: MeteorMethodCallback? = nil){
         let dict = message.toDictionary()
         Meteor.call("addMessage", params: [dict]) { (result, error) in
             if error == nil {
-                let errorId = ResponseHelper.getErrorId(result);
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?);
+                var id: String? = nil
+                if let fields = result as? NSDictionary {
+                    id = fields.value(forKey: "result") as? String
+                }
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), id)
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    func deleteChats(chatIds: Array<String>, callback: MeteorMethodCallback? = nil){
+    func deleteChats(_ chatIds: Array<String>, callback: MeteorMethodCallback? = nil){
         Meteor.call("deleteChats", params: [chatIds]){ (result, error) in
             if error == nil {
-                let errorId = ResponseHelper.getErrorId(result);
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?);
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), nil)
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }

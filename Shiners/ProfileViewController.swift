@@ -11,7 +11,7 @@ import FBSDKLoginKit
 import FBSDKCoreKit
 import AWSS3
 
-public class ProfileViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate{
+open class ProfileViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate{
     @IBOutlet weak var txtFirstName: UITextField!
     @IBOutlet weak var txtLastName: UITextField!
     @IBOutlet weak var txtLocation: UITextField!
@@ -20,33 +20,38 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
     @IBOutlet weak var imgPhoto: UIImageView!
     @IBOutlet weak var cellFacebook: UITableViewCell!
     
-    private var imagePickerHandler: ImagePickerHandler?
+    fileprivate var imagePickerHandler: ImagePickerHandler?
     
     let txtTitleLogOut = NSLocalizedString("Log out", comment: "Alert title, Log out")
     
     var currentUser: User?;
     
     @IBOutlet weak var btnSave: UIBarButtonItem!
-    private var cancelButton: UIBarButtonItem?
+    fileprivate var cancelButton: UIBarButtonItem?
     
-    @IBAction func btnCancel_Click(sender: AnyObject) {
+    @IBAction func btnCancel_Click(_ sender: AnyObject) {
         self.dismissSelf();
     }
     
     //refreshing profile image
-    @objc public override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+    @objc open override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        self.tableView.reloadSections(IndexSet(integer: 0), with: .none)
     }
     
-    @objc public override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+    @objc open override func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        self.tableView.reloadSections(IndexSet(integer: 0), with: .none)
     }
     
-    private func dismissSelf(){
-        self.navigationController?.popViewControllerAnimated(true)
+    fileprivate func dismissSelf(){
+        self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func btnSave_Click(sender: AnyObject) {
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.Profile)
+    }
+    
+    @IBAction func btnSave_Click(_ sender: AnyObject) {
         self.setLoading(true)
         let user = self.getUser();
         AccountHandler.Instance.saveUser(user) { (success, errorMessage) in
@@ -61,7 +66,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
         }
     }
     
-    private func getUser() -> User{
+    fileprivate func getUser() -> User{
         let user = AccountHandler.Instance.currentUser!;
         user.setProfileDetail(.FirstName, value: self.txtFirstName.text)
         user.setProfileDetail(.LastName, value: self.txtLastName.text)
@@ -73,13 +78,13 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
         return user;
     }
     
-    @IBAction func btnChangeImage_Click(sender: AnyObject) {
+    @IBAction func btnChangeImage_Click(_ sender: AnyObject) {
         self.imagePickerHandler?.displayImagePicker()
     }
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
-        self.cancelButton = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Plain, target: self, action: #selector(btnCancel_Click));
+        self.cancelButton = UIBarButtonItem(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .plain, target: self, action: #selector(btnCancel_Click));
         
         self.setLoading(false, rightBarButtonItem: self.cancelButton)
         
@@ -98,16 +103,16 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
         self.refreshSocialState()
     }
     
-    private func refreshSocialState(){
-        if let _ = FBSDKAccessToken.currentAccessToken() {
-            cellFacebook.accessoryType = UITableViewCellAccessoryType.None
+    fileprivate func refreshSocialState(){
+        if let _ = FBSDKAccessToken.current() {
+            cellFacebook.accessoryType = UITableViewCellAccessoryType.none
             cellFacebook.detailTextLabel?.text = NSLocalizedString("Connected", comment: "Label text, Connected")
         } else {
             cellFacebook.detailTextLabel?.text = ""
         }
     }
     
-    private func refreshUserData(){
+    fileprivate func refreshUserData(){
         self.txtFirstName.text = self.currentUser?.getProfileDetailValue(.FirstName)
         self.txtLastName.text = self.currentUser?.getProfileDetailValue(.LastName)
         self.txtLocation.text = self.currentUser?.getProfileDetailValue(.City)
@@ -115,7 +120,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
         self.txtSkype.text = self.currentUser?.getProfileDetailValue(.Skype)
         if let imageUrl = self.currentUser?.imageUrl{
             ImageCachingHandler.Instance.getImageFromUrl(imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage, callback: { (image) in
-                dispatch_async(dispatch_get_main_queue(), {
+                DispatchQueue.main.async(execute: {
                     self.imgPhoto.image = image;
                 })
             })
@@ -124,7 +129,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
         }
     }
     
-    public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var animated = false
         
         if indexPath.section == 2{
@@ -134,33 +139,33 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
             }
             animated = true
         }
-        self.tableView.deselectRowAtIndexPath(indexPath, animated: animated)
+        self.tableView.deselectRow(at: indexPath, animated: animated)
         
-        self.tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: .None)
+        self.tableView.reloadSections(IndexSet(integer: 0), with: .none)
     }
     
-    private func loginFacebook(){
-        if let _ = FBSDKAccessToken.currentAccessToken() {
-            let alertController = UIAlertController(title: NSLocalizedString("Facebook", comment: "Facebook"), message: NSLocalizedString("Do you wish to log out?", comment: "Alert message, Do you wish to log out?"), preferredStyle: .Alert);
-            alertController.addAction(UIAlertAction(title: self.txtTitleLogOut, style: .Destructive, handler: { (action) in
+    fileprivate func loginFacebook(){
+        if let _ = FBSDKAccessToken.current() {
+            let alertController = UIAlertController(title: NSLocalizedString("Facebook", comment: "Facebook"), message: NSLocalizedString("Do you wish to log out?", comment: "Alert message, Do you wish to log out?"), preferredStyle: .alert);
+            alertController.addAction(UIAlertAction(title: self.txtTitleLogOut, style: .destructive, handler: { (action) in
                 FBSDKLoginManager().logOut()
                 ThreadHelper.runOnMainThread({ 
                     self.refreshSocialState()
                 })
             }))
-            alertController.addAction(UIAlertAction(title: self.txtTitleLogOut, style: .Cancel, handler: nil));
+            alertController.addAction(UIAlertAction(title: self.txtTitleLogOut, style: .cancel, handler: nil));
             
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         } else {
-            FBSDKLoginManager().logInWithPublishPermissions(["publish_actions"], fromViewController: self) { (loginResult, error) in
-                if error != nil || loginResult.isCancelled {
+            FBSDKLoginManager().logIn(withPublishPermissions: ["publish_actions"], from: self) { (loginResult, error) in
+                if error != nil || (loginResult?.isCancelled)! {
                     self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: NSLocalizedString("Error logginig in to Facebook", comment: "Alert message, Error logginig in to Facebook"))
                 }
             }
         }
     }
     
-    override public func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    override open func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         
         if (indexPath.section == 2){
             return indexPath;
@@ -169,17 +174,17 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
         }
     }
     
-    public func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        picker.dismissViewControllerAnimated(true, completion: nil)
+    open func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
+        picker.dismiss(animated: true, completion: nil)
         self.setLoading(true)
         let rotatedImage = image.correctlyOrientedImage().resizeImage()
         let currentImage = self.imgPhoto.image
         self.imgPhoto.image = rotatedImage
-        self.btnSave.enabled = false
-        ImageCachingHandler.Instance.saveImage(rotatedImage) { (success, imageUrl) in
+        self.btnSave.isEnabled = false
+        ImageCachingHandler.Instance.saveImage(rotatedImage, uploadId: "") { (success, uploadId, imageUrl) in
             ThreadHelper.runOnMainThread({
                 self.setLoading(false, rightBarButtonItem: self.cancelButton)
-                self.btnSave.enabled = true
+                self.btnSave.isEnabled = true
                 if success {
                     self.currentUser?.imageUrl = imageUrl
                 } else {
@@ -190,7 +195,7 @@ public class ProfileViewController: UITableViewController, UIImagePickerControll
         }
     }
     
-    public func textFieldShouldReturn(textField: UITextField) -> Bool {
+    open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder();
         return false;
     }

@@ -8,16 +8,16 @@
 
 import UIKit
 
-public class NavigationControllerBase: UINavigationController{
-    private var notificationToolbar: UIToolbar?
-    private var notificationLabel: UILabel?
-    private var notificationToolbarVisible = false
-    private var operationsCounter = 0
-    private var connected = true
-    private var dateDisconnected: NSDate?
+open class NavigationControllerBase: UINavigationController{
+    fileprivate var notificationToolbar: UIToolbar?
+    fileprivate var notificationLabel: UILabel?
+    fileprivate var notificationToolbarVisible = false
+    fileprivate var operationsCounter = 0
+    fileprivate var connected = true
+    fileprivate var dateDisconnected: Date?
     
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         //self.setupNotificationToolbar()
         
@@ -27,89 +27,89 @@ public class NavigationControllerBase: UINavigationController{
         //NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(forceLayout), name: UIDeviceOrientationDidChangeNotification, object: nil)
     }
     
-    @objc private func networkConnected(notification: NSNotification){
-        var timeInterval: NSTimeInterval = 100
+    @objc fileprivate func networkConnected(_ notification: Notification){
+        var timeInterval: TimeInterval = 100
         if let date = dateDisconnected{
-            timeInterval = NSDate().timeIntervalSinceDate(date)
+            timeInterval = Date().timeIntervalSince(date)
         }
-        if ConnectionHandler.Instance.status == .Connected && !self.connected && timeInterval > 1 {
+        if ConnectionHandler.Instance.status == .connected && !self.connected && timeInterval > 1 {
             self.connected = true
             self.connectionAquired()
         }
     }
     
-    @objc private func networkDisconnected(notification: NSNotification){
-        self.dateDisconnected = NSDate()
+    @objc fileprivate func networkDisconnected(_ notification: Notification){
+        self.dateDisconnected = Date()
         self.connected = false
         self.connectionLost()
     }
     
-    @objc private func forceLayout(notification: NSNotification){
+    @objc fileprivate func forceLayout(_ notification: Notification){
         var heightOffset: CGFloat = -15
         if self.notificationToolbarVisible {
             heightOffset = 1
         }
-        let frame = CGRectMake(0, self.navigationBar.frame.height - heightOffset, self.view.frame.width, 15)
+        let frame = CGRect(x: 0, y: self.navigationBar.frame.height - heightOffset, width: self.view.frame.width, height: 15)
         notificationToolbar!.frame = frame
         self.navigationBar.layoutSubviews()
     }
     
-    private func setupNotificationToolbar(){
-        notificationToolbar = UIToolbar(frame: CGRectMake(0, self.navigationBar.frame.height - 15, self.view.frame.width, 15))
+    fileprivate func setupNotificationToolbar(){
+        notificationToolbar = UIToolbar(frame: CGRect(x: 0, y: self.navigationBar.frame.height - 15, width: self.view.frame.width, height: 15))
         
         //label
-        self.notificationLabel = UILabel(frame: CGRectMake(8, 0, toolbar!.bounds.width - 16, 14))
-        self.notificationLabel!.font = UIFont.systemFontOfSize(8)
+        self.notificationLabel = UILabel(frame: CGRect(x: 8, y: 0, width: toolbar!.bounds.width - 16, height: 14))
+        self.notificationLabel!.font = UIFont.systemFont(ofSize: 8)
         self.notificationLabel!.text = NSLocalizedString("Connecting message...", comment: "Label, Connecting message...")
         notificationToolbar?.addSubview(self.notificationLabel!)
         
         //bottom separator
-        let view = UIView(frame: CGRectMake(0, 14, toolbar!.bounds.width, 1 / UIScreen.mainScreen().scale))
+        let view = UIView(frame: CGRect(x: 0, y: 14, width: toolbar!.bounds.width, height: 1 / UIScreen.main.scale))
         view.backgroundColor = UIColor(red: 200/255.0, green: 199/255.0, blue: 204/255.0, alpha: 1.0)
         self.notificationToolbar?.addSubview(view)
         
         self.notificationToolbar?.clipsToBounds = true
         
         self.navigationBar.addSubview(notificationToolbar!)
-        self.navigationBar.sendSubviewToBack(notificationToolbar!)
+        self.navigationBar.sendSubview(toBack: notificationToolbar!)
     }
     
-    private func showNotificationToolbar(){
+    fileprivate func showNotificationToolbar(){
         if (!self.notificationToolbarVisible){
             self.notificationToolbarVisible = true
-            UIView.animateWithDuration(0.2, animations: { 
+            UIView.animate(withDuration: 0.2, animations: { 
                 self.notificationToolbar!.frame.origin.y += 16
             })
         }
     }
     
-    private func hideNotificationToolbar(){
+    fileprivate func hideNotificationToolbar(){
         if (self.notificationToolbarVisible){
             self.notificationToolbarVisible = false
-            UIView.animateWithDuration(0.2, animations: {
+            UIView.animate(withDuration: 0.2, animations: {
                 self.notificationToolbar!.frame.origin.y -= 16
             })
         }
     }
     
-    private func connectionLost(){
-        self.notificationLabel!.text = MessagesProvider.getMessage(.ConnectionBroken);
+    fileprivate func connectionLost(){
+        self.notificationLabel!.text = MessagesProvider.getMessage(.connectionBroken);
         self.showNotificationToolbar()
         
         self.hideNotificationToolbarLater()
     }
     
-    private func connectionAquired(){
-        self.notificationLabel!.text = MessagesProvider.getMessage(.ConnectionConnecting)
+    fileprivate func connectionAquired(){
+        self.notificationLabel!.text = MessagesProvider.getMessage(.connectionConnecting)
         self.showNotificationToolbar()
         
         self.hideNotificationToolbarLater()
     }
     
-    private func hideNotificationToolbarLater(){
-        let dispatchTime: dispatch_time_t = dispatch_time(DISPATCH_TIME_NOW, Int64(2 * Double(NSEC_PER_SEC)))
+    fileprivate func hideNotificationToolbarLater(){
+        let dispatchTime: DispatchTime = DispatchTime.now() + Double(Int64(2 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
         self.operationsCounter += 1
-        dispatch_after(dispatchTime, dispatch_get_main_queue()) {
+        DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
             self.operationsCounter -= 1
             if (self.operationsCounter == 0){
                 self.hideNotificationToolbar()

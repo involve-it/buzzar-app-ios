@@ -10,7 +10,7 @@ import Foundation
 import CoreLocation
 
 class CachingHandler{
-    private static let documentDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    fileprivate static let documentDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
     
     static let postsAll = "postsall"
     static let postsMy = "postsmy"
@@ -21,26 +21,26 @@ class CachingHandler{
     static let lastSeenPostIdReport = "lastSeenPostIdReport"
     static let lastLocation = "lastLocation"
     
-    private class func saveObject(obj: AnyObject, path: String) -> Bool{
-        let archiveUrl = documentDirectory.URLByAppendingPathComponent(path)
-        return NSKeyedArchiver.archiveRootObject(obj, toFile: archiveUrl.path!)
+    fileprivate class func saveObject(_ obj: AnyObject, path: String) -> Bool{
+        let archiveUrl = documentDirectory.appendingPathComponent(path)
+        return NSKeyedArchiver.archiveRootObject(obj, toFile: archiveUrl.path)
     }
     
-    class func loadObjects<T>(path: String) throws -> [T]? {
-        let archiveUrl = documentDirectory.URLByAppendingPathComponent(path)
-        return NSKeyedUnarchiver.unarchiveObjectWithFile(archiveUrl.path!) as? [T]
+    class func loadObjects<T>(_ path: String) throws -> [T]? {
+        let archiveUrl = documentDirectory.appendingPathComponent(path)
+        return NSKeyedUnarchiver.unarchiveObject(withFile: archiveUrl.path) as? [T]
     }
     
-    class func loadObject<T>(path: String) throws -> T? {
-        let archiveUrl = documentDirectory.URLByAppendingPathComponent(path)
-        return NSKeyedUnarchiver.unarchiveObjectWithFile(archiveUrl.path!) as? T
+    class func loadObject<T>(_ path: String) throws -> T? {
+        let archiveUrl = documentDirectory.appendingPathComponent(path)
+        return NSKeyedUnarchiver.unarchiveObject(withFile: archiveUrl.path) as? T
     }
     
-    class func deleteFile(path: String) -> Bool{
-        let archiveUrl = documentDirectory.URLByAppendingPathComponent(path)
-        if NSFileManager.defaultManager().isDeletableFileAtPath(archiveUrl.path!){
+    class func deleteFile(_ path: String) -> Bool{
+        let archiveUrl = documentDirectory.appendingPathComponent(path)
+        if FileManager.default.isDeletableFile(atPath: archiveUrl.path){
             do{
-                try NSFileManager.defaultManager().removeItemAtPath(archiveUrl.path!)
+                try FileManager.default.removeItem(atPath: archiveUrl.path)
                 return true
             }
             catch {
@@ -76,7 +76,7 @@ class CachingHandler{
                     LocationHandler.lastLocation = location
                 }
                 
-                self.status = .Complete
+                self.status = .complete
             }
             catch{
                 NSLog("Error occurred while restoring cache. Clearing all cache.")
@@ -94,7 +94,7 @@ class CachingHandler{
         }
     }
     
-    var status = Status.NotStarted
+    var status = Status.notStarted
     
     var postsAll: [Post]?
     var postsMy: [Post]?
@@ -103,70 +103,70 @@ class CachingHandler{
     var seenPostIds: [String]?
     
     var todaySeenPostIds: [String]?
-    var lastSeenPostIdReport: NSDate?
+    var lastSeenPostIdReport: Date?
     var lastLocation: [Double]?
     
-    func savePostsAll(posts: [Post]) -> Bool{
-        if self.status == .Complete && CachingHandler.saveObject(posts, path: CachingHandler.postsAll) {
+    func savePostsAll(_ posts: [Post]) -> Bool{
+        if self.status == .complete && CachingHandler.saveObject(posts as AnyObject, path: CachingHandler.postsAll) {
             self.postsAll = posts
             return true
         }
         return false
     }
     
-    func savePostsMy(posts: [Post]) -> Bool{
-        if self.status == .Complete && CachingHandler.saveObject(posts, path: CachingHandler.postsMy) {
+    func savePostsMy(_ posts: [Post]) -> Bool{
+        if self.status == .complete && CachingHandler.saveObject(posts as AnyObject, path: CachingHandler.postsMy) {
             self.postsMy = posts
             return true
         }
         return false
     }
     
-    func saveCurrentUser(user: User) -> Bool{
-        if self.status == .Complete && CachingHandler.saveObject(user, path: CachingHandler.currentUser) {
+    func saveCurrentUser(_ user: User) -> Bool{
+        if self.status == .complete && CachingHandler.saveObject(user, path: CachingHandler.currentUser) {
             self.currentUser = user
             return true
         }
         return false
     }
     
-    func saveChats(chats: [Chat]) -> Bool{
-        if self.status == .Complete && CachingHandler.saveObject(chats, path: CachingHandler.chats) {
+    func saveChats(_ chats: [Chat]) -> Bool{
+        if self.status == .complete && CachingHandler.saveObject(chats as AnyObject, path: CachingHandler.chats) {
             self.chats = chats
             return true
         }
         return false
     }
     
-    func saveSeenPostIds(postIds: [String]) -> Bool{
-        if self.status == .Complete && CachingHandler.saveObject(postIds, path: CachingHandler.seenPostIds) {
+    func saveSeenPostIds(_ postIds: [String]) -> Bool{
+        if self.status == .complete && CachingHandler.saveObject(postIds as AnyObject, path: CachingHandler.seenPostIds) {
             self.seenPostIds = postIds
             return true
         }
         return false
     }
     
-    func saveTodaySeenPostIds(postIds: [String]) -> Bool {
-        if self.status == .Complete && CachingHandler.saveObject(postIds, path: CachingHandler.todaySeenPostIds) {
+    func saveTodaySeenPostIds(_ postIds: [String]) -> Bool {
+        if self.status == .complete && CachingHandler.saveObject(postIds as AnyObject, path: CachingHandler.todaySeenPostIds) {
             self.todaySeenPostIds = postIds
-            self.lastSeenPostIdReport = NSDate()
-            CachingHandler.saveObject(self.lastSeenPostIdReport!, path: CachingHandler.lastSeenPostIdReport)
+            self.lastSeenPostIdReport = Date()
+            CachingHandler.saveObject(self.lastSeenPostIdReport! as AnyObject, path: CachingHandler.lastSeenPostIdReport)
             return true
         }
         return false
     }
     
-    func saveLastLocation(lat: Double, lng: Double) -> Bool {
+    func saveLastLocation(_ lat: Double, lng: Double) -> Bool {
         let lastLocation = [lat ,lng]
-        if self.status == .Complete && CachingHandler.saveObject(lastLocation, path: CachingHandler.lastLocation) {
+        if self.status == .complete && CachingHandler.saveObject(lastLocation as AnyObject, path: CachingHandler.lastLocation) {
             self.lastLocation = lastLocation
             return true
         }
         return false
     }
     
-    private init(){}
-    private static let instance = CachingHandler()
+    fileprivate init(){}
+    fileprivate static let instance = CachingHandler()
     class var Instance: CachingHandler {
         get {
             return instance
@@ -174,6 +174,6 @@ class CachingHandler{
     }
     
     enum Status{
-        case NotStarted, Complete
+        case notStarted, complete
     }
 }

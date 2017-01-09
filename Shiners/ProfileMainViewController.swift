@@ -11,7 +11,7 @@ import UIKit
 
 class ProfileMainViewController: UIViewController {
     lazy var profileViewController: ProfileTableViewController! = {
-        var viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("profileViewController") as! ProfileTableViewController
+        var viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "profileViewController") as! ProfileTableViewController
         if let rect = self.navigationController?.navigationBar.frame {
             let y = rect.size.height + rect.origin.y
             viewController.tableView.contentInset = UIEdgeInsetsMake( y, 0, 0, 0)
@@ -21,7 +21,7 @@ class ProfileMainViewController: UIViewController {
     }()
     
     lazy var myPostsViewController: MyPostsViewController! = {
-        var viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("myPostsViewController") as! MyPostsViewController
+        var viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "myPostsViewController") as! MyPostsViewController
         return viewController
     }()
     
@@ -34,7 +34,7 @@ class ProfileMainViewController: UIViewController {
         self.switch_ValueChanged(self.typeSwitch)
     }
     
-    @IBAction func switch_ValueChanged(sender: UISegmentedControl) {
+    @IBAction func switch_ValueChanged(_ sender: UISegmentedControl) {
         var viewController: UIViewController!
         if sender.selectedSegmentIndex == 1{
             viewController = self.profileViewController
@@ -42,15 +42,15 @@ class ProfileMainViewController: UIViewController {
             self.navigationItem.rightBarButtonItem = nil
         } else {
             viewController = self.myPostsViewController
-            self.navigationItem.leftBarButtonItem = viewController.editButtonItem()
+            self.navigationItem.leftBarButtonItem = viewController.editButtonItem
             self.navigationItem.rightBarButtonItem = btnAdd
         }
         self.addChildViewController(viewController)
-        viewController.didMoveToParentViewController(self)
+        viewController.didMove(toParentViewController: self)
         self.view.addSubview(viewController.view)
     }
     
-    @IBAction func unwindMyPosts(segue: UIStoryboardSegue){
+    @IBAction func unwindMyPosts(_ segue: UIStoryboardSegue){
         
     }
 }

@@ -22,7 +22,7 @@ class LoginCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func configure() {
+    fileprivate func configure() {
         //backgroundColor = UIColor.redColor()
     }
     

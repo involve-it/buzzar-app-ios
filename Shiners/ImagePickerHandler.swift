@@ -8,41 +8,41 @@
 
 import UIKit
 
-public class ImagePickerHandler{
+open class ImagePickerHandler{
     
-    public weak var delegate: UIImagePickerControllerDelegate?
-    public weak var viewController: UIViewController?
-    public var imagePickerController = UIImagePickerController()
+    open weak var delegate: UIImagePickerControllerDelegate?
+    open weak var viewController: UIViewController?
+    open var imagePickerController = UIImagePickerController()
     
-    public init(viewController: UIViewController, delegate: protocol<UIImagePickerControllerDelegate, UINavigationControllerDelegate>){
+    public init(viewController: UIViewController, delegate: UIImagePickerControllerDelegate & UINavigationControllerDelegate){
         self.delegate = delegate
         self.viewController = viewController
         self.imagePickerController.delegate = delegate;
     }
     
-    public func displayImagePicker(){
-        var alertViewController = UIAlertController(title: NSLocalizedString("Choose Image", comment: "Alert title, Choose Image"), message: nil, preferredStyle: .ActionSheet)
+    open func displayImagePicker(){
+        var alertViewController = UIAlertController(title: NSLocalizedString("Choose Image", comment: "Alert title, Choose Image"), message: nil, preferredStyle: .actionSheet)
         
         var index = 0;
-        if UIImagePickerController.isSourceTypeAvailable(.Camera){
-            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Camera", comment: "Alert title, Camera"), style: .Default, handler: { (_) in
-                self.imagePickerController.sourceType = .Camera
-                self.viewController?.presentViewController(self.imagePickerController, animated: true, completion: nil);
+        if UIImagePickerController.isSourceTypeAvailable(.camera){
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Camera", comment: "Alert title, Camera"), style: .default, handler: { (_) in
+                self.imagePickerController.sourceType = .camera
+                self.viewController?.present(self.imagePickerController, animated: true, completion: nil);
             }));
             index += 1;
         }
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary){
-            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library", comment: "Alert title, Photo Library"), style: .Default, handler: { (_) in
-                self.imagePickerController.sourceType = .PhotoLibrary
-                self.viewController?.presentViewController(self.imagePickerController, animated: true, completion: nil);
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.photoLibrary){
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Photo Library", comment: "Alert title, Photo Library"), style: .default, handler: { (_) in
+                self.imagePickerController.sourceType = .photoLibrary
+                self.viewController?.present(self.imagePickerController, animated: true, completion: nil);
             }));
             index += 1;
         }
-        alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Cancel, handler: nil));
+        alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .cancel, handler: nil));
         if (index == 0){
-            alertViewController = UIAlertController(title: NSLocalizedString("Permissions", comment: "Alert title, Permissions"), message: NSLocalizedString("Please allow access to Camera or Photo Library in Privacy Settings", comment: "Alert message, Please allow access to Camera or Photo Library in Privacy Settings"), preferredStyle: .Alert);
-            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok"), style: .Default, handler: nil));
+            alertViewController = UIAlertController(title: NSLocalizedString("Permissions", comment: "Alert title, Permissions"), message: NSLocalizedString("Please allow access to Camera or Photo Library in Privacy Settings", comment: "Alert message, Please allow access to Camera or Photo Library in Privacy Settings"), preferredStyle: .alert);
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok"), style: .default, handler: nil));
         }
-        self.viewController?.presentViewController(alertViewController, animated: true, completion: nil)
+        self.viewController?.present(alertViewController, animated: true, completion: nil)
     }
 }

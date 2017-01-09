@@ -7,9 +7,10 @@
 //
 
 import Foundation
+import CoreLocation
 
 protocol PostsViewControllerDelegate {
-    func postsUpdated()
-    func showPostDetails(index: Int)
+    func postsUpdated(posts: [Post], currentLocation: CLLocationCoordinate2D?)
+    func showPostDetails(_ index: Int)
     func displayLoadingMore()
 }

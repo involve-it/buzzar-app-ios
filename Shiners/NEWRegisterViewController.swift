@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-public class NEWRegisterViewController: UITableViewController, UITextFieldDelegate {
+open class NEWRegisterViewController: UITableViewController, UITextFieldDelegate {
     
     @IBOutlet weak var textFieldUsername: UITextField!
     @IBOutlet weak var textFieldEmailAddress: UITextField!
@@ -22,12 +22,12 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
     
     @IBOutlet var btnRegister: UIBarButtonItem!
 
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         self.setLoading(false, rightBarButtonItem: self.btnRegister)
         
-        self.tableView.separatorColor = UIColor.clearColor()
+        self.tableView.separatorColor = UIColor.clear
         textFieldConfigure([textFieldUsername, textFieldEmailAddress, textFieldPassword, textFieldConfirmPassword])
         leftPaddingToTextField([textFieldUsername, textFieldEmailAddress, textFieldPassword, textFieldConfirmPassword])
         
@@ -47,56 +47,56 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
         self.tableView.backgroundView = view
     }
     
-    func textFieldConfigure(textField: [UITextField]) {
+    func textFieldConfigure(_ textField: [UITextField]) {
         for item in textField {
             item.layer.cornerRadius = 4.0
         }
     }
     
-    public func textFieldDidBeginEditing(textField: UITextField) {
+    open func textFieldDidBeginEditing(_ textField: UITextField) {
         textFieldAnimationBackgroundShow(textField, alpha: 1)
     }
     
-    public func textFieldDidEndEditing(textField: UITextField) {
+    open func textFieldDidEndEditing(_ textField: UITextField) {
         textFieldAnimationBackgroundShow(textField, alpha: 0.5)
     }
     
-    func textFieldAnimationBackgroundShow(textField: UITextField, alpha: CGFloat) {
-        UIView.animateWithDuration(0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+    func textFieldAnimationBackgroundShow(_ textField: UITextField, alpha: CGFloat) {
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             textField.backgroundColor = UIColor(white: 1, alpha: alpha)
             }, completion: nil)
     }
     
-    override public func viewWillDisappear(animated: Bool) {
+    override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)
     }
     
-    public override func viewDidAppear(animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.textFieldUsername.becomeFirstResponder();
     }
     
-    @objc private func processLogin(){
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
+    @objc fileprivate func processLogin(){
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.AccountLoaded.rawValue), object: nil)
         ThreadHelper.runOnMainThread({
             if AccountHandler.Instance.currentUser == nil {
                 self.setLoading(false, rightBarButtonItem: self.btnRegister)
                 self.showAlert(self.txtTitleRegistrationError, message: ResponseHelper.getDefaultErrorMessage())
             } else {
-                self.dismissViewControllerAnimated(true, completion: nil)
+                self.dismiss(animated: true, completion: nil)
             }
         })
     }
     
-    private func isFormValid() -> Bool {
+    fileprivate func isFormValid() -> Bool {
         var message: String?
         var valid = true
         if self.textFieldUsername.text == nil || self.textFieldUsername.text == "" {
             valid = false
             message = NSLocalizedString("Username cannot be empty", comment: "Alert message, username cannot be empty")
             self.textFieldUsername.becomeFirstResponder()
-        } else if self.textFieldEmailAddress.text == nil || self.textFieldEmailAddress == "" || !self.textFieldEmailAddress.text!.isValidEmail() {
+        } else if self.textFieldEmailAddress.text == nil || self.textFieldEmailAddress.text == "" || !self.textFieldEmailAddress.text!.isValidEmail() {
             valid = false
             message = NSLocalizedString("Email address is not valid", comment: "Alert message, email address cannot be empty")
             self.textFieldEmailAddress.becomeFirstResponder()
@@ -117,26 +117,26 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
         return valid
     }
     
-    func enableFields(enable: Bool){
-        self.textFieldUsername.enabled = enable
-        self.textFieldPassword.enabled = enable
-        self.textFieldEmailAddress.enabled = enable
-        self.textFieldConfirmPassword.enabled = enable
-        self.btnRegister.enabled = enable
+    func enableFields(_ enable: Bool){
+        self.textFieldUsername.isEnabled = enable
+        self.textFieldPassword.isEnabled = enable
+        self.textFieldEmailAddress.isEnabled = enable
+        self.textFieldConfirmPassword.isEnabled = enable
+        self.btnRegister.isEnabled = enable
     }
     
-    @objc private func register() {
+    @objc fileprivate func register() {
         if !self.isNetworkReachable(){
             return
         }
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
         if self.isFormValid() {
             //username
-            let username = self.textFieldUsername.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            let username = self.textFieldUsername.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             //password
             let password = self.textFieldPassword.text
             //email and check
-            let email = self.textFieldEmailAddress.text!.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            let email = self.textFieldEmailAddress.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             
             let user = RegisterUser(username: username, email: email, password: password);
         
@@ -146,23 +146,23 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
             })
             
             if ConnectionHandler.Instance.isNetworkConnected() {
-                NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
                 self.registerUser(user)
             } else {
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(register), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(register), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
             }
         }
     }
     
-    private func registerUser(user: RegisterUser){
+    fileprivate func registerUser(_ user: RegisterUser){
         AccountHandler.Instance.register(user, callback: { (success, errorId, errorMessage, result) in
             if (success){
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(self.processLogin), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountLoaded.rawValue), object: nil)
                 AccountHandler.Instance.login(user.username!, password: user.password!, callback: { (success, errorId, errorMessage, result) in
                     ThreadHelper.runOnMainThread({
                         if !success {
                             self.enableFields(true)
-                            NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
+                            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.AccountLoaded.rawValue), object: nil)
                             self.setLoading(false, rightBarButtonItem: self.btnRegister)
                             self.showAlert(self.txtTitleRegistrationError, message: errorMessage)
                         }
@@ -178,20 +178,24 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
         })
     }
 
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.Register)
+    }
     
     // TODO: - duplication code
-    public func leftPaddingToTextField(array: [UITextField]) {
+    open func leftPaddingToTextField(_ array: [UITextField]) {
         
         for textField in array {
-            let paddingView = UIView(frame: CGRectMake(0, 0, 15, textField.frame.height))
+            let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: textField.frame.height))
             textField.leftView = paddingView
-            textField.leftViewMode = UITextFieldViewMode.Always
+            textField.leftViewMode = UITextFieldViewMode.always
         }
         
     }
     
     
-    public func textFieldShouldReturn(textField: UITextField) -> Bool {
+    open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //TODO: Make check textField isEmpty
         if (textField === self.textFieldUsername){
             self.textFieldEmailAddress.becomeFirstResponder()
@@ -208,20 +212,20 @@ public class NEWRegisterViewController: UITableViewController, UITextFieldDelega
     }
 
     
-    @IBAction func btnRegister_Click(sender: AnyObject) {
+    @IBAction func btnRegister_Click(_ sender: AnyObject) {
         AppAnalytics.logEvent(.RegisterScreen_BtnRegister_Click)
         self.register()
     }
     
-    @IBAction func btn_Cancel(sender: UIBarButtonItem) {
+    @IBAction func btn_Cancel(_ sender: UIBarButtonItem) {
         AppAnalytics.logEvent(.RegisterScreen_BtnCancel_Click)
         //self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func btn_LogIn(sender: UIButton) {
-        let vc = storyboard?.instantiateViewControllerWithIdentifier("NEWloginNavigationController")
-        self.presentViewController(vc!, animated: true, completion: nil)
+    @IBAction func btn_LogIn(_ sender: UIButton) {
+        let vc = storyboard?.instantiateViewController(withIdentifier: "NEWloginNavigationController")
+        self.present(vc!, animated: true, completion: nil)
     }
 
 }

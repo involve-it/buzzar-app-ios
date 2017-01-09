@@ -31,64 +31,69 @@ class ResetPasswordViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.ResetPassword)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         textFieldEmailAddress.becomeFirstResponder()
     }
     
 
     // TODO: - duplication code
-    func leftPaddingToTextField(array: [UITextField]) {
+    func leftPaddingToTextField(_ array: [UITextField]) {
         for textField in array {
-            let paddingView = UIView(frame: CGRectMake(0, 0, 15, textField.frame.height))
+            let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: textField.frame.height))
             textField.leftView = paddingView
-            textField.leftViewMode = UITextFieldViewMode.Always
+            textField.leftViewMode = UITextFieldViewMode.always
         }
         
     }
     
-    func enableFields(enable: Bool){
-        self.textFieldEmailAddress.enabled = enable
-        self.btnResetPassword.enabled = enable
+    func enableFields(_ enable: Bool){
+        self.textFieldEmailAddress.isEnabled = enable
+        self.btnResetPassword.isEnabled = enable
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.resetPassword(textField)
         textField.resignFirstResponder()
         return true
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        let oldText: NSString = textField.text!
-        let newText: NSString = oldText.stringByReplacingCharactersInRange(range, withString: string)
+        let oldText: NSString = textField.text! as NSString
+        let newText: NSString = oldText.replacingCharacters(in: range, with: string) as NSString
         
-        btnResetPassword.enabled = (newText.length > 0)
+        btnResetPassword.isEnabled = (newText.length > 0)
         
         return true
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         textFieldAnimationBackgroundShow(textField, alpha: 1)
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         textFieldAnimationBackgroundShow(textField, alpha: 0.5)
     }
     
-    func textFieldAnimationBackgroundShow(textField: UITextField, alpha: CGFloat) {
-        UIView.animateWithDuration(0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+    func textFieldAnimationBackgroundShow(_ textField: UITextField, alpha: CGFloat) {
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             textField.backgroundColor = UIColor(white: 1, alpha: alpha)
         }, completion: nil)
     }
     
     // MARK: - Action
-    @IBAction func resetPassword(sender: AnyObject) {
+    @IBAction func resetPassword(_ sender: AnyObject) {
         AppAnalytics.logEvent(.ResetPasswordScreen_ResetPassword)
         if !self.isNetworkReachable(){
             return
         }
-        if let email = self.textFieldEmailAddress.text where email != "" && email.isValidEmail() {
+        if let email = self.textFieldEmailAddress.text, email != "" && email.isValidEmail() {
             self.setLoading(true)
             self.enableFields(false)
             self.doResetPassword()
@@ -100,7 +105,7 @@ class ResetPasswordViewController: UIViewController, UITextFieldDelegate {
     
     func doResetPassword(){
         if ConnectionHandler.Instance.isNetworkConnected() {
-            NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
             ConnectionHandler.Instance.users.resetPassword(self.textFieldEmailAddress.text!, callback: { (success, errorId, errorMessage, result) in
                 ThreadHelper.runOnMainThread({ 
                     self.enableFields(true)
@@ -114,7 +119,7 @@ class ResetPasswordViewController: UIViewController, UITextFieldDelegate {
                 })
             })
         } else {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(doResetPassword), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(doResetPassword), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
         }
     }
 }

@@ -4,6 +4,9 @@
 /* Location, Acquiring location... */
 "Acquiring location..." = "Получаем местоположение...";
 
+/* Add photos */
+"Add photos" = "Добавить фото";
+
 /* Location, Address is not defined */
 "Address is not defined" = "Адрес не найден";
 
@@ -47,9 +50,6 @@
    Button, Cancel
    Cancel */
 "Cancel" = "Отменить";
-
-/* Cellular */
-"Cellular" = "Сотовый";
 
 /* Alert title, Choose Image */
 "Choose Image" = "Выберите изображение";
@@ -103,6 +103,9 @@
 /* Edit */
 "Edit" = "Изменить";
 
+/* Edit photos */
+"Edit photos" = "Изменить фото";
+
 /* Alert message, email address cannot be empty */
 "Email address is not valid" = "Адрес электронной почты не верен";
 
@@ -153,7 +156,8 @@
 /* No comment provided by engineer. */
 "It will move with you, showing your availability to people around you" = "Оно будет перемещаться вместе с тобой, как твоя виртуальная визитка, которую могут увидеть люди вокруг";
 
-/* Like */
+/* Like
+   Unlike */
 "Like" = "Нравится";
 
 /* Loading comments */
@@ -195,6 +199,9 @@
 /* NavigationBar Item, Messages */
 "Messages((count))" = "Сообщения";
 
+/* Section title, Nearby users */
+"Nearby users" = "Пользователи вокруг";
+
 /* Alert title, Network Unreachable */
 "Network Unreachable" = "Сеть недоступна";
 
@@ -203,9 +210,6 @@
 
 /* Log in page, button Next */
 "Next" = "Далее";
-
-/* No Connection */
-"No Connection" = "Нет связи";
 
 /* None */
 "None" = "Не выбрано";
@@ -333,4 +337,13 @@
 
 /* Post info, post closed */
 "post closed" = "Пост закрыт";
+
+/* Category of post */
+"Not assigned" = "Не назначена";
+
+"Ask a Question" = "Задать вопрос";
+
+"Find a Friend" = "Найди друга";
+
+"New Post" = "Новый пост";
 

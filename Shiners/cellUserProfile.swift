@@ -10,7 +10,7 @@ import UIKit
 
 class cellUserProfile: UITableViewCell {
 
-    private var currentUser: User?
+    fileprivate var currentUser: User?
     
     @IBOutlet weak var imgUserAvatar: UIImageView!
     @IBOutlet weak var txtUserName: UILabel!
@@ -27,7 +27,7 @@ class cellUserProfile: UITableViewCell {
         
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
@@ -39,7 +39,7 @@ class cellUserProfile: UITableViewCell {
             
             //Username
             if let firstName = self.currentUser?.getProfileDetailValue(.FirstName),
-                lastName = self.currentUser?.getProfileDetailValue(.LastName) {
+                let lastName = self.currentUser?.getProfileDetailValue(.LastName) {
                 txtUserName.text = "\(firstName) \(lastName)"
             } else {
                 txtUserName.text = currentUser.username;
@@ -48,7 +48,7 @@ class cellUserProfile: UITableViewCell {
             //Avatar
             if let imageUrl = currentUser.imageUrl{
                 ImageCachingHandler.Instance.getImageFromUrl(imageUrl, callback: { (image) in
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.imgUserAvatar.image = image
                     })
                 })

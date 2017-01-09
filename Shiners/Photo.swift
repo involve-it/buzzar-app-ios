@@ -8,10 +8,10 @@
 
 import Foundation
 
-public class Photo: NSObject, NSCoding {
-    public var id: String?
-    public var original: String?
-    public var thumbnail: String?
+open class Photo: NSObject, NSCoding {
+    open var id: String?
+    open var original: String?
+    open var thumbnail: String?
     
     public override init(){
         super.init()
@@ -20,33 +20,33 @@ public class Photo: NSObject, NSCoding {
     public init(fields: NSDictionary?){
         super.init()
         
-        self.original = fields?.valueForKey(PropertyKeys.original) as? String
-        self.thumbnail = fields?.valueForKey(PropertyKeys.thumbnail) as? String
-        self.id = fields?.valueForKey(PropertyKeys.id) as? String
+        self.original = fields?.value(forKey: PropertyKeys.original) as? String
+        self.thumbnail = fields?.value(forKey: PropertyKeys.thumbnail) as? String
+        self.id = fields?.value(forKey: PropertyKeys.id) as? String
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        self.id = aDecoder.decodeObjectForKey(PropertyKeys.id) as? String
-        self.original = aDecoder.decodeObjectForKey(PropertyKeys.original) as? String
-        self.thumbnail = aDecoder.decodeObjectForKey(PropertyKeys.thumbnail) as? String
+        self.id = aDecoder.decodeObject(forKey: PropertyKeys.id) as? String
+        self.original = aDecoder.decodeObject(forKey: PropertyKeys.original) as? String
+        self.thumbnail = aDecoder.decodeObject(forKey: PropertyKeys.thumbnail) as? String
     }
     
-    public func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.id, forKey: PropertyKeys.id)
-        aCoder.encodeObject(self.original, forKey: PropertyKeys.original)
-        aCoder.encodeObject(self.thumbnail, forKey: PropertyKeys.thumbnail)
+    open func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.id, forKey: PropertyKeys.id)
+        aCoder.encode(self.original, forKey: PropertyKeys.original)
+        aCoder.encode(self.thumbnail, forKey: PropertyKeys.thumbnail)
     }
     
-    public func toDictionary() -> Dictionary<String, AnyObject>{
+    open func toDictionary() -> Dictionary<String, AnyObject>{
         var dict = Dictionary<String, AnyObject>()
-        dict[PropertyKeys.id] = self.id
-        dict[PropertyKeys.original] = self.original
-        dict[PropertyKeys.thumbnail] = self.thumbnail
+        dict[PropertyKeys.id] = self.id as AnyObject?
+        dict[PropertyKeys.original] = self.original as AnyObject?
+        dict[PropertyKeys.thumbnail] = self.thumbnail as AnyObject?
         
         return dict
     }
     
-    private struct PropertyKeys{
+    fileprivate struct PropertyKeys{
         static let id = "_id"
         //todo: rename to 'original'
         static let original = "data"

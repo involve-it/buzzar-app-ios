@@ -22,10 +22,10 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         self.delegate = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(pushRegistrationFailed), name: NotificationManager.Name.PushRegistrationFailed.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateLoggedIn), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(receivedLocalNotification), name: NotificationManager.Name.ServerEventNotification.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(displaySettings), name: NotificationManager.Name.DisplaySettings.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(pushRegistrationFailed), name: NSNotification.Name(rawValue: NotificationManager.Name.PushRegistrationFailed.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateLoggedIn), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(receivedLocalNotification), name: NSNotification.Name(rawValue: NotificationManager.Name.ServerEventNotification.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(displaySettings), name: NSNotification.Name(rawValue: NotificationManager.Name.DisplaySettings.rawValue), object: nil)
         //buttonCreatePost()
     }
     
@@ -37,39 +37,39 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if !AccountHandler.Instance.isLoggedIn() && !AccountHandler.hasSeenWelcomeScreen() {
             let storyboardMain = UIStoryboard(name: "Main", bundle: nil)
-            let welcomeViewController = storyboardMain.instantiateViewControllerWithIdentifier("welcomeScreen")
-            self.presentViewController(welcomeViewController, animated: true, completion: nil)
+            let welcomeViewController = storyboardMain.instantiateViewController(withIdentifier: "welcomeScreen")
+            self.present(welcomeViewController, animated: true, completion: nil)
             AccountHandler.setSeenWelcomeScreen(true)
         }
         
         if ExceptionHandler.hasLastCrash() {
-            let alertController = UIAlertController(title: NSLocalizedString("Oops", comment: "Alert title, Oops"), message: NSLocalizedString("Looks like we crashed last time. Would you like to help developers and send crash report?", comment: "Alert message, Looks like we crashed last time. Would you like to help developers and send crash report?"), preferredStyle: .Alert);
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Sure!", comment: "Alert title, Yes"), style: .Default, handler:{ (action) in
+            let alertController = UIAlertController(title: NSLocalizedString("Oops", comment: "Alert title, Oops"), message: NSLocalizedString("Looks like we crashed last time. Would you like to help developers and send crash report?", comment: "Alert message, Looks like we crashed last time. Would you like to help developers and send crash report?"), preferredStyle: .alert);
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Sure!", comment: "Alert title, Yes"), style: .default, handler:{ (action) in
                 ExceptionHandler.submitReport()
-                alertController.dismissViewControllerAnimated(true, completion: nil)
+                alertController.dismiss(animated: true, completion: nil)
             }));
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Alert title, Cancel"), style: .Cancel, handler: { (action) in
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("Close", comment: "Alert title, Cancel"), style: .cancel, handler: { (action) in
                 ExceptionHandler.cleanUp()
             }));
-            self.presentViewController(alertController, animated: true, completion: nil)
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     
-    func receivedLocalNotification(notification: NSNotification){
+    func receivedLocalNotification(_ notification: Notification){
         if AccountHandler.Instance.isLoggedIn() {
             let notificaionEvent = notification.object as! LocalNotificationEvent
             var index: Int
             switch notificaionEvent.view {
-            case .Posts:
+            case .posts:
                 index = 0
-            case .Messages:
+            case .messages:
                 index = 3
-            case .MyPosts:
+            case .myPosts:
                 index = 1
             default:
                 index = -1
@@ -80,7 +80,7 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-    private func setBadgeValue(index: Int, count: Int){
+    fileprivate func setBadgeValue(_ index: Int, count: Int){
         ThreadHelper.runOnMainThread { 
             if count == 0 {
                 self.tabBar.items![index].badgeValue = nil
@@ -94,24 +94,24 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
     func buttonCreatePost() {
         let createPostItemWidth = self.view.frame.size.width / 5
         let createPostItemHeight = self.tabBar.frame.size.height
-        let createPostButton = UIButton(frame: CGRectMake(createPostItemWidth * 2, self.view.frame.size.height - createPostItemHeight, createPostItemWidth, createPostItemHeight))
-        createPostButton.setBackgroundImage(UIImage(named: "createPostButton.png"), forState: .Normal)
+        let createPostButton = UIButton(frame: CGRect(x: createPostItemWidth * 2, y: self.view.frame.size.height - createPostItemHeight, width: createPostItemWidth, height: createPostItemHeight))
+        createPostButton.setBackgroundImage(UIImage(named: "createPostButton.png"), for: UIControlState())
         createPostButton.adjustsImageWhenHighlighted = false
-        createPostButton.addTarget(self, action: #selector(createPostAdd), forControlEvents: .TouchUpInside)
+        createPostButton.addTarget(self, action: #selector(createPostAdd), for: .touchUpInside)
         self.view.addSubview(createPostButton)
     }
     
-    func createPostAdd(sender: UIButton) {
+    func createPostAdd(_ sender: UIButton) {
         //self.selectedIndex = 2
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         var controller: UIViewController
         if AccountHandler.Instance.isLoggedIn(){
-            controller = storyboard.instantiateViewControllerWithIdentifier("addPost");
+            controller = storyboard.instantiateViewController(withIdentifier: "addPost");
         } else {
-            controller = storyboard.instantiateViewControllerWithIdentifier("NEWloginNavigationController");
+            controller = storyboard.instantiateViewController(withIdentifier: "NEWloginNavigationController");
         }
-        self.presentViewController(controller, animated: true, completion: nil)
+        self.present(controller, animated: true, completion: nil)
         
     }
     
@@ -140,24 +140,22 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         if viewController.title == "addPostPlaceholder" {
             if AccountHandler.Instance.isLoggedIn(){
-                AppAnalytics.logEvent(.Main_CreatePost_Display)
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let controller = storyboard.instantiateViewControllerWithIdentifier("addPost");
-                self.presentViewController(controller, animated: true, completion: nil)
+                let controller = storyboard.instantiateViewController(withIdentifier: "addPost");
+                self.present(controller, animated: true, completion: nil)
             } else {
                 //controller = storyboard.instantiateViewControllerWithIdentifier("NEWloginNavigationController");
                 self.selectedIndex = 2
-                AppAnalytics.logEvent(.Main_SettingsLoggedOutTab_Display)
             }
             return false;
         }
         return true;
     }
 
-    @objc private func pushRegistrationFailed(object: AnyObject?){
+    @objc fileprivate func pushRegistrationFailed(_ object: AnyObject?){
         if AccountHandler.Instance.isLoggedIn() {
             AccountHandler.Instance.currentUser?.enableNearbyNotifications = false
             NotificationManager.sendNotification(NotificationManager.Name.AccountUpdated, object: nil)
@@ -168,7 +166,7 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         }*/
     }
     //unwind close newPostViewController
-    @IBAction func closeNewPostViewControlle(segue: UIStoryboardSegue) {}
+    @IBAction func closeNewPostViewControlle(_ segue: UIStoryboardSegue) {}
 
     /*func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
         if self.popNavigationControllerToRoot == self.selectedIndex, let navController = viewController as? UINavigationController {
@@ -185,32 +183,29 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         }
     }*/
     
-    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
-        let index = self.allViewControllers.indexOf(viewController)!
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        let index = self.allViewControllers.index(of: viewController)!
         switch index {
         case 0:
-            AppAnalytics.logEvent(.Main_NearbyPostsTab_Display)
             if AccountHandler.Instance.isLoggedIn(){
-                LocalNotificationsHandler.Instance.reportActiveView(.Posts)
+                LocalNotificationsHandler.Instance.reportActiveView(.posts)
             }
             self.setBadgeValue(0, count: 0)
         case 3:
-            AppAnalytics.logEvent(.Main_MessagesTab_Display)
             if AccountHandler.Instance.isLoggedIn(){
-                LocalNotificationsHandler.Instance.reportActiveView(.Messages)
+                LocalNotificationsHandler.Instance.reportActiveView(.messages)
             }
         case 1:
-            AppAnalytics.logEvent(.Main_MyPostsTab_Display)
             if AccountHandler.Instance.isLoggedIn(){
-                LocalNotificationsHandler.Instance.reportActiveView(.MyPosts)
+                LocalNotificationsHandler.Instance.reportActiveView(.myPosts)
             }
         case 4:
-            AppAnalytics.logEvent(.Main_SettingsLoggedOutTab_Display)
+            break
         case 5:
-            AppAnalytics.logEvent(.Main_SettingsLoggedInTab_Display)
+            break
         default:
             if AccountHandler.Instance.isLoggedIn(){
-                LocalNotificationsHandler.Instance.reportActiveView(.Other)
+                LocalNotificationsHandler.Instance.reportActiveView(.other)
             }
         }
         

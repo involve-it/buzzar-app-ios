@@ -19,22 +19,22 @@ class ContactUsViewController: UITableViewController, UITextFieldDelegate, UITex
     @IBOutlet var btn_Send: UIBarButtonItem!
 
     @IBOutlet weak var btn_Cancel: UIBarButtonItem!
-    @IBAction func btnCancel_Click(sender: AnyObject) {
+    @IBAction func btnCancel_Click(_ sender: AnyObject) {
         AppAnalytics.logEvent(.ContactUsScreen_BtnCancel_Click)
         self.view.endEditing(true)
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func btnSend_Click(sender: AnyObject) {
+    @IBAction func btnSend_Click(_ sender: AnyObject) {
         AppAnalytics.logEvent(.ContactUsScreen_BtnSend_Click)
-        if let email = txtEmail.text, subject = txtSubject.text, message = txtMessage.text where email != "" && subject != "" && message != "" {
+        if let email = txtEmail.text, let subject = txtSubject.text, let message = txtMessage.text, email != "" && subject != "" && message != "" {
             self.setFieldsEnabled(false)
             ConnectionHandler.Instance.users.contactUs(email, subject: subject, message: message, callback: { (success, errorId, errorMessage, result) in
                 ThreadHelper.runOnMainThread({
                     self.setFieldsEnabled(true)
                     if success {
                         self.view.endEditing(true)
-                        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                        self.navigationController?.dismiss(animated: true, completion: nil)
                     } else {
                         self.showAlert(NSLocalizedString("Error", comment: "Title error"), message: NSLocalizedString("Internal error occurred", comment: "Internal error occurred"))
                     }
@@ -45,11 +45,11 @@ class ContactUsViewController: UITableViewController, UITextFieldDelegate, UITex
         }
     }
     
-    func setFieldsEnabled(enabled: Bool){
-        self.btn_Cancel.enabled = enabled
-        self.txtEmail.enabled = enabled
-        self.txtSubject.enabled = enabled
-        self.txtMessage.editable = enabled
+    func setFieldsEnabled(_ enabled: Bool){
+        self.btn_Cancel.isEnabled = enabled
+        self.txtEmail.isEnabled = enabled
+        self.txtSubject.isEnabled = enabled
+        self.txtMessage.isEditable = enabled
         
         if enabled{
             self.setLoading(false, rightBarButtonItem: self.btn_Send)
@@ -82,31 +82,36 @@ class ContactUsViewController: UITableViewController, UITextFieldDelegate, UITex
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.ContactUs)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let email = self.txtEmail.text where email != "" {
+        if let email = self.txtEmail.text, email != "" {
             self.txtSubject.becomeFirstResponder()
         } else {
             self.txtEmail.becomeFirstResponder()
         }
     }
     
-    func textFieldConfigure(textField: [UITextField]) {
+    func textFieldConfigure(_ textField: [UITextField]) {
         for item in textField {
             item.layer.cornerRadius = 4.0
         }
     }
     
     // TODO: - duplication code
-    func leftPaddingToTextField(array: [UITextField]) {
+    func leftPaddingToTextField(_ array: [UITextField]) {
         for textField in array {
-            let paddingView = UIView(frame: CGRectMake(0, 0, 15, textField.frame.height))
+            let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: textField.frame.height))
             textField.leftView = paddingView
-            textField.leftViewMode = UITextFieldViewMode.Always
+            textField.leftViewMode = UITextFieldViewMode.always
         }
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //TODO: Make check textField isEmpty
         if (textField === self.txtEmail){
             self.txtSubject.becomeFirstResponder()

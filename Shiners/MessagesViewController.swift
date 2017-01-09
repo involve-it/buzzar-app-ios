@@ -8,25 +8,26 @@
 
 import UIKit
 
-public class MessagesViewController: UITableViewController, UIViewControllerPreviewingDelegate{
+open class MessagesViewController: UITableViewController, UIViewControllerPreviewingDelegate{
     var dialogs = [Chat]()
     
-    private var meteorLoaded = false
+    fileprivate var meteorLoaded = false
     
     var pendingChatId: String?
     var btnDelete: UIBarButtonItem!
     
-    @IBAction func unwindMessages(segue: UIStoryboardSegue) {
+    @IBOutlet var btnNewMessage: UIBarButtonItem!
+    @IBAction func unwindMessages(_ segue: UIStoryboardSegue) {
         //self.navigationController?.popViewControllerAnimated(false)
     }
     
-    public override func viewDidLoad() {
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+    open override func viewDidLoad() {
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
             
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(dialogsUpdated), name: NotificationManager.Name.MyChatsUpdated.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(messageAdded), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
-        if AccountHandler.Instance.status == .Completed {
+        NotificationCenter.default.addObserver(self, selector: #selector(dialogsUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.MyChatsUpdated.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(messageAdded), name: NSNotification.Name(rawValue: NotificationManager.Name.MessageAdded.rawValue), object: nil)
+        if AccountHandler.Instance.status == .completed {
             self.meteorLoaded = true
             if let dialogs = AccountHandler.Instance.myChats{
                 self.dialogs = dialogs
@@ -34,35 +35,35 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
                 self.dialogs = [Chat]()
             }
         } else {
-            if CachingHandler.Instance.status != .Complete {
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
+            if CachingHandler.Instance.status != .complete {
+                NotificationCenter.default.addObserver(self, selector: #selector(showOfflineData), name: NSNotification.Name(rawValue: NotificationManager.Name.OfflineCacheRestored.rawValue), object: nil)
             } else if let dialogs = CachingHandler.Instance.chats {
                 self.dialogs = dialogs
             }
         }
         
         if (dialogs.count == 0){
-            self.tableView.separatorStyle = .None;
+            self.tableView.separatorStyle = .none;
         } else {
-            self.tableView.separatorStyle = .SingleLine;
+            self.tableView.separatorStyle = .singleLine;
         }
         
         self.refreshControl = UIRefreshControl()
-        self.refreshControl?.addTarget(self, action: #selector(updateDialogs), forControlEvents: .ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(updateDialogs), for: .valueChanged)
         
-        if self.traitCollection.forceTouchCapability == UIForceTouchCapability.Available {
-            self.registerForPreviewingWithDelegate(self, sourceView: view)
+        if self.traitCollection.forceTouchCapability == UIForceTouchCapability.available {
+            self.registerForPreviewing(with: self, sourceView: view)
         }
         
-        self.btnDelete = UIBarButtonItem(title: NSLocalizedString("Delete", comment: "Delete"), style: UIBarButtonItemStyle.Done, target: self, action: #selector(deleteMessages))
+        self.btnDelete = UIBarButtonItem(title: NSLocalizedString("Delete", comment: "Delete"), style: UIBarButtonItemStyle.done, target: self, action: #selector(deleteMessages))
         
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
-        self.editButtonItem().action = #selector(editAction)
+        self.navigationItem.leftBarButtonItem = self.editButtonItem
+        self.editButtonItem.action = #selector(editAction)
         
         if self.dialogs.count > 0{
-            self.editButtonItem().enabled = true
+            self.editButtonItem.isEnabled = true
         } else {
-            self.editButtonItem().enabled = false
+            self.editButtonItem.isEnabled = false
         }
         
         //conf. LeftMenu
@@ -70,11 +71,11 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         //self.addLeftBarButtonWithImage(UIImage(named: "menu_black_24dp")!)
     }
     
-    func editAction(sender: UIBarButtonItem){
+    func editAction(_ sender: UIBarButtonItem){
         AppAnalytics.logEvent(.MessagesScreen_BtnEdit_Click)
-        if self.tableView.editing{
+        if self.tableView.isEditing{
             self.tableView.setEditing(false, animated: true)
-            self.navigationItem.rightBarButtonItem = nil
+            self.navigationItem.rightBarButtonItem = self.btnNewMessage
             sender.title = NSLocalizedString("Edit", comment: "Edit")
         } else {
             self.tableView.setEditing(true, animated: true)
@@ -88,8 +89,8 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         if let indexPaths = self.tableView.indexPathsForSelectedRows {
             let count = indexPaths.count
             if count > 0 {
-                let alertController = UIAlertController(title: NSLocalizedString("Delete Messages", comment: "Delete Messages"), message: NSLocalizedString("Are you sure you want to delete selected dialog(s)?", comment: "Alert message, Are you sure you want to delete selected dialogs?"), preferredStyle: .ActionSheet);
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: "Delete"), style: .Destructive, handler: { (action) in
+                let alertController = UIAlertController(title: NSLocalizedString("Delete Messages", comment: "Delete Messages"), message: NSLocalizedString("Are you sure you want to delete selected dialog(s)?", comment: "Alert message, Are you sure you want to delete selected dialogs?"), preferredStyle: .actionSheet);
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Delete", comment: "Delete"), style: .destructive, handler: { (action) in
                     //self.showAlert("Deleted", message: "Deleted")
                     var chatIds = [String]()
                     indexPaths.forEach({ (indexPath) in
@@ -99,21 +100,21 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
                         ThreadHelper.runOnMainThread({
                             if success {
                                 chatIds.forEach({ (chatId) in
-                                    self.dialogs.removeAtIndex(self.dialogs.indexOf({$0.id == chatId})!)
-                                    AccountHandler.Instance.myChats!.removeAtIndex(AccountHandler.Instance.myChats!.indexOf({$0.id == chatId})!)
-                                    LocalNotificationsHandler.Instance.reportEventSeen(.Messages, id: chatId)
+                                    self.dialogs.remove(at: self.dialogs.index(where: {$0.id == chatId})!)
+                                    AccountHandler.Instance.myChats!.remove(at: AccountHandler.Instance.myChats!.index(where: {$0.id == chatId})!)
+                                    LocalNotificationsHandler.Instance.reportEventSeen(.messages, id: chatId)
                                 })
                                 AccountHandler.Instance.saveMyChats()
                                 NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
                                 
                                 if self.dialogs.count == 0{
                                     let allExceptFirst = indexPaths.filter({$0.row != 0})
-                                    self.tableView.deleteRowsAtIndexPaths(allExceptFirst, withRowAnimation: .None)
+                                    self.tableView.deleteRows(at: allExceptFirst, with: .none)
                                     self.tableView.reloadData()
                                 } else {
-                                    self.tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+                                    self.tableView.deleteRows(at: indexPaths, with: .automatic)
                                 }
-                                self.editAction(self.editButtonItem())
+                                self.editAction(self.editButtonItem)
                                 AccountHandler.Instance.processLocalNotifications()
                             } else {
                                 self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: errorMessage)
@@ -121,36 +122,36 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
                         })
                     })
                 }))
-                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .Cancel, handler: nil));
+                alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .cancel, handler: nil));
                 
-                self.presentViewController(alertController, animated: true, completion: nil)
+                self.present(alertController, animated: true, completion: nil)
             }
         }
     }
     
-    func endEditIfDone(count: Int, processedCount: Int, allIndexPaths: [NSIndexPath]){
+    func endEditIfDone(_ count: Int, processedCount: Int, allIndexPaths: [IndexPath]){
         if count == processedCount {
-            if self.tableView.editing {
+            if self.tableView.isEditing {
                 ThreadHelper.runOnMainThread({
-                    self.editAction(self.editButtonItem())
+                    self.editAction(self.editButtonItem)
                 })
             }
             ThreadHelper.runOnMainThread({
                 if self.dialogs.count == 0{
                     let allExceptFirst = allIndexPaths.filter({$0.row != 0})
-                    self.tableView.deleteRowsAtIndexPaths(allExceptFirst, withRowAnimation: .None)
+                    self.tableView.deleteRows(at: allExceptFirst, with: .none)
                     self.tableView.reloadData()
                 } else {
-                    self.tableView.deleteRowsAtIndexPaths(allIndexPaths, withRowAnimation: .Automatic)
+                    self.tableView.deleteRows(at: allIndexPaths, with: .automatic)
                 }
             })
         }
     }
     
-    public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = self.tableView.indexPathForRowAtPoint(location) else {return nil}
-        guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? MessagesTableViewCell else {return nil}
-        guard let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("dialog") as? DialogViewController else {return nil}
+    open func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = self.tableView.indexPathForRow(at: location) else {return nil}
+        guard let cell = self.tableView.cellForRow(at: indexPath) as? MessagesTableViewCell else {return nil}
+        guard let viewController = UIStoryboard.init(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "dialog") as? DialogViewController else {return nil}
         
         let chat = dialogs[indexPath.row];
         
@@ -168,15 +169,15 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         return viewController
     }
     
-    public func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
-        self.showViewController(viewControllerToCommit, sender: self)
+    open func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        self.show(viewControllerToCommit, sender: self)
     }
     
-    func messageAdded(notification: NSNotification){
-        if let message = notification.object as? Message, chatIndex = self.dialogs.indexOf({$0.id == message.chatId}){
+    func messageAdded(_ notification: Notification){
+        if let message = notification.object as? Message, let chatIndex = self.dialogs.index(where: {$0.id == message.chatId}){
             let chat = self.dialogs[chatIndex]
-            self.dialogs.removeAtIndex(chatIndex)
-            self.dialogs.insert(chat, atIndex: 0)
+            self.dialogs.remove(at: chatIndex)
+            self.dialogs.insert(chat, at: 0)
             
             ThreadHelper.runOnMainThread({
                 self.tableView.reloadData()
@@ -184,34 +185,35 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         }
     }
     
-    public override func viewWillAppear(animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.Messages)
         
         self.tableView.reloadData()
         self.navigationItem.title = NSLocalizedString("Messages", comment: "NavigationItem title, Messages")
         self.refreshControl?.endRefreshing()
     }
     
-    override public func viewDidAppear(animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if self.dialogs.count > 0 && AccountHandler.Instance.status == .Completed{
+        if self.dialogs.count > 0 && AccountHandler.Instance.status == .completed{
             self.checkPending(false)
         }
     }
     
     func appDidBecomeActive(){
-        if self.dialogs.count > 0 && AccountHandler.Instance.status == .Completed{
+        if self.dialogs.count > 0 && AccountHandler.Instance.status == .completed{
             self.checkPending(false)
         }
         self.refreshControl?.endRefreshing()
     }
     
-    private func checkPending(stopAfter: Bool){
-        if let pendingChatId = self.pendingChatId, chatIndex = self.dialogs.indexOf({$0.id == pendingChatId}){
+    fileprivate func checkPending(_ stopAfter: Bool){
+        if let pendingChatId = self.pendingChatId, let chatIndex = self.dialogs.index(where: {$0.id == pendingChatId}){
             //self.navigationController?.popToViewController(self, animated: true)
-            let indexPath = NSIndexPath(forRow: chatIndex, inSection: 0)
-            self.tableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: .Bottom)
-            self.performSegueWithIdentifier("dialog", sender: self)
+            let indexPath = IndexPath(row: chatIndex, section: 0)
+            self.tableView.selectRow(at: indexPath, animated: false, scrollPosition: .bottom)
+            self.performSegue(withIdentifier: "dialog", sender: self)
             self.pendingChatId = nil
         }
         if stopAfter {
@@ -224,7 +226,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             if let chats = CachingHandler.Instance.chats{
                 self.dialogs = chats
                 ThreadHelper.runOnMainThread {
-                    self.tableView.separatorStyle = .SingleLine;
+                    self.tableView.separatorStyle = .singleLine;
                     self.tableView.reloadData()
                 }
             }
@@ -244,31 +246,31 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         }
         ThreadHelper.runOnMainThread {
             self.refreshControl?.endRefreshing()
-            self.tableView.separatorStyle = .SingleLine;
+            self.tableView.separatorStyle = .singleLine;
             self.tableView.reloadData()
             if self.dialogs.count > 0{
-                self.editButtonItem().enabled = true
+                self.editButtonItem.isEnabled = true
             } else {
-                self.editButtonItem().enabled = false
+                self.editButtonItem.isEnabled = false
             }
             self.checkPending(true)
         }
     }
     
-    public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return max(1, dialogs.count);
     }
     
-    public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    open override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (dialogs.count == 0){
             if (indexPath.row == 0){
-                return self.tableView.dequeueReusableCellWithIdentifier("noMessages")!
+                return self.tableView.dequeueReusableCell(withIdentifier: "noMessages")!
             }
         }
         
         let dialog = self.dialogs[indexPath.row]
         
-        let cell = self.tableView.dequeueReusableCellWithIdentifier("dialog") as! MessagesTableViewCell
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "dialog") as! MessagesTableViewCell
         
         cell.lblTitle.text = dialog.otherParty?.username
         cell.lblLastMessage.text = dialog.lastMessage
@@ -279,14 +281,14 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         }
         
         if (dialog.seen ?? true) || dialog.toUserId != AccountHandler.Instance.userId {
-            cell.backgroundColor = UIColor.whiteColor()
+            cell.backgroundColor = UIColor.white
         } else {
             cell.backgroundColor = self.tableView.separatorColor
         }
         
         let loading = ImageCachingHandler.Instance.getImageFromUrl(dialog.otherParty?.imageUrl, defaultImage: ImageCachingHandler.defaultAccountImage) { (image) in
             ThreadHelper.runOnMainThread({ 
-                if let cellToUpdate = tableView.cellForRowAtIndexPath(indexPath) as? MessagesTableViewCell{
+                if let cellToUpdate = tableView.cellForRow(at: indexPath) as? MessagesTableViewCell{
                     cellToUpdate.imgPhoto?.image = image;
                 }
             })
@@ -298,82 +300,13 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
         return cell
     }
     
-    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "dialog"{
             AppAnalytics.logEvent(.MessagesScreen_DialogSelected)
-            let selectedCell = self.tableView.cellForRowAtIndexPath(self.tableView.indexPathForSelectedRow!) as! MessagesTableViewCell;
+            //let selectedCell = self.tableView.cellForRow(at: self.tableView.indexPathForSelectedRow!) as! MessagesTableViewCell;
             let chat = self.dialogs[self.tableView.indexPathForSelectedRow!.row]
             
-            let viewController = segue.destinationViewController as! DialogViewController
-            
-            
-            //Добавить новое view с информацией о пользователе
-            let titleLabel = UILabel(frame: CGRectMake(0, 0, view.frame.width - 32, view.frame.height))
-            titleLabel.text = "HOME"
-            
-            //Main profile view
-            let views: UIView = {
-                let v = UIView()
-                v.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 42)
-                return v
-            }()
-            
-            //Profile imageView
-            let profileImageView: UIImageView = {
-                let imageView = UIImageView()
-                imageView.contentMode = .ScaleAspectFill
-                imageView.image = selectedCell.imgPhoto.image
-                //imageView.backgroundColor = UIColor.redColor()
-                imageView.layer.cornerRadius = 15
-                imageView.layer.masksToBounds = true
-                return imageView
-            }()
-            
-            views.addSubview(profileImageView)
-            
-            profileImageView.translatesAutoresizingMaskIntoConstraints = false
-            views.addConstraintsWithFormat("H:|-8-[v0(30)]", views: profileImageView)
-            views.addConstraintsWithFormat("V:[v0(30)]", views: profileImageView)
-            
-            views.addConstraint(NSLayoutConstraint(item: profileImageView, attribute: .CenterY, relatedBy: .Equal, toItem: views, attribute: .CenterY, multiplier: 1, constant: 0))
-            
-            //ContainerView
-            let containerView = UIView()
-            views.addSubview(containerView)
-            
-            views.addConstraintsWithFormat("H:|-46-[v0]|", views: containerView)
-            views.addConstraintsWithFormat("V:[v0(30)]", views: containerView)
-            
-            views.addConstraint(NSLayoutConstraint(item: containerView, attribute: .CenterY, relatedBy: .Equal, toItem: views, attribute: .CenterY, multiplier: 1, constant: 0))
-            
-            //nameLabel
-            let nameLabel: UILabel = {
-               let label = UILabel()
-                label.text = selectedCell.lblTitle.text
-                label.font = UIFont.systemFontOfSize(12)
-                return label
-            }()
-            
-            //activeTimeLabel
-            let activeTimeLabel: UILabel = {
-                let label = UILabel()
-                if let lastLogin = chat.otherParty?.lastLogin{
-                    label.text = lastLogin.toFriendlyLongDateTimeString()
-                }
-                label.font = UIFont.systemFontOfSize(10)
-                label.textColor = UIColor.darkGrayColor()
-                return label
-            }()
-            
-            containerView.addSubview(nameLabel)
-            containerView.addSubview(activeTimeLabel)
-            
-            containerView.addConstraintsWithFormat("H:|[v0]|", views: nameLabel)
-            containerView.addConstraintsWithFormat("V:|[v0][v1(14)]|", views: nameLabel, activeTimeLabel)
-            
-            containerView.addConstraintsWithFormat("H:|[v0]-8-|", views: activeTimeLabel)
-               
-            viewController.navigationItem.titleView = views
+            let viewController = segue.destination as! DialogViewController
             
             //viewController.navigationItem.titleView = titleLabel
             
@@ -386,7 +319,7 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
             viewController.dataFromCache = false
             
             if !chat.messagesRequested {
-                if CachingHandler.Instance.status == .Complete, let index = CachingHandler.Instance.chats?.indexOf({$0.id == chat.id}) {
+                if CachingHandler.Instance.status == .complete, let index = CachingHandler.Instance.chats?.index(where: {$0.id == chat.id}) {
                     let cachedChat = CachingHandler.Instance.chats![index]
                     chat.messages = cachedChat.messages
                     viewController.dataFromCache = true
@@ -395,31 +328,36 @@ public class MessagesViewController: UITableViewController, UIViewControllerPrev
                 viewController.pendingMessagesAsyncId = MessagesHandler.Instance.getMessagesAsync(chat.id!, skip: 0)
             }
         }
+        else if segue.identifier == "newMessage" {
+            let navController = segue.destination as! UINavigationController
+            let dialogController = navController.viewControllers[0] as! DialogViewController
+            dialogController.newMessage = true
+        }
     }
     
-    public override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
-        return !self.tableView.editing
+    open override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        return !self.tableView.isEditing
     }
     
-    public override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    open override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    override public func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    override open func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
             let dialog = self.dialogs[indexPath.row]
             AppAnalytics.logEvent(.MessagesScreen_SlideDelete_Clicked)
             ConnectionHandler.Instance.messages.deleteChats([dialog.id!]) { success, errorId, errorMessage, result in
                 ThreadHelper.runOnMainThread({ 
                     if success {
-                        LocalNotificationsHandler.Instance.reportEventSeen(.Messages, id: dialog.id)
-                        self.dialogs.removeAtIndex(indexPath.row)
-                        AccountHandler.Instance.myChats!.removeAtIndex(AccountHandler.Instance.myChats!.indexOf({$0.id == dialog.id})!)
+                        LocalNotificationsHandler.Instance.reportEventSeen(.messages, id: dialog.id)
+                        self.dialogs.remove(at: indexPath.row)
+                        AccountHandler.Instance.myChats!.remove(at: AccountHandler.Instance.myChats!.index(where: {$0.id == dialog.id})!)
                         AccountHandler.Instance.saveMyChats()
                         if self.dialogs.count == 0 {
                             self.tableView.reloadData()
                         } else {
-                            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                            self.tableView.deleteRows(at: [indexPath], with: .automatic)
                         }
                         AccountHandler.Instance.processLocalNotifications()
                         NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)

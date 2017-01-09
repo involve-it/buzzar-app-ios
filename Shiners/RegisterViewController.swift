@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class RegisterViewController: UITableViewController, UITextFieldDelegate{
+open class RegisterViewController: UITableViewController, UITextFieldDelegate{
     
     @IBOutlet weak var txtUsername: UITextField!
     @IBOutlet weak var txtEmail: UITextField!
@@ -17,11 +17,11 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
     
     let txtTitleRegistrationError = NSLocalizedString("Registration error", comment: "Alert title, registration error")
     
-    @IBAction func btnCancel_Click(sender: AnyObject) {
-        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func btnCancel_Click(_ sender: AnyObject) {
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         self.setLoading(false);
         
         self.txtUsername.delegate = self;
@@ -30,7 +30,7 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
         self.txtConfirmPassword.delegate = self;
     }
     
-    public override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    open override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if (indexPath.section == 1){
             return indexPath;
         } else {
@@ -38,38 +38,43 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
         }
     }
     
-    public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 1 {
-            self.tableView.deselectRowAtIndexPath(indexPath, animated: true);
+            self.tableView.deselectRow(at: indexPath, animated: true);
             self.register()
         }
     }
     
-    override public func viewWillDisappear(animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.Register)
+    }
+    
+    override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.view.endEditing(true)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)
     }
     
-    public override func viewDidAppear(animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.txtUsername.becomeFirstResponder();
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.processLogin), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)
     }
     
-    @objc private func processLogin(){
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-        dispatch_async(dispatch_get_main_queue(), {
+    @objc fileprivate func processLogin(){
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)
+        DispatchQueue.main.async(execute: {
             self.setLoading(false)
             if AccountHandler.Instance.currentUser != nil {
-                self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                self.navigationController?.dismiss(animated: true, completion: nil)
             } else {
                 self.showAlert("Registration error", message: ResponseHelper.getDefaultErrorMessage())
             }
         })
     }
     
-    private func register(){
+    fileprivate func register(){
         if self.txtPassword.text == self.txtConfirmPassword.text {
             let user = RegisterUser(username: self.txtUsername.text, email: self.txtEmail.text, password: self.txtPassword.text);
             if (user.isValid()){
@@ -96,7 +101,7 @@ public class RegisterViewController: UITableViewController, UITextFieldDelegate{
         self.showAlert(NSLocalizedString("Validation failed", comment: "Alert title, Validation failed"), message: NSLocalizedString("Form validation failed", comment: "Alert message, Form validation failed"))
     }
     
-    public func textFieldShouldReturn(textField: UITextField) -> Bool {
+    open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if (textField === self.txtUsername){
             self.txtEmail.becomeFirstResponder()
         } else if textField === self.txtEmail {

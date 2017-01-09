@@ -12,7 +12,7 @@ class Comment: NSObject, DictionaryInitializable, NSCoding {
     var id: String?
     var text: String?
     var userId: String?
-    var timestamp: NSDate?
+    var timestamp: Date?
     var username: String?
     var entityId: String?
     var likes: Int?
@@ -35,20 +35,20 @@ class Comment: NSObject, DictionaryInitializable, NSCoding {
         self.update(fields)
     }
     
-    func update(fields: NSDictionary?){
-        self.id = fields?.valueForKey(PropertyKeys.id) as? String
-        self.text = fields?.valueForKey(PropertyKeys.text) as? String
-        self.userId = fields?.valueForKey(PropertyKeys.userId) as? String
-        self.username = fields?.valueForKey(PropertyKeys.username) as? String
-        self.entityId = fields?.valueForKey(PropertyKeys.entityId) as? String
-        self.likes = fields?.valueForKey(PropertyKeys.likes) as? Int
-        self.liked = fields?.valueForKey(PropertyKeys.liked) as? Bool
+    func update(_ fields: NSDictionary?){
+        self.id = fields?.value(forKey: PropertyKeys.id) as? String
+        self.text = fields?.value(forKey: PropertyKeys.text) as? String
+        self.userId = fields?.value(forKey: PropertyKeys.userId) as? String
+        self.username = fields?.value(forKey: PropertyKeys.username) as? String
+        self.entityId = fields?.value(forKey: PropertyKeys.entityId) as? String
+        self.likes = fields?.value(forKey: PropertyKeys.likes) as? Int
+        self.liked = fields?.value(forKey: PropertyKeys.liked) as? Bool
         
-        if let timestamp = fields?.valueForKey(PropertyKeys.timestamp) as? Double {
-            self.timestamp = NSDate(timeIntervalSince1970: timestamp / 1000)
+        if let timestamp = fields?.value(forKey: PropertyKeys.timestamp) as? Double {
+            self.timestamp = Date(timeIntervalSince1970: timestamp / 1000)
         }
         
-        if let userFields = fields?.valueForKey("user") as? NSDictionary {
+        if let userFields = fields?.value(forKey: "user") as? NSDictionary {
             self.user = User(fields: userFields)
             if let user = self.user {
                 self.username = user.username
@@ -59,36 +59,36 @@ class Comment: NSObject, DictionaryInitializable, NSCoding {
     required init(coder aDecoder: NSCoder){
         super.init()
         
-        self.id = aDecoder.decodeObjectForKey(PropertyKeys.id) as? String
-        self.text = aDecoder.decodeObjectForKey(PropertyKeys.text) as? String
-        self.userId = aDecoder.decodeObjectForKey(PropertyKeys.userId) as? String
-        self.timestamp = aDecoder.decodeObjectForKey(PropertyKeys.timestamp) as? NSDate
-        self.username = aDecoder.decodeObjectForKey(PropertyKeys.username) as? String
-        self.entityId = aDecoder.decodeObjectForKey(PropertyKeys.entityId) as? String
-        self.user = aDecoder.decodeObjectForKey(PropertyKeys.user) as? User
-        if aDecoder.containsValueForKey(PropertyKeys.likes){
-            self.likes = aDecoder.decodeObjectForKey(PropertyKeys.likes) as? Int
+        self.id = aDecoder.decodeObject(forKey: PropertyKeys.id) as? String
+        self.text = aDecoder.decodeObject(forKey: PropertyKeys.text) as? String
+        self.userId = aDecoder.decodeObject(forKey: PropertyKeys.userId) as? String
+        self.timestamp = aDecoder.decodeObject(forKey: PropertyKeys.timestamp) as? Date
+        self.username = aDecoder.decodeObject(forKey: PropertyKeys.username) as? String
+        self.entityId = aDecoder.decodeObject(forKey: PropertyKeys.entityId) as? String
+        self.user = aDecoder.decodeObject(forKey: PropertyKeys.user) as? User
+        if aDecoder.containsValue(forKey: PropertyKeys.likes){
+            self.likes = aDecoder.decodeObject(forKey: PropertyKeys.likes) as? Int
         }
-        if aDecoder.containsValueForKey(PropertyKeys.liked) {
-            self.liked = aDecoder.decodeBoolForKey(PropertyKeys.liked)
+        if aDecoder.containsValue(forKey: PropertyKeys.liked) {
+            self.liked = aDecoder.decodeBool(forKey: PropertyKeys.liked)
         }
     }
     
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(self.id, forKey: PropertyKeys.id)
-        aCoder.encodeObject(self.text, forKey: PropertyKeys.text)
-        aCoder.encodeObject(self.userId, forKey: PropertyKeys.userId)
-        aCoder.encodeObject(self.timestamp, forKey: PropertyKeys.timestamp)
-        aCoder.encodeObject(self.username, forKey: PropertyKeys.username)
-        aCoder.encodeObject(self.entityId, forKey: PropertyKeys.entityId)
-        aCoder.encodeObject(self.user, forKey: PropertyKeys.user)
-        aCoder.encodeObject(self.likes, forKey: PropertyKeys.likes)
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.id, forKey: PropertyKeys.id)
+        aCoder.encode(self.text, forKey: PropertyKeys.text)
+        aCoder.encode(self.userId, forKey: PropertyKeys.userId)
+        aCoder.encode(self.timestamp, forKey: PropertyKeys.timestamp)
+        aCoder.encode(self.username, forKey: PropertyKeys.username)
+        aCoder.encode(self.entityId, forKey: PropertyKeys.entityId)
+        aCoder.encode(self.user, forKey: PropertyKeys.user)
+        aCoder.encode(self.likes, forKey: PropertyKeys.likes)
         if let liked = self.liked {
-            aCoder.encodeBool(liked, forKey: PropertyKeys.liked)
+            aCoder.encode(liked, forKey: PropertyKeys.liked)
         }
     }
     
-    private struct PropertyKeys{
+    fileprivate struct PropertyKeys{
         static let id = "_id"
         static let text = "text"
         static let userId = "userId"
@@ -102,8 +102,8 @@ class Comment: NSObject, DictionaryInitializable, NSCoding {
     
     func toDictionary() -> Dictionary<String, AnyObject> {
         var dict = Dictionary<String, AnyObject>()
-        dict["comment"] = self.text
-        dict["postId"] = self.entityId
+        dict["comment"] = self.text as AnyObject?
+        dict["postId"] = self.entityId as AnyObject?
         
         return dict
     }

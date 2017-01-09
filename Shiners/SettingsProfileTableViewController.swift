@@ -10,9 +10,9 @@ import UIKit
 
 class SettingsProfileTableViewController: UITableViewController {
 
-    private var currentUser: User?
-    private var meteorLoaded = false
-    private var accountDetailsPending = false
+    fileprivate var currentUser: User?
+    fileprivate var meteorLoaded = false
+    fileprivate var accountDetailsPending = false
     
     
     @IBOutlet weak var imgUserAvatar: UIImageView!
@@ -28,19 +28,19 @@ class SettingsProfileTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
-        if ConnectionHandler.Instance.status == .Connected {
+        if ConnectionHandler.Instance.status == .connected {
             self.accountUpdated(nil)
         } else {
-            if CachingHandler.Instance.status != .Complete {
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
+            if CachingHandler.Instance.status != .complete {
+                NotificationCenter.default.addObserver(self, selector: #selector(showOfflineData), name: NSNotification.Name(rawValue: NotificationManager.Name.OfflineCacheRestored.rawValue), object: nil)
             } else if let currentUser = CachingHandler.Instance.currentUser {
                 self.currentUser = currentUser
                 self.refreshUser()
             }
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(accountUpdated), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(accountUpdated), name: NotificationManager.Name.UserUpdated.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(accountUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(accountUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.UserUpdated.rawValue), object: nil)
         
         getUserData()
         
@@ -60,7 +60,7 @@ class SettingsProfileTableViewController: UITableViewController {
 
             //Username
             if let firstName = self.currentUser?.getProfileDetailValue(.FirstName),
-                lastName = self.currentUser?.getProfileDetailValue(.LastName) {
+                let lastName = self.currentUser?.getProfileDetailValue(.LastName) {
                 txtUsername.text = "\(firstName) \(lastName)"
             } else {
                 txtUsername.text = currentUser.username
@@ -69,7 +69,7 @@ class SettingsProfileTableViewController: UITableViewController {
             //Avatar
             if let imageUrl = currentUser.imageUrl{
                 ImageCachingHandler.Instance.getImageFromUrl(imageUrl, callback: { (image) in
-                    dispatch_async(dispatch_get_main_queue(), {
+                    DispatchQueue.main.async(execute: {
                         self.imgUserAvatar.image = image
                     })
                 })
@@ -93,7 +93,7 @@ class SettingsProfileTableViewController: UITableViewController {
         }
     }
     
-    func accountUpdated(object: AnyObject?){
+    func accountUpdated(_ object: AnyObject?){
         self.meteorLoaded = true
         self.currentUser = AccountHandler.Instance.currentUser
         self.refreshUser()
@@ -103,7 +103,7 @@ class SettingsProfileTableViewController: UITableViewController {
             if self.accountDetailsPending {
                 self.setLoading(false)
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let vc = storyboard.instantiateViewControllerWithIdentifier("editProfileController")
+                let vc = storyboard.instantiateViewController(withIdentifier: "editProfileController")
                 self.navigationController?.pushViewController(vc, animated: true);
             }
         }
@@ -114,8 +114,8 @@ class SettingsProfileTableViewController: UITableViewController {
             
             if let imageUrl = currentUser.imageUrl{
                 ImageCachingHandler.Instance.getImageFromUrl(imageUrl, callback: { (image) in
-                    dispatch_async(dispatch_get_main_queue(), {
-                        let cell = self.tableView.cellForRowAtIndexPath(NSIndexPath(forItem: 0, inSection: 0));
+                    DispatchQueue.main.async(execute: {
+                        let cell = self.tableView.cellForRow(at: IndexPath(item: 0, section: 0));
                         self.imgUserAvatar.image = image;
                         cell?.layoutIfNeeded()
                     })
@@ -128,20 +128,20 @@ class SettingsProfileTableViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 4 {
             AppAnalytics.logEvent(.SettingsLoggedInScreen_Logout)
-            let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .ActionSheet)
-            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .Destructive, handler: { (_) in
+            let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .actionSheet)
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .destructive, handler: { (_) in
                 AppAnalytics.logEvent(.SettingsLoggedInScreen_DoLogout)
                 self.doLogout()
             }))
             
-            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .Cancel, handler: { (_) in
+            alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Alert title, Cancel"), style: .cancel, handler: { (_) in
                 AppAnalytics.logEvent(.SettingsLoggedInScreen_CancelLogout)
             }))
             
-            self.presentViewController(alertViewController, animated: true, completion: nil)
+            self.present(alertViewController, animated: true, completion: nil)
         }
     }
     
@@ -149,18 +149,18 @@ class SettingsProfileTableViewController: UITableViewController {
         if self.modalSpinner == nil {
             self.modalSpinner = self.displayModalAlert("Logging out...")
         }
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
-        if ConnectionHandler.Instance.status == .Connected {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
+        if ConnectionHandler.Instance.status == .connected {
             AccountHandler.Instance.logoff(){ success in
                 ThreadHelper.runOnMainThread({
-                    self.modalSpinner?.dismissViewControllerAnimated(true, completion: nil)
+                    self.modalSpinner?.dismiss(animated: true, completion: nil)
                     if (!success){
                         self.showAlert(NSLocalizedString("Error", comment: "Alert, Error"), message: NSLocalizedString("An error occurred", comment: "Alert message, An error occurred"))
                     }
                 })
             }
         } else {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(doLogout), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(doLogout), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
         }
     }
     

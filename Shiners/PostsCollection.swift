@@ -9,15 +9,15 @@
 import Foundation
 import SwiftDDP
 
-public class PostsCollection:AbstractCollection{
+open class PostsCollection:AbstractCollection{
     var subscribing = false
-    public var posts = [Post]()
+    open var posts = [Post]()
     
     init() {
         super.init(name: "posts");
     }
     
-    override public func documentWasAdded(collection: String, id: String, fields: NSDictionary?) {
+    override open func documentWasAdded(_ collection: String, id: String, fields: NSDictionary?) {
         let post = Post(id: id, fields: fields)
         self.posts.append(post)
         if !subscribing {
@@ -25,31 +25,32 @@ public class PostsCollection:AbstractCollection{
         }
     }
     
-    override public func documentWasRemoved(collection: String, id: String) {
+    override open func documentWasRemoved(_ collection: String, id: String) {
         guard subscribing == false else { return }
-        if let index = self.posts.indexOf({post in return post.id == id}){
-            self.posts.removeAtIndex(index)
+        if let index = self.posts.index(where: {post in return post.id == id}){
+            self.posts.remove(at: index)
             if !subscribing {
-                NotificationManager.sendNotification(NotificationManager.Name.NearbyPostRemoved, object: id)
+                NotificationManager.sendNotification(NotificationManager.Name.NearbyPostRemoved, object: id as AnyObject?)
             }
         }
     }
     
-    override public func documentWasChanged(collection: String, id: String, fields: NSDictionary?, cleared: [String]?) {
-        if let index = self.posts.indexOf({post in return post.id == id}){
+    /*override open func documentWasChanged(_ collection: String, id: String, fields: NSDictionary?, cleared: [String]?) {
+        if let index = self.posts.index(where: {post in return post.id == id}){
             let post = self.posts[index];
-            post.update(fields);
+            let newPost = Post(id: id, fields: fields)
+            post.updateFrom(post: newPost)
             if !subscribing {
                 NotificationManager.sendNotification(NotificationManager.Name.NearbyPostModified, object: post)
             }
         }
-    }
+    }*/
     
-    public func count() -> Int{
+    open func count() -> Int{
         return posts.count;
     }
     
-    public func itemAtIndex(index: Int) -> Post{
+    open func itemAtIndex(_ index: Int) -> Post{
         return posts[index];
     }
 }

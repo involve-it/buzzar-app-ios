@@ -14,26 +14,26 @@ class SelectCategoryTableViewController: UITableViewController {
     var selectCategoryDelegate: SelectCategoryViewControllerDelegate?
     
     override func viewDidLoad() {
-        
+        AppAnalytics.logScreen(.NewPost_Category)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let currentCategory = self.currentCategory, index = ConstantValuesHandler.Instance.categories.indexOf(currentCategory) {
+        if let currentCategory = self.currentCategory, let index = ConstantValuesHandler.Instance.categories.index(of: currentCategory) {
             self.tableView.visibleCells.forEach { (cell) in
-                cell.accessoryType = .None
+                cell.accessoryType = .none
             }
-            self.tableView.cellForRowAtIndexPath(NSIndexPath(forItem: index, inSection: 1))!.accessoryType = .Checkmark
+            self.tableView.cellForRow(at: IndexPath(item: index, section: 1))!.accessoryType = .checkmark
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.visibleCells.forEach { (cell) in
-            cell.accessoryType = .None
+            cell.accessoryType = .none
         }
-        let cell = self.tableView.cellForRowAtIndexPath(indexPath)!
-        cell.accessoryType = .Checkmark
+        let cell = self.tableView.cellForRow(at: indexPath)!
+        cell.accessoryType = .checkmark
         var category:String? = nil
         var value = NSLocalizedString("None", comment: "None")
         if indexPath.section == 1{
@@ -41,14 +41,14 @@ class SelectCategoryTableViewController: UITableViewController {
             value = cell.textLabel!.text!
         }
         self.selectCategoryDelegate?.categorySelected(category, value: value)
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func btnCancel_Click(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func btnCancel_Click(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
 protocol SelectCategoryViewControllerDelegate{
-    func categorySelected(category: String?, value: String)
+    func categorySelected(_ category: String?, value: String)
 }

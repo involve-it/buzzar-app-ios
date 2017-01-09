@@ -8,17 +8,35 @@
 
 import Foundation
 import FBSDKCoreKit
+import Google
 
 class AppAnalytics{
-    class func logEvent(event: Event) {
+    class func logEvent(_ event: Event) {
         ThreadHelper.runOnBackgroundThread { 
-            FBSDKAppEvents.logEvent(event.rawValue)
+            //FBSDKAppEvents.logEvent(event.rawValue)
+            let tracker = GAI.sharedInstance().defaultTracker
+            let builder = GAIDictionaryBuilder.createEvent(withCategory: "Hit", action: event.rawValue, label: "", value: 1)!
+            tracker?.send(builder.build() as! [String : Any])
         }
         print("Logging event: \(event.rawValue)")
     }
     
+    class func logScreen(_ screen: Screen) {
+        ThreadHelper.runOnBackgroundThread {
+            //FBSDKAppEvents.logEvent(event.rawValue)
+            let tracker = GAI.sharedInstance().defaultTracker
+            tracker?.set(kGAIScreenName, value: screen.rawValue)
+            let builder = GAIDictionaryBuilder.createScreenView()!
+            tracker?.send(builder.build() as! [String : Any])
+        }
+        print("Logging screen: \(screen.rawValue)")
+    }
+    
+    enum Screen: String {
+        case NearbyPostsTab, SettingsLoggedOut, Register, LoginScreen, ResetPassword, NearbyPosts_List, NearbyPosts_Map, Messages, Dialog, MyPosts, SettingsLoggedIn, Profile, ContactUs, EditProfile, NewPost_Title, NewPost_Loc, NewPost_When, NewPost_Photo, NewPost_Category, PostDetails, Welcome, EditPost, Comments
+    }
+    
     enum Event: String {
-        case Main_NearbyPostsTab_Display, Main_MessagesTab_Display, Main_CreatePost_Display, Main_MyPostsTab_Display, Main_SettingsLoggedInTab_Display, Main_SettingsLoggedOutTab_Display
         case SettingsLoggedOutScreen_Register_Click, SettingsLoggedOutScreen_Login_Click
         case RegisterScreen_BtnCancel_Click, RegisterScreen_BtnRegister_Click
         case LoginScreen_BtnCancel_Click, LoginScreen_BtnLogin_Click, LoginScreen_BtnResetPassword_Click

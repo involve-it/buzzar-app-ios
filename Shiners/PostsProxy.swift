@@ -10,25 +10,25 @@ import Foundation
 import SwiftDDP
 import CoreLocation
 
-public class PostsProxy{
-    private static let instance = PostsProxy()
-    public class var Instance: PostsProxy{
+open class PostsProxy{
+    fileprivate static let instance = PostsProxy()
+    open class var Instance: PostsProxy{
         get{
             return instance;
         }
     }
     
-    public func getNearbyPosts(lat: Double, lng: Double, radius: Double, skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
+    open func getNearbyPosts(_ lat: Double, lng: Double, radius: Double, skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
-        dict["lat"] = lat
-        dict["lng"] = lng
-        dict["radius"] = radius
-        dict["skip"] = skip
-        dict["take"] = take
+        dict["lat"] = lat as AnyObject?
+        dict["lng"] = lng as AnyObject?
+        dict["radius"] = radius as AnyObject?
+        dict["skip"] = skip as AnyObject?
+        dict["take"] = take as AnyObject?
         
         Meteor.call("getNearbyPostsTest", params: [dict]) {result, error in
             if error == nil {
-                if let posts = ResponseHelper.callHandlerArray(result, handler: callback) as [Post]? {
+                if let posts = ResponseHelper.callHandlerArray(result as AnyObject?, handler: callback) as [Post]? {
                     let users = posts.map({ (post) -> User in
                         return post.user!
                     })
@@ -36,188 +36,188 @@ public class PostsProxy{
                 }
                 
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    public func getMyPosts(skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
+    open func getMyPosts(_ skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
-        dict["type"] = "all"
+        dict["type"] = "all" as AnyObject?
         //todo: fix paging
-        dict["take"] = take
-        dict["skip"] = skip
+        dict["take"] = take as AnyObject?
+        dict["skip"] = skip as AnyObject?
         Meteor.call("getMyPosts", params: [dict]) { (result, error) in
             if error == nil {
-                ResponseHelper.callHandlerArray(result, handler: callback) as [Post]?
+                ResponseHelper.callHandlerArray(result as AnyObject?, handler: callback) as [Post]?
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    public func addPost(post: Post, currentCoordinates: CLLocationCoordinate2D?, callback: MeteorMethodCallback? = nil){
+    open func addPost(_ post: Post, currentCoordinates: CLLocationCoordinate2D?, callback: MeteorMethodCallback? = nil){
         let postDict = post.toDictionary()
         var parameters = [postDict];
         if let coordinates = currentCoordinates{
             var coordinatesDict = Dictionary<String, AnyObject>()
-            coordinatesDict["lat"] = coordinates.latitude
-            coordinatesDict["lng"] = coordinates.longitude
-            coordinatesDict["deviceId"] = SecurityHandler.getDeviceId()
+            coordinatesDict["lat"] = coordinates.latitude as AnyObject?
+            coordinatesDict["lng"] = coordinates.longitude as AnyObject?
+            coordinatesDict["deviceId"] = SecurityHandler.getDeviceId() as AnyObject?
 
             parameters.append(coordinatesDict)
         }
         Meteor.call("addPost", params: parameters) { (result, error) in
             if error == nil {
-                let errorId = ResponseHelper.getErrorId(result);
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?);
                 var id: String? = nil
                 if let fields = result as? NSDictionary {
-                    id = fields.valueForKey("result") as? String
+                    id = fields.value(forKey: "result") as? String
                 }
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: id)
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), id)
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    public func editPost(post: Post, callback: MeteorMethodCallback? = nil){
+    open func editPost(_ post: Post, callback: MeteorMethodCallback? = nil){
         let postDict = post.toDictionary()
         Meteor.call("editPost", params: [postDict]) { (result, error) in
             if error == nil {
-                let errorId = ResponseHelper.getErrorId(result);
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?);
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), nil)
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    public func deletePost(id: String, callback: MeteorMethodCallback? = nil){
+    open func deletePost(_ id: String, callback: MeteorMethodCallback? = nil){
         Meteor.call("deletePost", params: [id]){(result, error) in
             if error == nil {
-                let errorId = ResponseHelper.getErrorId(result);
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?);
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), nil)
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    public func incrementSeenCounters(id: String, incrementTotal: Bool, incrementToday: Bool, callback: MeteorMethodCallback? = nil){
+    open func incrementSeenCounters(_ id: String, incrementTotal: Bool, incrementToday: Bool, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
-        dict["postId"] = id
+        dict["postId"] = id as AnyObject?
         //todo: fix paging
-        dict["incrementTotal"] = incrementTotal
-        dict["incrementToday"] = incrementToday
-        dict["incrementAll"] = true
+        dict["incrementTotal"] = incrementTotal as AnyObject?
+        dict["incrementToday"] = incrementToday as AnyObject?
+        dict["incrementAll"] = true as AnyObject?
         Meteor.call("incrementPostSeenCounters", params: [dict]){(result, error) in
             if error == nil {
-                let errorId = ResponseHelper.getErrorId(result);
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?);
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), nil)
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    public func getComments(postId: String, skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
+    open func getComments(_ postId: String, skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
-        dict["postId"] = postId
-        dict["take"] = take
-        dict["skip"] = skip
+        dict["postId"] = postId as AnyObject?
+        dict["take"] = take as AnyObject?
+        dict["skip"] = skip as AnyObject?
         Meteor.call("getComments", params: [dict]){ (result, error) in
             if error == nil {
-                ResponseHelper.callHandlerArray(result, handler: callback) as [Comment]?
+                ResponseHelper.callHandlerArray(result as AnyObject?, handler: callback) as [Comment]?
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    func addComment(comment: Comment, callback: MeteorMethodCallback? = nil){
+    func addComment(_ comment: Comment, callback: MeteorMethodCallback? = nil){
         let dict = comment.toDictionary()
         Meteor.call("addComment", params: [dict]) { (result, error) in
             if error == nil {
-                let errorId = ResponseHelper.getErrorId(result);
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?);
                 var id: String? = nil
                 if let fields = result as? NSDictionary {
-                    id = fields.valueForKey("result") as? String
+                    id = fields.value(forKey: "result") as? String
                 }
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: id)
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), id)
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    func deleteComment(commentId: String, callback: MeteorMethodCallback? = nil){
+    func deleteComment(_ commentId: String, callback: MeteorMethodCallback? = nil){
         Meteor.call("deleteComment", params: [commentId]) {(result, error) in
             if error == nil {
-                let errorId = ResponseHelper.getErrorId(result);
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?);
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), nil)
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    func likePost(postId: String, callback: MeteorMethodCallback?){
+    func likePost(_ postId: String, callback: MeteorMethodCallback?){
         var dict = Dictionary<String, AnyObject>()
-        dict["userId"] = AccountHandler.Instance.userId!
-        dict["entityId"] = postId
-        dict["entityType"] = "post"
+        dict["userId"] = AccountHandler.Instance.userId! as AnyObject?
+        dict["entityId"] = postId as AnyObject?
+        dict["entityType"] = "post" as AnyObject?
         Meteor.call("likeEntity", params: [dict]) { (result, error) in
             if error == nil {
-                let errorId = ResponseHelper.getErrorId(result);
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?);
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), nil)
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    func unlikePost(postId: String, callback: MeteorMethodCallback?){
+    func unlikePost(_ postId: String, callback: MeteorMethodCallback?){
         var dict = Dictionary<String, AnyObject>()
-        dict["userId"] = AccountHandler.Instance.userId!
-        dict["entityId"] = postId
-        dict["entityType"] = "post"
+        dict["userId"] = AccountHandler.Instance.userId! as AnyObject?
+        dict["entityId"] = postId as AnyObject?
+        dict["entityType"] = "post" as AnyObject?
         Meteor.call("unlikeEntity", params: [dict]) { (result, error) in
             if error == nil {
-                let errorId = ResponseHelper.getErrorId(result);
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?);
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), nil)
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    func likeComment(commentId: String, callback: MeteorMethodCallback?){
+    func likeComment(_ commentId: String, callback: MeteorMethodCallback?){
         var dict = Dictionary<String, AnyObject>()
-        dict["userId"] = AccountHandler.Instance.userId!
-        dict["entityId"] = commentId
-        dict["entityType"] = "comment"
+        dict["userId"] = AccountHandler.Instance.userId! as AnyObject?
+        dict["entityId"] = commentId as AnyObject?
+        dict["entityType"] = "comment" as AnyObject?
         Meteor.call("likeEntity", params: [dict]) { (result, error) in
             if error == nil {
-                let errorId = ResponseHelper.getErrorId(result);
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?);
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), nil)
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }
     
-    func unlikeComment(commentId: String, callback: MeteorMethodCallback?){
+    func unlikeComment(_ commentId: String, callback: MeteorMethodCallback?){
         var dict = Dictionary<String, AnyObject>()
-        dict["userId"] = AccountHandler.Instance.userId!
-        dict["entityId"] = commentId
-        dict["entityType"] = "comment"
+        dict["userId"] = AccountHandler.Instance.userId! as AnyObject?
+        dict["entityId"] = commentId as AnyObject?
+        dict["entityType"] = "comment" as AnyObject?
         Meteor.call("unlikeEntity", params: [dict]) { (result, error) in
             if error == nil {
-                let errorId = ResponseHelper.getErrorId(result);
-                callback?(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?);
+                callback?(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), nil)
             } else {
-                callback?(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
             }
         }
     }

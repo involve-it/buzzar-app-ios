@@ -9,6 +9,30 @@
 import UIKit
 import CoreLocation
 import MapKit
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, LocationHandlerDelegate {
     
@@ -20,12 +44,12 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     let labeDetermineLocationText = NSLocalizedString("Acquiring location...", comment: "Location, Acquiring location...")
     var currentLocationInfo: GeocoderInfo?
     
-    private var dynamicLocationRequested = false
+    fileprivate var dynamicLocationRequested = false
     
-    private var tapped: Bool = false
+    fileprivate var tapped: Bool = false
     var annotation: MKPointAnnotation?
     
-    private let locationHandler = LocationHandler()
+    fileprivate let locationHandler = LocationHandler()
     
     @IBOutlet weak var createPostAddiotionalMenu: UIView!
     @IBOutlet weak var btn_next: UIBarButtonItem!
@@ -39,14 +63,15 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     
     @IBOutlet weak var switcherDynamic: UISwitch!
     @IBOutlet weak var switcherStatic: UISwitch!
+    var editingPost = false
     var lastStaticSearchRequestId = ""
     
-    func locationReported(geocoderInfo: GeocoderInfo) {
-        if let annotation = self.annotation, address = geocoderInfo.address{
+    func locationReported(_ geocoderInfo: GeocoderInfo) {
+        if let annotation = self.annotation, let address = geocoderInfo.address{
             ThreadHelper.runOnMainThread({ 
                 annotation.title = address
             })
-            if let index = post.locations!.indexOf({return $0.placeType == .Static}) {
+            if let index = post.locations!.index(where: {return $0.placeType == .Static}) {
                 post.locations![index].name = address
             }
         }
@@ -54,15 +79,18 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if self.editingPost {
+            self.navigationItem.rightBarButtonItem = nil
+        }
         
         self.searchContainerView.alpha = 0
-        self.searchContainerView.hidden = true
+        self.searchContainerView.isHidden = true
         
         self.searchResults = [MKPlacemark]()
         self.locationHandler.delegate = self
         self.mapView.delegate = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(currentLocationReported), name: NotificationManager.Name.NewPostLocationReported.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(currentLocationReported), name: NSNotification.Name(rawValue: NotificationManager.Name.NewPostLocationReported.rawValue), object: nil)
         
         let gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         self.mapView.addGestureRecognizer(gestureRecognizer)
@@ -72,24 +100,27 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
         self.labeDetermineLocation.text = labeDetermineLocationText
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if let _ = self.post.locations!.indexOf({return $0.placeType == .Dynamic}) {
+        AppAnalytics.logScreen(.NewPost_Loc)
+        
+        if let _ = self.post.locations!.index(where: {return $0.placeType == .Dynamic}) {
             self.mapView.showsUserLocation = true
-            self.switcherDynamic.on = true
+            self.switcherDynamic.isOn = true
         }
         
-        if let index = self.post.locations!.indexOf({return $0.placeType == .Static}) {
+        if let index = self.post.locations!.index(where: {return $0.placeType == .Static}) {
             let location = self.post.locations![index]
             self.setStaticLocation(CLLocationCoordinate2DMake(location.lat!, location.lng!), first: false)
         }
         
         self.centerMapOnAnnotations()
         self.updateUiElementsInLocation()
+        
     }
     
-    func currentLocationReported(notification: NSNotification){
+    func currentLocationReported(_ notification: Notification){
         let geocoderInfo = notification.object as! GeocoderInfo
         NSLog("Location reported: \(geocoderInfo)")
         self.currentLocationInfo = geocoderInfo
@@ -102,15 +133,15 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     
     
     //Switcher
-    @IBAction func switcher_getDynamicLocation(sender: UISwitch) {
+    @IBAction func switcher_getDynamicLocation(_ sender: UISwitch) {
         //event Value changed
 
-        self.mapView.showsUserLocation = sender.on
+        self.mapView.showsUserLocation = sender.isOn
         
-        if sender.on {
+        if sender.isOn {
             AppAnalytics.logEvent(.NewPostWizard_Loc_Dynamic_On)
             //Center current location on map
-            if !self.mapView.userLocationVisible {
+            if !self.mapView.isUserLocationVisible {
                 self.centerMapOnAnnotations()
             }
             
@@ -122,18 +153,18 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
             }
         } else {
             AppAnalytics.logEvent(.NewPostWizard_Loc_Dynamic_Off)
-            if let index = self.post.locations!.indexOf({return $0.placeType == .Dynamic}) {
-                self.post.locations!.removeAtIndex(index)
+            if let index = self.post.locations!.index(where: {return $0.placeType == .Dynamic}) {
+                self.post.locations!.remove(at: index)
             }
         }
         updateUiElementsInLocation()
     }
     
     
-    @IBAction func switcher_getStaticLocation(sender: UISwitch) {
+    @IBAction func switcher_getStaticLocation(_ sender: UISwitch) {
         //event Touch Up Inside
         
-        if sender.on {
+        if sender.isOn {
             AppAnalytics.logEvent(.NewPostWizard_Loc_Static_On)
             if let currentCoordinate = self.currentLocationInfo?.coordinate {
                 self.setStaticLocation(currentCoordinate, first: true)
@@ -146,28 +177,28 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
                 self.mapView.removeAnnotation(annotation)
                 self.annotation = nil
             }
-            if let index = self.post.locations!.indexOf({return $0.placeType == .Static}) {
-                self.post.locations!.removeAtIndex(index)
+            if let index = self.post.locations!.index(where: {return $0.placeType == .Static}) {
+                self.post.locations!.remove(at: index)
             }
         }
         
         updateUiElementsInLocation()
     }
     
-    func handleLongPress (gestureRecognizer: UIGestureRecognizer){
-        if (gestureRecognizer.state == .Began){
+    func handleLongPress (_ gestureRecognizer: UIGestureRecognizer){
+        if (gestureRecognizer.state == .began){
             self.searchBar.showsCancelButton = false
             self.searchBar.resignFirstResponder()
             self.tapped = true
-            let point = gestureRecognizer.locationInView(self.mapView)
-            let coordinate = self.mapView.convertPoint(point, toCoordinateFromView: self.mapView)
+            let point = gestureRecognizer.location(in: self.mapView)
+            let coordinate = self.mapView.convert(point, toCoordinateFrom: self.mapView)
             
             self.setStaticLocation(coordinate, first: false)
             self.updateUiElementsInLocation()
         }
     }
     
-    private func setStaticLocation(coordinate: CLLocationCoordinate2D, first: Bool) {
+    fileprivate func setStaticLocation(_ coordinate: CLLocationCoordinate2D, first: Bool) {
         self.locationHandler.reverseGeocode(CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude))
         
         if let annotation = self.annotation{
@@ -192,22 +223,22 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
         location.lng = coordinate.longitude
         location.placeType = .Static
         
-        if let index = post.locations!.indexOf({return $0.placeType == .Static}) {
-            post.locations!.removeAtIndex(index)
+        if let index = post.locations!.index(where: {return $0.placeType == .Static}) {
+            post.locations!.remove(at: index)
         }
         
         self.post.locations!.append(location)
-        self.switcherStatic.on = true
+        self.switcherStatic.isOn = true
     }
     
-    @objc private func searchingRequest(request: String) {
+    @objc fileprivate func searchingRequest(_ request: String) {
         //запрос на поиск
         if request != "" {
-            let requestId = NSUUID().UUIDString
+            let requestId = UUID().uuidString
             self.lastStaticSearchRequestId = requestId
             
             self.searchContainerView.alpha = 1
-            self.searchContainerView.hidden = false
+            self.searchContainerView.isHidden = false
             
             //guard let loc = self.mapView.userLocation.location else {return}
             let req = MKLocalSearchRequest()
@@ -217,21 +248,21 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
             }
             //req.region = MKCoordinateRegionMake(loc.coordinate, MKCoordinateSpanMake(1, 1))
             let search = MKLocalSearch(request: req)
-            search.startWithCompletionHandler({(response: MKLocalSearchResponse?, error: NSError?) in
-                guard let response = response where requestId == self.lastStaticSearchRequestId else { return }
+            search.start(completionHandler: { (response, error) in
+                guard let response = response, requestId == self.lastStaticSearchRequestId else { return }
                 
                 self.searchResults.removeAll()
                 for item in response.mapItems {
                     
                     self.searchResults.append(item.placemark)
                 }
-                ThreadHelper.runOnMainThread({ 
+                ThreadHelper.runOnMainThread({
                     self.tableView.reloadData()
                 })
             })
         } else {
             self.searchContainerView.alpha = 0
-            self.searchContainerView.hidden = true
+            self.searchContainerView.isHidden = true
             self.searchResults.removeAll()
             self.tableView.reloadData()
         }
@@ -239,37 +270,37 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     
     
     
-    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         //фокус на searchBar
         AppAnalytics.logEvent(.NewPostWizard_Loc_SearchFieldActive)
         searchBar.showsCancelButton = true
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         AppAnalytics.logEvent(.NewPostWizard_Loc_Search_Cancel_Click)
         searchBar.showsCancelButton = false
         searchBar.resignFirstResponder()
         
         self.searchContainerView.alpha = 0
-        self.searchContainerView.hidden = true
+        self.searchContainerView.isHidden = true
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
         cell.textLabel?.text = self.searchResults[indexPath.row].title
         
         return cell
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.searchResults.count
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         AppAnalytics.logEvent(.NewPostWizard_Loc_Search_ResSelected)
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        self.switcherStatic.on = true
+        tableView.deselectRow(at: indexPath, animated: true)
+        self.switcherStatic.isOn = true
         
         let location = self.searchResults[indexPath.row].coordinate
         
@@ -283,25 +314,28 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
         self.annotation!.coordinate = location
         self.mapView.addAnnotation(self.annotation!)
         
-        UIView.animateWithDuration(0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.searchContainerView.alpha = 0
             }, completion: { (completed: Bool) in
-                self.searchContainerView.hidden = true
+                self.searchContainerView.isHidden = true
         })
         
         self.setStaticLocation(location, first: false)
         self.centerMapOnAnnotations()
         self.searchBar.resignFirstResponder()
         self.searchBar.showsCancelButton = false
+        if !self.editingPost {
+            self.btn_next.isEnabled = true
+        }
         
         //UIView.animateWithDuration(2, delay: 0, options: [.CurveEaseOut], animations: {}, completion: nil)
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         self.searchingRequest(searchText)
      }
     
-    func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         if !self.locationUpdated {
             self.locationUpdated = true
             self.centerMapOnAnnotations()
@@ -336,7 +370,7 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     
     //****************************************************************//
     
-    @IBAction func createPost(sender: AnyObject) {
+    @IBAction func createPost(_ sender: AnyObject) {
         if let post = self.post {
             
             //print("\(post)")
@@ -346,7 +380,7 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
                     AccountHandler.Instance.updateMyPosts()
                     ThreadHelper.runOnMainThread({
                         self.view.endEditing(true)
-                        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+                        self.navigationController?.dismiss(animated: true, completion: nil)
                     })
                 } else {
                     ThreadHelper.runOnMainThread({ 
@@ -387,8 +421,8 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
                 location.name = geocoderInfo.address
                 location.placeType = .Dynamic
                 
-                if let index = post.locations!.indexOf({return $0.placeType == .Dynamic}) {
-                    post.locations!.removeAtIndex(index)
+                if let index = post.locations!.index(where: {return $0.placeType == .Dynamic}) {
+                    post.locations!.remove(at: index)
                 }
                 
                 self.post.locations!.append(location)
@@ -422,25 +456,27 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
             self.labeDetermineLocation.text = labelLocation
             
             if !hasStaticLocation {
-                self.switcherStatic.on = false
+                self.switcherStatic.isOn = false
             }
             
-            if self.post.locations?.count > 0 {
-                self.btn_next.enabled = true
-                self.createPostAddiotionalMenu.hidden = false
-            } else {
-                self.btn_next.enabled = false
-                self.createPostAddiotionalMenu.hidden = true
+            if !self.editingPost {
+                if self.post.locations?.count > 0 {
+                    self.btn_next.isEnabled = true
+                    self.createPostAddiotionalMenu.isHidden = false
+                } else {
+                    self.btn_next.isEnabled = false
+                    self.createPostAddiotionalMenu.isHidden = true
+                }
             }
         }
     }
     
     
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueDatePicker" {
             AppAnalytics.logEvent(.NewPostWizard_Loc_BtnNext_Click)
-            if let destination = segue.destinationViewController as? WhenPickDateViewController {
+            if let destination = segue.destination as? WhenPickDateViewController {
                 
                 //Передаем объект post следующему контроллеру
                 destination.post = post

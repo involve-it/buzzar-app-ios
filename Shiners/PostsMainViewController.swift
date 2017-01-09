@@ -22,6 +22,20 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     var currentLocation: CLLocationCoordinate2D?
     var pendingPostId: String?
     
+    
+    
+    @IBOutlet weak var btnJobs: UIButton!
+    @IBOutlet weak var btnTrainings: UIButton!
+    @IBOutlet weak var btnConnect: UIButton!
+    @IBOutlet weak var btnTrade: UIButton!
+    @IBOutlet weak var btnHousing: UIButton!
+    @IBOutlet weak var btnEvents: UIButton!
+    @IBOutlet weak var btnService: UIButton!
+    @IBOutlet weak var btnHelp: UIButton!
+    
+    
+    
+    
     @IBOutlet var btnAddPost: UIBarButtonItem!
     var locationAcquired = false
     var errorMessage: String?
@@ -45,42 +59,59 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     @IBOutlet var searchCriteriaView: UIView!
     let storyBoard = UIStoryboard(name: "Main", bundle: nil)
     //Identifier postStyle
-    private var listInitialized = false
-    private var mapInitialized = false
-    private var searchToolbarHeight: CGFloat!
+    fileprivate var listInitialized = false
+    fileprivate var mapInitialized = false
+    fileprivate var searchToolbarHeight: CGFloat!
+    var subscribed = false
     
     lazy var listViewController: PostsViewController! = {
-        let list = self.storyBoard.instantiateViewControllerWithIdentifier("postsViewController") as! PostsViewController
+        let list = self.storyBoard.instantiateViewController(withIdentifier: "postsViewController") as! PostsViewController
         self.listInitialized = true
         return list
     }()
     //Identifier mapStyle
     lazy var mapViewController: PostsMapViewController! = {
-        let map = self.storyBoard.instantiateViewControllerWithIdentifier("mapViewControllerForPosts") as! PostsMapViewController
+        let map = self.storyBoard.instantiateViewController(withIdentifier: "mapViewControllerForPosts") as! PostsMapViewController
         self.mapInitialized = true
         return map
     }()
     
     enum PostsViewType: Int {
         case list = 0
-        case Map
+        case map
     }
     
     var filterCategories = [String]()
     
-    @IBAction func btnCategory_Click(sender: UIBarButtonItem) {
+    
+    @IBAction func btnCategory_Clicked(_ sender: UIButton) {
         let category = ConstantValuesHandler.Instance.categories[sender.tag]
-        if let index = self.filterCategories.indexOf(category){
-            self.filterCategories.removeAtIndex(index)
-            sender.tintColor = UITabBar.appearance().tintColor
+        if let index = self.filterCategories.index(of: category){
+            self.filterCategories.remove(at: index)
+            sender.tintColor = UIColor().SHBlueSystem
         } else {
             self.filterCategories.append(category)
-            sender.tintColor = UIColor.redColor()
+            sender.currentImage?.withRenderingMode(.alwaysTemplate)
+            sender.tintColor = UIColor(white: 0.2, alpha: 0.8)
         }
         self.refreshSearchResults()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    
+    
+    @IBAction func btnCategory_Click(_ sender: UIBarButtonItem) {
+        let category = ConstantValuesHandler.Instance.categories[sender.tag]
+        if let index = self.filterCategories.index(of: category){
+            self.filterCategories.remove(at: index)
+            sender.tintColor = UITabBar.appearance().tintColor
+        } else {
+            self.filterCategories.append(category)
+            sender.tintColor = UIColor.red
+        }
+        self.refreshSearchResults()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.locationHandler.monitorSignificantLocationChanges()
         
@@ -97,32 +128,48 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         AccountHandler.Instance.unsubscribeFromCommentsForPost()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if self.posts.count > 0 && ConnectionHandler.Instance.isNetworkConnected() {
             self.checkPending(false)
+            self.callRefreshDelegates()
+        }
+    }
+    
+    func changesBtnWithInToolbar(buttons: [UIButton], size: CGFloat, color: UIColor) {
+        for button in buttons {
+            button.frame.size.width = size
+            button.setImage(button.currentImage?.withRenderingMode(.alwaysTemplate), for: .normal)
+            button.tintColor = color
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        //Set index for segment
-        self.typeSwitch.selectedSegmentIndex = PostsViewType.list.rawValue
-        // Load viewController
-        self.loadCurrentViewController(self.typeSwitch.selectedSegmentIndex)
+        
+        let toolBarItemWidth: CGFloat = (UIScreen.main.bounds.width - 32) / 8 - 8
+        
+        //btnJobs.frame.size.width = toolBarItemWidth
+        //btnTrainings.frame.size.width = toolBarItemWidth
+        //btnConnect.frame.size.width = toolBarItemWidth
+        //btnTrade.frame.size.width = toolBarItemWidth
+        //btnHousing.frame.size.width = toolBarItemWidth
+        //btnEvents.frame.size.width = toolBarItemWidth
+        //btnService.frame.size.width = toolBarItemWidth
+        //btnHelp.frame.size.width = toolBarItemWidth
+        
+        changesBtnWithInToolbar(buttons: [btnJobs, btnTrainings, btnConnect, btnTrade, btnHousing, btnEvents, btnService, btnHelp], size: toolBarItemWidth, color: UIColor().SHBlueSystem)
         
         self.navigationItem.title = "Posts"
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         self.locationHandler.delegate = self
-        
         self.locationHandler.getLocationOnce(false)
         
         if ConnectionHandler.Instance.isNetworkConnected() {
             self.getNearby()
-        } else if CachingHandler.Instance.status != .Complete {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(showOfflineData), name: NotificationManager.Name.OfflineCacheRestored.rawValue, object: nil)
+        } else if CachingHandler.Instance.status != .complete {
+            NotificationCenter.default.addObserver(self, selector: #selector(showOfflineData), name: NSNotification.Name(rawValue: NotificationManager.Name.OfflineCacheRestored.rawValue), object: nil)
         } else if let posts = CachingHandler.Instance.postsAll {
             self.allPosts = posts
             
@@ -139,23 +186,28 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
             self.staleLocation = true
         }
         
+        //Set index for segment
+        self.typeSwitch.selectedSegmentIndex = PostsViewType.list.rawValue
+        // Load viewController
+        self.loadCurrentViewController(self.typeSwitch.selectedSegmentIndex)
+        
         self.searchBar.showsCancelButton = true
         self.searchBar.delegate = self
         self.searchCriteriaToolbar.delegate = self
         self.searchToolbarHeight = self.searchCriteriaToolbar.frame.size.height
-        self.searchCriteriaView.frame = CGRectMake(0, -self.searchToolbarHeight, self.navigationController!.navigationBar.frame.width, self.searchToolbarHeight)
+        self.searchCriteriaView.frame = CGRect(x: 0, y: -self.searchToolbarHeight, width: self.navigationController!.navigationBar.frame.width, height: self.searchToolbarHeight)
         
         self.view.addSubview(self.searchCriteriaView)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(connectionFailed), name: NotificationManager.Name.MeteorConnectionFailed.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorConnected), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(meteorNetworkConnected), name: NotificationManager.Name.MeteorNetworkConnected.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(accountUpdated), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(postAdded), name: NotificationManager.Name.NearbyPostAdded.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(postRemoved), name: NotificationManager.Name.NearbyPostRemoved.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(postModified), name: NotificationManager.Name.NearbyPostModified.rawValue, object: nil)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(getNearby), name: NotificationManager.Name.NearbyPostsUpdated.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(connectionFailed), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnectionFailed.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(meteorConnected), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(meteorNetworkConnected), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorNetworkConnected.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(accountUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postAdded), name: NSNotification.Name(rawValue: NotificationManager.Name.NearbyPostAdded.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postRemoved), name: NSNotification.Name(rawValue: NotificationManager.Name.NearbyPostRemoved.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(postModified), name: NSNotification.Name(rawValue: NotificationManager.Name.NearbyPostModified.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(myPostUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.MyPostUpdated.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(getNearby), name: NSNotification.Name(rawValue: NotificationManager.Name.NearbyPostsUpdated.rawValue), object: nil)
     }
     
     func connectionFailed(){
@@ -163,9 +215,9 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         self.loadingMorePosts = false
     }
     
-    func postAdded(notification: NSNotification){
+    func postAdded(_ notification: Notification){
         if ConnectionHandler.Instance.isNetworkConnected(), let post = notification.object as? Post {
-            if self.allPosts.indexOf({$0.id == post.id}) == nil {
+            if self.allPosts.index(where: {$0.id == post.id}) == nil {
                 /*var posts = self.allPosts
                 posts.append(post)
                 posts = AccountHandler.Instance.sortNearbyPosts(posts)
@@ -177,25 +229,34 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         }
     }
     
-    func postRemoved(notification: NSNotification){
-        if ConnectionHandler.Instance.isNetworkConnected(), let postId = notification.object as? String, index =  self.allPosts.indexOf({$0.id == postId}){
-            self.allPosts.removeAtIndex(index)
+    func myPostUpdated(_ notification: Notification){
+        if let post = notification.object as? Post, let index =  self.allPosts.index(where: {$0.id == post.id}){
+            let currentPost = self.allPosts[index]
+            currentPost.updateFrom(post: post)
             self.refreshSearchResults()
             self.callRefreshDelegates()
         }
     }
     
-    func postModified(notification: NSNotification){
-        if ConnectionHandler.Instance.isNetworkConnected(), let post = notification.object as? Post, index =  self.allPosts.indexOf({$0.id == post.id}){
-            self.allPosts.removeAtIndex(index)
-            self.allPosts.insert(post, atIndex: index)
+    func postRemoved(_ notification: Notification){
+        if ConnectionHandler.Instance.isNetworkConnected(), let postId = notification.object as? String, let index =  self.allPosts.index(where: {$0.id == postId}){
+            self.allPosts.remove(at: index)
+            self.refreshSearchResults()
+            self.callRefreshDelegates()
+        }
+    }
+    
+    func postModified(_ notification: Notification){
+        if ConnectionHandler.Instance.isNetworkConnected(), let post = notification.object as? Post, let index =  self.allPosts.index(where: {$0.id == post.id}){
+            self.allPosts.remove(at: index)
+            self.allPosts.insert(post, at: index)
             self.refreshSearchResults()
             self.callRefreshDelegates()
         }
     }
     
     func accountUpdated(){
-        if let currentLocation = self.currentLocation where AccountHandler.Instance.isLoggedIn() && ConnectionHandler.Instance.status == .Connected{
+        if let currentLocation = self.currentLocation, AccountHandler.Instance.isLoggedIn() && ConnectionHandler.Instance.status == .connected{
             //ConnectionHandler.Instance.reportLocation(currentLocation.latitude, lng: currentLocation.longitude, notify: false)
             AccountHandler.Instance.reportLocation(currentLocation.latitude, lng: currentLocation.longitude){ (success, _, _, _) in
                 if success {
@@ -211,14 +272,18 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         }
     }
     
-    @objc private func meteorConnected(notification: NSNotification){
+    @objc fileprivate func meteorConnected(_ notification: Notification){
         if self.locationAcquired {
-            if AccountHandler.Instance.isLoggedIn() && ConnectionHandler.Instance.status == .Connected && !self.staleLocation{
+            if AccountHandler.Instance.isLoggedIn() && ConnectionHandler.Instance.status == .connected && !self.staleLocation{
                 ThreadHelper.runOnBackgroundThread({
                     //ConnectionHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude, notify: false)
                     AccountHandler.Instance.reportLocation(self.currentLocation!.latitude, lng: self.currentLocation!.longitude)
                 })
             }
+        }
+        
+        if !self.subscribed {
+            self.subscribeToNearbyPosts()
         }
     }
     
@@ -248,7 +313,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         }
     }
     
-    func locationReported(geocoderInfo: GeocoderInfo) {
+    func locationReported(_ geocoderInfo: GeocoderInfo) {
         if geocoderInfo.denied {
             self.errorMessage = NSLocalizedString("Please allow location services in settings", comment: "Alert denied, Please allow location services in settings")
             ThreadHelper.runOnMainThread {
@@ -272,14 +337,22 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
                 //self.subscribeToNearby()
                 self.getNearby()
                 self.staleLocation = false
-                if AccountHandler.Instance.isLoggedIn() && ConnectionHandler.Instance.status == .Connected{
+                if AccountHandler.Instance.isLoggedIn() && ConnectionHandler.Instance.status == .connected{
                     ThreadHelper.runOnBackgroundThread({
                         //ConnectionHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude, notify: false)
                         AccountHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude)
                     })
                 }
-                AccountHandler.Instance.subscribeToNearbyPosts(self.currentLocation!.latitude, lng: self.currentLocation!.longitude)
+                self.subscribed = false
+                self.subscribeToNearbyPosts()
             }
+        }
+    }
+    
+    func subscribeToNearbyPosts(){
+        if ConnectionHandler.Instance.isConnected(), let currentLocation = self.currentLocation {
+            AccountHandler.Instance.subscribeToNearbyPosts(currentLocation.latitude, lng: currentLocation.longitude)
+            self.subscribed = true
         }
     }
     
@@ -331,7 +404,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         self.getNearby(true)
     }
     
-    func getNearby(refreshing: Bool = false){
+    func getNearby(_ refreshing: Bool = false){
         self.noMorePosts = false
         if ConnectionHandler.Instance.isNetworkConnected() && !self.loadingPosts, let currentLocation = self.currentLocation {
             self.loadingPosts = true
@@ -373,24 +446,22 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
     
     func callDisplayLoadingMore(){
-        let viewController = viewControllerForSelectedSegmentIndex(self.typeSwitch.selectedSegmentIndex)
-        (viewController as! PostsViewControllerDelegate).displayLoadingMore()
+        (self.currentViewController as? PostsViewControllerDelegate)?.displayLoadingMore()
     }
     
     func callRefreshDelegates(){
-        let viewController = viewControllerForSelectedSegmentIndex(self.typeSwitch.selectedSegmentIndex)
-        (viewController as! PostsViewControllerDelegate).postsUpdated()
+        (self.currentViewController as? PostsViewControllerDelegate)?.postsUpdated(posts: self.allPosts, currentLocation: self.currentLocation)
     }
     
     
-    func displayPostDetails(index: Int){
+    func displayPostDetails(_ index: Int){
         self.navigationController?.popToViewController(self, animated: false)
         let viewController = viewControllerForSelectedSegmentIndex(self.typeSwitch.selectedSegmentIndex)
         (viewController as! PostsViewControllerDelegate).showPostDetails(index)
     }
     
-    func checkPending(stopAfter: Bool){
-        if let pendingPostId = self.pendingPostId, postIndex = self.posts.indexOf({$0.id == pendingPostId}){
+    func checkPending(_ stopAfter: Bool){
+        if let pendingPostId = self.pendingPostId, let postIndex = self.posts.index(where: {$0.id == pendingPostId}){
             self.navigationController?.popToViewController(self, animated: false)
             self.displayPostDetails(postIndex)
             //let indexPath = NSIndexPath(forRow: postIndex, inSection: 0)
@@ -404,7 +475,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
 
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         /*if let currentViewController = currentViewController {
             currentViewController.viewWillDisappear(animated)
@@ -420,49 +491,72 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
     
     
-    func loadCurrentViewController(index: Int) {
+    func loadCurrentViewController(_ index: Int) {
         if let vc = viewControllerForSelectedSegmentIndex(index) {
             self.addChildViewController(vc)
             
-            vc.didMoveToParentViewController(self)
+            vc.didMove(toParentViewController: self)
             
             vc.view.frame = self.contentView.bounds
             self.contentView.addSubview(vc.view)
             self.currentViewController = vc
             
-            self.view.bringSubviewToFront(self.searchCriteriaView)
+            self.view.bringSubview(toFront: self.searchCriteriaView)
             
-            (vc as! PostsViewControllerDelegate).postsUpdated()
+            (vc as! PostsViewControllerDelegate).postsUpdated(posts: self.allPosts, currentLocation: self.currentLocation)
         }
     }
     
-    func viewControllerForSelectedSegmentIndex(index: Int) -> UIViewController? {
+    func viewControllerForSelectedSegmentIndex(_ index: Int) -> UIViewController? {
         var vc: UIViewController?
         let index = PostsViewType(rawValue: self.typeSwitch.selectedSegmentIndex)
         switch index! {
         case .list: vc = self.listViewController
-        case .Map: vc = self.mapViewController
+        case .map: vc = self.mapViewController
         }
         
         return vc
     }
     
-    func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
-        return .TopAttached
+    func position(for bar: UIBarPositioning) -> UIBarPosition {
+        return .topAttached
     }
     
-    @IBAction func postsViewTypeChanged(sender: UISegmentedControl) {
-        self.currentViewController!.view.removeFromSuperview()
-        self.currentViewController!.removeFromParentViewController()
-        loadCurrentViewController(sender.selectedSegmentIndex)
+    @IBAction func postsViewTypeChanged(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex != 2 {
+            self.currentViewController!.view.removeFromSuperview()
+            self.currentViewController!.removeFromParentViewController()
+            loadCurrentViewController(sender.selectedSegmentIndex)
+        }
         if sender.selectedSegmentIndex == 0{
             AppAnalytics.logEvent(.NearbyPostsScreen_ListTabActive)
-        } else {
+        } else if sender.selectedSegmentIndex == 1 {
             AppAnalytics.logEvent(.NearbyPostsScreen_MapTabActive)
+        } else if sender.selectedSegmentIndex == 2 {
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "augmentedRealityViewController") as! AugmentedRealityViewController
+            vc.mainViewController = self
+            vc.posts = self.allPosts
+            vc.currentLocation = self.currentLocation
+            
+            self.tabBarController!.present(vc, animated: true, completion: {
+                if self.currentViewController == self.mapViewController {
+                    sender.selectedSegmentIndex = 1
+                } else {
+                    sender.selectedSegmentIndex = 0
+                }
+                self.currentViewController = vc
+            })
         }
     }
     
-    @IBAction func btnSearch_Click(sender: AnyObject) {
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            self.typeSwitch.selectedSegmentIndex = 2
+            self.postsViewTypeChanged(self.typeSwitch)
+        }
+    }
+    
+    @IBAction func btnSearch_Click(_ sender: AnyObject) {
         AppAnalytics.logEvent(.NearbyPostsScreen_BtnSearch_Click)
         self.filtering = true
         if (self.typeSwitch.selectedSegmentIndex != 0){
@@ -472,63 +566,63 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         self.listViewController.updateFiltering(true)
         self.searchBar.alpha = 0
         //self.searchBar.tintColor =
-        self.navigationItem.setRightBarButtonItem(nil, animated: true)
-        self.navigationItem.setLeftBarButtonItem(nil, animated: true)
-        UIView.animateWithDuration(0.1, animations: {
+        self.navigationItem.setRightBarButton(nil, animated: true)
+        self.navigationItem.setLeftBarButton(nil, animated: true)
+        UIView.animate(withDuration: 0.1, animations: {
             self.typeSwitch.alpha = 0
-            }) { (finished) in
+            }, completion: { (finished) in
                 self.navigationItem.titleView = self.searchBar
-                UIView.animateWithDuration(0.1, animations: { 
+                UIView.animate(withDuration: 0.1, animations: { 
                     self.searchBar.alpha = 1
                 }, completion: { (finishedLast) in
                     self.searchBar.becomeFirstResponder()
                 })
-        }
+        }) 
         
-        UIView.animateWithDuration(0.2, animations: {
+        UIView.animate(withDuration: 0.2, animations: {
             self.searchCriteriaView.frame.origin.y += self.searchToolbarHeight
             self.listViewController.tableView.frame.origin.y += self.searchToolbarHeight
         })
         
-        if let searchText = self.searchBar.text where searchText != ""{
+        if let searchText = self.searchBar.text, searchText != ""{
             self.searchBar(self.searchBar, textDidChange: searchText)
         }
     }
     
-    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         AppAnalytics.logEvent(.NearbyPostsScreen_Search_Cancel)
         self.filtering =  false
         self.listViewController.updateFiltering(false)
-        self.navigationItem.setRightBarButtonItem(self.btnSearch, animated: true)
-        self.navigationItem.setLeftBarButtonItem(self.btnAddPost, animated: true)
+        self.navigationItem.setRightBarButton(self.btnSearch, animated: true)
+        self.navigationItem.setLeftBarButton(self.btnAddPost, animated: true)
         self.typeSwitch.alpha = 0
         
-        UIView.animateWithDuration(0.2) {
+        UIView.animate(withDuration: 0.2, animations: {
             self.navigationItem.titleView = self.typeSwitch
             self.typeSwitch.alpha = 1
             
             self.searchCriteriaView.frame.origin.y -= self.searchToolbarHeight
             self.listViewController.tableView.frame.origin.y -= self.searchToolbarHeight
-        }
+        }) 
         
         self.posts = self.allPosts
         self.listViewController.tableView.reloadData()
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        let searchTextLowered = searchText.lowercaseString
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let searchTextLowered = searchText.lowercased()
         var posts = self.allPosts
         if searchTextLowered != ""{
-            posts = posts.filter({($0.title!.lowercaseString.containsString(searchTextLowered) || ($0.descr ?? "").lowercaseString.containsString(searchTextLowered))})
+            posts = posts.filter({($0.title!.lowercased().contains(searchTextLowered) || ($0.descr ?? "").lowercased().contains(searchTextLowered))})
         }
         if self.filterCategories.count > 0 {
-            posts = posts.filter({$0.type != nil && self.filterCategories.indexOf($0.type!.rawValue) != nil})
+            posts = posts.filter({$0.type != nil && self.filterCategories.index(of: $0.type!.rawValue) != nil})
         }
         self.posts = posts
         self.listViewController.tableView.reloadData()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "nearbyPosts_CreatePost"{
             AppAnalytics.logEvent(.NearbyPostsScreen_BtnNewPost_Click)
         }

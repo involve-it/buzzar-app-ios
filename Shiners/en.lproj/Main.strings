@@ -87,7 +87,7 @@
 "9oO-zy-jdu.text" = "Select Ad Type";
 
 /* Class = "UINavigationItem"; title = "Title"; ObjectID = "AUt-pL-0KY"; */
-"AUt-pL-0KY.title" = "Title";
+"AUt-pL-0KY.title" = "New Message";
 
 /* Class = "UITextField"; placeholder = "Your username"; ObjectID = "Aae-Kh-rTy"; */
 "Aae-Kh-rTy.placeholder" = "Your username";
@@ -485,8 +485,8 @@
 /* Class = "UILabel"; text = "Phone"; ObjectID = "dYb-Pj-rWf"; */
 "dYb-Pj-rWf.text" = "Phone";
 
-/* Class = "UILabel"; text = "2 days"; ObjectID = "dd3-fE-U3q"; */
-"dd3-fE-U3q.text" = "2 days";
+/* Class = "UILabel"; text = "2 weeks"; ObjectID = "dd3-fE-U3q"; */
+"dd3-fE-U3q.text" = "2 weeks";
 
 /* Class = "UINavigationItem"; title = "New post"; ObjectID = "dfX-kM-zaA"; */
 "dfX-kM-zaA.title" = "New post";
@@ -812,7 +812,8 @@
 /* Class = "UILabel"; Reset password, header title */
 "VNk-iv-hD8.text" = "To reset your password, enter your email address and we will send you link to create a new password.";
 
-
+/* Category of post */
+"CQ2-G7-RiR.text" = "Category";
 
 
 

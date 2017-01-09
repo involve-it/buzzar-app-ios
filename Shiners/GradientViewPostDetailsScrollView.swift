@@ -15,21 +15,21 @@ import UIKit
     let gradientLayer = CAGradientLayer()
     
     // 2
-    @IBInspectable var startColor: UIColor = UIColor.blackColor() {
+    @IBInspectable var startColor: UIColor = UIColor.black {
         didSet {
             gradientSetup()
         }
     }
     
     // 3
-    @IBInspectable var midColor: UIColor = UIColor.blueColor() {
+    @IBInspectable var midColor: UIColor = UIColor.blue {
         didSet {
             gradientSetup()
         }
     }
     
     // 4
-    @IBInspectable var endColor: UIColor = UIColor.whiteColor() {
+    @IBInspectable var endColor: UIColor = UIColor.white {
         didSet {
             gradientSetup()
         }
@@ -48,7 +48,7 @@ import UIKit
     }
     
     // 7
-    private func setup() {
+    fileprivate func setup() {
         layer.addSublayer(gradientLayer)
         gradientSetup()
     }
@@ -58,9 +58,9 @@ import UIKit
         
         //let tmpColor = UIColor.yellowColor()
         
-        gradientLayer.colors = [startColor.CGColor, midColor.CGColor, endColor.CGColor]
-        gradientLayer.startPoint = CGPointMake(0.5, 0.0)
-        gradientLayer.endPoint = CGPointMake(0.5, 1.0)
+        gradientLayer.colors = [startColor.cgColor, midColor.cgColor, endColor.cgColor]
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
         
         
         gradientLayer.locations = [0, 0.5, 1]
@@ -69,7 +69,7 @@ import UIKit
     
     // 9
     override func layoutSubviews() {
-        gradientLayer.frame = CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height)
     }
     
 }

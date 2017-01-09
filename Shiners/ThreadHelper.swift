@@ -8,16 +8,16 @@
 
 import Foundation
 
-public class ThreadHelper{
-    public class func runOnMainThread (callback: () -> Void){
-        dispatch_async(dispatch_get_main_queue(), {
+open class ThreadHelper{
+    open class func runOnMainThread (_ callback: @escaping () -> Void){
+        DispatchQueue.main.async(execute: {
             callback()
         });
     }
     
-    public class func runOnBackgroundThread(callback: () -> Void){
-        let background_queue = dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0)
-        dispatch_async(background_queue) { 
+    open class func runOnBackgroundThread(_ callback: @escaping () -> Void){
+        let background_queue = DispatchQueue.global(qos: DispatchQoS.QoSClass.background)
+        background_queue.async { 
             callback()
         }
     }

@@ -26,20 +26,20 @@ class FullMapViewController: UIViewController, MKMapViewDelegate {
         self.mapView.showAnnotations([self.currentLocationAnnotation], animated: false)
         self.mapView.selectAnnotation(self.currentLocationAnnotation, animated: false)
     }
-    @IBAction func btnDone_Click(sender: AnyObject) {
+    @IBAction func btnDone_Click(_ sender: AnyObject) {
         //self.navigationController?.popViewControllerAnimated(true)
-        self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
+        self.navigationController!.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func btnDirections_Click(sender: AnyObject) {
+    @IBAction func btnDirections_Click(_ sender: AnyObject) {
         let pm = MKPlacemark(coordinate: self.geocoderInfo.coordinate!, addressDictionary: nil)
         let mapItem = MKMapItem(placemark: pm)
         mapItem.name = self.geocoderInfo.address
         let launchOptions = [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]
-        mapItem.openInMapsWithLaunchOptions(launchOptions)
+        mapItem.openInMaps(launchOptions: launchOptions)
     }
     
-    func mapView(mapView: MKMapView, didUpdateUserLocation userLocation: MKUserLocation) {
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         if !self.locationUpdated {
             let annotation = MKPointAnnotation()
             annotation.coordinate = userLocation.coordinate

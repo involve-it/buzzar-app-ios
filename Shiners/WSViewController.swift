@@ -12,14 +12,14 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .Horizontal
+        layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.dataSource = self
         cv.delegate = self
-        cv.pagingEnabled = true
+        cv.isPagingEnabled = true
         cv.showsHorizontalScrollIndicator = false
-        cv.backgroundColor = UIColor.whiteColor()
+        cv.backgroundColor = UIColor.white
         return cv
     }()
     
@@ -31,7 +31,7 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
     let nextLabelBtn = NSLocalizedString("Next", comment: "Log in page, button Next")
     let skipLabelBtn = NSLocalizedString("Skip", comment: "Log in page, button Skip")
     
-    let langString = NSLocale.currentLocale().objectForKey(NSLocaleLanguageCode) as! String
+    let langString = (Locale.current as NSLocale).object(forKey: NSLocale.Key.languageCode) as! String
     
     let pages: [Page] = {
         let firstPage = Page(title: NSLocalizedString("Create your post", comment: ""), message: NSLocalizedString("It will move with you, showing your availability to people around you", comment: ""), imageName: "page1")
@@ -43,19 +43,19 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
     
     lazy var pageControl: UIPageControl = {
         let pc = UIPageControl()
-        pc.pageIndicatorTintColor = UIColor.grayColor()
-        pc.currentPageIndicatorTintColor = UIColor.orangeColor()
+        pc.pageIndicatorTintColor = UIColor.gray
+        pc.currentPageIndicatorTintColor = UIColor.orange
         pc.numberOfPages = self.pages.count + 1
         return pc
     }()
     
     lazy var skipButton: UIButton = {
-        let b = UIButton(type: .System)
-        b.setTitle(self.skipLabelBtn, forState: .Normal)
+        let b = UIButton(type: .system)
+        b.setTitle(self.skipLabelBtn, for: UIControlState())
         b.backgroundColor = UIColor(white: 0.2, alpha: 0.3)
         b.layer.cornerRadius = 4.0
-        b.setTitleColor(UIColor(netHex: 0xFFFFFF), forState: .Normal)
-        b.addTarget(self, action: #selector(btnSkipPage), forControlEvents: .TouchUpInside)
+        b.setTitleColor(UIColor(netHex: 0xFFFFFF), for: UIControlState())
+        b.addTarget(self, action: #selector(btnSkipPage), for: .touchUpInside)
         return b
     }()
     
@@ -65,12 +65,12 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
     }
     
     lazy var nextButton: UIButton = {
-        let b = UIButton(type: .System)
-        b.setTitle(self.nextLabelBtn, forState: .Normal)
+        let b = UIButton(type: .system)
+        b.setTitle(self.nextLabelBtn, for: UIControlState())
         b.backgroundColor = UIColor(white: 0.2, alpha: 0.3)
         b.layer.cornerRadius = 4.0
-        b.setTitleColor(UIColor(netHex: 0xFFFFFF), forState: .Normal)
-        b.addTarget(self, action: #selector(btnNextPage), forControlEvents: .TouchUpInside)
+        b.setTitleColor(UIColor(netHex: 0xFFFFFF), for: UIControlState())
+        b.addTarget(self, action: #selector(btnNextPage), for: .touchUpInside)
         return b
     }()
     
@@ -83,13 +83,13 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
         if pageControl.currentPage == pages.count - 1 {
             moveControlOfConstaintScreen()
             
-            UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 self.view.layoutIfNeeded()
                 }, completion: nil)
         }
         
-        let indexPath = NSIndexPath(forItem: self.pageControl.currentPage + 1, inSection: 0)
-        collectionView.scrollToItemAtIndexPath(indexPath, atScrollPosition: .CenteredHorizontally, animated: true)
+        let indexPath = IndexPath(item: self.pageControl.currentPage + 1, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         self.pageControl.currentPage += 1
     }
     
@@ -97,19 +97,19 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
     var skipBottomAnchor: NSLayoutConstraint?
     var nextBottomAnchor: NSLayoutConstraint?
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return pages.count + 1
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(cellId.WelcomeScreen, forIndexPath: indexPath) as! cellPage
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId.WelcomeScreen, for: indexPath) as! cellPage
         
         if indexPath.item == pages.count {
-            let loginCell = collectionView.dequeueReusableCellWithReuseIdentifier(cellId.LoginCell, forIndexPath: indexPath) as! LoginCell
+            let loginCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId.LoginCell, for: indexPath) as! LoginCell
 
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewControllerWithIdentifier("settingsLogOutUser") as! NavigationControllerBase
-            vc.navigationBarHidden = true
+            let vc = storyboard.instantiateViewController(withIdentifier: "settingsLogOutUser") as! NavigationControllerBase
+            vc.isNavigationBarHidden = true
             
             //SettingsViewController
             let bb = vc.viewControllers[0] as! SettingsViewController
@@ -119,7 +119,7 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
             self.addChildViewController(vc)
             
             loginCell.addSubview(vc.view)
-            vc.didMoveToParentViewController(self)
+            vc.didMove(toParentViewController: self)
             //loginCell.delegate = self
             return loginCell
         }
@@ -130,7 +130,7 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
         return cell
     }
     
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: view.frame.height)
     }
 
@@ -158,14 +158,14 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
     }
     
     
-    private func registerCells() {
-        collectionView.registerClass(cellPage.self, forCellWithReuseIdentifier: cellId.WelcomeScreen)
-        collectionView.registerClass(LoginCell.self, forCellWithReuseIdentifier: cellId.LoginCell)
+    fileprivate func registerCells() {
+        collectionView.register(cellPage.self, forCellWithReuseIdentifier: cellId.WelcomeScreen)
+        collectionView.register(LoginCell.self, forCellWithReuseIdentifier: cellId.LoginCell)
     }
     
-    func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
-        let pageNumber = Int(targetContentOffset.memory.x / self.view.frame.width)
+        let pageNumber = Int(targetContentOffset.pointee.x / self.view.frame.width)
         self.pageControl.currentPage = pageNumber
         
         //We are on the last page
@@ -177,20 +177,23 @@ class WSViewController: UIViewController, UICollectionViewDelegate, UICollection
             nextBottomAnchor?.constant = -16
         }
         
-        UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
             }, completion: nil)
     }
     
-    private func moveControlOfConstaintScreen() {
+    fileprivate func moveControlOfConstaintScreen() {
         pageControlBottomAnchor?.constant = 60
         skipBottomAnchor?.constant = 60
         nextBottomAnchor?.constant = 60
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
     
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.Welcome)
+    }
 }

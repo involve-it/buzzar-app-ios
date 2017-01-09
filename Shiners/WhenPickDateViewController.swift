@@ -16,24 +16,35 @@ class WhenPickDateViewController: UIViewController {
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var btn_next: UIBarButtonItem!
     
-    
+    var editingPost = false
     var post: Post!
     
     var currentLocationInfo: GeocoderInfo?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if self.editingPost {
+            self.navigationItem.rightBarButtonItem = nil
+        }
         
         // Do any additional setup after loading the view.
         //labelDateNotYetSet.text = ""
     
-        datePicker.minimumDate = NSDate()
-        datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), forControlEvents: .ValueChanged)
+        datePicker.minimumDate = Date()
+        datePicker.addTarget(self, action: #selector(datePickerChanged(_:)), for: .valueChanged)
         
         if let date = post.endDate{
-            self.datePicker.date = date
-            self.btn_next.enabled = true
+            self.datePicker.date = date as Date
+            self.setDateLabel()
+            if !self.editingPost {
+                self.btn_next.isEnabled = true
+            }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.NewPost_When)
     }
 
     override func didReceiveMemoryWarning() {
@@ -41,186 +52,191 @@ class WhenPickDateViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    
-    func datePickerChanged(sender: UIDatePicker) {
-        AppAnalytics.logEvent(.NewPostWizard_WhenStep_Spinner_Modified)
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .LongStyle
-        
-        if let title:String = formatter.stringFromDate(sender.date) {
-           labelDateNotYetSet.text = title
+    func setDateLabel(){
+        if let date = self.post.endDate {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .long
             
-            //Btn "next" set enabled
-            btn_next.enabled = true
+            self.labelDateNotYetSet.text = formatter.string(from: date)
+            if !self.editingPost{
+                btn_next.isEnabled = true
+            }
         } else {
-            //Btn "next" set disabled
-            btn_next.enabled = false
+            if !self.editingPost {
+                btn_next.isEnabled = false
+            }
         }
+    }
+    
+    
+    func datePickerChanged(_ sender: UIDatePicker) {
+        AppAnalytics.logEvent(.NewPostWizard_WhenStep_Spinner_Modified)
         post.endDate = self.datePicker.date
+        self.setDateLabel()
     }
     
     
     //btn action
-    @IBAction func pickOneDay(sender: AnyObject) {
+    @IBAction func pickOneDay(_ sender: AnyObject) {
         AppAnalytics.logEvent(.NewPostWizard_WhenStep_Preset_Click)
         let dayToAdd = 1
         
         //Текущая дата
-        let currentDate = NSDate()
-        let newDateComponents = NSDateComponents()
+        let currentDate = Date()
+        var newDateComponents = DateComponents()
         
         //Установка даты в компонент
         newDateComponents.day = dayToAdd
-        let calculatedDate = NSCalendar.currentCalendar().dateByAddingComponents(newDateComponents, toDate: currentDate, options: NSCalendarOptions.init(rawValue: 0))
+        let calculatedDate = (Calendar.current as NSCalendar).date(byAdding: newDateComponents, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
         
         //Устанавливаем формат для даты
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .LongStyle
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
         
         datePicker.date = calculatedDate!
-        labelDateNotYetSet.text = formatter.stringFromDate(calculatedDate!)
+        labelDateNotYetSet.text = formatter.string(from: calculatedDate!)
         
-        if(!btn_next.enabled) {
-            btn_next.enabled = true
+        if(self.btn_next != nil && !btn_next.isEnabled) {
+            btn_next.isEnabled = true
         }
         post.endDate = self.datePicker.date
     }
     
     
-    @IBAction func pickTwoDays(sender: AnyObject) {
+    @IBAction func pickTwoDays(_ sender: AnyObject) {
         AppAnalytics.logEvent(.NewPostWizard_WhenStep_Preset_Click)
         let daysToAdd = 2
         
         //Текущая дата
-        let currentDate = NSDate()
-        let newDateComponents = NSDateComponents()
+        let currentDate = Date()
+        var newDateComponents = DateComponents()
         
         //Установка даты в компонент
         newDateComponents.day = daysToAdd
-        let calculatedDate = NSCalendar.currentCalendar().dateByAddingComponents(newDateComponents, toDate: currentDate, options: NSCalendarOptions.init(rawValue: 0))
+        let calculatedDate = (Calendar.current as NSCalendar).date(byAdding: newDateComponents, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
         
         //Устанавливаем формат для даты
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .LongStyle
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
         
         datePicker.date = calculatedDate!
-        labelDateNotYetSet.text = formatter.stringFromDate(calculatedDate!)
+        labelDateNotYetSet.text = formatter.string(from: calculatedDate!)
         
-        if(!btn_next.enabled) {
-            btn_next.enabled = true
+        if(self.btn_next != nil && !btn_next.isEnabled) {
+            btn_next.isEnabled = true
         }
         post.endDate = self.datePicker.date
     }
     
     
-    @IBAction func pickOneWeek(sender: AnyObject) {
+    @IBAction func pickOneWeek(_ sender: AnyObject) {
         AppAnalytics.logEvent(.NewPostWizard_WhenStep_Preset_Click)
         let daysToAdd = 7
         
         //Текущая дата
-        let currentDate = NSDate()
-        let newDateComponents = NSDateComponents()
+        let currentDate = Date()
+        var newDateComponents = DateComponents()
         
         //Установка даты в компонент
         newDateComponents.day = daysToAdd
-        let calculatedDate = NSCalendar.currentCalendar().dateByAddingComponents(newDateComponents, toDate: currentDate, options: NSCalendarOptions.init(rawValue: 0))
+        let calculatedDate = (Calendar.current as NSCalendar).date(byAdding: newDateComponents, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
         
         //Устанавливаем формат для даты
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .LongStyle
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
         
         datePicker.date = calculatedDate!
-        labelDateNotYetSet.text = formatter.stringFromDate(calculatedDate!)
+        labelDateNotYetSet.text = formatter.string(from: calculatedDate!)
         
-        if(!btn_next.enabled) {
-            btn_next.enabled = true
+        if(self.btn_next != nil && !btn_next.isEnabled) {
+            btn_next.isEnabled = true
         }
         post.endDate = self.datePicker.date
     }
     
     
-    @IBAction func pickTwoWeek(sender: AnyObject) {
+    @IBAction func pickTwoWeek(_ sender: AnyObject) {
         AppAnalytics.logEvent(.NewPostWizard_WhenStep_Preset_Click)
         let daysToAdd = 14
         
         //Текущая дата
-        let currentDate = NSDate()
-        let newDateComponents = NSDateComponents()
+        let currentDate = Date()
+        var newDateComponents = DateComponents()
         
         //Установка даты в компонент
         newDateComponents.day = daysToAdd
-        let calculatedDate = NSCalendar.currentCalendar().dateByAddingComponents(newDateComponents, toDate: currentDate, options: NSCalendarOptions.init(rawValue: 0))
+        let calculatedDate = (Calendar.current as NSCalendar).date(byAdding: newDateComponents, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
         
         //Устанавливаем формат для даты
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .LongStyle
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
         
         datePicker.date = calculatedDate!
-        labelDateNotYetSet.text = formatter.stringFromDate(calculatedDate!)
+        labelDateNotYetSet.text = formatter.string(from: calculatedDate!)
         
-        if(!btn_next.enabled) {
-            btn_next.enabled = true
+        if(self.btn_next != nil && !btn_next.isEnabled) {
+            btn_next.isEnabled = true
         }
         post.endDate = self.datePicker.date
     }
     
     
-    @IBAction func pickOneMonth(sender: AnyObject) {
+    @IBAction func pickOneMonth(_ sender: AnyObject) {
         AppAnalytics.logEvent(.NewPostWizard_WhenStep_Preset_Click)
         let monthToAdd = 1
         
         //Текущая дата
-        let currentDate = NSDate()
-        let newDateComponents = NSDateComponents()
+        let currentDate = Date()
+        var newDateComponents = DateComponents()
         
         //Установка даты в компонент
         newDateComponents.month = monthToAdd
-        let calculatedDate = NSCalendar.currentCalendar().dateByAddingComponents(newDateComponents, toDate: currentDate, options: NSCalendarOptions.init(rawValue: 0))
+        let calculatedDate = (Calendar.current as NSCalendar).date(byAdding: newDateComponents, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
         
         //Устанавливаем формат для даты
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .LongStyle
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
         
         datePicker.date = calculatedDate!
-        labelDateNotYetSet.text = formatter.stringFromDate(calculatedDate!)
+        labelDateNotYetSet.text = formatter.string(from: calculatedDate!)
         
-        if(!btn_next.enabled) {
-            btn_next.enabled = true
+        if(self.btn_next != nil && !btn_next.isEnabled) {
+            btn_next.isEnabled = true
         }
         post.endDate = self.datePicker.date
     }
     
     
-    @IBAction func pickOneYear(sender: AnyObject) {
+    @IBAction func pickOneYear(_ sender: AnyObject) {
         AppAnalytics.logEvent(.NewPostWizard_WhenStep_Preset_Click)
         let yearToAdd = 1
         
         //Текущая дата
-        let currentDate = NSDate()
-        let newDateComponents = NSDateComponents()
+        let currentDate = Date()
+        var newDateComponents = DateComponents()
         
         //Установка даты в компонент
         newDateComponents.year = yearToAdd
-        let calculatedDate = NSCalendar.currentCalendar().dateByAddingComponents(newDateComponents, toDate: currentDate, options: NSCalendarOptions.init(rawValue: 0))
+        let calculatedDate = (Calendar.current as NSCalendar).date(byAdding: newDateComponents, to: currentDate, options: NSCalendar.Options.init(rawValue: 0))
         
         //Устанавливаем формат для даты
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .LongStyle
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
         
         datePicker.date = calculatedDate!
-        labelDateNotYetSet.text = formatter.stringFromDate(calculatedDate!)
+        labelDateNotYetSet.text = formatter.string(from: calculatedDate!)
         
-        if(!btn_next.enabled) {
-            btn_next.enabled = true
+        if(self.btn_next != nil && !btn_next.isEnabled) {
+            btn_next.isEnabled = true
         }
         post.endDate = self.datePicker.date
     }
 
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "addPhotos" {
             AppAnalytics.logEvent(.NewPostWizard_WhenStep_BtnNext_Click)
-            if let destination = segue.destinationViewController as? PhotosViewController {
+            if let destination = segue.destination as? PhotosViewController {
                 //Передаем объект post следующему контроллеру
                 destination.post = post
                 destination.currentLocationInfo = self.currentLocationInfo

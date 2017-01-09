@@ -32,6 +32,10 @@ typedef NS_ENUM(NSInteger, AWSRegionType) {
      */
     AWSRegionUSEast1,
     /**
+     *  US East (Ohio)
+     */
+    AWSRegionUSEast2,
+    /**
      *  US West (N. California)
      */
     AWSRegionUSWest1,
@@ -43,6 +47,10 @@ typedef NS_ENUM(NSInteger, AWSRegionType) {
      *  EU (Ireland)
      */
     AWSRegionEUWest1,
+    /**
+     *  EU (London)
+     */
+    AWSRegionEUWest2,
     /**
      *  EU (Frankfurt)
      */
@@ -75,6 +83,10 @@ typedef NS_ENUM(NSInteger, AWSRegionType) {
      *  China (Beijing)
      */
     AWSRegionCNNorth1,
+    /**
+     *  Canada (Central)
+     */
+    AWSRegionCACentral1,
     /**
      *  AWS GovCloud (US)
      */
@@ -149,6 +161,10 @@ typedef NS_ENUM(NSInteger, AWSServiceType) {
      */
     AWSServiceLambda,
     /**
+     *  Amazon Lex Runtime Service
+     */
+    AWSServiceLexRuntime,
+    /**
      *  Amazon Machine Learning
      */
     AWSServiceMachineLearning,
@@ -156,6 +172,18 @@ typedef NS_ENUM(NSInteger, AWSServiceType) {
      *  Amazon Mobile Analytics
      */
     AWSServiceMobileAnalytics,
+    /**
+     *  Amazon Mobile Targeting
+     */
+    AWSServiceMobileTargeting,
+    /**
+     *  Amazon Polly
+     */
+    AWSServicePolly,
+    /**
+     *  Amazon Rekognition
+     */
+    AWSServiceRekognition,
     /**
      *  Amazon Simple Storage Service (S3)
      */

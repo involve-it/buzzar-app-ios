@@ -29,10 +29,10 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
         leftPaddingToTextField([textFieldUsername, textFieldPassword])
     
         self.navigationController?.navigationBar.setGradientTeamColor()
-        self.loginBtnCenter.tintColor = UIColor.whiteColor()
+        self.loginBtnCenter.tintColor = UIColor.white
         self.loginBtnCenter.backgroundColor = blueColorCustom
         self.loginBtnCenter.layer.cornerRadius = 4.0
-        self.loginBtnCenter.setTitle(NSLocalizedString("Log in", comment: "Log in"), forState: .Normal)
+        self.loginBtnCenter.setTitle(NSLocalizedString("Log in", comment: "Log in"), for: UIControlState())
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,56 +40,60 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AppAnalytics.logScreen(.LoginScreen)
+    }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         self.view.endEditing(true)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.textFieldUsername.becomeFirstResponder();
     }
     
     
     // TODO: - duplication code
-    func leftPaddingToTextField(array: [UITextField]) {
+    func leftPaddingToTextField(_ array: [UITextField]) {
         
         for textField in array {
-            let paddingView = UIView(frame: CGRectMake(0, 0, 15, textField.frame.height))
+            let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: textField.frame.height))
             textField.leftView = paddingView
-            textField.leftViewMode = UITextFieldViewMode.Always
+            textField.leftViewMode = UITextFieldViewMode.always
         }
     
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "login_ResetPassword" {
             AppAnalytics.logEvent(.LoginScreen_BtnResetPassword_Click)
         }
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         textFieldAnimationBackgroundShow(textField, alpha: 1)
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidEndEditing(_ textField: UITextField) {
         textFieldAnimationBackgroundShow(textField, alpha: 0.5)
     }
     
-    func textFieldAnimationBackgroundShow(textField: UITextField, alpha: CGFloat) {
-        UIView.animateWithDuration(0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .CurveEaseOut, animations: {
+    func textFieldAnimationBackgroundShow(_ textField: UITextField, alpha: CGFloat) {
+        UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             textField.backgroundColor = UIColor(white: 1, alpha: alpha)
         }, completion: nil)
     }
 
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         let nextTag: NSInteger = textField.tag + 1;
-        if let nextResponder: UIResponder! = textField.superview!.viewWithTag(nextTag){
-            nextResponder.becomeFirstResponder()
+        if let nextResponder: UIResponder? = textField.superview!.viewWithTag(nextTag){
+            nextResponder?.becomeFirstResponder()
         } else {
-            let text: NSString = textField.text!
+            let text: NSString = textField.text! as NSString
             if text.length == 0 {
                 textFieldUsername.becomeFirstResponder()
             } else {
@@ -101,30 +105,30 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
         return false
     }
     
-    func enableFields(enable: Bool){
-        self.textFieldUsername.enabled = enable
-        self.textFieldPassword.enabled = enable
-        self.loginBtn.enabled = enable
-        self.loginBtnCenter.enabled = enable
-        self.btnForgotPassword.enabled = enable
+    func enableFields(_ enable: Bool){
+        self.textFieldUsername.isEnabled = enable
+        self.textFieldPassword.isEnabled = enable
+        self.loginBtn.isEnabled = enable
+        self.loginBtnCenter.isEnabled = enable
+        self.btnForgotPassword.isEnabled = enable
     }
     
     func login(){
         if !self.isNetworkReachable(){
             return
         }
-        if let userName = textFieldUsername.text?.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet()) where userName != "",
-           let password = textFieldPassword.text where password != "" {
+        if let userName = textFieldUsername.text?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines), userName != "",
+           let password = textFieldPassword.text, password != "" {
             ThreadHelper.runOnMainThread({ 
                 self.setLoading(true)
                 self.enableFields(false)
             })
             if ConnectionHandler.Instance.isNetworkConnected() {
-                NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.processLogin), name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
+                NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(self.processLogin), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountLoaded.rawValue), object: nil)
                 AccountHandler.Instance.login(userName, password: password, callback: { (success, errorId, errorMessage, result) in
                     if !success {
-                        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
+                        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.AccountLoaded.rawValue), object: nil)
                         ThreadHelper.runOnMainThread({
                             self.enableFields(true)
                             self.setLoading(false, rightBarButtonItem: self.loginBtn)
@@ -133,7 +137,7 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
                     }
                 })
             } else {
-                NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.login), name: NotificationManager.Name.MeteorConnected.rawValue, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(self.login), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
             }
         } else {
             ThreadHelper.runOnMainThread({ 
@@ -143,7 +147,7 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func processLogin(){
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotificationManager.Name.AccountLoaded.rawValue, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationManager.Name.AccountLoaded.rawValue), object: nil)
         if AccountHandler.Instance.currentUser == nil {
             ThreadHelper.runOnMainThread({
                 self.setLoading(false, rightBarButtonItem: self.loginBtn)
@@ -162,31 +166,31 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Action
     
     
-    @IBAction func LogInCenter_Done(sender: UIButton) {
+    @IBAction func LogInCenter_Done(_ sender: UIButton) {
         AppAnalytics.logEvent(.LoginScreen_BtnLogin_Click)
         self.login()
     }
     
-    @IBAction func LogIn_Done(sender: AnyObject) {
+    @IBAction func LogIn_Done(_ sender: AnyObject) {
         AppAnalytics.logEvent(.LoginScreen_BtnLogin_Click)
         self.login();
     }
     
-    @IBAction func btnCancel_Click(sender: AnyObject) {
+    @IBAction func btnCancel_Click(_ sender: AnyObject) {
         AppAnalytics.logEvent(.LoginScreen_BtnCancel_Click)
         self.dismissSelf();
     }
     
-    @IBAction func Register_Click(sender: UIButton) {
+    @IBAction func Register_Click(_ sender: UIButton) {
         //self.presentingViewController
         
         let storyboardMain = UIStoryboard(name: "Main", bundle: nil)
-        let nc = storyboardMain.instantiateViewControllerWithIdentifier("SignUpNavigationController") as! UINavigationController
-        self.presentViewController(nc, animated: true, completion: nil)
+        let nc = storyboardMain.instantiateViewController(withIdentifier: "SignUpNavigationController") as! UINavigationController
+        self.present(nc, animated: true, completion: nil)
     }
     
-    private func dismissSelf(){
-       self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    fileprivate func dismissSelf(){
+       self.navigationController?.dismiss(animated: true, completion: nil)
         
     }
     
@@ -195,8 +199,8 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
 extension UINavigationBar {
     func setGradientTeamColor() {
         barTintColor = UIColor(netHex: 0x2E9AE2)
-        tintColor = UIColor.whiteColor()
-        titleTextAttributes = [NSForegroundColorAttributeName : UIColor.whiteColor()]
+        tintColor = UIColor.white
+        titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white]
     }
 }
 

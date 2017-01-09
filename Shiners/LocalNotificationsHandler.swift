@@ -11,13 +11,13 @@ import UIKit
 import BRYXBanner
 
 class LocalNotificationsHandler{
-    var activeView: AppView = .Posts
+    var activeView: AppView = .posts
     var activeViewId: String?
-    private var newEvents = Dictionary<AppView, NotificationCounter>()
+    fileprivate var newEvents = Dictionary<AppView, NotificationCounter>()
     
     let bannerBackgroundColor = UIColor(red: 0, green: 122/255.0, blue: 1, alpha: 1)
     
-    func showBanner(title: String, subtitle: String){
+    func showBanner(_ title: String, subtitle: String){
         let banner = Banner(title: title, subtitle: subtitle, image: nil, backgroundColor: self.bannerBackgroundColor, didTapBlock: nil)
         banner.dismissesOnTap = true
         ThreadHelper.runOnMainThread({
@@ -26,69 +26,69 @@ class LocalNotificationsHandler{
     }
     
     func getTotalEventCount() -> Int {
-        return newEvents.values.reduce(0, combine: { (i, counter) -> Int in
+        return newEvents.values.reduce(0, { (i, counter) -> Int in
             return i + counter.totalCount
         })
     }
     
-    func getNewEventCount(view: AppView) -> Int {
+    func getNewEventCount(_ view: AppView) -> Int {
         let event = self.newEvents[view]!
         return event.totalCount
     }
     
-    func reportNewEvent(view: AppView, count: Int = 1, id: String? = nil, messageTitle: String? = nil, messageSubtitle: String? = nil){
+    func reportNewEvent(_ view: AppView, count: Int = 1, id: String? = nil, messageTitle: String? = nil, messageSubtitle: String? = nil){
         let event = self.newEvents[view]!
         event.addCounter(count, id: id)
         
-        if self.activeView == .Posts && view == .Posts {
+        if self.activeView == .posts && view == .posts {
             event.subtractCounter()
         } else {
             self.sendLocalNotification(view, count: event.totalCount)
-            if !self.isActive(view, id: id), let msgTitle = messageTitle, msgSubtitle = messageSubtitle {
+            if !self.isActive(view, id: id), let msgTitle = messageTitle, let msgSubtitle = messageSubtitle {
                 self.showBanner(msgTitle, subtitle: msgSubtitle)
             }
         }
     }
     
-    func reportEventSeen(view: AppView, id: String? = nil){
+    func reportEventSeen(_ view: AppView, id: String? = nil){
         let event = self.newEvents[view]!
         event.subtractCounter(id)
         
         self.sendLocalNotification(view, count: event.totalCount)
     }
     
-    func reportActiveView(view: AppView, id: String? = nil){
+    func reportActiveView(_ view: AppView, id: String? = nil){
         self.activeView = view
         self.activeViewId = id
     }
     
-    func isActive(view: AppView, id: String? = nil) -> Bool{
+    func isActive(_ view: AppView, id: String? = nil) -> Bool{
         return self.activeView == view && self.activeViewId == id
     }
     
-    private func sendLocalNotification(view: AppView, count: Int){
-        UIApplication.sharedApplication().applicationIconBadgeNumber = self.getTotalEventCount()
+    fileprivate func sendLocalNotification(_ view: AppView, count: Int){
+        UIApplication.shared.applicationIconBadgeNumber = self.getTotalEventCount()
         let notificationEvent = LocalNotificationEvent(view: view, count: count)
         NotificationManager.sendNotification(NotificationManager.Name.ServerEventNotification, object: notificationEvent)
     }
     
-    private class func isAppInForeground() -> Bool{
-        return UIApplication.sharedApplication().applicationState == .Active
+    fileprivate class func isAppInForeground() -> Bool{
+        return UIApplication.shared.applicationState == .active
     }
     
     //singleton
-    private init(){
-        for view in [AppView.Posts, AppView.Messages, AppView.MyPosts] {
+    fileprivate init(){
+        for view in [AppView.posts, AppView.messages, AppView.myPosts] {
             self.newEvents[view] = NotificationCounter(view: view)
         }
     }
     
-    private static let instance: LocalNotificationsHandler = LocalNotificationsHandler();
+    fileprivate static let instance: LocalNotificationsHandler = LocalNotificationsHandler();
     class var Instance: LocalNotificationsHandler {
         return instance;
     }
     
-    private class NotificationCounter{
+    fileprivate class NotificationCounter{
         var totalCount: Int = 0
         var individualCounters = Array<String>()
         let view: AppView
@@ -97,7 +97,7 @@ class LocalNotificationsHandler{
             self.view = view
         }
         
-        func addCounter(count: Int = 1, id: String? = nil){
+        func addCounter(_ count: Int = 1, id: String? = nil){
             self.totalCount += count
             if let _id = id  {
                 if !self.individualCounters.contains(_id){
@@ -107,10 +107,10 @@ class LocalNotificationsHandler{
             }
         }
         
-        func subtractCounter(id:String? = nil){
+        func subtractCounter(_ id:String? = nil){
             if let _id = id {
-                if let index = self.individualCounters.indexOf(_id){
-                    self.individualCounters.removeAtIndex(index)
+                if let index = self.individualCounters.index(of: _id){
+                    self.individualCounters.remove(at: index)
                 }
                 self.totalCount = self.individualCounters.count
             } else if self.individualCounters.count == 0 {
@@ -131,5 +131,5 @@ class LocalNotificationEvent {
 }
 
 enum AppView{
-    case Posts, Messages, MyPosts, Other
+    case posts, messages, myPosts, other
 }

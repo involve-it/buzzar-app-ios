@@ -10,26 +10,26 @@ import Foundation
 import UIKit
 
 class PushNotificationsHandler{
-    private static let PUSH_TOKEN = "shiners:push-token"
+    fileprivate static let PUSH_TOKEN = "shiners:push-token"
     
-    private static let CHAT = "chat"
-    private static let COMMENT = "comment"
-    private static let POST = "post"
-    private static let DEFAULT = "default"
+    fileprivate static let CHAT = "chat"
+    fileprivate static let COMMENT = "comment"
+    fileprivate static let POST = "post"
+    fileprivate static let DEFAULT = "default"
     
     
-    class func saveToken(deviceToken: NSData) -> String{
+    class func saveToken(_ deviceToken: Data) -> String{
         let token = deviceToken.hexString
-        NSUserDefaults.standardUserDefaults().setObject(token, forKey: PUSH_TOKEN)
+        UserDefaults.standard.set(token, forKey: PUSH_TOKEN)
         return token
     }
     
     class func getToken() -> String?{
-        return NSUserDefaults.standardUserDefaults().objectForKey(PUSH_TOKEN) as? String
+        return UserDefaults.standard.object(forKey: PUSH_TOKEN) as? String
     }
     
-    class func handleNotification(payloadString: String, rootViewController: MainViewController){
-        if let payload = Payload(payload: payloadString), payloadType = payload.type {
+    class func handleNotification(_ payloadString: String, rootViewController: MainViewController){
+        if let payload = Payload(payload: payloadString), let payloadType = payload.type {
             switch payloadType {
             case CHAT:
                 if let chatId = payload.id{
@@ -41,7 +41,7 @@ class PushNotificationsHandler{
                     
                     rootViewController.popNavigationControllerToRoot = 1
                     if messagesNavigationController.visibleViewController !== messagesViewController {
-                        messagesNavigationController.visibleViewController?.performSegueWithIdentifier("unwindMessages", sender: nil)
+                        messagesNavigationController.visibleViewController?.performSegue(withIdentifier: "unwindMessages", sender: nil)
                     }
                 }
             case COMMENT:
@@ -57,7 +57,7 @@ class PushNotificationsHandler{
                     
                     if navigationController.visibleViewController !== mainViewController {
                         //navigationController.visibleViewController?.performSegueWithIdentifier("unwindMyPosts", sender: nil)
-                        navigationController.popViewControllerAnimated(true)
+                        navigationController.popViewController(animated: true)
                     }
                 }
             case POST:
@@ -68,7 +68,7 @@ class PushNotificationsHandler{
                     postsViewController?.pendingPostId = postId
                     
                     if navigationController.visibleViewController !== postsViewController {
-                        navigationController.visibleViewController?.performSegueWithIdentifier("unwindPosts", sender: nil)
+                        navigationController.visibleViewController?.performSegue(withIdentifier: "unwindPosts", sender: nil)
                     }
                 }
             default:
@@ -77,12 +77,12 @@ class PushNotificationsHandler{
         }
     }
     
-    private class Payload{
+    fileprivate class Payload{
         let type: String?
         let id: String?
         
         init?(payload: String){
-            if let data = payload.dataUsingEncoding(NSUTF8StringEncoding), dict = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0)) as? NSDictionary{
+            if let data = payload.data(using: String.Encoding.utf8), let dict = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)) as? NSDictionary{
                 self.type = dict?["type"] as? String
                 self.id = dict?["id"] as? String
             } else {

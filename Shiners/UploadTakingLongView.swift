@@ -22,9 +22,9 @@ class UploadTakingLongView: UIView{
     func setupSubviews(){
         self.lblMessage.text = NSLocalizedString("Upload seems to be taking long time", comment: "Message, Upload seems to be taking long time")
         self.lblBottomMessage.text = NSLocalizedString("We are still trying...", comment: "Message, We are still trying")
-        self.btnUploadLowerQuality.setTitle(NSLocalizedString("Try lower quality", comment: "Button, Try lower quality"), forState: .Normal)
-        self.btnRetry.setTitle(NSLocalizedString("Retry", comment: "Button, Retry"), forState: .Normal)
-        self.btnCancel.setTitle(NSLocalizedString("Cancel", comment: "Button, Cancel"), forState: .Normal)
+        self.btnUploadLowerQuality.setTitle(NSLocalizedString("Try lower quality", comment: "Button, Try lower quality"), for: UIControlState())
+        self.btnRetry.setTitle(NSLocalizedString("Retry", comment: "Button, Retry"), for: UIControlState())
+        self.btnCancel.setTitle(NSLocalizedString("Cancel", comment: "Button, Cancel"), for: UIControlState())
         
         self.btnRetry.layer.cornerRadius = 4
         self.btnCancel.layer.cornerRadius = 4
@@ -35,9 +35,9 @@ class UploadTakingLongView: UIView{
         self.btnUploadLowerQuality.clipsToBounds = true
         
         if self.frame.size.width >= self.frame.size.height {
-            self.swButtons.axis = .Horizontal
+            self.swButtons.axis = .horizontal
         } else {
-            self.swButtons.axis = .Vertical
+            self.swButtons.axis = .vertical
         }
     }
     

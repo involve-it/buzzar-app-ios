@@ -8,62 +8,75 @@
 
 import Foundation
 import SwiftDDP
+// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
+// Consider refactoring the code to use the non-optional operators.
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
-public class AccountHandler{
-    private static let USER_ID = "shiners:userId"
-    private let totalDependencies = 5
-    private var resolvedDependencies = 0
-    private var latestCallId = 0
+
+open class AccountHandler{
+    fileprivate static let USER_ID = "shiners:userId"
+    fileprivate let totalDependencies = 5
+    fileprivate var resolvedDependencies = 0
+    fileprivate var latestCallId = 0
     
-    public private(set) var status:Status = .NotInitialized;
+    open fileprivate(set) var status:Status = .notInitialized;
     
-    public var myChats: [Chat]?
-    public private(set) var myPosts: [Post]?
-    public private(set) var currentUser: User?
-    public private(set) var userId: String?
-    public var allUsers = [User]()
+    open var myChats: [Chat]?
+    open fileprivate(set) var myPosts: [Post]?
+    open fileprivate(set) var currentUser: User?
+    open var userId: String?
+    open var allUsers = [User]()
     
-    public var postsCollection = PostsCollection()
-    private var nearbyPostsId: String?
+    open var postsCollection = PostsCollection()
+    fileprivate var nearbyPostsId: String?
     
     var messagesCollection = MessagesCollection()
-    private var messagesId: String?
+    fileprivate var messagesId: String?
     
     var commentsCollection = CommentsCollection()
-    private var commentsId: String?
-    private var commentsForPostId: String?
+    fileprivate var commentsId: String?
+    fileprivate var commentsForPostId: String?
     
-    private var lastLocationReport: NSDate?
+    fileprivate var lastLocationReport: Date?
     //2 minutes
-    private static let LOCATION_REPORT_INTEVAL_SECONDS = 2 * 60.0
+    fileprivate static let LOCATION_REPORT_INTEVAL_SECONDS = 2 * 60.0
     
-    public static let NEARBY_POSTS_PAGE_SIZE = 50
-    private static let NEARBY_POSTS_COLLECTION_RADIUS = 5
+    open static let NEARBY_POSTS_PAGE_SIZE = 50
+    fileprivate static let NEARBY_POSTS_COLLECTION_RADIUS = 5
     
-    private static let SEEN_WELCOME_SCREEN = "shiners:seen-welcome-screen"
+    fileprivate static let SEEN_WELCOME_SCREEN = "shiners:seen-welcome-screen"
     
     class func hasSeenWelcomeScreen() -> Bool{
-        let defaults = NSUserDefaults.standardUserDefaults()
-        return (defaults.valueForKey(AccountHandler.SEEN_WELCOME_SCREEN) as? Bool) ?? false
+        let defaults = UserDefaults.standard
+        return (defaults.value(forKey: AccountHandler.SEEN_WELCOME_SCREEN) as? Bool) ?? false
     }
     
-    class func setSeenWelcomeScreen(seen: Bool){
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setBool(seen, forKey: AccountHandler.SEEN_WELCOME_SCREEN)
+    class func setSeenWelcomeScreen(_ seen: Bool){
+        let defaults = UserDefaults.standard
+        defaults.set(seen, forKey: AccountHandler.SEEN_WELCOME_SCREEN)
     }
     
-    func subscribeToCommentsForPost(id: String) -> String {
+    func subscribeToCommentsForPost(_ id: String) -> String {
         if let commentsForPostId = self.commentsForPostId {
             Meteor.unsubscribe(withId: commentsForPostId)
         }
         self.commentsForPostId = Meteor.subscribe("comments-post", params: [id]) {
             print ("subscribed for comments for post id: \(id)")
-            NotificationManager.sendNotification(NotificationManager.Name.CommentsForPostSubscribed, object: id)
+            NotificationManager.sendNotification(NotificationManager.Name.CommentsForPostSubscribed, object: id as AnyObject?)
         }
         return self.commentsForPostId!
     }
     
-    func unsubscribeFromCommentsForPost(subscriptionId: String){
+    func unsubscribeFromCommentsForPost(_ subscriptionId: String){
         if self.commentsForPostId == subscriptionId {
             Meteor.unsubscribe(withId: subscriptionId)
             self.commentsForPostId = nil
@@ -77,18 +90,18 @@ public class AccountHandler{
         }
     }
     
-    func subscribe(callId: Int){
+    func subscribe(_ callId: Int){
         Logger.log("loadAccount: subscribe")
         self.subscribeToNewMessages(callId)
         self.subscribeToNewComments(callId)
     }
     
-    func subscribeToNewMessages(callId: Int){
+    func subscribeToNewMessages(_ callId: Int){
         if let messagesId = self.messagesId {
             Meteor.unsubscribe(withId: messagesId)
         } else {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveMyChats), name: NotificationManager.Name.MessageAdded.rawValue, object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(saveMyChats), name: NotificationManager.Name.MessageRemoved.rawValue, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(saveMyChats), name: NSNotification.Name(rawValue: NotificationManager.Name.MessageAdded.rawValue), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(saveMyChats), name: NSNotification.Name(rawValue: NotificationManager.Name.MessageRemoved.rawValue), object: nil)
         }
         self.messagesId = Meteor.subscribe("messages-new") {
             Logger.log("loadAccount: susbcribeToNewMessages callback")
@@ -99,12 +112,12 @@ public class AccountHandler{
         }
     }
     
-    func subscribeToNewComments(callId: Int){
+    func subscribeToNewComments(_ callId: Int){
         if let commentsId = self.commentsId {
             Meteor.unsubscribe(withId: commentsId)
         } else {
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(savePosts), name: NotificationManager.Name.CommentAdded.rawValue, object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(savePosts), name: NotificationManager.Name.CommentRemoved.rawValue, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(savePosts), name: NSNotification.Name(rawValue: NotificationManager.Name.CommentAdded.rawValue), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(savePosts), name: NSNotification.Name(rawValue: NotificationManager.Name.CommentRemoved.rawValue), object: nil)
         }
         self.commentsId = Meteor.subscribe("comments-my") {
             Logger.log("loadAccount: susbcribeToNewComments callback")
@@ -115,18 +128,18 @@ public class AccountHandler{
         }
     }
     
-    @objc func savePosts(notification: NSNotification){
-        if self.status == .Completed, let comment = notification.object as? Comment {
-            if let _ = self.myPosts?.indexOf({$0.id == comment.entityId}){
+    @objc func savePosts(_ notification: Notification){
+        if self.status == .completed, let comment = notification.object as? Comment {
+            if let _ = self.myPosts?.index(where: {$0.id == comment.entityId}){
                 CachingHandler.Instance.savePostsMy(self.myPosts!)
             }
         }
     }
     
-    @objc public func saveMyChats(){
-        if let cachedChats = CachingHandler.Instance.chats, myChats = self.myChats {
+    @objc open func saveMyChats(){
+        if let cachedChats = CachingHandler.Instance.chats, let myChats = self.myChats {
             myChats.forEach({ (chat) in
-                if chat.messages.count == 0, let cachedIndex = cachedChats.indexOf({$0.id == chat.id!}) {
+                if chat.messages.count == 0, let cachedIndex = cachedChats.index(where: {$0.id == chat.id!}) {
                     let cachedChat = cachedChats[cachedIndex]
                     if cachedChat.messages.count > 0 {
                         chat.messages = cachedChat.messages
@@ -134,13 +147,13 @@ public class AccountHandler{
                 }
             })
         }
-        if self.status == .Completed {
+        if self.status == .completed {
             CachingHandler.Instance.saveChats(self.myChats!)
         }
     }
     
-    func sortNearbyPosts(posts: [Post]) -> [Post] {
-        let sorted = posts.sort({ (post1, post2) -> Bool in
+    func sortNearbyPosts(_ posts: [Post]) -> [Post] {
+        let sorted = posts.sorted(by: { (post1, post2) -> Bool in
             if post1.isLive() && !post2.isLive() {
                 return true
             }
@@ -159,16 +172,16 @@ public class AccountHandler{
         return sorted
     }
     
-    public func mergeNewUsers(users: [User]){
+    open func mergeNewUsers(_ users: [User]){
         users.forEach { (user) in
-            if let index = self.allUsers.indexOf({$0.id == user.id}) {
-                self.allUsers.removeAtIndex(index)
+            if let index = self.allUsers.index(where: {$0.id == user.id}) {
+                self.allUsers.remove(at: index)
             }
             self.allUsers.append(user)
         }
     }
     
-    public func getNearbyPosts(lat: Double, lng: Double, radius: Double, skip: Int, take: Int, callback: MeteorMethodCallback){
+    open func getNearbyPosts(_ lat: Double, lng: Double, radius: Double, skip: Int, take: Int, callback: @escaping MeteorMethodCallback){
         ConnectionHandler.Instance.posts.getNearbyPosts(lat, lng: lng, radius: radius, skip: skip, take: take){ (success, errorId, errorMessage, result) in
             if success {
                 var posts = result as! [Post]
@@ -185,14 +198,14 @@ public class AccountHandler{
                         }
                     }
                 }
-                callback(success: success, errorId: errorId, errorMessage: errorMessage, result: posts)
+                callback(success, errorId, errorMessage, posts)
             } else {
-                callback(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
+                callback(success, errorId, errorMessage, result)
             }
         }
     }
     
-    public func subscribeToNearbyPosts(lat: Double, lng: Double){
+    open func subscribeToNearbyPosts(_ lat: Double, lng: Double){
         self.postsCollection.subscribing = true
         var operationsCount = 1
         if let nearbyPostsId = self.nearbyPostsId {
@@ -206,9 +219,9 @@ public class AccountHandler{
         }
         
         var dict = Dictionary<String, AnyObject>()
-        dict["lat"] = lat
-        dict["lng"] = lng
-        dict["radius"] = AccountHandler.NEARBY_POSTS_COLLECTION_RADIUS
+        dict["lat"] = lat as AnyObject?
+        dict["lng"] = lng as AnyObject?
+        dict["radius"] = AccountHandler.NEARBY_POSTS_COLLECTION_RADIUS as AnyObject?
         self.nearbyPostsId = Meteor.subscribe("posts-nearby-events", params: [dict]) {
             operationsCount -= 1
             if operationsCount == 0 {
@@ -226,52 +239,52 @@ public class AccountHandler{
         }
     }
     
-    public func register(user: RegisterUser, callback: MeteorMethodCallback){
+    open func register(_ user: RegisterUser, callback: @escaping MeteorMethodCallback){
         ConnectionHandler.Instance.users.register(user, callback: callback)
     }
     
-    public func login(userName: String, password: String, callback: MeteorMethodCallback){
+    open func login(_ userName: String, password: String, callback: @escaping MeteorMethodCallback){
         ConnectionHandler.Instance.users.login(userName, password: password) { (success, errorId, errorMessage, result) in
             self.lastLocationReport = nil
-            callback(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
+            callback(success, errorId, errorMessage, result)
             if (success){
-                NSUserDefaults.standardUserDefaults().setObject(Meteor.client.userId(), forKey: AccountHandler.USER_ID)
+                UserDefaults.standard.set(Meteor.client.userId(), forKey: AccountHandler.USER_ID)
                 self.loadAccount()
             } else {
-                NSUserDefaults.standardUserDefaults().setObject(nil, forKey: AccountHandler.USER_ID)
+                UserDefaults.standard.set(nil, forKey: AccountHandler.USER_ID)
             }
         }
     }
     
-    public func loginFacebook(clientId: String, viewController: UIViewController){
+    open func loginFacebook(_ clientId: String, viewController: UIViewController){
         Meteor.loginWithFacebook(clientId, viewController: viewController)
     }
     
-    public func logoff(callback: (success: Bool)-> Void){
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(processLogoff), name: DDP_USER_DID_LOGOUT, object: nil)
+    open func logoff(_ callback: @escaping (_ success: Bool)-> Void){
+        NotificationCenter.default.addObserver(self, selector: #selector(processLogoff), name: NSNotification.Name(rawValue: DDP_USER_DID_LOGOUT), object: nil)
         self.unregisterToken { (success) in
             if success{
                 ConnectionHandler.Instance.users.logoff { (success) in
                     if !success {
                         //self.processLogoff()
-                        NSNotificationCenter.defaultCenter().removeObserver(self, name: DDP_USER_DID_LOGOUT, object: nil)
+                        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: DDP_USER_DID_LOGOUT), object: nil)
                     }
                     
-                    callback(success: success)
+                    callback(success)
                 }
             } else {
-                callback(success: false)
+                callback(false)
             }
         }
     }
     
-    public func getSavedUserId() -> String?{
-        return NSUserDefaults.standardUserDefaults().objectForKey(AccountHandler.USER_ID) as? String
+    open func getSavedUserId() -> String?{
+        return UserDefaults.standard.object(forKey: AccountHandler.USER_ID) as? String
     }
     
-    @objc public func processLogoff(){
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: DDP_USER_DID_LOGOUT, object: nil)
-        NSUserDefaults.standardUserDefaults().setObject(nil, forKey: AccountHandler.USER_ID)
+    @objc open func processLogoff(){
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: DDP_USER_DID_LOGOUT), object: nil)
+        UserDefaults.standard.set(nil, forKey: AccountHandler.USER_ID)
         CachingHandler.deleteAllPrivateFiles()
         self.currentUser = nil
         self.myPosts = nil
@@ -283,7 +296,7 @@ public class AccountHandler{
     }
 
     
-    public func saveUser(user: User, callback: (success: Bool, errorMessage: String?) -> Void){
+    open func saveUser(_ user: User, callback: @escaping (_ success: Bool, _ errorMessage: String?) -> Void){
         ConnectionHandler.Instance.users.saveUser(user) { (success, errorId, errorMessage, result) in
             if errorId == nil {
                 self.currentUser = user
@@ -293,23 +306,24 @@ public class AccountHandler{
                 
             }
             
-            callback(success: success, errorMessage: errorMessage)
+            callback(success, errorMessage)
         }
     }
     
-    public func isLoggedIn() -> Bool {
+    open func isLoggedIn() -> Bool {
         return Meteor.client.userId() != nil
     }
     
-    public func loadAccount(){
+    open func loadAccount(){
         self.resolvedDependencies = 0
-        self.status = .Loading
+        self.status = .loading
         
         self.latestCallId += 1
         let callId = self.latestCallId
         
         if self.isLoggedIn(){
             self.userId = Meteor.client.userId()
+            UserDefaults.standard.set(self.userId, forKey: AccountHandler.USER_ID)
             self.subscribe(callId)
             Logger.log("loadAccount: invoke getCurrentUser")
             ConnectionHandler.Instance.users.getCurrentUser({ (success, errorId, errorMessage, result) in
@@ -371,7 +385,7 @@ public class AccountHandler{
         }
     }
     
-    public func updateMyPosts(callback: MeteorMethodCallback? = nil){
+    open func updateMyPosts(_ callback: MeteorMethodCallback? = nil){
         ConnectionHandler.Instance.posts.getMyPosts(0, take: 1000, callback: { (success, errorId, errorMessage, result) in
             if success {
                 self.myPosts = result as? [Post]
@@ -379,11 +393,11 @@ public class AccountHandler{
                 CachingHandler.Instance.savePostsMy(self.myPosts!)
                 NotificationManager.sendNotification(.MyPostsUpdated, object: nil)
             }
-            callback?(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
+            callback?(success, errorId, errorMessage, result)
         })
     }
     
-    public func updateMyChats(callback: MeteorMethodCallback? = nil){
+    open func updateMyChats(_ callback: MeteorMethodCallback? = nil){
         ConnectionHandler.Instance.messages.getChats(0, take: MessagesHandler.DEFAULT_PAGE_SIZE, callback: { (success, errorId, errorMessage, result) in
             if success {
                 self.myChats = result as? [Chat]
@@ -398,14 +412,14 @@ public class AccountHandler{
                 self.saveMyChats()
                 NotificationManager.sendNotification(NotificationManager.Name.MyChatsUpdated, object: nil)
             }
-            callback?(success: success, errorId: errorId, errorMessage: errorMessage, result: result)
+            callback?(success, errorId, errorMessage, result)
         })
     }
     
-    private func restoreCachedMessages(){
-        if CachingHandler.Instance.status == .Complete, let cachedChats = CachingHandler.Instance.chats {
+    fileprivate func restoreCachedMessages(){
+        if CachingHandler.Instance.status == .complete, let cachedChats = CachingHandler.Instance.chats {
             self.myChats?.filter({$0.messages.count == 0}).forEach({ (chat) in
-                if let cachedChatIndex = cachedChats.indexOf({$0.id! == chat.id!}){
+                if let cachedChatIndex = cachedChats.index(where: {$0.id! == chat.id!}){
                     let cachedChat = cachedChats[cachedChatIndex]
                     chat.messages = cachedChat.messages
                 }
@@ -413,47 +427,47 @@ public class AccountHandler{
         }
     }
     
-    public func reportLocation(lat: Double, lng: Double, callback: MeteorMethodCallback? = nil){
+    open func reportLocation(_ lat: Double, lng: Double, callback: MeteorMethodCallback? = nil){
         CachingHandler.Instance.saveLastLocation(lat, lng: lng)
-        if AccountHandler.Instance.status == .Completed && self.isLoggedIn() && (self.lastLocationReport == nil || NSDate().timeIntervalSinceDate(self.lastLocationReport!) >= AccountHandler.LOCATION_REPORT_INTEVAL_SECONDS){
+        if AccountHandler.Instance.status == .completed && self.isLoggedIn() && (self.lastLocationReport == nil || Date().timeIntervalSince(self.lastLocationReport!) >= AccountHandler.LOCATION_REPORT_INTEVAL_SECONDS){
             var dict = Dictionary<String, AnyObject>()
-            dict["lat"] = lat
-            dict["lng"] = lng
-            dict["deviceId"] = SecurityHandler.getDeviceId()
+            dict["lat"] = lat as AnyObject?
+            dict["lng"] = lng as AnyObject?
+            dict["deviceId"] = SecurityHandler.getDeviceId() as AnyObject?
             Meteor.call("reportLocation", params: [dict]) { (result, error) in
                 if error == nil {
-                    self.lastLocationReport = NSDate()
-                    callback?(success: true, errorId: nil, errorMessage: nil, result: nil)
+                    self.lastLocationReport = NSDate() as Date
+                    callback?(true, nil, nil, nil)
                 } else {
                     print("Error reporting location")
                     print(error!.error)
-                    callback?(success: false, errorId: nil, errorMessage: nil, result: nil)
+                    callback?(false, nil, nil, nil)
                 }
                 
             }
         } else {
-            callback?(success: true, errorId: nil, errorMessage: nil, result: nil)
+            callback?(true, nil, nil, nil)
         }
     }
     
     func processLocalNotifications(){
-        LocalNotificationsHandler.Instance.reportEventSeen(.Messages)
+        LocalNotificationsHandler.Instance.reportEventSeen(.messages)
         self.myChats?.forEach({ (chat) in
             if !(chat.seen ?? true) && chat.toUserId == self.userId{
-                LocalNotificationsHandler.Instance.reportNewEvent(.Messages, id: chat.id)
+                LocalNotificationsHandler.Instance.reportNewEvent(.messages, id: chat.id)
             }
         })
     }
     
-    let lockQueue = dispatch_queue_create("handleCompletedLock", nil)
-    private func handleCompleted(callId: Int){
+    let lockQueue = DispatchQueue(label: "handleCompletedLock", attributes: [])
+    fileprivate func handleCompleted(_ callId: Int){
         Logger.log("loadAccount: handleCompleted. count: \(self.resolvedDependencies), total: \(self.totalDependencies)")
-        dispatch_sync(lockQueue){
+        lockQueue.sync{
             if callId == self.latestCallId && self.resolvedDependencies == self.totalDependencies {
                 Logger.log("handleCompleted: account loaded")
                 print("account loaded")
                 self.resolvedDependencies = 0
-                self.status = .Completed
+                self.status = .completed
                 
                 self.requestPushNotifications()
                 
@@ -469,102 +483,102 @@ public class AccountHandler{
         }
     }
     
-    public func requestPushNotifications(){
-        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-        let app = UIApplication.sharedApplication()
+    open func requestPushNotifications(){
+        let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+        let app = UIApplication.shared
         app.registerForRemoteNotifications()
         app.registerUserNotificationSettings(settings)
         if let _ = PushNotificationsHandler.getToken() {
             self.savePushToken { (success) in
                 if !success {
-                    UIApplication.sharedApplication().unregisterForRemoteNotifications()
+                    UIApplication.shared.unregisterForRemoteNotifications()
                     NotificationManager.sendNotification(NotificationManager.Name.PushRegistrationFailed, object: nil)
                 }
             }
         }
     }
     
-    public func savePushToken(callback: (success: Bool) -> Void){
-        if let token = PushNotificationsHandler.getToken(), user = self.currentUser{
+    open func savePushToken(_ callback: @escaping (_ success: Bool) -> Void){
+        if let token = PushNotificationsHandler.getToken(), let user = self.currentUser{
             //yes, doing it twice. thanks raix:push!
             self.savePushTokenRaix({ (success) in
                 if success {
                     var dict = Dictionary<String, AnyObject>()
-                    dict["token"] = token
-                    dict["deviceId"] = SecurityHandler.getDeviceId()
-                    dict["platform"] = "apn"
-                    dict["userId"] = user.id
+                    dict["token"] = token as AnyObject?
+                    dict["deviceId"] = SecurityHandler.getDeviceId() as AnyObject?
+                    dict["platform"] = "apn" as AnyObject?
+                    dict["userId"] = user.id as AnyObject?
                     Meteor.call("registerPushToken", params: [dict], callback: { (result, error) in
-                        if error == nil, let fields = result as? NSDictionary, success = fields.valueForKey("success") as? Bool{
-                            callback(success: success)
+                        if error == nil, let fields = result as? NSDictionary, let success = fields.value(forKey: "success") as? Bool{
+                            callback(success)
                         } else {
-                            callback(success: false)
+                            callback(false)
                         }
                     })
                 } else {
-                    callback(success: false)
+                    callback(false)
                 }
             })
             
         } else {
-            callback(success: false)
+            callback(false)
         }
     }
 
-    private func savePushTokenRaix(callback: (success: Bool) -> Void){
-        if let token = PushNotificationsHandler.getToken(), user = self.currentUser{
+    fileprivate func savePushTokenRaix(_ callback: @escaping (_ success: Bool) -> Void){
+        if let token = PushNotificationsHandler.getToken(), let user = self.currentUser{
             var dict = Dictionary<String, AnyObject>()
             var tokenDict = Dictionary<String, AnyObject>()
-            tokenDict["apn"] = token
-            dict["token"] = tokenDict
-            dict["appName"] = "org.buzzar.app"
-            dict["userId"] = user.id
+            tokenDict["apn"] = token as AnyObject?
+            dict["token"] = tokenDict as AnyObject?
+            dict["appName"] = "org.buzzar.app" as AnyObject?
+            dict["userId"] = user.id as AnyObject?
             
             Meteor.call("raix:push-update", params: [dict], callback: { (result, error) in
-                if error == nil, let fields = result as? NSDictionary, _ = fields.valueForKey("_id") as? String{
-                    callback(success: true)
+                if error == nil, let fields = result as? NSDictionary, let _ = fields.value(forKey: "_id") as? String{
+                    callback(true)
                     print("raix token update success")
                 } else {
-                    callback(success: false)
+                    callback(false)
                     print ("raix token update failed")
                 }
             })
         } else {
-            callback(success: false)
+            callback(false)
         }
     }
 
     
-    public func unregisterToken(callback: (success: Bool) -> Void){
+    open func unregisterToken(_ callback: @escaping (_ success: Bool) -> Void){
         if let user = self.currentUser{
             var dict = Dictionary<String, AnyObject>()
-            dict["deviceId"] = SecurityHandler.getDeviceId()
-            dict["platform"] = "apn"
-            dict["userId"] = user.id
+            dict["deviceId"] = SecurityHandler.getDeviceId() as AnyObject?
+            dict["platform"] = "apn" as AnyObject?
+            dict["userId"] = user.id as AnyObject?
             
             Meteor.call("unregisterPushToken", params: [dict], callback: { (result, error) in
-                if error == nil, let fields = result as? NSDictionary, success = fields.valueForKey("success") as? Bool{
-                    callback(success: success)
+                if error == nil, let fields = result as? NSDictionary, let success = fields.value(forKey: "success") as? Bool{
+                    callback(success)
                 } else {
-                    callback(success: false)
+                    callback(false)
                 }
             })
         } else {
-            callback(success: false)
+            callback(false)
         }
         
         //callback(success: true)
     }
     
-    private init (){}
-    private static let instance = AccountHandler()
-    public static var Instance: AccountHandler {
+    fileprivate init (){}
+    fileprivate static let instance = AccountHandler()
+    open static var Instance: AccountHandler {
         get{
             return instance
         }
     }
     
     public enum Status{
-        case NotInitialized, Loading, Completed
+        case notInitialized, loading, completed
     }
 }

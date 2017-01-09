@@ -9,33 +9,33 @@
 import Foundation
 import CoreLocation
 
-public class LocationHandler: NSObject, CLLocationManagerDelegate {
-    public static var lastLocation: CLLocation?
+open class LocationHandler: NSObject, CLLocationManagerDelegate {
+    open static var lastLocation: CLLocation?
     
     public override init (){
         super.init()
         self.locationManager.delegate = self;
     }
     
-    private var requestType: RequestType?
-    private let locationManager = CLLocationManager()
-    private var notDenied: Bool {
+    fileprivate var requestType: RequestType?
+    fileprivate let locationManager = CLLocationManager()
+    fileprivate var notDenied: Bool {
         get {
-            return CLLocationManager.authorizationStatus() != .Denied
+            return CLLocationManager.authorizationStatus() != .denied
         }
     }
     
-    private var geocodingRequired = false
-    private var monitoring = false
+    fileprivate var geocodingRequired = false
+    fileprivate var monitoring = false
     
-    private lazy var geocoder = CLGeocoder()
+    fileprivate lazy var geocoder = CLGeocoder()
     
-    public var delegate: LocationHandlerDelegate?
-    private var locationReportedOnce = false
+    open var delegate: LocationHandlerDelegate?
+    fileprivate var locationReportedOnce = false
     
-    private static let DEFAULT_LOCATION_UPDATE_TIMEOUT = 30.0
+    fileprivate static let DEFAULT_LOCATION_UPDATE_TIMEOUT = 30.0
     
-    public func startMonitoringLocation() -> Bool{
+    open func startMonitoringLocation() -> Bool{
         if self.notDenied {
             self.locationManager.requestAlwaysAuthorization()
             self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
@@ -45,13 +45,13 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
         return self.notDenied
     }
     
-    public func stopMonitoringLocation() {
+    open func stopMonitoringLocation() {
         self.monitoring = false
         self.geocodingRequired = false
         self.locationManager.stopUpdatingLocation()
     }
     
-    public func getLocationOnce(geocodingRequired: Bool) -> Bool {
+    open func getLocationOnce(_ geocodingRequired: Bool) -> Bool {
         if self.notDenied {
             self.monitoring = false
             self.geocodingRequired = geocodingRequired
@@ -60,7 +60,7 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
             self.locationManager.requestLocation()
             
             self.locationReportedOnce = false
-            NSTimer.scheduledTimerWithTimeInterval(LocationHandler.DEFAULT_LOCATION_UPDATE_TIMEOUT, target: self, selector: #selector(notifyTimeout), userInfo: nil, repeats: false)
+            Timer.scheduledTimer(timeInterval: LocationHandler.DEFAULT_LOCATION_UPDATE_TIMEOUT, target: self, selector: #selector(notifyTimeout), userInfo: nil, repeats: false)
         }
         
         return self.notDenied
@@ -74,7 +74,7 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    public func monitorSignificantLocationChanges() -> Bool {
+    open func monitorSignificantLocationChanges() -> Bool {
         if self.notDenied {
             self.monitoring = true
             self.geocodingRequired = false
@@ -86,7 +86,7 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
         return self.notDenied
     }
     
-    public func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    open func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             self.locationReportedOnce = true
             LocationHandler.lastLocation = location
@@ -104,7 +104,7 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    public func reverseGeocode(location: CLLocation){
+    open func reverseGeocode(_ location: CLLocation){
         self.geocoder.reverseGeocodeLocation(location) { (placemarks, error) in
             if let placemark = placemarks?.first {
                 let geocoderInfo = GeocoderInfo();
@@ -129,7 +129,7 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
         };
     }
     
-    public func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    open func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if !self.notDenied {
             let geocoderInfo = GeocoderInfo()
             geocoderInfo.denied = true
@@ -138,19 +138,19 @@ public class LocationHandler: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    private enum RequestType {
-        case Once, MonitorSignificant
+    fileprivate enum RequestType {
+        case once, monitorSignificant
     }
 }
 
-public class GeocoderInfo{
-    public var name: String?
-    public var address: String?
-    public var coordinate: CLLocationCoordinate2D?
-    public var denied: Bool = false
-    public var error: Bool = false
+open class GeocoderInfo{
+    open var name: String?
+    open var address: String?
+    open var coordinate: CLLocationCoordinate2D?
+    open var denied: Bool = false
+    open var error: Bool = false
 }
 
 public protocol LocationHandlerDelegate{
-    func locationReported(geocoderInfo: GeocoderInfo)
+    func locationReported(_ geocoderInfo: GeocoderInfo)
 }

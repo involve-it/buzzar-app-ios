@@ -12,34 +12,34 @@ import UIKit
 class SettingsMainViewController: UITableViewController {
     override func viewDidLoad() {
         self.fillUserData()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(fillUserData), name: NotificationManager.Name.AccountUpdated.rawValue, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(fillUserData), name: NotificationManager.Name.UserUpdated.rawValue, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(fillUserData), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(fillUserData), name: NSNotification.Name(rawValue: NotificationManager.Name.UserUpdated.rawValue), object: nil)
     }
     
     @IBOutlet weak var sendNearbyNotificationsSwitch: UISwitch!
     func fillUserData(){
-        if UIApplication.sharedApplication().isRegisteredForRemoteNotifications(), let currentUser = AccountHandler.Instance.currentUser where (currentUser.enableNearbyNotifications ?? false) {
-            self.sendNearbyNotificationsSwitch.on = true
+        if UIApplication.shared.isRegisteredForRemoteNotifications, let currentUser = AccountHandler.Instance.currentUser, (currentUser.enableNearbyNotifications ?? false) {
+            self.sendNearbyNotificationsSwitch.isOn = true
         } else {
-            self.sendNearbyNotificationsSwitch.on = false
+            self.sendNearbyNotificationsSwitch.isOn = false
         }
     }
     
-    @IBAction func cbNotifications_Changed(sender: UISwitch) {
+    @IBAction func cbNotifications_Changed(_ sender: UISwitch) {
         if self.isNetworkReachable(), let currentUser = AccountHandler.Instance.currentUser {
-            if sender.on && !UIApplication.sharedApplication().isRegisteredForRemoteNotifications(){
+            if sender.isOn && !UIApplication.shared.isRegisteredForRemoteNotifications{
                 self.showAlert(NSLocalizedString("Notifications", comment: "Alert title, Notifications"), message: NSLocalizedString("To receive notifications, please allow this in device Settings.", comment: "Alert message, to receive notifications, please allow this in device Settings."));
-                sender.on = false
+                sender.isOn = false
             } else {
                 let initialState = currentUser.enableNearbyNotifications
-                currentUser.enableNearbyNotifications = sender.on
+                currentUser.enableNearbyNotifications = sender.isOn
                 
                 AccountHandler.Instance.saveUser(currentUser) { (success, errorMessage) in
                     if (!success){
                         ThreadHelper.runOnMainThread({
                             self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: NSLocalizedString("An error occurred while saving.", comment: "Title message, an error occurred while saving."))
                             currentUser.enableNearbyNotifications = initialState
-                            sender.on = initialState ?? false
+                            sender.isOn = initialState ?? false
                         })
                     }
                 }

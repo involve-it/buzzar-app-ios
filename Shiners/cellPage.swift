@@ -19,11 +19,11 @@ class cellPage: UICollectionViewCell {
             
             let titleColor = UIColor(netHex: 0x4EB2F4)
             let textColor = UIColor(white: 0.4, alpha: 1)
-            let attributedText = NSMutableAttributedString(string: page.title, attributes: [NSFontAttributeName: UIFont.systemFontOfSize(20, weight: UIFontWeightRegular), NSForegroundColorAttributeName: titleColor])
-            attributedText.appendAttributedString(NSAttributedString(string: "\n\n\(page.message)", attributes: [NSFontAttributeName: UIFont.systemFontOfSize(14), NSForegroundColorAttributeName: textColor]))
+            let attributedText = NSMutableAttributedString(string: page.title, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 20, weight: UIFontWeightRegular), NSForegroundColorAttributeName: titleColor])
+            attributedText.append(NSAttributedString(string: "\n\n\(page.message)", attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 14), NSForegroundColorAttributeName: textColor]))
             
             let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.alignment = .Center
+            paragraphStyle.alignment = .center
             
             let length = attributedText.string.characters.count
             attributedText.addAttribute(NSParagraphStyleAttributeName, value: paragraphStyle, range: NSRange(location: 0, length: length))
@@ -32,13 +32,13 @@ class cellPage: UICollectionViewCell {
         }
     }
     
-    let modelName = UIDevice.currentDevice().modelName
+    let modelName = UIDevice.current.modelName
     
     let imageView: UIImageView = {
         let iv = UIImageView()
-        iv.contentMode = .ScaleAspectFill
+        iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.backgroundColor = UIColor.blackColor()
+        iv.backgroundColor = UIColor.black
         return iv
         
     }()
@@ -51,7 +51,7 @@ class cellPage: UICollectionViewCell {
     
     let textView: UITextView = {
         let tv = UITextView()
-        tv.editable = false
+        tv.isEditable = false
         tv.contentInset = UIEdgeInsets(top: 18, left: 0, bottom: 0, right: 0)
         return tv
     }()
@@ -78,9 +78,9 @@ class cellPage: UICollectionViewCell {
         let multiplierId: CGFloat = (modelName == "iPhone 4s" || modelName == "iPhone 4") ? 0.4 : 0.3
         
         textView.anchorWithConstantsToTop(nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, topConstant: 0, leftConstant: 16, bottomConstant: 0, rightConstant: 16)
-        textView.heightAnchor.constraintEqualToAnchor(heightAnchor, multiplier: multiplierId).active = true
+        textView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: multiplierId).isActive = true
         
         separatorLineView.anchorToTop(nil, left: leftAnchor, bottom: textView.topAnchor, right: rightAnchor)
-        separatorLineView.heightAnchor.constraintEqualToConstant(1).active = true
+        separatorLineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
 }

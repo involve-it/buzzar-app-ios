@@ -9,54 +9,54 @@
 import Foundation
 import SwiftDDP
 
-public class UsersProxy{
-    private init(){
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(didLogin), name: DDP_USER_DID_LOGIN, object: nil);
+open class UsersProxy{
+    fileprivate init(){
+        NotificationCenter.default.addObserver(self, selector: #selector(didLogin), name: NSNotification.Name(rawValue: DDP_USER_DID_LOGIN), object: nil);
     }
     
-    private static let instance = UsersProxy()
-    public class var Instance: UsersProxy{
+    fileprivate static let instance = UsersProxy()
+    open class var Instance: UsersProxy{
         get{
             return instance;
         }
     }
     
-    public func errorLog(log: String, callback: MeteorMethodCallback){
+    open func errorLog(_ log: String, callback: @escaping MeteorMethodCallback){
         var dict = Dictionary<String, AnyObject>()
-        dict["userId"] = Meteor.client.userId()
-        dict["data"] = log
-        dict["platform"] = "ios"
-        if let version = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String {
-            dict["version"] = version
+        dict["userId"] = Meteor.client.userId() as AnyObject?
+        dict["data"] = log as AnyObject?
+        dict["platform"] = "ios" as AnyObject?
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            dict["version"] = version as AnyObject?
         }
         
         Meteor.call("errorLog", params: [dict]){(result, error) in
             if error == nil{
-                callback(success: ResponseHelper.isSuccessful(result), errorId: nil, errorMessage: nil, result: nil)
+                callback(ResponseHelper.isSuccessful(result as AnyObject?), nil, nil, nil)
             } else {
-                callback(success: false, errorId: nil, errorMessage: nil, result: nil)
+                callback(false, nil, nil, nil)
             }
         }
     }
     
-    public func contactUs(email: String, subject: String, message: String, callback: MeteorMethodCallback){
+    open func contactUs(_ email: String, subject: String, message: String, callback: @escaping MeteorMethodCallback){
         var dict = Dictionary<String, AnyObject>()
-        dict["email"] = email
-        dict["subject"] = subject
-        dict["message"] = message
+        dict["email"] = email as AnyObject?
+        dict["subject"] = subject as AnyObject?
+        dict["message"] = message as AnyObject?
         
         Meteor.call("contactUs", params: [dict]) { (result, error) in
             if error == nil{
-                callback(success: ResponseHelper.isSuccessful(result), errorId: nil, errorMessage: nil, result: nil)
+                callback(ResponseHelper.isSuccessful(result as AnyObject?), nil, nil, nil)
             } else {
-                callback(success: false, errorId: nil, errorMessage: nil, result: nil)
+                callback(false, nil, nil, nil)
             }
         }
     }
     
     //public var currentUser: User?
     
-    public func getCurrentUser(callback: MeteorMethodCallback){
+    open func getCurrentUser(_ callback: @escaping MeteorMethodCallback){
         if let userId = Meteor.client.userId() {
             self.getUser(userId, callback: callback) /*{ (success, errorId, errorMessage, result) in
                 
@@ -68,79 +68,113 @@ public class UsersProxy{
                 callback(success: success)
             }*/
         } else {
-            callback(success: false, errorId: nil, errorMessage: ResponseHelper.getDefaultErrorMessage(), result: nil)
+            callback(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
         }
     }
     
-    public func getUser(userId: String, callback: MeteorMethodCallback){
+    open func getUser(_ userId: String, callback: @escaping MeteorMethodCallback){
         Meteor.call("getUser", params: [Meteor.client.userId()!]){ result, error in
             if (error == nil){
-                if let user = ResponseHelper.callHandler(result, handler: callback) as User?{
+                if let user = ResponseHelper.callHandler(result as AnyObject?, handler: callback) as User?{
                     AccountHandler.Instance.mergeNewUsers([user])
                 }
             } else {
-                callback(success: false, errorId: nil, errorMessage: error?.reason, result: nil)
+                callback(false, nil, error?.reason, nil)
             }
         };
     }
     
-    public func saveUser(user: User, callback: MeteorMethodCallback){
+    static let NEARBY_USERS_RADIUS = 100
+    static let NEARBY_USERS_COUNT = 10
+    
+    open func getNearbyUsers(lat: Float, lng: Float, callback: @escaping MeteorMethodCallback){
+        var dict = Dictionary<String, AnyObject>()
+        dict["lat"] = lat as AnyObject?
+        dict["lng"] = lng as AnyObject?
+        dict["radius"] = UsersProxy.NEARBY_USERS_RADIUS as AnyObject?
+        dict["skip"] = 0 as AnyObject?
+        dict["take"] = UsersProxy.NEARBY_USERS_COUNT as AnyObject?
+        
+        Meteor.call("bz.user.getUsersAround", params: [dict]) {result, error in
+            if error == nil {
+                if let users = ResponseHelper.callHandlerArray(result as AnyObject?, handler: callback) as [User]? {
+                    AccountHandler.Instance.mergeNewUsers(users)
+                }
+            } else {
+                callback(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
+            }
+        }
+    }
+    
+    open func getUserByName(_ username: String, callback: @escaping MeteorMethodCallback){
+        Meteor.call("getUserByName", params: [username]){ result, error in
+            if (error == nil){
+                if let user = ResponseHelper.callHandler(result as AnyObject?, handler: callback) as User?{
+                    AccountHandler.Instance.mergeNewUsers([user])
+                }
+            } else {
+                callback(false, nil, error?.reason, nil)
+            }
+        };
+    }
+    
+    open func saveUser(_ user: User, callback: @escaping MeteorMethodCallback){
         Meteor.call("editUser", params: [user.toDictionary()]){ result, error in
             if (error == nil){
-                let errorId = ResponseHelper.getErrorId(result)
-                callback(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: user)
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?)
+                callback(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), user)
             } else {
-                callback(success: false, errorId: nil, errorMessage: error?.reason, result: nil)
+                callback(false, nil, error?.reason, nil)
             }
         }
     }
     
-    public func register(user: RegisterUser, callback: MeteorMethodCallback){
+    open func register(_ user: RegisterUser, callback: @escaping MeteorMethodCallback){
         Meteor.call("addUser", params: [user.toDictionary()]){ result, error in
             if (error == nil){
-                let errorId = ResponseHelper.getErrorId(result);
-                callback(success: ResponseHelper.isSuccessful(result), errorId: errorId, errorMessage: ResponseHelper.getErrorMessage(errorId), result: nil)
+                let errorId = ResponseHelper.getErrorId(result as AnyObject?);
+                callback(ResponseHelper.isSuccessful(result as AnyObject?), errorId, ResponseHelper.getErrorMessage(errorId), nil)
             } else {
-                callback(success: false, errorId: nil, errorMessage: error?.reason, result: nil)
+                callback(false, nil, error?.reason, nil)
             }
         }
     }
     
-    public func resetPassword(email: String, callback: MeteorMethodCallback){
+    open func resetPassword(_ email: String, callback: @escaping MeteorMethodCallback){
         var dict = Dictionary<String, AnyObject>()
-        dict["email"] = email
+        dict["email"] = email as AnyObject?
         Meteor.call("forgotPassword", params: [dict]) { (result, error) in
             if (error == nil){
                 //let errorId = ResponseHelper.getErrorId(result)
-                callback(success: true, errorId: nil, errorMessage: nil, result: nil)
+                callback(true, nil, nil, nil)
             } else {
-                callback(success: false, errorId: nil, errorMessage: error?.reason, result: nil)
+                callback(false, nil, error?.reason, nil)
             }
         }
     }
     
-    public func login(userName: String, password: String, callback: MeteorMethodCallback){
+    open func login(_ userName: String, password: String, callback: @escaping MeteorMethodCallback){
         Meteor.loginWithUsername(userName, password: password){ result, error in
             if (error == nil){
-                callback(success: true, errorId: nil, errorMessage: nil, result: nil);
+                callback(true, nil, nil, nil);
             } else {
                 let reason = error?.reason;
-                callback(success: false, errorId: nil, errorMessage: reason, result: nil);
+                callback(false, nil, reason, nil);
             }
         }
     }
     
-    public func logoff(callback: (success: Bool)-> Void){
+    open func logoff(_ callback: @escaping (_ success: Bool)-> Void){
         Meteor.logout(){ result, error in
             if (error == nil){
-                callback(success: true)
+                callback(true)
             } else {
-                callback(success: false)
+                callback(false)
             }
         }
     }
     
-    @objc private func didLogin(){
+    @objc fileprivate func didLogin(){
         NSLog("LOGGED IN");
     }
 }

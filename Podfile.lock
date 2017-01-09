@@ -1,52 +1,82 @@
 PODS:
-  - AWSCore (2.4.9)
-  - AWSS3 (2.4.9):
-    - AWSCore (= 2.4.9)
-  - BRYXBanner (0.6.3)
-  - CryptoSwift (0.5.2)
+  - AWSCore (2.4.16)
+  - AWSS3 (2.4.16):
+    - AWSCore (= 2.4.16)
+  - BRYXBanner (0.7.1)
+  - CryptoSwift (0.6.7)
+  - FirebaseAnalytics (3.6.0):
+    - FirebaseCore (~> 3.4)
+    - FirebaseInstanceID (~> 1.0)
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleSymbolUtilities (~> 1.1)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseCore (3.4.6):
+    - GoogleInterchangeUtilities (~> 1.2)
+    - GoogleToolboxForMac/NSData+zlib (~> 2.1)
+  - FirebaseInstanceID (1.0.8)
   - FLAnimatedImage (1.0.12)
+  - Google/Analytics (3.0.3):
+    - Google/Core
+    - GoogleAnalytics (~> 3.12)
+  - Google/Core (3.0.3):
+    - FirebaseAnalytics (~> 3.2)
+  - GoogleAnalytics (3.17.0)
+  - GoogleInterchangeUtilities (1.2.2):
+    - GoogleSymbolUtilities (~> 1.1)
+  - GoogleSymbolUtilities (1.1.2)
+  - GoogleToolboxForMac/Defines (2.1.0)
+  - GoogleToolboxForMac/NSData+zlib (2.1.0):
+    - GoogleToolboxForMac/Defines (= 2.1.0)
   - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
-  - NYTPhotoViewer (1.1.0):
-    - NYTPhotoViewer/AnimatedGifSupport (= 1.1.0)
-    - NYTPhotoViewer/Core (= 1.1.0)
-  - NYTPhotoViewer/AnimatedGifSupport (1.1.0):
-    - FLAnimatedImage (~> 1.0.8)
+  - NYTPhotoViewer (1.2.0):
+    - NYTPhotoViewer/AnimatedGifSupport (= 1.2.0)
+    - NYTPhotoViewer/Core (= 1.2.0)
+  - NYTPhotoViewer/AnimatedGifSupport (1.2.0):
+    - FLAnimatedImage (~> 1.0.12)
     - NYTPhotoViewer/Core
-  - NYTPhotoViewer/Core (1.1.0)
-  - RichEditorView (3.2.0)
-  - SwiftDDP (0.3.2):
-    - CryptoSwift (~> 0.3)
-    - SwiftWebSocket (~> 2.6.0)
+  - NYTPhotoViewer/Core (1.2.0)
+  - SwiftDDP (0.4.0):
+    - CryptoSwift (~> 0.6.6)
+    - SwiftWebSocket (~> 2.6.5)
     - XCGLogger
-  - SwiftWebSocket (2.6.4)
-  - XCGLogger (3.5.3)
+  - SwiftWebSocket (2.6.5)
+  - XCGLogger (4.0.0):
+    - XCGLogger/Core (= 4.0.0)
+  - XCGLogger/Core (4.0.0)
 
 DEPENDENCIES:
-  - AWSS3 (~> 2.4.5)
-  - BRYXBanner (~> 0.6.1)
-  - CryptoSwift (~> 0.5.1)
+  - AWSS3
+  - BRYXBanner
+  - CryptoSwift
+  - Google/Analytics
   - JSQMessagesViewController
-  - NYTPhotoViewer (~> 1.1.0)
-  - RichEditorView
-  - SwiftDDP (~> 0.3.2)
-  - XCGLogger (~> 3.5.3)
+  - NYTPhotoViewer
+  - SwiftDDP
+  - XCGLogger
 
 SPEC CHECKSUMS:
-  AWSCore: 175208358b95492e0ebe0337df2ab415300bddac
-  AWSS3: e4959b48db48d5f3dcd5cdf9e24a07f60a313611
-  BRYXBanner: f116d4457e0ee380e44c2d0ff1d859e75bf96517
-  CryptoSwift: c1ef79f901b86099a6fe8b3c7524cf9f3f3c8c40
+  AWSCore: 7c3c129991e6387bcbad7132bc3661e7135754db
+  AWSS3: fef6aa8f8f625df8f67f1b6574fe761f3a4ddc99
+  BRYXBanner: 34eabf9c6c009f187948ca78a4f3bba3767d0f04
+  CryptoSwift: 685ae257941e5447474348a2b545583e1a16b573
+  FirebaseAnalytics: 9c67af0ebeb8d2146c9b4ea2616439affa947b58
+  FirebaseCore: 03da1cb32615569bbc2830a22f9ad753d9a02ef5
+  FirebaseInstanceID: ba1e640935235e5fac39dfa816fe7660e72e1a8a
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
+  Google: 813c467362eabc11385f5a5cc9ad0cb651a58f4e
+  GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
+  GoogleInterchangeUtilities: d5bc4d88d5b661ab72f9d70c58d02ca8c27ad1f7
+  GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
+  GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
-  NYTPhotoViewer: e80e8767f3780d2df37c6f72cbab15d6c7232911
-  RichEditorView: b4ee60a4f5301cbe8f3fcb1f065cdd7de74ddd10
-  SwiftDDP: 6b4083f5f7b787cc5732a4da1cc0192d862a5112
-  SwiftWebSocket: fdb5b4393cede304d44befbaeb0c8ef14c28d3bb
-  XCGLogger: dbe4a9c7bbaac73717a34e0b94c64fd151c74d6c
+  NYTPhotoViewer: 323217e4590a1586eb3c9674b3fefb0fb8b57896
+  SwiftDDP: b575009a2c83bde917b9f2f00decada31cefd7ef
+  SwiftWebSocket: 1ef8a0efb023544643bdf480c1ec4a62b204f293
+  XCGLogger: 38063ea89b4c8b23232d18efd2e12eb0005f3ea4
 
-PODFILE CHECKSUM: 4bcab21901df6cd36e9b44e7094eb642f15edcb5
+PODFILE CHECKSUM: f3fff2aae16aa1d488877b809fb33d24b36259c9
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1
