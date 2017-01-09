@@ -357,12 +357,12 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
     }
     
     open override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
-        if motion == .motionShake {
+        if motion == .motionShake, let loc = LocationHandler.lastLocation {
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "augmentedRealityViewController") as! AugmentedRealityViewController
             vc.showOnlyClose = false
             vc.posts = [Post]()
             vc.posts.append(self.post)
-            vc.currentLocation = LocationHandler.lastLocation?.coordinate
+            vc.currentLocation = loc.coordinate
             self.present(vc, animated: true, completion: nil)
         }
     }
