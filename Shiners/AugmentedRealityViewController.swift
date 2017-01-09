@@ -12,14 +12,19 @@ import CoreLocation
 class AugmentedRealityViewController: UIViewController, PostsViewControllerDelegate{
 
     var posts = [Post]()
-    var mainViewController: PostsMainViewController!
+    var mainViewController: PostsMainViewController?
+    var currentLocation: CLLocationCoordinate2D?
+    var showOnlyClose = true
     
-    func postsUpdated() {
+    func postsUpdated(posts: [Post], currentLocation: CLLocationCoordinate2D?) {
         ThreadHelper.runOnMainThread {
-            if let currentLocation = self.mainViewController.currentLocation {
+            if let location = currentLocation {
+                self.currentLocation = location
+            }
+            if let loc = self.currentLocation, self.showOnlyClose {
                 print("have current location")
-                let location = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
-                self.posts = self.mainViewController.allPosts.filter({ (post) -> Bool in
+                let location = CLLocation(latitude: loc.latitude, longitude: loc.longitude)
+                self.posts = posts.filter({ (post) -> Bool in
                     if let postLoc = post.getPostLocation() {
                         let postLocation = CLLocation(latitude: postLoc.lat!, longitude: postLoc.lng!)
                         
@@ -34,7 +39,7 @@ class AugmentedRealityViewController: UIViewController, PostsViewControllerDeleg
                 })
             } else {
                 print("do not have current location")
-                self.posts = Array(self.mainViewController.allPosts.prefix(10))
+                self.posts = Array(posts.prefix(10))
             }
             self.refreshPosts()
         }
@@ -49,10 +54,7 @@ class AugmentedRealityViewController: UIViewController, PostsViewControllerDeleg
     }
     
     @IBAction func btnClose_Click(_ sender: Any) {
-        self.dismiss(animated: true, completion: {
-            self.mainViewController.arPresented = false
-            self.mainViewController.currentViewController = self.mainViewController.viewControllerForSelectedSegmentIndex(self.mainViewController.typeSwitch.selectedSegmentIndex)
-        })
+        self.dismiss(animated: true, completion: nil)
     }
     
     func refreshPosts(){
@@ -103,7 +105,7 @@ class AugmentedRealityViewController: UIViewController, PostsViewControllerDeleg
         
         let arView = self.view as! AugmentedRealityView
         arView.initialize()
-        self.postsUpdated()
+        self.postsUpdated(posts: self.posts, currentLocation: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {

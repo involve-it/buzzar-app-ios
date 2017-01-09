@@ -38,7 +38,7 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
         self.performSegue(withIdentifier: "postDetails", sender: self)
     }
     
-    func postsUpdated() {
+    func postsUpdated(posts: [Post], currentLocation: CLLocationCoordinate2D?) {
         ThreadHelper.runOnMainThread {
             if (self.mainViewController.posts.count == 0){
                 //self.tableView.scrollEnabled = false;

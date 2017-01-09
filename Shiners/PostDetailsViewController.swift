@@ -356,6 +356,17 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
         }
     }
     
+    open override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "augmentedRealityViewController") as! AugmentedRealityViewController
+            vc.showOnlyClose = false
+            vc.posts = [Post]()
+            vc.posts.append(self.post)
+            vc.currentLocation = LocationHandler.lastLocation?.coordinate
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
+    
     func updateUI(){
         self.navigationItem.title = post?.title
         self.updateLikeButton()

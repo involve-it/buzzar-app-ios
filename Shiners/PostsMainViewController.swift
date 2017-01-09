@@ -52,7 +52,6 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     var loadingPosts = false
     var loadingMorePosts = false
     var staleLocation = false
-    var arPresented = false
     
     var searchViewController: NewSearchViewController?
     var currentViewController: UIViewController?
@@ -451,7 +450,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
     
     func callRefreshDelegates(){
-        (self.currentViewController as? PostsViewControllerDelegate)?.postsUpdated()
+        (self.currentViewController as? PostsViewControllerDelegate)?.postsUpdated(posts: self.allPosts, currentLocation: self.currentLocation)
     }
     
     
@@ -504,7 +503,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
             
             self.view.bringSubview(toFront: self.searchCriteriaView)
             
-            (vc as! PostsViewControllerDelegate).postsUpdated()
+            (vc as! PostsViewControllerDelegate).postsUpdated(posts: self.allPosts, currentLocation: self.currentLocation)
         }
     }
     
@@ -536,7 +535,9 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         } else if sender.selectedSegmentIndex == 2 {
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "augmentedRealityViewController") as! AugmentedRealityViewController
             vc.mainViewController = self
-            self.arPresented = true
+            vc.posts = self.allPosts
+            vc.currentLocation = self.currentLocation
+            
             self.tabBarController!.present(vc, animated: true, completion: {
                 if self.currentViewController == self.mapViewController {
                     sender.selectedSegmentIndex = 1
@@ -549,7 +550,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     }
     
     override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
-        if motion == .motionShake && !self.arPresented {
+        if motion == .motionShake {
             self.typeSwitch.selectedSegmentIndex = 2
             self.postsViewTypeChanged(self.typeSwitch)
         }

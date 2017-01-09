@@ -52,10 +52,10 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
         self.mainViewController = self.parent as! PostsMainViewController
         
         //Location's of post
-        self.postsUpdated()
+        self.postsUpdated(posts: [Post](), currentLocation: nil)
     }
     
-    func postsUpdated() {
+    func postsUpdated(posts: [Post], currentLocation: CLLocationCoordinate2D?) {
         self.updateMap(self.mainViewController.allPosts)
     }
     
