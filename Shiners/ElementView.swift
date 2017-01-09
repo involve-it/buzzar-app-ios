@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class ElementView: UIView {
 
@@ -18,10 +19,15 @@ class ElementView: UIView {
     }
     */
 
+    @IBOutlet var lblDistance: UILabel!
     @IBOutlet weak var photo: UIImageView!
     @IBOutlet weak var lbl: UILabel!
+    @IBOutlet var photoLoc: UIImageView!
+    
+    var post: Post!
     
     func setup(post: Post){
+        self.post = post
         self.isOpaque = false;
         self.backgroundColor = UIColor(colorLiteralRed: 0.1, green: 0.1, blue: 0.1, alpha: 0)
         
@@ -31,6 +37,12 @@ class ElementView: UIView {
         self.lbl.text = post.title
         self.lbl.frame.size.height = post.title!.heightWithConstrainedWidth(149, font: self.lbl.font)
         self.lbl.backgroundColor = UIColor(colorLiteralRed: 0.1, green: 0.1, blue: 0.1, alpha: 0.5)
+        self.photoLoc.backgroundColor = UIColor(colorLiteralRed: 0.1, green: 0.1, blue: 0.1, alpha: 0.5)
+        
+        self.lblDistance.tintColor = UIColor(red: 90/255, green: 177/255, blue: 231/255, alpha: 1)
+        self.lblDistance.textColor = UIColor.white;
+        self.lblDistance.isHidden = true
+        self.lblDistance.backgroundColor = UIColor(colorLiteralRed: 0.1, green: 0.1, blue: 0.1, alpha: 0.5)
         //self.photo.alpha = 0.5
         //[NSString stringWithCString:poiNames[i] encoding:NSASCIIStringEncoding];
         //let nsTitle = post.title! as NSString
@@ -44,7 +56,7 @@ class ElementView: UIView {
         self.photo.image = UIImage(named: post.getPostCategoryImageName())
         
         self.frame.size.width = 150
-        self.frame.size.height = 46 + self.lbl.frame.size.height
+        self.frame.size.height = 67 + self.lbl.frame.size.height
         
         
         /*self.photo.image = ImageCachingHandler.defaultPhoto
@@ -66,19 +78,10 @@ class ElementView: UIView {
         self.setNeedsLayout()
     }
     
-    func setDistance(distance: Double){
-        /*var alpha: CGFloat
-        if distance < 1 {
-            alpha = 0.8
-        } else if distance < 10 {
-            alpha = 0.5
-        } else if distance < 100 {
-            alpha = 0.3
-        } else {
-            alpha = 0.2
-        }
+    func setLocation(location: CLLocation){
         ThreadHelper.runOnMainThread {
-            self.photo.alpha = alpha
-        }*/
+            self.lblDistance.isHidden = false
+            self.lblDistance.text = self.post.getDistanceFormatted(location)
+        }
     }
 }

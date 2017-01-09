@@ -125,10 +125,11 @@ class AugmentedRealityView: UIView, CLLocationManagerDelegate {
                     //NSLog(@"%f",self.bounds.size.height);
                     poi.view.center = CGPoint(x: CGFloat(x)*self.bounds.size.width, y: self.bounds.size.height-CGFloat(y)*self.bounds.size.height);
                     poi.view.isHidden = false;
-                    if let index = self.distances.index(where: {$0.index == i}){
-                        let distance = self.distances[index]
-                        (poi.view as! ElementView).setDistance(distance: distance.distance / 1000)
-                    }
+                    //if let index = self.distances.index(where: {$0.index == i}){
+                        //let distance = self.distances[index]
+                        //(poi.view as! ElementView).setLocation(location: self.location)
+                    //}
+                    (poi.view as! ElementView).setLocation(location: self.location)
                     
                 } else {
                     poi.view.isHidden = true;
