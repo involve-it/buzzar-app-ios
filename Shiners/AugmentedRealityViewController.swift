@@ -15,8 +15,29 @@ class AugmentedRealityViewController: UIViewController, PostsViewControllerDeleg
     var mainViewController: PostsMainViewController!
     
     func postsUpdated() {
-        self.posts = mainViewController.allPosts
-        self.refreshPosts()
+        ThreadHelper.runOnMainThread {
+            if let currentLocation = self.mainViewController.currentLocation {
+                print("have current location")
+                let location = CLLocation(latitude: currentLocation.latitude, longitude: currentLocation.longitude)
+                self.posts = self.mainViewController.allPosts.filter({ (post) -> Bool in
+                    if let postLoc = post.getPostLocation() {
+                        let postLocation = CLLocation(latitude: postLoc.lat!, longitude: postLoc.lng!)
+                        
+                        if  location.distance(from: postLocation) / 1000 < 100{
+                            return true
+                        } else {
+                            return false
+                        }
+                    } else {
+                        return false
+                    }
+                })
+            } else {
+                print("do not have current location")
+                self.posts = Array(self.mainViewController.allPosts.prefix(10))
+            }
+            self.refreshPosts()
+        }
     }
     
     func showPostDetails(_ index: Int) {
@@ -29,6 +50,7 @@ class AugmentedRealityViewController: UIViewController, PostsViewControllerDeleg
     
     @IBAction func btnClose_Click(_ sender: Any) {
         self.dismiss(animated: true, completion: {
+            self.mainViewController.arPresented = false
             self.mainViewController.currentViewController = self.mainViewController.viewControllerForSelectedSegmentIndex(self.mainViewController.typeSwitch.selectedSegmentIndex)
         })
     }
@@ -70,12 +92,18 @@ class AugmentedRealityViewController: UIViewController, PostsViewControllerDeleg
         arView.setPlacesOfInterest(pois: placesOfInterest)
     }
     
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            self.btnClose_Click(self)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let arView = self.view as! AugmentedRealityView
         arView.initialize()
-        self.refreshPosts()
+        self.postsUpdated()
     }
     
     override func viewWillAppear(_ animated: Bool) {

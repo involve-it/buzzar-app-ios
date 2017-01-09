@@ -52,6 +52,7 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     var loadingPosts = false
     var loadingMorePosts = false
     var staleLocation = false
+    var arPresented = false
     
     var searchViewController: NewSearchViewController?
     var currentViewController: UIViewController?
@@ -534,16 +535,23 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
             AppAnalytics.logEvent(.NearbyPostsScreen_MapTabActive)
         } else if sender.selectedSegmentIndex == 2 {
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "augmentedRealityViewController") as! AugmentedRealityViewController
-            vc.posts = self.allPosts
-            self.currentViewController = vc
             vc.mainViewController = self
+            self.arPresented = true
             self.tabBarController!.present(vc, animated: true, completion: {
                 if self.currentViewController == self.mapViewController {
                     sender.selectedSegmentIndex = 1
                 } else {
                     sender.selectedSegmentIndex = 0
                 }
+                self.currentViewController = vc
             })
+        }
+    }
+    
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == .motionShake && !self.arPresented {
+            self.typeSwitch.selectedSegmentIndex = 2
+            self.postsViewTypeChanged(self.typeSwitch)
         }
     }
     

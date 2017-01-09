@@ -29,20 +29,25 @@ class ElementView: UIView {
         self.lbl.textAlignment = .center
         self.lbl.textColor = UIColor.white;
         self.lbl.text = post.title
-        self.lbl.frame.size.height = post.title!.heightWithConstrainedWidth(150 - 16, font: self.lbl.font)
+        self.lbl.frame.size.height = post.title!.heightWithConstrainedWidth(149, font: self.lbl.font)
         self.lbl.backgroundColor = UIColor(colorLiteralRed: 0.1, green: 0.1, blue: 0.1, alpha: 0.5)
-        self.photo.alpha = 0.5
+        //self.photo.alpha = 0.5
         //[NSString stringWithCString:poiNames[i] encoding:NSASCIIStringEncoding];
         //let nsTitle = post.title! as NSString
         //let size = nsTitle.size(attributes: [NSFontAttributeName: self.lbl.font])
         //[label.text sizeWithFont:label.font];
         //self.lbl.bounds = CGRect(x:0, y:0, width:size.width, height:size.height);
         //self.frame = CGRect(x: 0, y: 0, width: 100, height: self.photo.frame.height + 8 + self.lbl.frame.height)
+        self.lbl.layer.cornerRadius = 4
+        self.lbl.sizeToFit()
+        
+        self.photo.image = UIImage(named: post.getPostCategoryImageName())
         
         self.frame.size.width = 150
-        self.frame.size.height = 150
+        self.frame.size.height = 46 + self.lbl.frame.size.height
         
-        self.photo.image = ImageCachingHandler.defaultPhoto
+        
+        /*self.photo.image = ImageCachingHandler.defaultPhoto
         if let photo = post.getMainPhoto(), let original = photo.original {
             ImageCachingHandler.Instance.getImageFromUrl(original, callback: {(image) in
                 ThreadHelper.runOnMainThread {
@@ -56,13 +61,13 @@ class ElementView: UIView {
                     self.setNeedsLayout()
                 }
             })
-        }
+        }*/
         
         self.setNeedsLayout()
     }
     
     func setDistance(distance: Double){
-        var alpha: CGFloat
+        /*var alpha: CGFloat
         if distance < 1 {
             alpha = 0.8
         } else if distance < 10 {
@@ -72,6 +77,8 @@ class ElementView: UIView {
         } else {
             alpha = 0.2
         }
-        self.photo.alpha = alpha
+        ThreadHelper.runOnMainThread {
+            self.photo.alpha = alpha
+        }*/
     }
 }

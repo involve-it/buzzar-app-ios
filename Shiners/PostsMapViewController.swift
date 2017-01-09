@@ -98,42 +98,29 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
         if posts.count > 0 {
             
             for post in posts {
-                
-                
                 if let postCoordinateLocations = post.locations {
                     
                     var postLocation: Location?
-                    var postType: String!
+                    
                     for coordinareLocation in postCoordinateLocations {
                         
                         if coordinareLocation.placeType == .Dynamic {
                             //Dynamic
                             postLocation = coordinareLocation
-                            postType = "dynamic"
                             break
                         } else {
                             //Static
                             postLocation = coordinareLocation
-                            postType = "static"
                         }
-                        
                     }
-                    
-                    //print("Post Location: \(postLocation)")
                     
                     if let postLocation = postLocation, let lat = postLocation.lat, let lng = postLocation.lng {
                         
                         let location = CLLocation(latitude: lat, longitude: lng)
                         
                         let annotation = CustomPointAnnotation(coordinate: location.coordinate)
+                        annotation.imageName = post.getPostCategoryImageName()
                         annotation.id = post.id
-                        
-                        if let category = post.type?.rawValue {
-                            annotation.category = category
-                        }
-                        
-                        annotation.live = post.isLive()
-                        annotation.postType = postType
                         
                         annotation.title = post.title
                         if let subTitle = post.descr {
@@ -166,7 +153,6 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        
         if annotation is MKUserLocation {
             return nil
         }
@@ -185,13 +171,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
                 annotationView!.annotation = annotation
             }
             
-            var imageName: String!
-            if let category = customPointAnnotation.category {
-                imageName = "\(customPointAnnotation.postType!)-\((customPointAnnotation.live ?? false) ? "live" : "offline")-flag-" + "\(category)"
-            } else {
-                imageName = "\(customPointAnnotation.postType!)-\((customPointAnnotation.live ?? false) ? "live" : "offline")-flag-jobs"
-            }
-            annotationView!.image = UIImage(named: imageName)
+            annotationView!.image = UIImage(named: customPointAnnotation.imageName)
             
             annotationView?.frame = CGRect(x: 0, y: 0, width: 24.2, height: 32)
             

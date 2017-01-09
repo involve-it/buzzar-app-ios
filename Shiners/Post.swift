@@ -312,6 +312,35 @@ open class Post: NSObject, DictionaryInitializable, NSCoding{
         return distanceFormatted
     }
     
+    func getPostLocationType() -> Location.PlaceType? {
+        return self.getPostLocation()?.placeType
+    }
+    
+    func getPostLocation() -> Location? {
+        var loc: Location? = nil
+        if let locations = self.locations {
+            for location in locations {
+                loc = location
+                
+                if location.placeType == .Dynamic {
+                    break
+                }
+            }
+        }
+        return loc
+    }
+    
+    func getPostCategoryImageName() -> String {
+        var imageName: String!
+        let locationType = self.getPostLocationType() ?? .Static
+        if let postType = self.type?.rawValue {
+            imageName = "\(locationType.rawValue)-\(self.isLive() ? "live" : "offline")-flag-" + "\(postType)"
+        } else {
+            imageName = "\(locationType.rawValue)-\(self.isLive() ? "live" : "offline")-flag-jobs"
+        }
+        return imageName
+    }
+    
     func getDistance(_ currentLocation: CLLocation) -> Double? {
         var distance: Double?
         //Post location
