@@ -41,6 +41,16 @@ open class PostsProxy{
         }
     }
     
+    open func getPost(_ id: String, _ callback: MeteorMethodCallback? = nil){
+        Meteor.call("getPost", params: [id]) { (result, error) in
+            if error == nil {
+                ResponseHelper.callHandler(result as AnyObject?, handler: callback) as Post?
+            } else {
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
+            }
+        }
+    }
+    
     open func getMyPosts(_ skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
         dict["type"] = "all" as AnyObject?

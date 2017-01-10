@@ -18,6 +18,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
     fileprivate var reachability: Reachability?
     
     fileprivate let locationManager = LocationHandler()
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let url = userActivity.webpageURL,
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+                return false
+        }
+        
+        return UniversalLinksHandler.Instance.handleLink(components: components)
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         NSSetUncaughtExceptionHandler { (ex) in

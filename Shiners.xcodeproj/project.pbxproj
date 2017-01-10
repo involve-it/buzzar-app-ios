@@ -159,6 +159,7 @@
 		7BFFB1061D2081CE007CCF87 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BFFB1031D2081CE007CCF87 /* FBSDKCoreKit.framework */; };
 		7BFFB1071D2081CE007CCF87 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BFFB1041D2081CE007CCF87 /* FBSDKLoginKit.framework */; };
 		7BFFB1081D2081CE007CCF87 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7BFFB1051D2081CE007CCF87 /* FBSDKShareKit.framework */; };
+		D24886CE1E2499130009C82D /* UniversalLinksHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D24886CD1E2499130009C82D /* UniversalLinksHandler.swift */; };
 		DA74BAEA2B14C252B3F9A418 /* Pods_Shiners.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 643ABEB340B81A6AB08AFEC7 /* Pods_Shiners.framework */; };
 /* End PBXBuildFile section */
 
@@ -325,6 +326,7 @@
 		7BFFB1031D2081CE007CCF87 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		7BFFB1041D2081CE007CCF87 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		7BFFB1051D2081CE007CCF87 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		D24886CD1E2499130009C82D /* UniversalLinksHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalLinksHandler.swift; sourceTree = "<group>"; };
 		D9E569692E2B1B62B7F114B8 /* Pods-Shiners.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Shiners.release.xcconfig"; path = "Pods/Target Support Files/Pods-Shiners/Pods-Shiners.release.xcconfig"; sourceTree = "<group>"; };
 		FB11C1D7A4B55954320FBCF1 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -601,6 +603,7 @@
 				7B35654D1CE7CCAF00012CA9 /* UIViewControllerExtensions.swift */,
 				7BF881D71DE3A869005E927E /* AppAnalytics.swift */,
 				7B1390601DFA676B00598FF4 /* Logger.swift */,
+				D24886CD1E2499130009C82D /* UniversalLinksHandler.swift */,
 			);
 			name = Core;
 			sourceTree = "<group>";
@@ -757,6 +760,9 @@
 								enabled = 1;
 							};
 							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.SafariKeychain = {
 								enabled = 1;
 							};
 						};
@@ -922,6 +928,7 @@
 				7BB2A7D91CCC18D200AD636D /* PostsTableViewCell.swift in Sources */,
 				7BB2A8151CD5245500AD636D /* Location.swift in Sources */,
 				7B3565501CE7D74400012CA9 /* NotificationManager.swift in Sources */,
+				D24886CE1E2499130009C82D /* UniversalLinksHandler.swift in Sources */,
 				7B26B0BD1CD65652000495EE /* KeyboardManager.swift in Sources */,
 				7B5006811DEB5E2200224F49 /* CommentsCollection.swift in Sources */,
 				7BB2A7EC1CCC58D600AD636D /* ImageCachingHandler.swift in Sources */,
