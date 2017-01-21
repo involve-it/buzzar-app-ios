@@ -36,6 +36,9 @@
 /* Alert title, Are you sure? */
 "Are you sure?" = "Вы уверены?";
 
+/* Title, Ask a Question */
+"Ask a Question" = "Задать вопрос";
+
 /* Connection Connecting, Attempting to recover broken connection... */
 "Attempting to recover broken connection..." = "Пытаемся восстановить соединение...";
 
@@ -141,6 +144,9 @@
 /* Alert title, Facebook Login */
 "Facebook Login" = "Войти через Facebook";
 
+/* Title, Find a Friend */
+"Find a Friend" = "Найди друга";
+
 /* No comment provided by engineer. */
 "Find and get found" = "Ты находишь / тебя находят";
 
@@ -205,6 +211,9 @@
 /* Alert title, Network Unreachable */
 "Network Unreachable" = "Сеть недоступна";
 
+/* Title, New Post */
+"New Post" = "Новый пост";
+
 /* Alert title, New message */
 "New message" = "Новое сообщение";
 
@@ -213,6 +222,9 @@
 
 /* None */
 "None" = "Не выбрано";
+
+/* Category not assigned */
+"Not assigned" = "Не назначена";
 
 /* Alert title, Notifications */
 "Notifications" = "Уведомления";
@@ -337,13 +349,4 @@
 
 /* Post info, post closed */
 "post closed" = "Пост закрыт";
-
-/* Category of post */
-"Not assigned" = "Не назначена";
-
-"Ask a Question" = "Задать вопрос";
-
-"Find a Friend" = "Найди друга";
-
-"New Post" = "Новый пост";
 

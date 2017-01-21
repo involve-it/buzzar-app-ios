@@ -82,6 +82,9 @@
 /* Class = "UIButton"; normalTitle = "Call"; ObjectID = "6Nn-4L-XLc"; */
 "6Nn-4L-XLc.normalTitle" = "Позвонить";
 
+/* Class = "UILabel"; text = "My Profile"; ObjectID = "6SC-4m-Ji3"; */
+"6SC-4m-Ji3.text" = "Мой Профиль";
+
 /* Class = "UILabel"; text = "Job market"; ObjectID = "7JF-Ge-df8"; */
 "7JF-Ge-df8.text" = "Работа";
 
@@ -147,6 +150,9 @@
 
 /* (No Commment) */
 "CLc-Kt-ihI.title" = "Далее";
+
+/* Class = "UILabel"; text = "Category"; ObjectID = "CQ2-G7-RiR"; */
+"CQ2-G7-RiR.text" = "Категория";
 
 /* Class = "UITextField"; placeholder = "Email (optional)"; ObjectID = "CqZ-uk-jGd"; */
 "CqZ-uk-jGd.placeholder" = "Электронная почта (не обязательно)";
@@ -261,6 +267,9 @@
 
 /* Class = "UIBarButtonItem"; title = "Search"; ObjectID = "KCO-4M-OLU"; */
 "KCO-4M-OLU.title" = "Поиск";
+
+/* Class = "UIButton"; normalTitle = "Register"; ObjectID = "KDG-wV-y2S"; */
+"KDG-wV-y2S.normalTitle" = "Зарегистрироваться";
 
 /* Class = "UILabel"; text = "Select location:"; ObjectID = "KOK-9K-C5D"; */
 "KOK-9K-C5D.text" = "Выбранная локация";
@@ -438,6 +447,9 @@
 
 /* Class = "UILabel"; text = "Tell a friend"; ObjectID = "VfB-7a-8Ii"; */
 "VfB-7a-8Ii.text" = "Рассказать другу";
+
+/* Class = "UILabel"; text = "Log out"; ObjectID = "W1Y-Fw-siG"; */
+"W1Y-Fw-siG.text" = "Выйти";
 
 /* (No Commment) */
 "W8o-NH-Gdy.title" = "Описание поста";
@@ -790,6 +802,9 @@
 /* Class = "UITextField"; placeholder = "Tap here to give post a title"; ObjectID = "ovB-ZE-Vfv"; */
 "ovB-ZE-Vfv.placeholder" = "Нажмите здесь, чтобы создать заголовок";
 
+/* Class = "UILabel"; text = "Current category"; ObjectID = "pBm-GP-hGP"; */
+"pBm-GP-hGP.text" = "Выбранная категория";
+
 /* (No Commment) */
 "pK5-HD-awh.text" = "Заголовок";
 
@@ -798,6 +813,9 @@
 
 /* Class = "UINavigationItem"; title = "Settings"; ObjectID = "qvl-IF-4dz"; */
 "qvl-IF-4dz.title" = "Настройки";
+
+/* Class = "UIBarButtonItem"; title = "Save"; ObjectID = "qxV-0H-CXJ"; */
+"qxV-0H-CXJ.title" = "Сохранить";
 
 /* Class = "UITableViewSection"; headerTitle = "Tags"; ObjectID = "r4M-zK-zn4"; */
 "r4M-zK-zn4.headerTitle" = "Тэги";
@@ -913,5 +931,3 @@
 /* Class = "UITextField"; placeholder = "Subject"; ObjectID = "zvX-Sf-D0c"; */
 "zvX-Sf-D0c.placeholder" = "Заголовок";
 
-/* Category of post */
-"CQ2-G7-RiR.text" = "Категория";
