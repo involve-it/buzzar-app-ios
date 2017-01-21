@@ -65,5 +65,6 @@ open class NotificationManager{
         case PostUpdated = "shiners:PostUpdated"
         
         case DisplaySettings = "shiners:DisplaySettings"
+        case DisplayProfile = "shiners:DisplayProfile"
     }
 }

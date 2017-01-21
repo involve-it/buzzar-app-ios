@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 class ProfileMainViewController: UIViewController {
+    var displayIndex: Int?
     lazy var profileViewController: ProfileTableViewController! = {
         var viewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "profileViewController") as! ProfileTableViewController
         if let rect = self.navigationController?.navigationBar.frame {
@@ -52,5 +53,13 @@ class ProfileMainViewController: UIViewController {
     
     @IBAction func unwindMyPosts(_ segue: UIStoryboardSegue){
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if let displayIndex = self.displayIndex, self.typeSwitch.selectedSegmentIndex != displayIndex {
+            self.typeSwitch.selectedSegmentIndex = displayIndex
+            self.switch_ValueChanged(self.typeSwitch)
+        }
+        self.displayIndex = nil
     }
 }

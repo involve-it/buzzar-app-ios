@@ -26,6 +26,7 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(updateLoggedIn), name: NSNotification.Name(rawValue: NotificationManager.Name.AccountUpdated.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(receivedLocalNotification), name: NSNotification.Name(rawValue: NotificationManager.Name.ServerEventNotification.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(displaySettings), name: NSNotification.Name(rawValue: NotificationManager.Name.DisplaySettings.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(displayProfile), name: NSNotification.Name(rawValue: NotificationManager.Name.DisplayProfile.rawValue), object: nil)
         //buttonCreatePost()
     }
     
@@ -35,6 +36,12 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         } else {
             self.selectedIndex = 2
         }
+    }
+    
+    func displayProfile(){
+        let vc = ((self.allViewControllers[1] as! UINavigationController).viewControllers[0] as! ProfileMainViewController)
+        vc.displayIndex = 1
+        self.selectedIndex = 1
     }
     
     override func viewDidAppear(_ animated: Bool) {
