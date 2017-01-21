@@ -22,6 +22,8 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
     //Team color
     let blueColorCustom = UIColor(netHex: 0x2E9AE2)
     
+    var loginControllerDelegate: LogInViewControllerDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -56,6 +58,11 @@ class NEWLoginViewController: UIViewController, UITextFieldDelegate {
         self.textFieldUsername.becomeFirstResponder();
     }
     
+    @IBAction func btnRegister_Click(_ sender: Any) {
+        self.dismiss(animated: true) { 
+            self.loginControllerDelegate?.presentRegistration()
+        }
+    }
     
     // TODO: - duplication code
     func leftPaddingToTextField(_ array: [UITextField]) {
@@ -216,3 +223,6 @@ class LeftPaddedTextField: UITextField {
     
 }
 
+protocol LogInViewControllerDelegate{
+    func presentRegistration()
+}

@@ -10,7 +10,7 @@ import UIKit
 import FBSDKLoginKit
 import FBSDKCoreKit
 
-class SettingsViewController: UIViewController {
+class SettingsViewController: UIViewController, LogInViewControllerDelegate {
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var logoView: UIStackView!
@@ -78,18 +78,23 @@ class SettingsViewController: UIViewController {
         
     }
     
+    func presentRegistration() {
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SignUpNavigationController")
+        self.present(vc, animated: true, completion: nil)
+    }
+    
     // MARK: - Action
     @IBAction func clickToLogin(_ sender: UIButton) {
         //loginNavigationController
         let storyboardMain = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboardMain.instantiateViewController(withIdentifier: "NEWloginNavigationController")
+        let vc = storyboardMain.instantiateViewController(withIdentifier: "NEWloginNavigationController") as! UINavigationController
+        let loginVc = vc.viewControllers[0] as! NEWLoginViewController
+        loginVc.loginControllerDelegate = self
         self.present(vc, animated: true, completion: nil)
     }
 
     @IBAction func clickToRegister(_ sender: UIButton) {
-        let storyboardMain = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboardMain.instantiateViewController(withIdentifier: "SignUpNavigationController")
-        self.present(vc, animated: true, completion: nil)
+        self.presentRegistration()
     }
     
     @IBAction func click_dismissViewController(_ sender: UIButton) {
