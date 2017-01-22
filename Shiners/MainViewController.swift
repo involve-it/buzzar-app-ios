@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class MainViewController: UITabBarController, UITabBarControllerDelegate {
     
@@ -27,7 +28,40 @@ class MainViewController: UITabBarController, UITabBarControllerDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(receivedLocalNotification), name: NSNotification.Name(rawValue: NotificationManager.Name.ServerEventNotification.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(displaySettings), name: NSNotification.Name(rawValue: NotificationManager.Name.DisplaySettings.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(displayProfile), name: NSNotification.Name(rawValue: NotificationManager.Name.DisplayProfile.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(displayPost), name: NSNotification.Name(rawValue: NotificationManager.Name.DisplayPost.rawValue), object: nil)
         //buttonCreatePost()
+    }
+    
+    func displayPost(notification: Notification){
+        if let post = notification.object as? Post {
+            ThreadHelper.runOnMainThread {
+                if self.selectedIndex != 0 {
+                    self.selectedIndex = 0
+                }
+                let navigationController = self.allViewControllers[0] as! UINavigationController
+                let mainViewController = navigationController.viewControllers[0] as! PostsMainViewController
+                AppAnalytics.logEvent(.NearbyPostsScreen_List_PostSelected)
+                mainViewController.searchBar.endEditing(true)
+                let detailsViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "postDetails") as! PostDetailsViewController
+                
+                if let currentLocation = LocationHandler.lastLocation {
+                    //current location
+                    let curLocation = CLLocation(latitude: currentLocation.coordinate.latitude, longitude: currentLocation.coordinate.longitude)
+                    post.outDistancePost = post.getDistanceFormatted(curLocation)
+                }
+                
+                detailsViewController.post = post;
+                
+                detailsViewController.pendingCommentsAsyncId = CommentsHandler.Instance.getCommentsAsync(post.id!, skip: 0)
+                if ConnectionHandler.Instance.isNetworkConnected(){
+                    detailsViewController.subscriptionId = AccountHandler.Instance.subscribeToCommentsForPost(post.id!)
+                }
+                
+                ThreadHelper.runOnMainThread {
+                    navigationController.pushViewController(detailsViewController, animated: true)
+                }
+            }
+        }
     }
     
     func displaySettings(){

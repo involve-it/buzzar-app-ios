@@ -34,8 +34,13 @@ class UniversalLinksHandler {
             if success {
                 let post = result as! Post
                 //open view controller
+                NotificationManager.sendNotification(.DisplayPost, object: post)
             } else {
                 //alert of failure
+                ThreadHelper.runOnMainThread {
+                    let alertController = UIAlertController(title: NSLocalizedString("Error", comment: "Alert title, Error") , message: NSLocalizedString("An error occurred while opening post.", comment: "Alert message, An error occurred while opening post."), preferredStyle: .alert)
+                    ((UIApplication.shared.delegate as! AppDelegate).window?.rootViewController)?.present(alertController, animated: true, completion: nil)
+                }
             }
         }
     }
