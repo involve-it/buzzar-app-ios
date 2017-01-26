@@ -4427,7 +4427,7 @@
                                 </barButtonItem>
                                 <barButtonItem style="plain" id="kH8-Sv-mnP" userLabel="Ttrade">
                                     <button key="customView" opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eIe-ox-6xP" userLabel="Trade">
-                                        <rect key="frame" x="140" y="17" width="30" height="19"/>
+                                        <rect key="frame" x="140" y="16.666666666666668" width="30" height="19.000000000000004"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                         <state key="normal" image="cat_trade">
@@ -4473,7 +4473,7 @@
                                 </barButtonItem>
                                 <barButtonItem style="plain" id="NqU-EH-WWC" userLabel="Help">
                                     <button key="customView" opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fov-Ob-ozT">
-                                        <rect key="frame" x="300" y="17" width="30" height="19"/>
+                                        <rect key="frame" x="300" y="16.666666666666668" width="30" height="19.000000000000004"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                         <state key="normal" image="cat_help">
@@ -6593,7 +6593,7 @@
                                         <rect key="frame" x="0.0" y="127" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gpw-vw-b7j" id="0w4-gH-BPV">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="UzD-xX-6EE">

@@ -203,9 +203,13 @@ open class Post: NSObject, DictionaryInitializable, NSCoding{
         }
         if let endDateMilliseconds = fields?.value(forKey: PropertyKey.endDate) as? Double {
             self.endDate = Date(timeIntervalSince1970: endDateMilliseconds / 1000)
+        } else {
+            self.endDate = (fields?.value(forKey: PropertyKey.endDate) as? NSDictionary)?.javaScriptDateFromFirstElement() as Date?
         }
         if let timestampMillisecnods = fields?.value(forKey: PropertyKey.timestamp) as? Double {
             self.timestamp = Date(timeIntervalSince1970: timestampMillisecnods / 1000)
+        } else {
+            self.timestamp = (fields?.value(forKey: PropertyKey.timestamp) as? NSDictionary)?.javaScriptDateFromFirstElement() as Date?
         }
     }
     
