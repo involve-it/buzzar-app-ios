@@ -258,17 +258,21 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     func accountUpdated(){
         if let currentLocation = self.currentLocation, AccountHandler.Instance.isLoggedIn() && ConnectionHandler.Instance.status == .connected{
             //ConnectionHandler.Instance.reportLocation(currentLocation.latitude, lng: currentLocation.longitude, notify: false)
-            AccountHandler.Instance.reportLocation(currentLocation.latitude, lng: currentLocation.longitude){ (success, _, _, _) in
-                if success {
-                    self.getNearby()
-                }
-            }
+            ThreadHelper.runOnBackgroundThread({
+                AccountHandler.Instance.reportLocation(currentLocation.latitude, lng: currentLocation.longitude)
+            })
         }
     }
     
     func meteorNetworkConnected(){
         if self.locationAcquired {
             self.getNearby()
+            if AccountHandler.Instance.isLoggedIn() {
+                ThreadHelper.runOnBackgroundThread({
+                    //ConnectionHandler.Instance.reportLocation(geocoderInfo.coordinate!.latitude, lng: geocoderInfo.coordinate!.longitude, notify: false)
+                    AccountHandler.Instance.reportLocation(self.currentLocation!.latitude, lng: self.currentLocation!.longitude)
+                })
+            }
         }
     }
     

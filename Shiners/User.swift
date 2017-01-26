@@ -21,6 +21,7 @@ open class User: NSObject, DictionaryInitializable, NSCoding{
     open var enableNearbyNotifications: Bool?
     open var lastMobileLocationReport: Date?
     open var lastLogin: Date?
+    open var isInvisible: Bool?
     
     override init(){
         super.init()
@@ -52,6 +53,7 @@ open class User: NSObject, DictionaryInitializable, NSCoding{
             }
         }
         
+        self.isInvisible = fields?.value(forKey: PropertyKeys.isInvisible) as? Bool
         self.online = fields?.value(forKey: "online") as? Bool
         self.lastLogin = (fields?.value(forKey: PropertyKeys.lastLogin) as? NSDictionary)?.javaScriptDateFromFirstElement() as Date?
         self.lastMobileLocationReport = (fields?.value(forKey: PropertyKeys.lastMobileLocationReport) as? NSDictionary)?.javaScriptDateFromFirstElement() as Date?
@@ -88,7 +90,7 @@ open class User: NSObject, DictionaryInitializable, NSCoding{
     }
     
     open func isOnline() -> Bool{
-        if let online = self.online{
+        if let online = self.online, let isInvisible = self.isInvisible, !isInvisible{
             if let lastMobileLocationReport = self.lastMobileLocationReport{
                 return online || Date().timeIntervalSince(lastMobileLocationReport) <= 20 * 60
             } else {
@@ -147,6 +149,7 @@ open class User: NSObject, DictionaryInitializable, NSCoding{
             dict["profileDetails"] = profileDetailsDict as AnyObject?
         }
         dict[PropertyKeys.enableNearbyNotifications] = self.enableNearbyNotifications as AnyObject?
+        dict[PropertyKeys.isInvisible] = self.isInvisible as AnyObject?
         
         return dict
     }
@@ -165,6 +168,9 @@ open class User: NSObject, DictionaryInitializable, NSCoding{
         if aDecoder.containsValue(forKey: PropertyKeys.enableNearbyNotifications){
             self.enableNearbyNotifications = aDecoder.decodeBool(forKey: PropertyKeys.enableNearbyNotifications)
         }
+        if aDecoder.containsValue(forKey: PropertyKeys.isInvisible){
+            self.isInvisible = aDecoder.decodeBool(forKey: PropertyKeys.isInvisible)
+        }
         self.locations = aDecoder.decodeObject(forKey: PropertyKeys.locations) as? [Location]
         self.profileDetails = aDecoder.decodeObject(forKey: PropertyKeys.profileDetails) as? [ProfileDetail]
         self.language = aDecoder.decodeObject(forKey: PropertyKeys.language) as? String
@@ -180,6 +186,9 @@ open class User: NSObject, DictionaryInitializable, NSCoding{
         aCoder.encode(self.imageUrl, forKey: PropertyKeys.imageUrl)
         if let online = self.online{
             aCoder.encode(online, forKey: PropertyKeys.online)
+        }
+        if let isInvisible = self.isInvisible {
+            aCoder.encode(isInvisible, forKey: PropertyKeys.isInvisible)
         }
         aCoder.encode(self.locations, forKey: PropertyKeys.locations)
         aCoder.encode(self.profileDetails, forKey: PropertyKeys.profileDetails)
@@ -204,5 +213,6 @@ open class User: NSObject, DictionaryInitializable, NSCoding{
         static let enableNearbyNotifications = "enableNearbyNotifications"
         static let lastMobileLocationReport = "lastMobileLocationReport"
         static let lastLogin = "lastLogin"
+        static let isInvisible = "isInvisible"
     }
 }

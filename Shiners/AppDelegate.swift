@@ -36,9 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
         SecurityHandler.setDeviceId()
         
         self.locationManager.delegate = self
-        if AccountHandler.Instance.isLoggedIn(){
-            self.locationManager.monitorSignificantLocationChanges()
-        }
+        self.accountUpdated()
         
         // Override point for customization after application launch.
         self.reachability = Reachability()!
@@ -91,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LocationHandlerDelegate {
     }
     
     func accountUpdated(){
-        if AccountHandler.Instance.isLoggedIn() {
+        if AccountHandler.Instance.isLoggedIn(), let user = AccountHandler.Instance.currentUser, !(user.isInvisible ?? false) {
             self.locationManager.monitorSignificantLocationChanges()
         } else {
             self.locationManager.stopMonitoringLocation()

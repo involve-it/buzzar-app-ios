@@ -20,6 +20,9 @@
    Error getting current location */
 "An error occurred getting your current location" = "Произошла ошибка при попытке получить ваше местоположение";
 
+/* Alert message, An error occurred while opening post. */
+"An error occurred while opening post." = "Произошла ошибка при открытии поста";
+
 /* Alert message, An error occurred while saving.
    Title message, an error occurred while saving. */
 "An error occurred while saving." = "Произошла ошибка при сохранении";

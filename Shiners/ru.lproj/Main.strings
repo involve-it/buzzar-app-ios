@@ -520,6 +520,9 @@
 /* (No Commment) */
 "bAM-XM-Hnv.text" = "Перемещается вместе с вашим объявлением";
 
+/* Class = "UILabel"; text = "Invisible mode"; ObjectID = "bFC-J0-Y7G"; */
+"bFC-J0-Y7G.text" = "Режим невидимки";
+
 /* Class = "UILabel"; text = "Need or give help"; ObjectID = "bGT-7f-nZD"; */
 "bGT-7f-nZD.text" = "Помощь";
 
@@ -682,6 +685,9 @@
 /* Class = "UISegmentedControl"; jQc-a5-ojv.segmentTitles[1] = "Map"; ObjectID = "jQc-a5-ojv"; */
 "jQc-a5-ojv.segmentTitles[1]" = "Карта";
 
+/* Class = "UISegmentedControl"; jQc-a5-ojv.segmentTitles[2] = "AR"; ObjectID = "jQc-a5-ojv"; */
+"jQc-a5-ojv.segmentTitles[2]" = "ВР";
+
 /* Class = "UILabel"; text = "It is connected with your mobile phone."; ObjectID = "jXt-P5-sY1"; */
 "jXt-P5-sY1.text" = "Он связан с местоположением вашего мобильного телефона";
 
@@ -696,6 +702,9 @@
 
 /* Class = "UIButton"; normalTitle = "Add photo"; ObjectID = "jlh-i9-wL1"; */
 "jlh-i9-wL1.normalTitle" = "Добавить фото";
+
+/* Class = "UITableViewSection"; footerTitle = "Invisible mode will stop updating your dynamic posts with current location"; ObjectID = "juT-WO-jyv"; */
+"juT-WO-jyv.footerTitle" = "В режиме невидимки ваши динамические посты не будут менять местоположение, следуя за вами, и вы будете находиться в режиме оффлайн";
 
 /* (No Commment) */
 "k5Q-un-OZi.text" = "Тип объявления";

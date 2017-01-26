@@ -18,12 +18,17 @@ class SettingsMainViewController: UITableViewController {
     
     var modalSpinner: UIAlertController?
     
+    @IBOutlet weak var invisibleModeSwitch: UISwitch!
     @IBOutlet weak var sendNearbyNotificationsSwitch: UISwitch!
+    
     func fillUserData(){
-        if UIApplication.shared.isRegisteredForRemoteNotifications, let currentUser = AccountHandler.Instance.currentUser, (currentUser.enableNearbyNotifications ?? false) {
-            self.sendNearbyNotificationsSwitch.isOn = true
-        } else {
-            self.sendNearbyNotificationsSwitch.isOn = false
+        if let currentUser = AccountHandler.Instance.currentUser {
+            if UIApplication.shared.isRegisteredForRemoteNotifications, (currentUser.enableNearbyNotifications ?? false) {
+                self.sendNearbyNotificationsSwitch.isOn = true
+            } else {
+                self.sendNearbyNotificationsSwitch.isOn = false
+            }
+            self.invisibleModeSwitch.isOn = currentUser.isInvisible ?? false
         }
     }
     
@@ -49,8 +54,35 @@ class SettingsMainViewController: UITableViewController {
         }
     }
     
+    @IBAction func cbInvisibleMode_Changed(_ sender: UISwitch) {
+        if self.isNetworkReachable(), let currentUser = AccountHandler.Instance.currentUser {
+            let initialState = currentUser.isInvisible
+            currentUser.isInvisible = sender.isOn
+            
+            AccountHandler.Instance.saveUser(currentUser) { (success, errorMessage) in
+                if success {
+                    if let myPosts = AccountHandler.Instance.myPosts, myPosts.count > 0{
+                        myPosts.forEach({ (post) in
+                            post.user?.isInvisible = currentUser.isInvisible ?? false
+                            post.user?.online = !(currentUser.isInvisible ?? false)
+                        })
+                        NotificationManager.sendNotification(.MyPostsUpdated, object: nil)
+                    }
+                    NotificationManager.sendNotification(.NearbyPostsUpdated, object: nil)
+                    
+                } else {
+                    ThreadHelper.runOnMainThread({
+                        self.showAlert(NSLocalizedString("Error", comment: "Alert title, Error"), message: NSLocalizedString("An error occurred while saving.", comment: "Title message, an error occurred while saving."))
+                        currentUser.enableNearbyNotifications = initialState
+                        sender.isOn = initialState ?? false
+                    })
+                }
+            }
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 3 {
+        if indexPath.section == Sections.LogOut {
             AppAnalytics.logEvent(.SettingsLoggedInScreen_Logout)
             let alertViewController = UIAlertController(title: NSLocalizedString("Are you sure?", comment: "Alert title, Are you sure?"), message: nil, preferredStyle: .actionSheet)
             alertViewController.addAction(UIAlertAction(title: NSLocalizedString("Log out", comment: "Alert title, Log out"), style: .destructive, handler: { (_) in
@@ -63,7 +95,7 @@ class SettingsMainViewController: UITableViewController {
             }))
             
             self.present(alertViewController, animated: true, completion: nil)
-        } else if indexPath.section == 1 {
+        } else if indexPath.section == Sections.MyProfile {
             NotificationManager.sendNotification(.DisplayProfile, object: nil)
         }
     }
@@ -85,5 +117,10 @@ class SettingsMainViewController: UITableViewController {
         } else {
             NotificationCenter.default.addObserver(self, selector: #selector(doLogout), name: NSNotification.Name(rawValue: NotificationManager.Name.MeteorConnected.rawValue), object: nil)
         }
+    }
+    
+    private struct Sections{
+        static let MyProfile = 2
+        static let LogOut = 4
     }
 }
