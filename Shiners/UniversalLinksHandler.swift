@@ -13,7 +13,18 @@ class UniversalLinksHandler {
     
     func handleLink(components: URLComponents) -> Bool {
         print("\(components.path)")
-        
+        let parts = components.path.components(separatedBy: "/").filter { (part) -> Bool in
+            return part != ""
+        }
+        let type = parts[0]
+        switch type {
+        case "posts":
+            self.postId = parts[1]
+            self.openPost()
+            return true
+        default:
+            break
+        }
         return false
     }
     
