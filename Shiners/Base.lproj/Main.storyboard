@@ -5560,7 +5560,7 @@
                                                                                 <rect key="frame" x="527" y="40.333333333333258" width="51" height="31"/>
                                                                                 <color key="onTintColor" red="0.20784313730000001" green="0.85490196080000003" blue="0.67843137249999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                 <connections>
-                                                                                    <action selector="switcher_getStaticLocation:" destination="iIP-KC-Tq1" eventType="touchUpInside" id="8bd-sK-dsF"/>
+                                                                                    <action selector="switcher_getStaticLocation:" destination="iIP-KC-Tq1" eventType="valueChanged" id="Zkk-gn-fko"/>
                                                                                 </connections>
                                                                             </switch>
                                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PostCell_Static" translatesAutoresizingMaskIntoConstraints="NO" id="DZg-A0-ItQ">
@@ -6627,11 +6627,11 @@
                                         <rect key="frame" x="0.0" y="235" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="17u-fu-RhV" id="ZdP-oa-tIh">
-                                            <rect key="frame" x="0.0" y="0.0" width="376" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="381" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="My Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6SC-4m-Ji3">
-                                                    <rect key="frame" x="20" y="0.0" width="356" height="43.666666666666664"/>
+                                                    <rect key="frame" x="15" y="0.0" width="364" height="43.666666666666664"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -6982,12 +6982,12 @@
     <inferredMetricsTieBreakers>
         <segue reference="qDI-Sx-lDh"/>
         <segue reference="iWZ-ck-nPQ"/>
-        <segue reference="TiE-7g-iP3"/>
         <segue reference="gVm-sN-Epi"/>
         <segue reference="SFg-II-FGA"/>
-        <segue reference="cmF-AO-BCX"/>
-        <segue reference="hbR-bk-VaF"/>
         <segue reference="hHr-ES-gen"/>
+        <segue reference="TiE-7g-iP3"/>
+        <segue reference="hbR-bk-VaF"/>
+        <segue reference="gvH-VL-fsJ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.35294117650000001" green="0.69411764710000001" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

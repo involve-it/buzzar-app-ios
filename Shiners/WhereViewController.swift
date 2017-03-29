@@ -134,11 +134,13 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
     
     //Switcher
     @IBAction func switcher_getDynamicLocation(_ sender: UISwitch) {
-        //event Value changed
-
         self.mapView.showsUserLocation = sender.isOn
         
         if sender.isOn {
+            if self.switcherStatic.isOn {
+                self.switcherStatic.setOn(false, animated: true)
+                self.removeStaticLocation()
+            }
             AppAnalytics.logEvent(.NewPostWizard_Loc_Dynamic_On)
             //Center current location on map
             if !self.mapView.isUserLocationVisible {
@@ -153,18 +155,24 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
             }
         } else {
             AppAnalytics.logEvent(.NewPostWizard_Loc_Dynamic_Off)
-            if let index = self.post.locations!.index(where: {return $0.placeType == .Dynamic}) {
-                self.post.locations!.remove(at: index)
-            }
+            self.removeDynamicLocation()
         }
         updateUiElementsInLocation()
     }
     
+    func removeDynamicLocation() {
+        if let index = self.post.locations!.index(where: {return $0.placeType == .Dynamic}) {
+            self.post.locations!.remove(at: index)
+        }
+    }
+    
     
     @IBAction func switcher_getStaticLocation(_ sender: UISwitch) {
-        //event Touch Up Inside
-        
         if sender.isOn {
+            if self.switcherDynamic.isOn {
+                self.switcherDynamic.setOn(false, animated: true)
+                self.removeDynamicLocation()
+            }
             AppAnalytics.logEvent(.NewPostWizard_Loc_Static_On)
             if let currentCoordinate = self.currentLocationInfo?.coordinate {
                 self.setStaticLocation(currentCoordinate, first: true)
@@ -173,16 +181,20 @@ class WhereViewController: UIViewController, MKMapViewDelegate, UISearchBarDeleg
             
         } else {
             AppAnalytics.logEvent(.NewPostWizard_Loc_Static_Off)
-            if let annotation = self.annotation{
-                self.mapView.removeAnnotation(annotation)
-                self.annotation = nil
-            }
-            if let index = self.post.locations!.index(where: {return $0.placeType == .Static}) {
-                self.post.locations!.remove(at: index)
-            }
+            self.removeStaticLocation()
         }
         
         updateUiElementsInLocation()
+    }
+    
+    func removeStaticLocation(){
+        if let annotation = self.annotation{
+            self.mapView.removeAnnotation(annotation)
+            self.annotation = nil
+        }
+        if let index = self.post.locations!.index(where: {return $0.placeType == .Static}) {
+            self.post.locations!.remove(at: index)
+        }
     }
     
     func handleLongPress (_ gestureRecognizer: UIGestureRecognizer){
