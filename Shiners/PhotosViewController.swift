@@ -155,7 +155,7 @@ class PhotosViewController: UIViewController, UIImagePickerControllerDelegate, U
         self.uploadingIds.append(view.id)
         view.latestUploadId = NSUUID().uuidString
         view.uploadDelegate = ImageCachingHandler.Instance.saveImage(view.image, uploadId: view.latestUploadId!) { (success, uploadId, imageUrl) in
-            if self.isVisible() && uploadId == view.latestUploadId!{
+            if self.isVisible() && view.latestUploadId != nil && uploadId == view.latestUploadId!{
                 ThreadHelper.runOnMainThread({
                     if let index = self.uploadingIds.index(of: view.id){
                         //self.setLoading(false, rightBarButtonItem: self.cancelButton)
