@@ -195,6 +195,8 @@ open class ImageCachingHandler{
     fileprivate static let maxLocallyCachedImagesCount = 50
     
     open func initLocalCache(){
+        NSKeyedArchiver.setClassName("LocalImageEntity", for: LocalImageEntity.self)
+        NSKeyedUnarchiver.setClass(LocalImageEntity.self, forClassName: "LocalImageEntity")
         self.loadContentsFile()
     }
     
