@@ -13,7 +13,7 @@ import JSQMessagesViewController
 
 let cssStyle = "<style> * {font-family: '-apple-system','HelveticaNeue'; font-size:10pt;} p {font-size:10pt;}  </style>"
 
-open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMapViewDelegate, UIViewControllerPreviewingDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
+open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMapViewDelegate, UIViewControllerPreviewingDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, ProfileTableViewControllerDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -814,6 +814,7 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
         if let post = self.post {
             vc.extUser = post.user
             vc.postId = post.id
+            vc.delegate = self
             self.present(nc, animated: true, completion: nil)
         } else {
             //error alert
@@ -971,6 +972,15 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
         } else {
             self.displayNotLoggedInMessage()
         }
+    }
+    
+    func displaySettings() {
+        CATransaction.begin()
+        CATransaction.setCompletionBlock({
+            NotificationManager.sendNotification(NotificationManager.Name.DisplaySettings, object: nil)
+        })
+        self.navigationController?.popViewController(animated: true)
+        CATransaction.commit()
     }
 }
 

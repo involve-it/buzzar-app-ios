@@ -27,6 +27,7 @@ class ProfileTableViewController: UITableViewController {
     @IBOutlet weak var profileImageHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var contactStackViewVerticatConstraint: NSLayoutConstraint!
     @IBOutlet weak var contactStackView: UIStackView!
+    var delegate: ProfileTableViewControllerDelegate!
     var extUser: User?
     var postId: String?
     fileprivate var currentUser: User!
@@ -118,29 +119,44 @@ class ProfileTableViewController: UITableViewController {
         self.present(alertController, animated: true) {
             alertController.textFields![0].becomeFirstResponder()
         }*/
-        let newMessageNavViewController = self.instantiateViewController(identifier: "newMessageNavigationController") as! UINavigationController
-        let dialogController = newMessageNavViewController.viewControllers[0] as! DialogViewController
-        dialogController.openedModally = true
-        dialogController.showNearbyUsers = false
-        if let chatIndex = AccountHandler.Instance.myChats?.index(where: {$0.otherParty?.id == self.currentUser.id}){
-            let chat = AccountHandler.Instance.myChats![chatIndex]
-            dialogController.chat = chat
-            dialogController.dataFromCache = false
-            
-            if !chat.messagesRequested {
-                if CachingHandler.Instance.status == .complete, let index = CachingHandler.Instance.chats?.index(where: {$0.id == chat.id}) {
-                    let cachedChat = CachingHandler.Instance.chats![index]
-                    chat.messages = cachedChat.messages
-                    dialogController.dataFromCache = true
-                }
+        if AccountHandler.Instance.isLoggedIn() {
+            let newMessageNavViewController = self.instantiateViewController(identifier: "newMessageNavigationController") as! UINavigationController
+            let dialogController = newMessageNavViewController.viewControllers[0] as! DialogViewController
+            dialogController.openedModally = true
+            dialogController.showNearbyUsers = false
+            if let chatIndex = AccountHandler.Instance.myChats?.index(where: {$0.otherParty?.id == self.currentUser.id}){
+                let chat = AccountHandler.Instance.myChats![chatIndex]
+                dialogController.chat = chat
+                dialogController.dataFromCache = false
                 
-                dialogController.pendingMessagesAsyncId = MessagesHandler.Instance.getMessagesAsync(chat.id!, skip: 0)
+                if !chat.messagesRequested {
+                    if CachingHandler.Instance.status == .complete, let index = CachingHandler.Instance.chats?.index(where: {$0.id == chat.id}) {
+                        let cachedChat = CachingHandler.Instance.chats![index]
+                        chat.messages = cachedChat.messages
+                        dialogController.dataFromCache = true
+                    }
+                    
+                    dialogController.pendingMessagesAsyncId = MessagesHandler.Instance.getMessagesAsync(chat.id!, skip: 0)
+                }
+            } else {
+                dialogController.newMessage = true
+                dialogController.newMessageRecipient = self.currentUser
             }
+            self.present(newMessageNavViewController, animated: true, completion: nil)
         } else {
-            dialogController.newMessage = true
-            dialogController.newMessageRecipient = self.currentUser
+            self.displayNotLoggedInMessage()
         }
-        self.present(newMessageNavViewController, animated: true, completion: nil)
+    }
+    
+    func displayNotLoggedInMessage(){
+        let alertController = UIAlertController(title: NSLocalizedString("You are not logged in", comment: "Alert title, you are not logged in"), message: NSLocalizedString("Please log in to send a message", comment: "Please log in to send a message"), preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Login", comment: "Login"), style: .default, handler: { (action) in
+            self.dismiss(animated: true, completion: { 
+                self.delegate.displaySettings()
+            })
+        }))
+        alertController.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .cancel, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func callToUser(_ sender: UIButton) {
@@ -356,4 +372,8 @@ class ProfileTableViewController: UITableViewController {
         
         return true
     }
+}
+
+protocol ProfileTableViewControllerDelegate {
+    func displaySettings()
 }
