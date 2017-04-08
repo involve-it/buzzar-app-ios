@@ -47,13 +47,16 @@ class NewMessageViewController: UIViewController, UITableViewDelegate, UITableVi
             //NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
             
         }
+        
+        self.tableView.tableFooterView = UIView()
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.keyboardNotification),
                                                name: NSNotification.Name.UIKeyboardWillChangeFrame,
                                                object: nil)
         
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.setOriginY),
+                                               selector: #selector(self.doLayout),
                                                name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame,
                                                object: nil)
 
@@ -143,20 +146,22 @@ class NewMessageViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func doLayout(){
         if self.nearbyUsers.count > 0 {
-            self.setOriginY()
-            self.view.frame.size.height = self.keyboardOriginY - self.view.frame.origin.y - self.inputViewHeight - 1
-            self.view.frame.size.width = self.parentFrame.size.width
+            let top = CGFloat(self.parentNavigationController.navigationBar.frame.size.height + UIApplication.shared.statusBarFrame.height)
+            //self.setOriginY()
+            self.view.frame = CGRect(x: 0, y: top, width: self.parentFrame.size.width, height: self.keyboardOriginY - self.inputViewHeight - top - 1)
+            //self.view.frame.size.height = self.keyboardOriginY - top - self.inputViewHeight - 1
+            //self.view.frame.size.width = self.parentFrame.size.width
             //self.parentFrame.height - self.view.frame.origin.y - self.keyboardHeight - self.inputViewHeight - 1
             self.view.layoutSubviews()
         }
     }
     
-    func setOriginY (){
+    /*func setOriginY (){
         let top = CGFloat(self.parentNavigationController.navigationBar.frame.size.height + UIApplication.shared.statusBarFrame.height)
         self.view.frame.origin.y = top
         //self.parentContainerView.frame.origin.y = 0
         print("\(top)")
-    }
+    }*/
     
     func getNearbyUsers(){
         if let lastLocation = LocationHandler.lastLocation {
