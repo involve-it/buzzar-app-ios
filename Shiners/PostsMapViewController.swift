@@ -124,7 +124,7 @@ class PostsMapViewController: UIViewController, MKMapViewDelegate, PostsViewCont
                         
                         annotation.title = post.title
                         if let subTitle = post.descr {
-                            annotation.subtitle = subTitle
+                            annotation.subtitle = post.removedHtmlFromPostDescription(subTitle)
                         }
                         
                         if post.photos?.count > 0 {
