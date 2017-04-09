@@ -398,7 +398,7 @@
                                 <rect key="frame" x="0.0" y="28" width="414" height="94"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="oDk-Wt-HVg" id="qMO-c5-Vkc">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="94"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="93.666666666666671"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have no posts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZh-j2-ptF">
@@ -418,7 +418,7 @@
                                 <rect key="frame" x="0.0" y="122" width="414" height="94"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1TY-LM-FDu" id="kMv-vQ-Hfe">
-                                    <rect key="frame" x="0.0" y="0.0" width="381" height="94"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="381" height="93.666666666666671"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="no-image-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Kl4-mq-w86">
@@ -559,7 +559,7 @@
                                 <rect key="frame" x="0.0" y="216" width="414" height="94"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c3h-po-DWA" id="e1d-2j-Snu">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="94"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="93.666666666666671"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading your posts..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hS6-KG-JqH">
@@ -3925,7 +3925,7 @@
                                                                                                     <constraint firstAttribute="width" priority="750" constant="125" id="ZbH-Ko-T42"/>
                                                                                                 </constraints>
                                                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                                                <state key="normal" title="Позвонить">
+                                                                                                <state key="normal" title="Call">
                                                                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                                 </state>
                                                                                                 <userDefinedRuntimeAttributes>
@@ -3950,7 +3950,7 @@
                                                                                                     <constraint firstAttribute="width" priority="750" constant="125" id="ZFm-ls-Wdz"/>
                                                                                                 </constraints>
                                                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                                                <state key="normal" title="Написать">
+                                                                                                <state key="normal" title="Message">
                                                                                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                                 </state>
                                                                                                 <userDefinedRuntimeAttributes>
@@ -4427,7 +4427,7 @@
                                 </barButtonItem>
                                 <barButtonItem style="plain" id="kH8-Sv-mnP" userLabel="Ttrade">
                                     <button key="customView" opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eIe-ox-6xP" userLabel="Trade">
-                                        <rect key="frame" x="140" y="16.666666666666671" width="30" height="19"/>
+                                        <rect key="frame" x="140" y="16.666666666666668" width="30" height="19.000000000000004"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                         <state key="normal" image="cat_trade">
@@ -4473,7 +4473,7 @@
                                 </barButtonItem>
                                 <barButtonItem style="plain" id="NqU-EH-WWC" userLabel="Help">
                                     <button key="customView" opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fov-Ob-ozT">
-                                        <rect key="frame" x="300" y="16.666666666666671" width="30" height="19"/>
+                                        <rect key="frame" x="300" y="16.666666666666668" width="30" height="19.000000000000004"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                         <state key="normal" image="cat_help">
@@ -6627,11 +6627,11 @@
                                         <rect key="frame" x="0.0" y="235" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="17u-fu-RhV" id="ZdP-oa-tIh">
-                                            <rect key="frame" x="0.0" y="0.0" width="381" height="43.666666666666664"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="376" height="43.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="My Profile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6SC-4m-Ji3">
-                                                    <rect key="frame" x="15" y="0.0" width="364" height="43.666666666666664"/>
+                                                    <rect key="frame" x="20" y="0.0" width="356" height="43.666666666666664"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>

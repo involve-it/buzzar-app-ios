@@ -45,6 +45,9 @@
 /* Connection Connecting, Attempting to recover broken connection... */
 "Attempting to recover broken connection..." = "Пытаемся восстановить соединение...";
 
+/* Call */
+"Call" = "Позвонить";
+
 /* Alert title, Camera */
 "Camera" = "Камера";
 
@@ -277,6 +280,12 @@
 
 /* Please log in to leave a comment or like a post */
 "Please log in to leave a comment or like a post" = "Пожалуйста, зарегистрируйтесь или войдите, чтобы комментировать или лайкать посты.";
+
+/* Please log in to send a message */
+"Please log in to send a message" = "Пожалуйста, авторизуйтесь, чтобы отправить сообщение.";
+
+/* Post owner did not disclose their phone number. Try sending them a message. */
+"Post owner did not disclose their phone number. Try sending them a message." = "Владелец поста не предоставил номера телефона. Попробуйте отправить сообщение.";
 
 /* Button title, Register */
 "Register" = "Регистрация";

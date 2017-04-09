@@ -101,6 +101,10 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
         AppAnalytics.logEvent(.PostDetailsScreen_BtnCall_Clicked)
         if let phoneNumber = self.phoneNumber, let url = URL(string: "tel://\(phoneNumber)") {
             UIApplication.shared.openURL(url)
+        } else {
+            let alertController = UIAlertController(title: NSLocalizedString("Call", comment: "Call"), message: NSLocalizedString("Post owner did not disclose their phone number. Try sending them a message.", comment: "Post owner did not disclose their phone number. Try sending them a message."), preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "OK"), style: .cancel, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     
@@ -222,11 +226,9 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
             //self.callWriteViewHeight.constant = 0.1
             //self.view.layoutIfNeeded()
         } else {
+            self.callStack.isHidden = false
             if let phoneNumberDetail = post.user?.getProfileDetail(.Phone), let phoneNumber = phoneNumberDetail.value, !ownPost{
                 self.phoneNumber = phoneNumber
-                self.callStack.isHidden = false
-            } else {
-                self.callStack.isHidden = true
             }
             
             if !AccountHandler.Instance.isLoggedIn() {
