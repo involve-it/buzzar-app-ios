@@ -18,6 +18,31 @@ open class PostsProxy{
         }
     }
     
+    func searchPosts(lat: Double, lng: Double, radius: Double, text: String, categories: [String], skip: Int, take: Int, callback: MeteorMethodCallback?) {
+        var dict = Dictionary<String, AnyObject>()
+        dict["lat"] = lat as AnyObject?
+        dict["lng"] = lng as AnyObject?
+        dict["radius"] = radius as AnyObject?
+        dict["skip"] = skip as AnyObject?
+        dict["take"] = take as AnyObject?
+        dict["activeCats"] = categories as AnyObject?
+        dict["query"] = text as AnyObject
+        
+        Meteor.call("searchPosts", params: [dict]) {result, error in
+            if error == nil {
+                if let posts = ResponseHelper.callHandlerArray(result as AnyObject?, handler: callback) as [Post]? {
+                    let users = posts.map({ (post) -> User in
+                        return post.user!
+                    })
+                    AccountHandler.Instance.mergeNewUsers(users)
+                }
+                
+            } else {
+                callback?(false, nil, ResponseHelper.getDefaultErrorMessage(), nil)
+            }
+        }
+    }
+    
     open func getNearbyPosts(_ lat: Double, lng: Double, radius: Double, skip: Int, take: Int, callback: MeteorMethodCallback? = nil){
         var dict = Dictionary<String, AnyObject>()
         dict["lat"] = lat as AnyObject?

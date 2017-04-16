@@ -162,7 +162,11 @@ class PostsViewController: UITableViewController, UIViewControllerPreviewingDele
                 cell = errorCell
             } else if self.mainViewController.filtering{
                 let errorCell = tableView.dequeueReusableCell(withIdentifier: "postsError") as! ErrorCell
-                errorCell.lblMessage.text = self.mainViewController.errorMessage ?? NSLocalizedString("Can't find any posts matching your search criteria", comment: "Can't find any posts matching your search criteria")
+                if let _ = self.mainViewController.searchTimer {
+                    errorCell.lblMessage.text = NSLocalizedString("Searching...", comment: "Searching...")
+                } else {
+                    errorCell.lblMessage.text = self.mainViewController.errorMessage ?? NSLocalizedString("Can't find any posts matching your search criteria", comment: "Can't find any posts matching your search criteria")
+                }
                 cell = errorCell
             } else if self.mainViewController.loadingPosts {
                 cell = tableView.dequeueReusableCell(withIdentifier: "waitingPosts")

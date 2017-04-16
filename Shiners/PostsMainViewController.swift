@@ -53,6 +53,9 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     var loadingMorePosts = false
     var staleLocation = false
     
+    var lastSearchRequestId: String?
+    var searchTimer: Timer?
+    
     var searchViewController: NewSearchViewController?
     var currentViewController: UIViewController?
     
@@ -616,14 +619,45 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         let searchTextLowered = searchText.lowercased()
         var posts = self.allPosts
+        var search = false
         if searchTextLowered != ""{
+            search = true
             posts = posts.filter({($0.title!.lowercased().contains(searchTextLowered) || ($0.descr ?? "").lowercased().contains(searchTextLowered))})
         }
         if self.filterCategories.count > 0 {
+            search = true
             posts = posts.filter({$0.type != nil && self.filterCategories.index(of: $0.type!.rawValue) != nil})
         }
         self.posts = posts
+        
+        
+        if let timer = self.searchTimer {
+            timer.invalidate()
+            self.searchTimer = nil
+            self.lastSearchRequestId = nil
+        }
+        if search {
+            self.searchTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(doSearch), userInfo: nil, repeats: false)
+        }
         self.listViewController.tableView.reloadData()
+    }
+    
+    func doSearch(){
+        if let text = self.searchBar.text, let currentLocation = self.currentLocation, text != "" && ConnectionHandler.Instance.isNetworkConnected() {
+            let requestId = NSUUID().uuidString
+            self.lastSearchRequestId = requestId
+            print("Searching, request id: \(requestId)")
+            ConnectionHandler.Instance.posts.searchPosts(lat: currentLocation.latitude, lng: currentLocation.longitude, radius: 10000, text: text, categories: self.filterCategories, skip: 0, take: 50, callback: { (success, errorId, errorMessage, postsResult) in
+                print("Results for request id: \(requestId), current last id: \(self.lastSearchRequestId!)")
+                if let currentRequestId = self.lastSearchRequestId, requestId == currentRequestId && success {
+                    self.posts = postsResult as! [Post]
+                    self.searchTimer = nil
+                    ThreadHelper.runOnMainThread {
+                        self.listViewController.tableView.reloadData()
+                    }
+                }
+            })
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
