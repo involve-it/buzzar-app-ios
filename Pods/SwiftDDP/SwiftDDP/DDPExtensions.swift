@@ -487,18 +487,16 @@ extension DDPClient {
     
     public func resume(_ url:String, callback:DDPCallback?) {
         connect(url) { session in
-            if let _ = self.user() {
-                self.loginWithToken() { result, error in
-                    if error == nil {
-                        log.debug("Resumed previous session at launch")
-                        if let completion = callback { completion() }
-                    } else {
-                        self.logout()
-                        log.error("\(error)")
-                    }
+            if self.user() == nil || !self.loginWithToken() { result, error in
+                if error == nil {
+                    log.debug("Resumed previous session at launch")
+                } else {
+                    self.logout()
+                    log.error("\(error)")
                 }
-            } else {
-                if let completion = callback { completion() }
+                callback?()
+                }{
+                callback?()
             }
         }
     }

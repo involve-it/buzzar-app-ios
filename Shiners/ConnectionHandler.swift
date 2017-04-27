@@ -91,7 +91,7 @@ open class ConnectionHandler{
                 self.status = .networkConnected
                 NotificationManager.sendNotification(.MeteorNetworkConnected, object: nil)
                 
-                if AccountHandler.Instance.isLoggedIn(){
+                if Meteor.client.loggedIn() && AccountHandler.Instance.isLoggedIn(){
                     Logger.log("Meteor.connect callback: invoke loadAccount")
                     AccountHandler.Instance.loadAccount()
                 } else {
