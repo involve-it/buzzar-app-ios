@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import MessageUI
 
 class ProfileTableViewController: UITableViewController {
     
+    @IBOutlet weak var emailRowLabel: UILabel!
     @IBOutlet weak var imgUserAvatar: UIImageView!
     @IBOutlet weak var txtUserName: UILabel!
     @IBOutlet weak var phoneRowLabel: UILabel!
@@ -37,6 +39,7 @@ class ProfileTableViewController: UITableViewController {
         static let cellAboutMe = "cellAboutMe"
     }
     
+    @IBOutlet weak var emailRow: UITableViewCell!
     @IBOutlet weak var phoneRowVisible: UITableViewCell!
     @IBOutlet weak var skypeRowVisible: UITableViewCell!
     //@IBOutlet weak var vkRowVisible: UITableViewCell!
@@ -201,8 +204,11 @@ class ProfileTableViewController: UITableViewController {
         
         //Phone
         if (indexPath.section == 0 && indexPath.row == 0) {
-            return !self.phoneRowVisible.isHidden ? 44 : 0.0
+            return !self.emailRow.isHidden ? 44 : 0.0
         } else if(indexPath.section == 0 && indexPath.row == 1) {
+            return !self.phoneRowVisible.isHidden ? 44 : 0.0
+        }
+        else if(indexPath.section == 0 && indexPath.row == 2) {
             return !self.skypeRowVisible.isHidden ? 44 : 0.0
         }
 //        } else if (indexPath.section == 1 && indexPath.row == 2) {
@@ -239,6 +245,14 @@ class ProfileTableViewController: UITableViewController {
             
             self.present(alertViewController, animated: true, completion: nil)
         }
+        /*else if indexPath.section == 0 && indexPath.row == 0 && MFMailComposeViewController.canSendMail() {
+            let email = self.currentUser.email!
+            let sendEmailController = MFMailComposeViewController()
+            sendEmailController.setToRecipients([email])
+            let signatureString = NSLocalizedString("Sent from Shiners App", comment: "Sent from Shiners App")
+            sendEmailController.setMessageBody("\n\n\(signatureString)", isHTML: false)
+            self.present(sendEmailController, animated: true, completion: nil)
+        }*/
     }
     
     func doLogout(){
@@ -311,6 +325,13 @@ class ProfileTableViewController: UITableViewController {
                 self.skypeRowLabel.text = isSkype
             } else {
                 self.skypeRowVisible.isHidden = true
+            }
+            
+            //email
+            if let email = self.currentUser.email, email != "" && self.extUser == nil {
+                self.emailRowLabel.text = email
+            } else {
+                self.emailRow.isHidden = true
             }
             
             //VKontakte
