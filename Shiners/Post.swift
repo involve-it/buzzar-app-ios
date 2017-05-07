@@ -213,6 +213,55 @@ open class Post: NSObject, DictionaryInitializable, NSCoding{
         }
     }
     
+    func isExpired() -> Bool{
+        if let endDate = self.endDate {
+            let dateToday = Date()
+            if (endDate.timeIntervalSinceReferenceDate < dateToday.timeIntervalSinceReferenceDate) {
+                // postClosed()
+                return true
+            } else {
+                return false
+            }
+        }
+        
+        return false
+    }
+    
+    func expirationDateString() -> String {
+        if let endDate = self.endDate {
+            if self.isExpired() {
+                return NSLocalizedString("post closed", comment: "Post info, post closed")
+            } else {
+                let output: String?
+                let dateFormatter = DateFormatter()
+                let locale = Locale.current
+                dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ssZZZZ"
+                dateFormatter.locale = locale
+                
+                let dateToday = Date()
+                
+                let dateComponentsFormatter = DateComponentsFormatter()
+                dateComponentsFormatter.unitsStyle = .full
+                
+                dateComponentsFormatter.allowedUnits = [
+                    NSCalendar.Unit.year,
+                    NSCalendar.Unit.month,
+                    NSCalendar.Unit.day,
+                    NSCalendar.Unit.hour,
+                    NSCalendar.Unit.minute
+                ]
+                
+                let date = dateComponentsFormatter.string(from: dateToday, to: endDate)!
+                let formatterArrayWithDate = date.components(separatedBy: ",")
+                
+                output = formatterArrayWithDate[0]
+                
+                return output!
+            }
+        }
+        return ""
+    }
+    
     open func getMainPhoto() -> Photo? {
         if self.photos?.count > 0 {
             return self.photos?[0]

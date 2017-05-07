@@ -72,41 +72,6 @@ extension Date {
         return dateFormatter.string(from: self)
     }
     
-    func toLeftExpiresDatePost() -> String {
-        let output: String?
-        let dateFormatter = DateFormatter()
-        let locale = Locale.current
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ssZZZZ"
-        dateFormatter.locale = locale
-        
-        let dateToday = Date()
-        let endDate = self
-        
-        let dateComponentsFormatter = DateComponentsFormatter()
-        dateComponentsFormatter.unitsStyle = .full
-    
-        dateComponentsFormatter.allowedUnits = [
-            NSCalendar.Unit.year,
-            NSCalendar.Unit.month,
-            NSCalendar.Unit.day,
-            NSCalendar.Unit.hour,
-            NSCalendar.Unit.minute
-        ]
-        
-        //If endDate < Now -> return
-        if (endDate.timeIntervalSinceReferenceDate < dateToday.timeIntervalSinceReferenceDate) {
-            // postClosed()
-            return NSLocalizedString("post closed", comment: "Post info, post closed")
-        }
-        
-        let date = dateComponentsFormatter.string(from: dateToday, to: endDate)!
-        let formatterArrayWithDate = date.components(separatedBy: ",")
-        
-        output = formatterArrayWithDate[0]
-        
-        return output!
-    }
-    
     func toFriendlyDateTimeString() -> String {
         
         let dateFormatter = DateFormatter()

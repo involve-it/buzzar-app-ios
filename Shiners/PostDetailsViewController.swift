@@ -393,7 +393,7 @@ open class PostDetailsViewController: UIViewController, UIWebViewDelegate, MKMap
         }
         
         //Post Date Expires
-        txtPostDateExpires.text = post.endDate?.toLeftExpiresDatePost()
+        txtPostDateExpires.text = post.expirationDateString()
         
         //Post Distance
         txtPostDistance.text = post.outDistancePost

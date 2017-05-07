@@ -259,7 +259,7 @@ open class MyPostsViewController: UITableViewController, UIViewControllerPreview
         //Post type location
         if let locations = post.locations {
             for location in locations {
-                if location.placeType! == .Dynamic {
+                if location.placeType != nil && location.placeType! == .Dynamic {
                     //Post Dynamic
                     let typeImage = (post.isLive()) ? "PostCell_Dynamic_Live" : "PostCell_Dynamic"
                     cell.imgPostTypeLocation.image = UIImage(named: typeImage)
@@ -273,7 +273,7 @@ open class MyPostsViewController: UITableViewController, UIViewControllerPreview
         }
         
         //Post expires
-        cell.txtExpiresPostCount.text = post.endDate?.toLeftExpiresDatePost()
+        cell.txtExpiresPostCount.text = post.expirationDateString()
         
         if let price = post.price, post.price != "" {
             cell.txtPrice.text = "$\(price)";
@@ -343,31 +343,32 @@ open class MyPostsViewController: UITableViewController, UIViewControllerPreview
         var actions = [UITableViewRowAction]()
         
         let post = self.myPosts[indexPath.row]
-        let title = (post.visible ?? false) ? NSLocalizedString("Hide", comment: "Title, Hide") : NSLocalizedString("Show", comment: "Title, Show")
-        
-        var button = UITableViewRowAction(style: .normal, title: title) { (action, indexPath) in
-            AppAnalytics.logEvent(.MyPostsScreen_SlideHide_Clicked)
-            print(title)
-            let post = self.myPosts[indexPath.row]
-            post.visible = !(post.visible ?? false)
-            self.tableView.isEditing = false
-            ConnectionHandler.Instance.posts.editPost(post, callback: { (success, errorId, errorMessage, result) in
-                if success {
-                    if post.visible! {
-                        NotificationManager.sendNotification(.NearbyPostAdded, object: post)
+        if !post.isExpired() {
+            let title = (post.visible ?? false) ? NSLocalizedString("Hide", comment: "Title, Hide") : NSLocalizedString("Show", comment: "Title, Show")
+            let button = UITableViewRowAction(style: .normal, title: title) { (action, indexPath) in
+                AppAnalytics.logEvent(.MyPostsScreen_SlideHide_Clicked)
+                print(title)
+                let post = self.myPosts[indexPath.row]
+                post.visible = !(post.visible ?? false)
+                self.tableView.isEditing = false
+                ConnectionHandler.Instance.posts.editPost(post, callback: { (success, errorId, errorMessage, result) in
+                    if success {
+                        if post.visible! {
+                            NotificationManager.sendNotification(.NearbyPostAdded, object: post)
+                        } else {
+                            NotificationManager.sendNotification(.NearbyPostRemoved, object: post.id as AnyObject?)
+                        }
+                        self.tableView.rectForRow(at: indexPath)
                     } else {
-                        NotificationManager.sendNotification(.NearbyPostRemoved, object: post.id as AnyObject?)
+                        self.showAlert("Error", message: errorMessage)
                     }
-                    self.tableView.rectForRow(at: indexPath)
-                } else {
-                    self.showAlert("Error", message: errorMessage)
-                }
-            })
+                })
+            }
+            
+            actions.append(button)
         }
         
-        actions.append(button)
-        
-        button = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "Title, Delete")) { (action, indexPath) in
+        let button = UITableViewRowAction(style: .destructive, title: NSLocalizedString("Delete", comment: "Title, Delete")) { (action, indexPath) in
             AppAnalytics.logEvent(.MyPostsScreen_SlideDelete_Clicked)
             print("delete")
             //self.tableView.editing = false
