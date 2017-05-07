@@ -309,14 +309,8 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
     
     //Textfield limit characters
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        if range.length + range.location > titleNewPost.text!.characters.count {
-            return false
-        } else {
-            let newlength = titleNewPost.text!.characters.count + string.characters.count - range.length
-            return newlength <= Int(titleAllowCount)
-        }
-        
+        let newlength = titleNewPost.text!.characters.count + string.characters.count - range.length
+        return newlength <= Int(titleAllowCount)
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -324,7 +318,7 @@ class CreatePostTableViewController: UITableViewController, UITextFieldDelegate,
         let currentText: NSString = fieldDescriptionOfPost.text as NSString
         let updateText = currentText.replacingCharacters(in: range, with: text)
         
-        if updateText.isEmpty || range.length + range.location > fieldDescriptionOfPost.text.characters.count{
+        if updateText.isEmpty {
             fieldDescriptionOfPost.text = descriptionPlaceholderText
             fieldDescriptionOfPost.textColor = descriptionPlaceholderColor
             
