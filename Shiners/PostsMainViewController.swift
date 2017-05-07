@@ -648,7 +648,6 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
             self.lastSearchRequestId = requestId
             print("Searching, request id: \(requestId)")
             ConnectionHandler.Instance.posts.searchPosts(lat: currentLocation.latitude, lng: currentLocation.longitude, radius: 10000, text: text, categories: self.filterCategories, skip: 0, take: 50, callback: { (success, errorId, errorMessage, postsResult) in
-                print("Results for request id: \(requestId), current last id: \(self.lastSearchRequestId!)")
                 if let currentRequestId = self.lastSearchRequestId, requestId == currentRequestId && success {
                     self.posts = postsResult as! [Post]
                     self.searchTimer = nil

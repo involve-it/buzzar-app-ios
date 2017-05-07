@@ -4459,7 +4459,7 @@
                                 </barButtonItem>
                                 <barButtonItem style="plain" id="kH8-Sv-mnP" userLabel="Ttrade">
                                     <button key="customView" opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="eIe-ox-6xP" userLabel="Trade">
-                                        <rect key="frame" x="140" y="16.666666666666671" width="30" height="19"/>
+                                        <rect key="frame" x="140" y="16.666666666666668" width="30" height="19.000000000000004"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                         <state key="normal" image="cat_trade">
@@ -4505,7 +4505,7 @@
                                 </barButtonItem>
                                 <barButtonItem style="plain" id="NqU-EH-WWC" userLabel="Help">
                                     <button key="customView" opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fov-Ob-ozT">
-                                        <rect key="frame" x="300" y="16.666666666666671" width="30" height="19"/>
+                                        <rect key="frame" x="300" y="16.666666666666668" width="30" height="19.000000000000004"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                         <state key="normal" image="cat_help">
@@ -5603,16 +5603,16 @@
                                                                                 </constraints>
                                                                             </imageView>
                                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="yNm-Ay-K44">
-                                                                                <rect key="frame" x="52" y="-2666.6666666666665" width="281" height="5436.6666666666661"/>
+                                                                                <rect key="frame" x="52" y="26" width="281" height="51.666666666666629"/>
                                                                                 <subviews>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Static post" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kad-Lr-Pmg">
-                                                                                        <rect key="frame" x="0.0" y="0.0" width="281" height="21.33333333333303"/>
+                                                                                        <rect key="frame" x="0.0" y="0.0" width="281" height="21.333333333333371"/>
                                                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                         <nil key="highlightedColor"/>
                                                                                     </label>
                                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="It is connected to the location that you have chosen." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yB-M2-EbN">
-                                                                                        <rect key="frame" x="0.0" y="21.33333333333303" width="281" height="5415.3333333333339"/>
+                                                                                        <rect key="frame" x="0.0" y="21.333333333333371" width="281" height="30.333333333333258"/>
                                                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
                                                                                         <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                         <nil key="highlightedColor"/>
@@ -7015,13 +7015,13 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="qDI-Sx-lDh"/>
-        <segue reference="FMu-wv-j7t"/>
         <segue reference="AzY-FW-DOG"/>
+        <segue reference="FMu-wv-j7t"/>
         <segue reference="gvH-VL-fsJ"/>
         <segue reference="iWZ-ck-nPQ"/>
-        <segue reference="gVm-sN-Epi"/>
-        <segue reference="SFg-II-FGA"/>
         <segue reference="hbR-bk-VaF"/>
+        <segue reference="EKW-F4-b1d"/>
+        <segue reference="SFg-II-FGA"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.35294117650000001" green="0.69411764710000001" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

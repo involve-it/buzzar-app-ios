@@ -276,7 +276,7 @@ extension Double {
 extension NSDictionary{
     func javaScriptDateFromFirstElement() -> Date?{
         if self.count == 1 {
-            if let dateNumber = self.allValues[0] as? Int {
+            if let dateNumber = self.allValues[0] as? Int64 {
                 return Date(timeIntervalSince1970: Double(dateNumber) / 1000)
             }
         }
