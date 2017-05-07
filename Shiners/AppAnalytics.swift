@@ -33,7 +33,7 @@ class AppAnalytics{
     }
     
     enum Screen: String {
-        case NearbyPostsTab, SettingsLoggedOut, Register, LoginScreen, ResetPassword, NearbyPosts_List, NearbyPosts_Map, Messages, Dialog, MyPosts, SettingsLoggedIn, Profile, ContactUs, EditProfile, NewPost_Title, NewPost_Loc, NewPost_When, NewPost_Photo, NewPost_Category, PostDetails, Welcome, EditPost, Comments
+        case NearbyPostsTab, SettingsLoggedOut, Register, LoginScreen, ResetPassword, NearbyPosts_List, NearbyPosts_Map, Messages, Dialog, MyPosts, SettingsLoggedIn, Profile, ContactUs, EditProfile, NewPost_Title, NewPost_Loc, NewPost_When, NewPost_Photo, NewPost_Category, PostDetails, Welcome, EditPost, Comments, AR
     }
     
     enum Event: String {

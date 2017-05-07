@@ -106,6 +106,8 @@ class AugmentedRealityViewController: UIViewController, PostsViewControllerDeleg
         let arView = self.view as! AugmentedRealityView
         arView.initialize()
         self.postsUpdated(posts: self.posts, currentLocation: nil)
+        
+        AppAnalytics.logScreen(.AR)
     }
     
     override func viewWillAppear(_ animated: Bool) {
