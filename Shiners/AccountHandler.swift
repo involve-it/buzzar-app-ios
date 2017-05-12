@@ -250,6 +250,7 @@ open class AccountHandler{
             if (success){
                 UserDefaults.standard.set(Meteor.client.userId(), forKey: AccountHandler.USER_ID)
                 self.loadAccount()
+                NotificationManager.sendNotification(.LoggedIn, object: nil)
             } else {
                 UserDefaults.standard.set(nil, forKey: AccountHandler.USER_ID)
             }

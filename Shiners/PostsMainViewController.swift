@@ -211,6 +211,11 @@ class PostsMainViewController: UIViewController, LocationHandlerDelegate, UISear
         NotificationCenter.default.addObserver(self, selector: #selector(postModified), name: NSNotification.Name(rawValue: NotificationManager.Name.NearbyPostModified.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(myPostUpdated), name: NSNotification.Name(rawValue: NotificationManager.Name.MyPostUpdated.rawValue), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(getNearby), name: NSNotification.Name(rawValue: NotificationManager.Name.NearbyPostsUpdated.rawValue), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(loggedIn), name: NSNotification.Name(rawValue: NotificationManager.Name.LoggedIn.rawValue), object: nil)
+    }
+    
+    func loggedIn(){
+        self.getNearby()
     }
     
     func connectionFailed(){

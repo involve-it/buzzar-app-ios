@@ -197,23 +197,17 @@ class editMyPostTableViewController: UITableViewController, UITextFieldDelegate,
         
         self.btn_update.isEnabled = true
 
-        if range.length + range.location > titleNewPost.text!.characters.count {
-            return false
-        } else {
-            let newlength = titleNewPost.text!.characters.count + string.characters.count - range.length
-            return newlength <= Int(titleAllowCount)!
-        }
-        
+        let newlength = titleNewPost.text!.characters.count + string.characters.count - range.length
+        return newlength <= Int(titleAllowCount)!
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        
         self.btn_update.isEnabled = true
         
         let currentText: NSString = fieldDescriptionOfPost.text as NSString
         let updateText = currentText.replacingCharacters(in: range, with: text)
         
-        if updateText.isEmpty || range.length + range.location > fieldDescriptionOfPost.text.characters.count{
+        if updateText.isEmpty {
             fieldDescriptionOfPost.text = descriptionPlaceholderText
             fieldDescriptionOfPost.textColor = descriptionPlaceholderColor
             

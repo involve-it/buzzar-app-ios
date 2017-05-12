@@ -24,6 +24,7 @@ open class NotificationManager{
         case OfflineCacheRestored = "shiners:offlineCacheRestored"
         case AccountUpdated = "shiners:AccountUpdated"
         case AccountLoaded = "shiners:AccountLoaded"
+        case LoggedIn = "shiners:LoggedIn"
         case MeteorConnectionFailed = "shiners:MeteorConnectionFailed"
         
         case MyChatsUpdated = "shiners:MyChatsUpdated"
